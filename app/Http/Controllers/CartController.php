@@ -18,17 +18,31 @@ class CartController extends Controller
 
 		return response()->json(['success' => 'Item has been added to cart']);
 	}
+	// public function update(Request $request)
+	// {
+
+	// 	Cart::update($request->product_id, array(
+	// 		'quantity' => array(
+	// 			'relative' => false,
+	// 			'value' => $request->quantity
+	// 		),
+	// 	));
+	// 	return back()->with('success_msg', 'Item has been updated!');
+	// }
+
 	public function update(Request $request)
 	{
+		$request->validate([
+			'rowId' => 'required',
+			'quantity' => 'required|integer|min:1',
+		]);
+		Cart::update($request->rowId, [
+			'qty' => $request->quantity // You can also use 'quantity' => $value but qty is preferred
+		]);
 
-		Cart::update($request->product_id, array(
-			'quantity' => array(
-				'relative' => false,
-				'value' => $request->quantity
-			),
-		));
 		return back()->with('success_msg', 'Item has been updated!');
 	}
+
 	public function destroy($id)
 	{
 		Cart::remove($id);
@@ -76,10 +90,14 @@ class CartController extends Controller
 
 	private function cart($request)
 	{
-
 		if ($request->variable_attribute) {
+			// Make sure it's encoded as JSON correctly
 			$variation = json_encode($request->variable_attribute);
-			$product = DB::table('products')->where('parent_id', $request->product_id)->whereRaw("JSON_CONTAINS(variations, ?)", [$variation])->first();
+
+			$product = DB::table('products')
+				->where('parent_id', $request->product_id)
+				->whereRaw("JSON_CONTAINS(variations, ?)", [$variation])
+				->first();
 
 			if (!$product) {
 				return response()->json(['error' => 'Sorry! This variation is no longer available'], 404);
@@ -88,25 +106,23 @@ class CartController extends Controller
 			$product = Product::find($request->product_id);
 		}
 
-		if ($product->sale_price) {
-			$price = $product->sale_price;
-		} else {
-			$price = $product->price;
-		}
-
+		$price = $product->sale_price ?? $product->price;
 
 		Cart::add([
-			$product->id,
-			$product->name,
-			$price,
-			$request->quantity,
+			'id'      => $product->id,
+			'name'    => $product->name,
+			'price'   => $price,
+			'qty'     => $request->quantity,
 			'weight'  => 0,
 			'options' => [
-				'offer' => 'no_offer',
+				'offer'     => 'no_offer',
 				'variation' => $request->variable_attribute ?? null,
 			]
 		])->associate('App\Models\Product');
+
+		return response()->json(['success' => 'Product added to cart']);
 	}
+
 
 	// private function cart($request)
 	// {

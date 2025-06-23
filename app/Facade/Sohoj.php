@@ -15,11 +15,12 @@ class Sohoj
     }
     public function tax()
     {
-        $total =  Cart::getSubTotal() - $this->discount();
-        $tax = ((Voyager::setting('admin.tax')) * $total) / 100;
-
-        return $tax;
+        $subtotal = floatval(str_replace(',', '', Cart::subtotal()));
+        $total = $subtotal - $this->discount();
+        $taxRate = 15;
+        return ($taxRate * $total) / 100;
     }
+
     public function discount()
     {
         if (session()->has('discount')) {
@@ -45,34 +46,27 @@ class Sohoj
     }
     public function shipping()
     {
-        // if (session()->has('shipping_method')) {
-        //     return session()->get('shipping_cost');
-        // } else {
-        //     $shipping = Shipping::first();
-        //     return $shipping->shipping_cost;
-        // }
-        // $shipping=Voyager::setting('admin.shipping');
-        // return $shipping * Cart::getTotalQuantity();
-        $cart = Cart::getContent();
+        $cart = Cart::content();
 
         $totalShippingCost = 0;
-    
+
         foreach ($cart as $item) {
             $shippingCost = $item->model->shipping_cost;
             $totalShippingCost += $shippingCost;
         }
-    
+
         return $totalShippingCost;
-        
     }
     public function newItemTotal()
     {
-        return Cart::getSubTotal();
+        return Cart::subtotal();
     }
     public function newSubtotal()
     {
-        return (Cart::getSubTotal() + $this->tax() + $this->shipping() )- $this->discount();
+        $subtotal = floatval(str_replace(',', '', Cart::subtotal()));
+        return ($subtotal + $this->tax() + $this->shipping()) - $this->discount();
     }
+
     public function newTotal()
     {
         return ($this->newSubtotal());
@@ -92,29 +86,26 @@ class Sohoj
 
     public function flatCommision($price)
     {
-        if($price < 30){
+        if ($price < 30) {
             return  1.95;
-        }elseif($price > 30 && $price < 300){
+        } elseif ($price > 30 && $price < 300) {
             return  3.75;
-        }elseif($price > 300 && $price < 1000){
+        } elseif ($price > 300 && $price < 1000) {
             return  7.95;
-        }else{
+        } else {
             return  20;
         }
-        
     }
     public function vendorprice($price)
     {
         // return $price;
 
-        $tenPercent=$price * .06;
-        $sixPercent=$price * .06;
-        if($price < 1000){
+        $tenPercent = $price * .06;
+        $sixPercent = $price * .06;
+        if ($price < 1000) {
             return ($price - $tenPercent);
-        }else{
+        } else {
             return ($price - $sixPercent);
         }
     }
-  
-  
 }

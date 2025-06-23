@@ -31,22 +31,27 @@
                                     @if (Cart::count() > 0)
                                         <div class="row">
 
-                                            @dd($groupedItems)
+
                                             @foreach ($groupedItems as $shopId => $items)
                                                 <div>
+                                                    {{-- @dd($items[0]->model->shop->logo) --}}
                                                     <div class="d-flex mb-2 align-items-center">
                                                         <img height="54" width="64"
-                                                            src="{{ Storage::url($items[0]->model->shop->logo) }}"
+                                                            src="{{ $items[0]->model->shop ? Storage::url($items[0]->model->shop->logo) : '' }}"
                                                             alt="">
-                                                        <h5>
+                                                        {{-- @dd($items[0]->model->shop->slug) --}}
 
-                                                            <a href="{{ route('store_front', $items[0]->model->shop->slug) }}"
-                                                                class="mb-2"><u>{{ $items[0]->model->shop->name }}</u>
-                                                            </a>Cart
-                                                        </h5>
+                                                        @if (optional($items[0]->model->shop)->slug)
+                                                            <h5>
+                                                                <a href="{{ route('store_front', optional($items[0]->model->shop)->slug) }}"
+                                                                    class="mb-2"><u>{{ optional($items[0]->model->shop)->name }}</u>
+                                                                </a>Cart
+                                                            </h5>
+                                                        @endif
+
 
                                                     </div>
-
+                                                    {{-- @dd($items) --}}
                                                     @foreach ($items as $item)
                                                         <div class="cart-item card rounded-4 mb-4">
                                                             <div class="card-body row box-shadow">
@@ -83,13 +88,12 @@
                                                                         method="POST">
                                                                         @csrf
 
-                                                                        
-                                                                        @if ($item->attributes[0] == 'no_offer')
-                                                                            <input type="hidden" name="product_id"
-                                                                                value="{{ $item->id }}" />
+                                                                        @if ($item->options['offer'] == 'no_offer')
+                                                                            <input type="hidden" name="rowId"
+                                                                                value="{{ $item->rowId }}" />
                                                                             <div class="col-3 mb-3 d-flex ">
                                                                                 <input type="text" name="quantity"
-                                                                                    value="{{ $item->quantity }}"
+                                                                                    value="{{ $item->qty }}"
                                                                                     class="cart-input-stock "
                                                                                     id="">
                                                                                 <button type="submit"
@@ -137,14 +141,14 @@
                     <div class="ec-sidebar-wrap">
                         <!-- Sidebar Summary Block -->
                         <div class="ec-sidebar-block mt-5 side-bar-box ">
-
+                            {{-- @dd(Cart::subtotal()) --}}
                             <div class="ec-sb-block-content">
                                 <div class="ec-cart-summary-bottom">
                                     <div class="ec-cart-summary p-4">
 
                                         <div>
-                                            <span class="text-left">Total ({{ Cart::getTotalQuantity() }} items)</span>
-                                            <span class="text-right">{{ Sohoj::price(Sohoj::newItemTotal()) }}</span>
+                                            <span class="text-left">Total ({{ Cart::content()->count() }} items)</span>
+                                            <span class="text-right">${{ Cart::subtotal() }}</span>
                                         </div>
                                         {{-- <div>
                                             <span class="text-left">Delivery Charges</span>
@@ -180,6 +184,10 @@
                                         <div class="ec-cart-summary-total">
                                             <span class="text-left">Total Shipping</span>
                                             <span class="text-right">{{ Sohoj::price(Sohoj::shipping()) }}</span>
+                                        </div>
+                                        <div class="ec-cart-summary-total">
+                                            <span class="text-left">Tax</span>
+                                            <span class="text-right">{{ Sohoj::price(Sohoj::tax()) }}</span>
                                         </div>
                                         <div class="ec-cart-summary-total">
                                             <span class="text-left">Total Amount</span>

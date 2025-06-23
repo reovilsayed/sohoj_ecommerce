@@ -57,7 +57,7 @@ $images = json_decode($product->images) ?? [];
                                         @if ($images)
                                         @foreach ($images as $key => $image)
                                         <div class="single-slide">
-                                            <img class="img-responsive" style="height:100px" src="{{ Voyager::image($image) }}" alt="">
+                                            <img class="img-responsive" style="height:100px" src="{{ Storage::url($image) }}" alt="">
                                         </div>
                                         @endforeach
                                         @endif

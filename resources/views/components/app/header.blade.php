@@ -335,7 +335,7 @@
                                     <i class="fa-solid fa-cart-shopping" style="font-size: 20px"></i>
                                 </div>
 
-                                <span class="ec-header-count cart-count-lable" id="cartQty">{{ Cart::count() }}</span>
+                                <span class="ec-header-count cart-count-lable" id="cartQty">{{ Cart::content()->count() }}</span>
 
                             </a>
                             @auth
@@ -646,7 +646,7 @@
                         </tr> --}}
                             <tr>
                                 <td class="text-left">Total :</td>
-                                <td class="text-right primary-color">${{ Cart::total() }}</td>
+                                <td class="text-right primary-color">${{ Cart::subtotal() }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -989,4 +989,5 @@
     }
 </script>
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCs1ZPEcNnbEdIaS8L07OVhwNP3dVUM2Fc&callback=initMap"></script>
+    src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initMap"></script>
+

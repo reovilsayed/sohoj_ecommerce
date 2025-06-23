@@ -2,13 +2,13 @@
 
 @section('dashboard-content')
     <div class="ec-shop-rightside col-lg-9 col-md-12">
-        @if (setting('site.user_settings_info'))
+        {{-- @if (setting('site.user_settings_info')) --}}
             <div class="card shadow mb-3">
                 <div class="card-body">
-                    {!! setting('site.user_settings_info') !!}
+                    {{-- {!! setting('site.user_settings_info') !!} --}}
                 </div>
             </div>
-        @endif
+        {{-- @endif --}}
         <div class="ec-vendor-dashboard-card ec-vendor-setting-card">
             <div class="ec-vendor-card-body">
                 <div class="row">
