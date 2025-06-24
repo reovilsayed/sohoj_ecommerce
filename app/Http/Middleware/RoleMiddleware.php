@@ -20,7 +20,7 @@ class RoleMiddleware
         if (auth()->check() && auth()->user()->role->name == $role) {
             return $next($request);
         } else {
-            abort(403);
+            return redirect()->route('homepage')->with('error_msg', 'You do not have permission to access this page.');
         }
     }
 }

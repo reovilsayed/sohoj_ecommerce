@@ -17,16 +17,21 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        // dd($panel);
         return $panel
             ->default()
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Admin Panel')
+            ->brandLogo(asset('assets/logo/Logo.png')) 
+            ->favicon(asset('assets/images/favicon.ico'))
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -53,6 +58,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                \App\Http\Middleware\RoleMiddleware::class . ':admin',
+            ])
+            ->plugins([
+                FilamentSettingsPlugin::make()
+                    ->pages([
+                        // Add your own setting pages here
+                    ])
             ]);
     }
 }

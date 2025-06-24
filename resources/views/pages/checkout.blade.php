@@ -263,12 +263,12 @@
                                 <div class="ec-sb-block-content">
                                     <div class="ec-checkout-summary">
                                        @php
-                                           $flatCharge=Sohoj::flatCommision(Cart::getSubTotal());
+                                           $flatCharge=Sohoj::flatCommision(Cart::SubTotal());
                                            $shipping=Sohoj::shipping();
-                                           $prices=Cart::getSubTotal();
+                                           $prices=Cart::SubTotal();
                                        @endphp
                                         <div>
-                                            <span class="text-left">Items({{ Cart::getTotalQuantity() }}):</span>
+                                            <span class="text-left">Items({{ Cart::count() }}):</span>
                                             <span class="text-right">{{ Sohoj::price($prices) }}</span>
                                         </div>
                                         <div>
@@ -337,7 +337,7 @@
         <fieldset style="border: 1px solid #BCBCBC;padding: 10px">
             <div class="row justify-content-center">
                 @php
-                    $items = Cart::getContent();
+                    $items = Cart::content();
                 @endphp
 
                 <div class="col-md-12" style="
@@ -368,7 +368,7 @@
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{ $item->id }}" />
                                             <div class="col-3 mb-3 d-flex ">
-                                                <input type="number" name="quantity" value="{{ $item->quantity }}"
+                                                <input type="number" name="quantity" value="{{ $item->qty }}"
                                                     class="cart-input-stock " id="">
                                                 <button type="submit" class="ms-2"><u>Update</u></button>
                                             </div>

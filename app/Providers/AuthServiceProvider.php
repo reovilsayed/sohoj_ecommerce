@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use Filament\Facades\Filament;
+
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+
+use function Symfony\Component\String\b;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +29,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+     
     }
 }

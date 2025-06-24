@@ -5,6 +5,8 @@ use App\Http\Middleware\NeedPaymentMethod;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\SecondStepVerifications;
 use App\Http\Middleware\Verified;
+use Filament\Http\Middleware\AuthenticateSession;
+use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,8 +23,8 @@ configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'auth' => \App\Http\Middleware\Authenticate::class,
-            'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-            'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
+            'auth.basic' =>AuthenticateWithBasicAuth::class,
+            'auth.session' =>AuthenticateSession::class,
             'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
             'can' => \Illuminate\Auth\Middleware\Authorize::class,
             'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
@@ -49,5 +51,6 @@ configure(basePath: dirname(__DIR__))
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
+        App\Providers\FilamentThemeServiceProvider::class,
     ])
     ->create();
