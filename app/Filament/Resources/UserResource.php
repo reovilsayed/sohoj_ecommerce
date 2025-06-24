@@ -22,53 +22,96 @@ use Illuminate\Support\Facades\Hash;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Users';
+    protected static ?string $navigationGroup = 'User Management';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
+        // Define the form schema for the User resource
         return $form
             ->schema([
-                TextInput::make('name')->required()->maxLength(255),
-                TextInput::make('l_name')->label('Last Name')->maxLength(255),
-                TextInput::make('email')->email()->required()->unique(ignoreRecord: true),
-                TextInput::make('password')
-                    ->label('Password')
-                    ->password()
-                    ->required(fn(Page $livewire) => $livewire instanceof CreateRecord)
-                    ->maxLength(255)
-                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                    ->dehydrated(fn($state) => filled($state))
-                    ->autocomplete('new-password'),
+                Forms\Components\Section::make('User Information')
+                    ->description('Basic details about the user.')
+                    ->schema([
+                        TextInput::make('name')
+                            ->label('First Name')
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('l_name')
+                            ->label('Last Name')
+                            ->maxLength(255),
+                        TextInput::make('email')
+                            ->email()
+                            ->required()
+                            ->unique(ignoreRecord: true),
+                        FileUpload::make('avatar')
+                            ->image()
+                            ->directory('avatars')
+                            ->nullable(),
+                    ])
+                    ->columns(2),
 
+                Forms\Components\Section::make('Security')
+                    ->description('Set or update the user password.')
+                    ->schema([
+                        TextInput::make('password')
+                            ->label('Password')
+                            ->password()
+                            ->required(fn(Page $livewire) => $livewire instanceof CreateRecord)
+                            ->maxLength(255)
+                            ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                            ->dehydrated(fn($state) => filled($state))
+                            ->autocomplete('new-password'),
+                    ]),
 
-                FileUpload::make('avatar')->image()->directory('avatars')->nullable(),
-
-                Select::make('role_id')
-                    ->label('Role')
-                    ->relationship('role', 'name')
-                    ->required(),
-
-                Select::make('roles')
-                    ->label('Roles')
-                    ->relationship('roles', 'name')
-                    ->multiple()
-                    ->preload()
-                    ->required(),
+                Forms\Components\Section::make('Roles & Permissions')
+                    ->description('Assign roles to the user.')
+                    ->schema([
+                        Select::make('role_id')
+                            ->label('Primary Role')
+                            ->relationship('role', 'name')
+                            ->required(),
+                        Select::make('roles')
+                            ->label('Additional Roles')
+                            ->relationship('roles', 'name')
+                            ->multiple()
+                            ->preload()
+                            ->required(),
+                    ])
+                    ->columns(2),
             ]);
     }
 
     public static function table(Table $table): Table
     {
+        $table->searchable();
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('l_name')->label('Last Name'),
-                Tables\Columns\TextColumn::make('email'),
-                // Tables\Columns\ImageColumn::make('avatar')->disk('public')->directory('avatars'),
+                Tables\Columns\ImageColumn::make('avatar')
+                    ->label('Avatar')
+                    ->disk('public')
+                    ->circular()
+                    ->toggleable(), // Allow show/hide
+                Tables\Columns\TextColumn::make('name')
+                    ->toggleable(), // Allow show/hide
+                Tables\Columns\TextColumn::make('l_name')
+                    ->label('Last Name')
+                    ->toggleable(), // Allow show/hide
+                Tables\Columns\TextColumn::make('email')
+                    ->toggleable(isToggledHiddenByDefault: false), // Allow show/hide
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('name')
+                    ->label('User Name')
+                    ->query(fn (Builder $query, array $data) => 
+                        $query->when($data['value'], fn ($q, $value) => $q->where('name', 'like', "%{$value}%"))
+                    )
+                    ->form([
+                        TextInput::make('value')
+                            ->label('Name')
+                            ->placeholder('Search by name'),
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -83,7 +126,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            
         ];
     }
 
@@ -94,5 +137,10 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::$model::count();
     }
 }

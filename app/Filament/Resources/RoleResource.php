@@ -17,7 +17,16 @@ class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    // Set a custom icon for the Role resource
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    // Show the count of roles in the navigation badge
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::$model::count();
+    }
+
+    protected static ?string $navigationGroup = 'User Management';
 
     public static function form(Form $form): Form
     {
@@ -39,17 +48,33 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                    
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('display_name')
                     ->label('Display Name')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('name')
+                    ->label('Role Name')
+                    ->form([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Role Name'),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        if ($data['name'] ?? false) {
+                            $query->where('name', 'like', '%' . $data['name'] . '%');
+                        }
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->icon('heroicon-o-pencil')->color('primary'),

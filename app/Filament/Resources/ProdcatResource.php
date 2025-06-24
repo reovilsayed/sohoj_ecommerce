@@ -41,7 +41,7 @@ class ProdcatResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn (string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
+                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
 
                 TextInput::make('slug')
                     ->required()
@@ -85,6 +85,7 @@ class ProdcatResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('slug')
+                    ->formatStateUsing(fn($state) => Str::slug($state))
                     ->searchable()
                     ->toggleable(),
 
@@ -105,9 +106,11 @@ class ProdcatResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Created At')
+                    ->date('F j, Y') // Example: June 25, 2025
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
                 SelectFilter::make('shop_id')
