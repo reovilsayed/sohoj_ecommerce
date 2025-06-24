@@ -1,0 +1,149 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\ProdcatResource\Pages;
+use App\Filament\Resources\ProdcatResource\RelationManagers;
+use App\Models\Prodcat;
+use App\Models\Shop;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Support\Str;
+
+class ProdcatResource extends Resource
+{
+    protected static ?string $model = Prodcat::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+
+    protected static ?string $navigationLabel = 'Product Categories';
+
+    protected static ?string $navigationGroup = 'Inventory';
+
+    protected static ?int $navigationSort = 2;
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                TextInput::make('name')
+                    ->required()
+                    ->maxLength(255)
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
+
+                TextInput::make('slug')
+                    ->required()
+                    ->maxLength(255)
+                    ->unique(Prodcat::class, 'slug', ignoreRecord: true)
+                    ->rules(['alpha_dash']),
+
+                Select::make('shop_id')
+                    ->label('Shop')
+                    ->relationship('shop', 'name')
+                    ->required()
+                    ->searchable()
+                    ->preload(),
+
+                Select::make('parent_id')
+                    ->label('Parent Category')
+                    ->relationship('parent', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->nullable(),
+
+                FileUpload::make('logo')
+                    ->label('Category Logo')
+                    ->image()
+                    ->directory('categories')
+                    ->visibility('public'),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                ImageColumn::make('logo')
+                    ->label('Logo')
+                    ->circular()
+                    ->size(50),
+
+                TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('slug')
+                    ->searchable()
+                    ->toggleable(),
+
+                TextColumn::make('shop.name')
+                    ->label('Shop')
+                    ->sortable()
+                    ->toggleable(),
+
+                TextColumn::make('parent.name')
+                    ->label('Parent Category')
+                    ->sortable()
+                    ->toggleable()
+                    ->placeholder('Root Category'),
+
+                TextColumn::make('products_count')
+                    ->label('Products')
+                    ->counts('products')
+                    ->sortable(),
+
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                SelectFilter::make('shop_id')
+                    ->label('Shop')
+                    ->relationship('shop', 'name'),
+
+                SelectFilter::make('parent_id')
+                    ->label('Parent Category')
+                    ->relationship('parent', 'name'),
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->defaultSort('name');
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\ProductsRelationManager::class,
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListProdcats::route('/'),
+            'create' => Pages\CreateProdcat::route('/create'),
+            'edit' => Pages\EditProdcat::route('/{record}/edit'),
+        ];
+    }
+}

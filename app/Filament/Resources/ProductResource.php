@@ -86,14 +86,19 @@ class ProductResource extends Resource
 
                                         Toggle::make('featured')
                                             ->label('Featured Product')
-                                            ->default(false),
-
-                                        Select::make('parent_id')
+                                            ->default(false),                                        Select::make('parent_id')
                                             ->label('Parent Product')
                                             ->relationship('parentproduct', 'name')
                                             ->searchable()
                                             ->preload()
                                             ->nullable(),
+
+                                        Select::make('prodcats')
+                                            ->label('Categories')
+                                            ->relationship('prodcats', 'name')
+                                            ->multiple()
+                                            ->searchable()
+                                            ->preload(),
                                     ])
                                     ->columns(2),
 
@@ -234,9 +239,7 @@ class ProductResource extends Resource
                 TextColumn::make('sku')
                     ->label('SKU')
                     ->searchable()
-                    ->toggleable(),
-
-                TextColumn::make('type')
+                    ->toggleable(),                TextColumn::make('type')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'simple' => 'success',
@@ -246,6 +249,13 @@ class ProductResource extends Resource
                         'digital' => 'primary',
                         default => 'gray',
                     }),
+
+                TextColumn::make('prodcats.name')
+                    ->label('Categories')
+                    ->badge()
+                    ->separator(',')
+                    ->limit(20)
+                    ->toggleable(),
 
                 TextColumn::make('price')
                     ->label('Regular Price')
