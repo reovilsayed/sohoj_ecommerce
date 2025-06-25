@@ -50,7 +50,7 @@ class ProductController extends Controller
                 "description"   => "required",
                 "short_description"   => "required",
 
-                "image"         => "required|mimes:jpg,jpeg,png",
+                // "image"         => "required|mimes:jpg,jpeg,png",
                 "images.*"      => "mimes:jpg,jpeg,png",
 
                 "dimensions"    => "nullable",

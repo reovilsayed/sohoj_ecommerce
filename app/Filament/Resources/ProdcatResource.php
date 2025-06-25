@@ -149,4 +149,9 @@ class ProdcatResource extends Resource
             'edit' => Pages\EditProdcat::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::$model::count();
+    }
 }

@@ -18,8 +18,10 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\RichEditor;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -56,7 +58,7 @@ class ProductResource extends Resource
                                             ->required()
                                             ->maxLength(255)
                                             ->live(onBlur: true)
-                                            ->afterStateUpdated(fn (string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
+                                            ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
 
                                         TextInput::make('slug')
                                             ->required()
@@ -79,26 +81,40 @@ class ProductResource extends Resource
                                             ->label('SKU')
                                             ->maxLength(255)
                                             ->unique(Product::class, 'sku', ignoreRecord: true),
+                                        Grid::make(3)
+                                            ->schema([
+                                                Select::make('parent_id')
+                                                    ->label('Parent Product')
+                                                    ->relationship('parentproduct', 'name')
+                                                    ->searchable()
+                                                    ->preload()
+                                                    ->nullable(),
 
-                                        Toggle::make('status')
-                                            ->label('Active')
-                                            ->default(true),
+                                                Select::make('prodcats')
+                                                    ->label('Categories')
+                                                    ->relationship('prodcats', 'name')
+                                                    ->multiple()
+                                                    ->searchable()
+                                                    ->preload(),
 
-                                        Toggle::make('featured')
-                                            ->label('Featured Product')
-                                            ->default(false),                                        Select::make('parent_id')
-                                            ->label('Parent Product')
-                                            ->relationship('parentproduct', 'name')
-                                            ->searchable()
-                                            ->preload()
-                                            ->nullable(),
+                                                Select::make('shop_id')
+                                                    ->label('Shop')
+                                                    ->relationship('shop', 'name')
+                                                    ->required()
+                                                    ->searchable()
+                                                    ->preload(),
+                                            ]),
+                                        Grid::make(1)
+                                            ->schema([
+                                                Toggle::make('status')
+                                                    ->label('Active')
+                                                    ->default(true),
 
-                                        Select::make('prodcats')
-                                            ->label('Categories')
-                                            ->relationship('prodcats', 'name')
-                                            ->multiple()
-                                            ->searchable()
-                                            ->preload(),
+                                                Toggle::make('featured')
+                                                    ->label('Featured Product')
+                                                    ->default(false),
+                                            ]),
+
                                     ])
                                     ->columns(2),
 
@@ -144,7 +160,7 @@ class ProductResource extends Resource
                                             ->label('Stock Quantity')
                                             ->numeric()
                                             ->minValue(0)
-                                            ->visible(fn (callable $get) => $get('manage_stock')),
+                                            ->visible(fn(callable $get) => $get('manage_stock')),
 
                                         TextInput::make('total_sale')
                                             ->label('Total Sales')
@@ -193,6 +209,20 @@ class ProductResource extends Resource
                                             ->valueLabel('Options (comma separated)')
                                             ->helperText('Add product variations like Size: S,M,L,XL or Color: Red,Blue,Green')
                                             ->addActionLabel('Add Variation'),
+
+                                        // RichEditor::make('variations')
+                                        //     ->label('Product Variations')
+                                        //     // ->helperText('Add product variations like Size: S,M,L,XL or Color: Red,Blue,Green')
+                                        //     ->toolbarButtons([
+                                        //         'bold',
+                                        //         'italic',
+                                        //         'underline',
+                                        //         'link',
+                                        //         'bulletList',
+                                        //         'numberedList',
+                                        //         'blockquote',
+                                        //         'codeBlock',
+                                        //     ]),
                                     ]),
 
                                 Section::make('Downloads')
@@ -202,7 +232,7 @@ class ProductResource extends Resource
                                             ->helperText('For digital products, add download links or file paths')
                                             ->rows(3),
                                     ])
-                                    ->visible(fn (callable $get) => $get('type') === 'digital'),
+                                    ->visible(fn(callable $get) => $get('type') === 'digital'),
                             ]),
 
                         Tabs\Tab::make('Additional Info')
@@ -239,9 +269,10 @@ class ProductResource extends Resource
                 TextColumn::make('sku')
                     ->label('SKU')
                     ->searchable()
-                    ->toggleable(),                TextColumn::make('type')
+                    ->toggleable(),
+                TextColumn::make('type')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'simple' => 'success',
                         'variable' => 'warning',
                         'grouped' => 'info',
@@ -272,7 +303,7 @@ class ProductResource extends Resource
                     ->label('Stock')
                     ->sortable()
                     ->toggleable()
-                    ->color(fn ($state) => $state > 10 ? 'success' : ($state > 0 ? 'warning' : 'danger')),
+                    ->color(fn($state) => $state > 10 ? 'success' : ($state > 0 ? 'warning' : 'danger')),
 
                 BooleanColumn::make('status')
                     ->label('Active')
@@ -308,19 +339,19 @@ class ProductResource extends Resource
                     ]),
 
                 Filter::make('featured')
-                    ->query(fn (Builder $query): Builder => $query->where('featured', true))
+                    ->query(fn(Builder $query): Builder => $query->where('featured', true))
                     ->label('Featured Products'),
 
                 Filter::make('active')
-                    ->query(fn (Builder $query): Builder => $query->where('status', true))
+                    ->query(fn(Builder $query): Builder => $query->where('status', true))
                     ->label('Active Products'),
 
                 Filter::make('out_of_stock')
-                    ->query(fn (Builder $query): Builder => $query->where('quantity', '<=', 0))
+                    ->query(fn(Builder $query): Builder => $query->where('quantity', '<=', 0))
                     ->label('Out of Stock'),
 
                 Filter::make('low_stock')
-                    ->query(fn (Builder $query): Builder => $query->whereBetween('quantity', [1, 10]))
+                    ->query(fn(Builder $query): Builder => $query->whereBetween('quantity', [1, 10]))
                     ->label('Low Stock (1-10)'),
             ])
             ->actions([
@@ -334,12 +365,12 @@ class ProductResource extends Resource
                     Tables\Actions\BulkAction::make('activate')
                         ->label('Activate Selected')
                         ->icon('heroicon-o-check-circle')
-                        ->action(fn ($records) => $records->each(fn ($record) => $record->update(['status' => true])))
+                        ->action(fn($records) => $records->each(fn($record) => $record->update(['status' => true])))
                         ->color('success'),
                     Tables\Actions\BulkAction::make('deactivate')
                         ->label('Deactivate Selected')
                         ->icon('heroicon-o-x-circle')
-                        ->action(fn ($records) => $records->each(fn ($record) => $record->update(['status' => false])))
+                        ->action(fn($records) => $records->each(fn($record) => $record->update(['status' => false])))
                         ->color('danger'),
                 ]),
             ])

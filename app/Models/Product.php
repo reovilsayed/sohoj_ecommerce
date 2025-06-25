@@ -11,6 +11,9 @@ class Product extends Model
     use HasFactory;
     protected $guarded = [];
 
+    protected $casts = [
+        'images' => 'array',
+    ];
     public function shop()
     {
         return $this->belongsTo(Shop::class);
@@ -30,7 +33,8 @@ class Product extends Model
     {
         return $this->belongsToMany(Prodcat::class)->withTimestamps();
     }
-    public function parentproduct(){
+    public function parentproduct()
+    {
         return $this->belongsTo(Product::class, 'parent_id', 'id');
     }
     public function path()
@@ -39,13 +43,15 @@ class Product extends Model
     }
     public function attributes()
     {
-      return $this->hasMany(Attribute::class);
+        return $this->hasMany(Attribute::class);
     }
-    public function subproducts(){
+    public function subproducts()
+    {
         return $this->hasMany(Product::class, 'parent_id', 'id');
     }
-    public function subproductsuser(){
-        return $this->hasMany(Product::class, 'parent_id', 'id')->where('price','>', 0)->whereNotNull('variations');
+    public function subproductsuser()
+    {
+        return $this->hasMany(Product::class, 'parent_id', 'id')->where('price', '>', 0)->whereNotNull('variations');
     }
     public function scopeFilter($query)
     {
@@ -74,7 +80,7 @@ class Product extends Model
                 request()->has('ratings'),
                 function ($q) {
                     return  $q->whereHas('ratings', function ($q) {
-                        $q->where('rating',request()->ratings);
+                        $q->where('rating', request()->ratings);
                     });
                 }
             )
@@ -91,22 +97,22 @@ class Product extends Model
             ->when(request()->has('filter_products') && request()->filter_products == 'trending', function ($q) {
                 return $q->orderBy('views', 'desc');
             })
-            ->when(request('priceMin') && request('priceMax'),function ($q){
-                 return $q->whereBetween('price', [request('priceMin'), request('priceMax')]);
+            ->when(request('priceMin') && request('priceMax'), function ($q) {
+                return $q->whereBetween('price', [request('priceMin'), request('priceMax')]);
             })
             ->when(Session::has('post_city'), function ($q) {
                 $post_city = Session::get('post_city');
-                return $q->whereHas('shop', function ($qr) use($post_city) {
-                    $qr->where(function($qp) use ($post_city){
-                        $qp->whereIn('city',$post_city);
+                return $q->whereHas('shop', function ($qr) use ($post_city) {
+                    $qr->where(function ($qp) use ($post_city) {
+                        $qp->whereIn('city', $post_city);
                     });
                 });
             })->when(Session::has('state'), function ($q) {
                 $state = Session::get('state');
-                return $q->whereHas('shop', function ($qr) use($state) {
-                    $qr->where('state','like','%'.$state.'%');
+                return $q->whereHas('shop', function ($qr) use ($state) {
+                    $qr->where('state', 'like', '%' . $state . '%');
                 });
-            }); 
+            });
     }
     public function ratings()
     {
@@ -115,13 +121,22 @@ class Product extends Model
 
     public function setVariationsAttribute($value)
     {
-      $this->attributes['variations'] = json_encode($value);
+        $this->attributes['variations'] = json_encode($value);
     }
     public function getVariationsAttribute($value)
     {
- 
-      if ($value) {
-        return json_decode($value);
-      }
+
+        if ($value) {
+            return json_decode($value);
+        }
+    }
+    public function setImagesAttribute($value)
+    {
+        $this->attributes['images'] = is_array($value) ? json_encode($value) : $value;
+    }
+
+    public function getImagesAttribute($value)
+    {
+        return $value ? json_decode($value, true) : [];
     }
 }
