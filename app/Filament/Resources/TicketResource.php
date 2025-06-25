@@ -17,9 +17,10 @@ use Filament\Tables\Columns\{TextColumn, BooleanColumn, ImageColumn, BadgeColumn
 
 class TicketResource extends Resource
 {
+    
     protected static ?string $model = Ticket::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
     public static function form(Form $form): Form
     {
@@ -145,5 +146,10 @@ class TicketResource extends Resource
             'create' => Pages\CreateTicket::route('/create'),
             'edit' => Pages\EditTicket::route('/{record}/edit'),
         ];
+    }
+    
+    public static function getNavigationBadge(): ?string
+    {
+        return static::$model::count();
     }
 }

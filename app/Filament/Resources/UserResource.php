@@ -8,11 +8,15 @@ use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -88,24 +92,34 @@ class UserResource extends Resource
         $table->searchable();
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('avatar')
-                    ->label('Avatar')
-                    ->disk('public')
-                    ->circular()
-                    ->toggleable(), // Allow show/hide
-                Tables\Columns\TextColumn::make('name')
-                    ->toggleable(), // Allow show/hide
-                Tables\Columns\TextColumn::make('l_name')
-                    ->label('Last Name')
-                    ->toggleable(), // Allow show/hide
-                Tables\Columns\TextColumn::make('email')
-                    ->toggleable(isToggledHiddenByDefault: false), // Allow show/hide
+                Split::make([
+                    Tables\Columns\ImageColumn::make('avatar')
+                        ->label('Avatar')
+                        ->disk('public')
+                        ->circular()
+                        ->toggleable(), // Allow show/hide
+                    Tables\Columns\TextColumn::make('name')
+                        ->toggleable(), // Allow show/hide
+                    Tables\Columns\TextColumn::make('l_name')
+                        ->label('Last Name')
+                        ->toggleable(), // Allow show/hide
+
+                    Stack::make([
+                        Tables\Columns\TextColumn::make('phone')
+                            ->icon('heroicon-m-phone'),
+                        Tables\Columns\TextColumn::make('email')
+                            ->icon('heroicon-m-envelope')
+                            ->toggleable(isToggledHiddenByDefault: false),
+                    ])->visibleFrom('md'),
+                ])
             ])
+            ->defaultSortOptionLabel('Date')
             ->filters([
                 Tables\Filters\Filter::make('name')
                     ->label('User Name')
-                    ->query(fn (Builder $query, array $data) => 
-                        $query->when($data['value'], fn ($q, $value) => $q->where('name', 'like', "%{$value}%"))
+                    ->query(
+                        fn(Builder $query, array $data) =>
+                        $query->when($data['value'], fn($q, $value) => $q->where('name', 'like', "%{$value}%"))
                     )
                     ->form([
                         TextInput::make('value')
@@ -113,8 +127,17 @@ class UserResource extends Resource
                             ->placeholder('Search by name'),
                     ]),
             ])
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make()->icon('heroicon-o-eye')->label('User View'),
+                    Tables\Actions\EditAction::make()->icon('heroicon-o-pencil')->label('User Edit'),
+                    Tables\Actions\DeleteAction::make()->icon('heroicon-o-trash')->label('User Delete'),
+                ])->iconButton()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -125,9 +148,7 @@ class UserResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            
-        ];
+        return [];
     }
 
     public static function getPages(): array

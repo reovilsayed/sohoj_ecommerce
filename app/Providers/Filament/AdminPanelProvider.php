@@ -14,6 +14,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use App\View\Components\Layouts\FilamentApp;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -21,6 +22,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use App\Filament\Widgets\StatsOverview;
 use Illuminate\Database\Eloquent\Model;
+use App\Filament\Pages\DynamicSettingsPage;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
@@ -36,6 +38,24 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('Admin Panel')
+            ->renderHook(
+                'panels::head.start',
+                fn() => <<<HTML
+        <style>
+            /* Hide scrollbar visually but keep scrolling functional */
+            .fi-sidebar-nav {
+                overflow-y: auto !important;
+                scrollbar-width: none !important; /* Firefox */
+                -ms-overflow-style: none !important; /* IE/Edge */
+            }
+
+            .fi-sidebar-nav::-webkit-scrollbar {
+                display: none !important; /* Chrome/Safari */
+            }
+        </style>
+    HTML
+            )
+
             ->brandLogo(asset('assets/logo/Logo.png'))
             ->favicon(asset('assets/images/favicon.ico'))
             ->colors([
@@ -46,7 +66,8 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
-            ->sidebarCollapsibleOnDesktop()
+
+            ->sidebarCollapsibleOnDesktop(true)
             ->sidebarWidth('14rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
