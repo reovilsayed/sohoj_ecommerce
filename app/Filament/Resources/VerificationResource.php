@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Columns\{TextColumn, BooleanColumn, ImageColumn};
 use Filament\Forms\Components\{TextInput, DatePicker, FileUpload, Toggle, Select};
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class VerificationResource extends Resource
@@ -63,25 +64,53 @@ class VerificationResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')->label('User')->sortable()->searchable(),
-                TextColumn::make('phone')->sortable()->searchable(),
-                TextColumn::make('paypal_email')->label('PayPal Email')->sortable()->searchable(),
-                TextColumn::make('dob')->label('Date of Birth')->sortable()->searchable(),
-                TextColumn::make('tax_no')->label('Tax Number')->sortable()->searchable(),
-                TextColumn::make('card_no')->label('Card Number')->sortable()->searchable(),
-                ImageColumn::make('govt_id_front')->label('Government ID Front')->sortable()->searchable(),
-                ImageColumn::make('govt_id_back')->label('Government ID Back')->sortable()->searchable(),
-                TextColumn::make('bank_ac')->label('Bank Account')->sortable()->searchable(),
-                TextColumn::make('ac_holder_name')->label('Account Holder Name')->sortable()->searchable(),
-                TextColumn::make('address')->sortable()->searchable(),
-                TextColumn::make('rtn')->label('Routing Number')->sortable()->searchable(),
-                BooleanColumn::make('ismonthly_charge')->label('Monthly Charge Enabled')->sortable(),
+                TextColumn::make('user.name')->label('User')->sortable()->searchable()->toggleable(),
+                TextColumn::make('phone')->sortable()->searchable()->toggleable(),
+                TextColumn::make('paypal_email')->label('PayPal Email')->sortable()->searchable()->toggleable(),
+                TextColumn::make('dob')->label('Date of Birth')->sortable()->searchable()->toggleable(),
+                TextColumn::make('tax_no')->label('Tax Number')->sortable()->searchable()->toggleable(),
+                TextColumn::make('card_no')->label('Card Number')->sortable()->searchable()->toggleable(),
+                ImageColumn::make('govt_id_front')->label('Government ID Front')->sortable()->searchable()->toggleable(),
+                ImageColumn::make('govt_id_back')->label('Government ID Back')->sortable()->searchable()->toggleable(),
+                TextColumn::make('bank_ac')->label('Bank Account')->sortable()->searchable()->toggleable(),
+                TextColumn::make('ac_holder_name')->label('Account Holder Name')->sortable()->searchable()->toggleable(),
+                TextColumn::make('address')->sortable()->searchable()->toggleable(),
+                TextColumn::make('rtn')->label('Routing Number')->sortable()->searchable()->toggleable(),
+                BooleanColumn::make('ismonthly_charge')->label('Monthly Charge Enabled')->sortable()->toggleable(),
             ])
+
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('user_id')
+                    ->label('User')
+                    ->relationship('user', 'name')
+                    ->searchable(),
+
+                Tables\Filters\TernaryFilter::make('ismonthly_charge')
+                    ->label('Monthly Charge Enabled'),
+
+                Tables\Filters\Filter::make('dob')
+                    ->label('Date of Birth')
+                    ->form([
+                        Forms\Components\DatePicker::make('dob_from')->label('From'),
+                        Forms\Components\DatePicker::make('dob_to')->label('To'),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query
+                            ->when($data['dob_from'], fn($q, $date) => $q->whereDate('dob', '>=', $date))
+                            ->when($data['dob_to'], fn($q, $date) => $q->whereDate('dob', '<=', $date));
+                    }),
             ])
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            )
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()->icon('heroicon-o-eye')->label('View Verification'),
+                    Tables\Actions\EditAction::make()->icon('heroicon-o-pencil')->label('Edit Verification'),
+                    Tables\Actions\DeleteAction::make()->icon('heroicon-o-trash')->label('Delete Verification'),
+                ])->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -104,5 +133,9 @@ class VerificationResource extends Resource
             'create' => Pages\CreateVerification::route('/create'),
             'edit' => Pages\EditVerification::route('/{record}/edit'),
         ];
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Verification::count();
     }
 }

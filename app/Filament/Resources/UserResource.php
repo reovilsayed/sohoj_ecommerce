@@ -92,28 +92,30 @@ class UserResource extends Resource
         $table->searchable();
         return $table
             ->columns([
-                Split::make([
-                    Tables\Columns\ImageColumn::make('avatar')
-                        ->label('Avatar')
-                        ->disk('public')
-                        ->circular()
-                        ->toggleable(), // Allow show/hide
-                    Tables\Columns\TextColumn::make('name')
-                        ->toggleable(), // Allow show/hide
-                    Tables\Columns\TextColumn::make('l_name')
-                        ->label('Last Name')
-                        ->toggleable(), // Allow show/hide
+                Tables\Columns\ImageColumn::make('avatar')
+                    ->label('Avatar')
+                    ->disk('public')
+                    ->circular()
+                    ->toggleable(), // Allow show/hide
+                Tables\Columns\TextColumn::make('name')
+                    ->label('First Name')
+                    ->toggleable(), // Allow show/hide
+                Tables\Columns\TextColumn::make('l_name')
+                    ->label('Last Name')
+                    ->toggleable(), // Allow show/hide
 
-                    Stack::make([
-                        Tables\Columns\TextColumn::make('phone')
-                            ->icon('heroicon-m-phone'),
-                        Tables\Columns\TextColumn::make('email')
-                            ->icon('heroicon-m-envelope')
-                            ->toggleable(isToggledHiddenByDefault: false),
-                    ])->visibleFrom('md'),
-                ])
+
+                Tables\Columns\TextColumn::make('phone')
+                    ->label('Phone')
+                    ->icon('heroicon-m-phone')
+                    ->toggleable(), // Add this for show/hide
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
+                    ->icon('heroicon-m-envelope')
+                    ->toggleable(isToggledHiddenByDefault: false), // Already toggleable
+
             ])
-            ->defaultSortOptionLabel('Date')
+
             ->filters([
                 Tables\Filters\Filter::make('name')
                     ->label('User Name')

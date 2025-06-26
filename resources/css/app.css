@@ -11,10 +11,3 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-.fi-slider-nav::-webkit-scrollbar {
-    display: none;
-}
-.fa-sidebar-nav{
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
