@@ -17,7 +17,12 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="ec-vendor-block-profile">
-                            <img src="{{ auth()->user()->shop ? Voyager::image(auth()->user()->shop->banner) : asset('assets/img/1.jpg') }}"
+                            {{-- <img src="{{ auth()->user()->shop ? Voyager::image(auth()->user()->shop->banner) : asset('assets/img/1.jpg') }}"
+                                alt=""
+                                style="    height: 190px;
+                                    width: 100%;"
+                                class="img-fluid"> --}}
+                            <img src="{{ asset('assets/img/1.jpg') }}"
                                 alt=""
                                 style="    height: 190px;
                                     width: 100%;"
@@ -31,8 +36,11 @@
                                 <div class="ec-vendor-block-detail">
                                     <div style="position: relative;">
 
-                                        <img class="v-img img-fluid"
+                                        {{-- <img class="v-img img-fluid"
                                             src="{{ auth()->user()->shop ? Voyager::image(auth()->user()->shop->logo) : asset('assets/img/heaer.jpg') }}"
+                                            alt="vendor image"> --}}
+                                        <img class="v-img img-fluid"
+                                            src="{{ asset('assets/img/heaer.jpg') }}"
                                             alt="vendor image">
                                         <a href="javascript:void(0)" class="shadow-lg"
                                             style="position: absolute; top:-59px; right:-21px; background-color: #fff; border-radius:50%;padding:10px 0"

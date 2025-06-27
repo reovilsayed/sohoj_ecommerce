@@ -5,11 +5,14 @@
                 <!-- Ec Header Logo Start -->
                 <div class="align-self-center">
                     <div class="header-logo">
-                        <a href="{{ route('homepage') }}"><img src="{{ Voyager::image(setting('site.logo')) }}"
-                                height="100px" style="width:100%" alt="Site Logo" /><img class="dark-logo"
+                        <a href="{{ route('homepage') }}">
+                            <img src=""
+                                height="100px" style="width:100%" alt="Site Logo" />
+                            {{-- <img src="{{ Voyager::image(setting('site.logo')) }}"
+                                height="100px" style="width:100%" alt="Site Logo" /> --}}
+                                <img class="dark-logo"
                                 src="assets/images/logo/dark-logo.png" alt="Site Logo" style="display: none;" /></a>
-                        <!-- <a href="{{ route('homepage') }}"><img src="{{ Voyager::image(setting('site.logo')) }}"
-                                alt="{{ setting('site.title') }}"></a> -->
+                        
                     </div>
                 </div>
 
@@ -76,8 +79,10 @@
                             <i class="fa-solid fa-gear me-3" style="font-size:20px"></i>
                         </a> -->
                         <a href="#" class=" ec-header-wishlist">
-                            <img src="{{ auth()->user()->shop ? Voyager::image(auth()->user()->shop->logo) : asset('assets/img/heaer.jpg') }}"
+                            <img src="{{ asset('assets/img/heaer.jpg') }}"
                                 height="50" alt="">
+                            {{-- <img src="{{ auth()->user()->shop ? Voyager::image(auth()->user()->shop->logo) : asset('assets/img/heaer.jpg') }}"
+                                height="50" alt=""> --}}
                         </a>
 
 

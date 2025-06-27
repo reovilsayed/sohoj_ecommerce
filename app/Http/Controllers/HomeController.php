@@ -87,8 +87,8 @@ class HomeController extends Controller
                 "state" => "required",
                 "city" => "required",
                 "post_code" => "required",
-                "govt_id_back" => "required|image|mimes:jpeg,png",
-                "govt_id_front" => "required|image|mimes:jpeg,png",
+                // "govt_id_back" => "required|image|mimes:jpeg,png",
+                // "govt_id_front" => "required|image|mimes:jpeg,png",
                 "paypal_email" => "required",
                 'paypal_email_confirmation' => 'required|same:paypal_email',
 
@@ -119,14 +119,13 @@ class HomeController extends Controller
         if (setting('site.free_trial') == "on") {
             $sub->trialUntil(Carbon::now()->addDays(30));
         }
+
         $sub->create($data['payment_method']);
         Verification::create([
             'user_id' => Auth()->id(),
             'phone' => $request->phone,
-            'dob' => $request->dob,
-            'card_no' => $request->payment_method,
-            'govt_id_front' => $request->file('govt_id_front')->store('verifications'),
-            'govt_id_back' => $request->file('govt_id_back')->store('verifications'),
+            'govt_id_front' => $request->file('govt_id_front') ? $request->file('govt_id_front')->store('verifications') : null,
+            'govt_id_back' => $request->file('govt_id_back') ? $request->file('govt_id_back')->store('verifications') : null,
             'address' => $request->address,
             'paypal_email' => $request->paypal_email,
             'ismonthly_charge' => $request->ismonthly_charge,

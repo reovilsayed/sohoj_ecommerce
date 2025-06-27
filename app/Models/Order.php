@@ -11,14 +11,14 @@ class Order extends Model
     use HasFactory;
 
     protected $guarded = [];
-    protected $casts = [
-        'billing' => 'array',
-        'shipping' => 'array',
-        'seen' => 'boolean',
-        'order_accept' => 'boolean',
-        'date_paid' => 'datetime',
-        'date_completed' => 'datetime',
-    ];
+    // protected $casts = [
+    //     'billing' => 'array',
+    //     'shipping' => 'array',
+    //     'seen' => 'boolean',
+    //     'order_accept' => 'boolean',
+    //     'date_paid' => 'datetime',
+    //     'date_completed' => 'datetime',
+    // ];
     public function shop()
     {
         return $this->belongsTo(Shop::class);

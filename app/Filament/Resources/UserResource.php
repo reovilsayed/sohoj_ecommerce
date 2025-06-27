@@ -62,6 +62,7 @@ class UserResource extends Resource
                         TextInput::make('password')
                             ->label('Password')
                             ->password()
+                            ->revealable()
                             ->required(fn(Page $livewire) => $livewire instanceof CreateRecord)
                             ->maxLength(255)
                             ->dehydrateStateUsing(fn($state) => Hash::make($state))

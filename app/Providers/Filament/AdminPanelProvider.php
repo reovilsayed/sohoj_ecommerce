@@ -38,6 +38,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('Admin Panel')
+            // ->databaseNotifications()
             ->renderHook(
                 'panels::head.start',
                 fn() => <<<HTML
