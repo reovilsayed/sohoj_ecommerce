@@ -43,7 +43,7 @@
                                     <td><span> <a href="{{ route('vendor.orderView', $order) }}"
                                                 style="text-decoration: underline;">{{ $order->id }}</a> </span></td>
                                     <th scope="row"><span>{{ $order->full_name }} </span></th>
-                                    <td><a href="{{ route('vendor.orderView', $order) }}">{{ $order->product->name }}</a>
+                                    {{-- <td><a href="{{ route('vendor.orderView', $order) }}">{{ $order->product->name }}</a> --}}
                                     </td>
 
                                     <td>

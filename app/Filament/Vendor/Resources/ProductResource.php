@@ -46,7 +46,7 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Hidden::make('shop_id')
-                    ->default(auth()->id()),
+                    ->default(auth()->id()->shop_id),
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255)

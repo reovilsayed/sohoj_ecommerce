@@ -6,6 +6,12 @@ use App\Filament\Vendor\Resources\OrderResource\Pages;
 use App\Filament\Vendor\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -38,7 +44,54 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Select::make('user_id')->relationship('user', 'name')->searchable()->nullable(),
+                Select::make('shop_id')->relationship('shop', 'name')->searchable()->nullable(),
+                Select::make('product_id')->relationship('product', 'name')->searchable()->nullable(),
+
+                Select::make('status')
+                    ->options([
+                        0 => 'Pending',
+                        1 => 'Paid',
+                        2 => 'On Its Way',
+                        3 => 'Cancelled',
+                        4 => 'Delivered',
+                    ])
+                    ->default(0)
+                    ->required(),
+
+                TextInput::make('currency')->maxLength(5)->nullable(),
+                TextInput::make('discount')->numeric()->nullable(),
+                TextInput::make('discount_code')->nullable(),
+                TextInput::make('shipping_total')->numeric()->nullable(),
+                TextInput::make('shipping_method')->nullable(),
+                TextInput::make('shipping_url')->nullable(),
+
+                TextInput::make('subtotal')->required()->numeric(),
+                TextInput::make('total')->required()->numeric(),
+                TextInput::make('vendor_total')->required()->numeric(),
+                TextInput::make('tax')->nullable()->numeric(),
+
+                Toggle::make('seen')->default(false),
+                Toggle::make('order_accept')->label('Accepted')->default(false),
+
+                TextInput::make('customer_note')->nullable(),
+                // KeyValue::make('billing')->nullable(),
+                // KeyValue::make('shipping')->required(),
+
+                TextInput::make('payment_method')->nullable(),
+                TextInput::make('payment_method_title')->nullable(),
+                TextInput::make('transaction_id')->nullable(),
+
+                DatePicker::make('date_paid')->nullable(),
+                DatePicker::make('date_completed')->nullable(),
+
+                TextInput::make('refund_amount')->nullable(),
+                TextInput::make('company')->nullable(),
+                TextInput::make('aptment')->nullable(),
+                TextInput::make('quantity')->required()->numeric(),
+
+                Textarea::make('return_reason')->nullable(),
+                FileUpload::make('return_file')->directory('returns')->nullable(),
             ]);
     }
 
@@ -69,7 +122,7 @@ class OrderResource extends Resource
                     })
                     ->toggleable(),
                 TextColumn::make('total')->money('USD')->sortable()->toggleable(),
-                BooleanColumn::make('seen')->toggleable(),
+                // BooleanColumn::make('seen')->toggleable(),
                 BooleanColumn::make('order_accept')->label('Accepted')->toggleable(),
                 TextColumn::make('created_at')->dateTime('F j, Y')->toggleable(),
             ])
@@ -92,8 +145,9 @@ class OrderResource extends Resource
             ])
             ->actions([
                 ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    // Tables\Actions\EditAction::make(),
+                    // Tables\Actions\DeleteAction::make(),
                 ])->iconButton()
             ])
             ->bulkActions([
@@ -115,7 +169,9 @@ class OrderResource extends Resource
         return [
             'index' => Pages\ListOrders::route('/'),
             'create' => Pages\CreateOrder::route('/create'),
-            'edit' => Pages\EditOrder::route('/{record}/edit'),
+            // 'edit' => Pages\EditOrder::route('/{record}/edit'),
+            'view' => Pages\ViewOrder::route('/{record}')
+
         ];
     }
 

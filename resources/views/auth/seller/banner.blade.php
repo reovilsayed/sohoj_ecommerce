@@ -56,7 +56,7 @@
                                         <label for="image1" class="form-label">Image 1</label>
                                         <input type="file" name="meta[image1]" value=""
                                             class="form-control @error('name') is-invalid @enderror" id="image1"
-                                            required>
+                                            >
                                         @error('image1')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

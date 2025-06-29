@@ -36,9 +36,9 @@ class CheckoutController extends Controller
             'prevoius_address.required' => 'You need to set a address first  by clicking "Add Address" bellow'
         ]);
 
-         auth()->user()->createOrGetStripeCustomer();
+        //  auth()->user()->createOrGetStripeCustomer();
 
-        auth()->user()->addPaymentMethod($request->payment_method[0]);
+        // auth()->user()->addPaymentMethod($request->payment_method[0]);
         $address = Address::find($request->prevoius_address);
 
         $shipping = [
@@ -61,127 +61,130 @@ class CheckoutController extends Controller
             return back()->withErrors('Sorry! One of the items in your cart is no longer Available!');
         }
         // try {
-            DB::beginTransaction();
-            $platform_fee = Sohoj::flatCommision(Cart::getSubTotal());
-            $total = (Cart::getSubTotal() + $platform_fee + Sohoj::shipping()) - Sohoj::discount();
+        // DB::beginTransaction();
+        $platform_fee = Sohoj::flatCommision(Cart::SubTotal());
+        $total = (Cart::SubTotal() + $platform_fee + Sohoj::shipping()) - Sohoj::discount();
 
-            $order = Order::create([
+        $order = Order::create([
+            'user_id' => auth()->user() ? auth()->user()->id : null,
+            'shop_id' => null,
+            'product_id' => null,
+            'shipping' => json_encode($shipping),
+            'aptment' => $request->aptment,
+            'subtotal' => Cart::SubTotal(),
+            'discount' => Sohoj::round_num(Sohoj::discount()),
+            'discount_code' => Sohoj::discount_code(),
+            'tax' => null,
+            'shipping_total' => Sohoj::round_num(Sohoj::shipping()),
+            'platform_fee' => $platform_fee,
+            'total' => Sohoj::round_num($total),
+            'quantity' => null,
+            'vendor_total' => null,
+            'payment_method' => $request->payment_method[0],
+        ]);
+
+        foreach (Cart::Content() as $item) {
+            OrderProduct::create([
+                'quantity' => $item->qty,
+                'order_id' => $order->id,
+                'product_id' => $item->model->id,
+                'price' => $item->price,
+                'total_price' => $item->price * $item->qty,
+                'variation' => $item->model->variations,
+                'shop_id' => $item->model->shop_id,
+            ]);
+            $childOrder = Order::create([
                 'user_id' => auth()->user() ? auth()->user()->id : null,
-                'shop_id' => null,
-                'product_id' => null,
+                'parent_id' => $order->id,
+                'shop_id' => $item->model->shop_id,
+                'product_id' => $item->id,
                 'shipping' => json_encode($shipping),
                 'aptment' => $request->aptment,
-                'subtotal' => Cart::getSubTotal(),
-                'discount' => Sohoj::round_num(Sohoj::discount()),
-                'discount_code' => Sohoj::discount_code(),
+                'subtotal' => $item->price * $item->qty,
+                'discount' => null,
+                'discount_code' => null,
                 'tax' => null,
-                'shipping_total' => Sohoj::round_num(Sohoj::shipping()),
-                'platform_fee' => $platform_fee,
-                'total' => Sohoj::round_num($total),
-                'quantity' => null,
-                'vendor_total' => null,
+                'shipping_total' => $item->model->shipping_cost,
+                'platform_fee' => Sohoj::flatCommision($item->price),
+                'total' => Sohoj::round_num(($item->price * $item->qty) + $item->model->shipping_cost),
+                'quantity' => $item->qty,
+                'vendor_total' => $item->model->vendor_price * $item->qty,
                 'payment_method' => $request->payment_method[0],
+                'product_price' => $item->price,
             ]);
-            
-            foreach (Cart::getContent() as $item) {
-                OrderProduct::create([
-                    'quantity' => $item->quantity,
-                    'order_id' => $order->id,
-                    'product_id' => $item->model->id,
-                    'price' => $item->price,
-                    'total_price' => $item->price * $item->quantity,
-                    'variation' => $item->model->variations,
-                    'shop_id' => $item->model->shop_id,
-                ]);
-                $childOrder=Order::create([
-                    'user_id' => auth()->user() ? auth()->user()->id : null,
-                    'parent_id'=>$order->id,
-                    'shop_id' => $item->model->shop_id,
-                    'product_id' => $item->id,
-                    'shipping' => json_encode($shipping),
-                    'aptment' => $request->aptment,
-                    'subtotal' => $item->price * $item->quantity,
-                    'discount' => null,
-                    'discount_code' => null,
-                    'tax' => null,
-                    'shipping_total' =>$item->model->shipping_cost,
-                    'platform_fee' =>Sohoj::flatCommision($item->price) ,
-                    'total' => Sohoj::round_num(($item->price * $item->quantity) + $item->model->shipping_cost),
-                    'quantity' => $item->quantity,
-                    'vendor_total' => $item->model->vendor_price * $item->quantity,
-                    'payment_method' => $request->payment_method[0],
-                    'product_price'=>$item->price,
-                ]);
-                OrderProduct::create([
-                    'quantity' => $item->quantity,
-                    'order_id' => $childOrder->id,
-                    'product_id' => $item->model->id,
-                    'price' => $item->price,
-                    'total_price' => $item->price * $item->quantity,
-                    'variation' => $item->model->variations,
-                    'shop_id' => $item->model->shop_id,
-                ]);
 
-            }
+            OrderProduct::create([
+                'quantity' => $item->qty,
+                'order_id' => $childOrder->id,
+                'product_id' => $item->model->id,
+                'price' => $item->price,
+                'total_price' => $item->price * $item->qty,
+                'variation' => $item->model->variations,
+                'shop_id' => $item->model->shop_id,
+            ]);
+        }
+        Cart::destroy();
+        return redirect('/thankyou')->with('thank', 'Order Created successfully!');
 
-            $payment = auth()->user()->charge(($order->total * 100), $request->payment_method[0]);
-            if ($payment->status == 'succeeded') {
-                $order->transaction_id = $payment->id;
-                $order->status = 1;
-                $order->save();
-                $childOrders = $order->childs;
-                foreach ($childOrders as $childOrder) {
-                    $childOrder->update(['status' => 1]);
-                    Mail::to($childOrder->shop->email)->send(new OrderPlaced($childOrder));
-                }
-                Mail::to($order->user->email)->send(new OrderPlaced($order));
-                $this->decreaseQuantities();
-                DB::commit();
-                Cart::clear();
-                session()->forget('discount');
-                session()->forget('discount_code');
-                return redirect('/thankyou')->with('thank', 'Order Created successfully!');
-            } else {
-                throw (new Exception('Something wrong with payment method'));
-            }
-            // if ($parent) {
 
-            //     $data['parent_id'] = $parent->id;
-            //     $order = Order::create($data);
-            //     $orderProduct['order_id'] = $order->id;
-            //     OrderProduct::create($orderProduct);
-            //     Mail::to($request->email)->send(new OrderPlaced($order));
-            //     $this->notification(auth()->user() ? auth()->user()->id : null, $data['shop_id']);
-            // } else {
+        // $payment = auth()->user()->charge(($order->total * 100), $request->payment_method[0]);
+        // if ($payment->status == 'succeeded') {
+        //     $order->transaction_id = $payment->id;
+        //     $order->status = 1;
+        //     $order->save();
+        //     $childOrders = $order->childs;
+        //     foreach ($childOrders as $childOrder) {
+        //         $childOrder->update(['status' => 1]);
+        //         Mail::to($childOrder->shop->email)->send(new OrderPlaced($childOrder));
+        //     }
+        //     Mail::to($order->user->email)->send(new OrderPlaced($order));
+        //     $this->decreaseQuantities();
+        //     DB::commit();
+        //     Cart::clear();
+        //     session()->forget('discount');
+        //     session()->forget('discount_code');
+        //     return redirect('/thankyou')->with('thank', 'Order Created successfully!');
+        // } else {
+        //     throw (new Exception('Something wrong with payment method'));
+        // }
+        // if ($parent) {
 
-            //     $parent = Order::create($data);
-            //     $orderProduct['order_id'] = $parent->id;
+        //     $data['parent_id'] = $parent->id;
+        //     $order = Order::create($data);
+        //     $orderProduct['order_id'] = $order->id;
+        //     OrderProduct::create($orderProduct);
+        //     Mail::to($request->email)->send(new OrderPlaced($order));
+        //     $this->notification(auth()->user() ? auth()->user()->id : null, $data['shop_id']);
+        // } else {
 
-            //     OrderProduct::create($orderProduct);
-            //     $this->notification(auth()->user() ? auth()->user()->id : null, $parent->shop->id);
-            //     Mail::to($request->email)->send(new OrderPlaced($parent));
-            // }
+        //     $parent = Order::create($data);
+        //     $orderProduct['order_id'] = $parent->id;
+
+        //     OrderProduct::create($orderProduct);
+        //     $this->notification(auth()->user() ? auth()->user()->id : null, $parent->shop->id);
+        //     Mail::to($request->email)->send(new OrderPlaced($parent));
+        // }
 
 
 
 
-            // foreach (Cart::getContent() as $item) {
+        // foreach (Cart::getContent() as $item) {
 
-            // }
-            // $payment = auth()->user()->charge(($parent->total * 100), $request->payment_method[0]);
-            // if ($payment->status == 'succeeded') {
-            //     $parent->transaction_id = $payment->id;
-            //     $parent->status = 1;
-            //     $parent->save();
-            //     $this->decreaseQuantities();
-            //     DB::commit();
-            //     Cart::clear();
-            //     session()->forget('discount');
-            //     session()->forget('discount_code');
-            //     return redirect('/thankyou')->with('thank', 'Order Created successfully!');
-            // } else {
-            //     throw (new Exception('Something wrong with payment method'));
-            // }
+        // }
+        // $payment = auth()->user()->charge(($parent->total * 100), $request->payment_method[0]);
+        // if ($payment->status == 'succeeded') {
+        //     $parent->transaction_id = $payment->id;
+        //     $parent->status = 1;
+        //     $parent->save();
+        //     $this->decreaseQuantities();
+        //     DB::commit();
+        //     Cart::clear();
+        //     session()->forget('discount');
+        //     session()->forget('discount_code');
+        //     return redirect('/thankyou')->with('thank', 'Order Created successfully!');
+        // } else {
+        //     throw (new Exception('Something wrong with payment method'));
+        // }
         // } catch (Exception $e) {
         //     DB::rollBack();
         //     return redirect()->back()->withErrors($e->getMessage());
@@ -196,7 +199,7 @@ class CheckoutController extends Controller
         foreach (Cart::getContent() as $item) {
             $product = Product::find($item->model->id);
             $product->increment('total_sale');
-            $product->update(['quantity' => $product->quantity - $item->quantity]);
+            $product->update(['quantity' => $product->quantity - $item->qty]);
         }
     }
     protected function notification($user, $shop)
@@ -210,9 +213,9 @@ class CheckoutController extends Controller
 
     protected function productsAreNoLongerAvailable()
     {
-        foreach (Cart::getContent() as $item) {
+        foreach (Cart::Content() as $item) {
             $product = Product::find($item->model->id);
-            if ($product->quantity < $item->quantity) {
+            if ($product->quantity < $item->qty) {
                 return true;
             }
         }
