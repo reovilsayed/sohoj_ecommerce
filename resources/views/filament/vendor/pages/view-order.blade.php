@@ -126,43 +126,43 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($record->parent->childs as $orderItem)
-                                @php
-                                    $product = $orderItem->product;
-                                @endphp
-                                <tr>
-                                    <td class="px-8 ps-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            @if ($product->image)
-                                                <div
-                                                    class="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-md flex items-center justify-center">
-                                                    <img src="{{ Storage::url($product->image) }}"
-                                                        alt="{{ $product->name }}"
-                                                        class="h-full w-full object-cover rounded-md">
-                                                </div>
-                                            @else
-                                                <div
-                                                    class="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-md flex items-center justify-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                                    </svg>
-                                                </div>
-                                            @endif
-                                            <div class="ml-4 ps-3">
-                                                <div class="text-sm font-medium text-gray-900">{{ $product->name }}
-                                                </div>
-                                                <div class="text-sm text-gray-500">SKU: {{ $product->sku }}</div>
+                            <tr>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        @if ($record->product->image)
+                                            <div class="flex-shrink-0 h-12 w-12 bg-gray-100 rounded-md overflow-hidden">
+                                                <img src="{{ Storage::url($record->product->image) }}"
+                                                    alt="{{ $record->product->name }}"
+                                                    class="h-full w-full object-cover">
                                             </div>
+                                        @else
+                                            <div
+                                                class="flex-shrink-0 h-12 w-12 bg-gray-100 rounded-md flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400"
+                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                            </div>
+                                        @endif
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">{{ $record->product->name }}
+                                            </div>
+                                            <div class="text-sm text-gray-500">SKU: {{ $record->product->sku }}</div>
                                         </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ Sohoj::price($product->price) }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $orderItem->quantity }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-right">{{ Sohoj::price($product->price * $orderItem->quantity) }}</td>
-                                </tr>
-                            @endforeach
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ Sohoj::price($record->product->price) }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $record->quantity }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-right text-gray-900">
+                                    {{ Sohoj::price($record->product->price * $record->quantity) }}
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -181,7 +181,7 @@
                             </div>
                             <div class="flex justify-between py-2 text-sm text-gray-600">
                                 <span>Tax</span>
-                                <span>{{ $record->tax ?? 00}}</span>
+                                <span>{{ $record->tax ?? 00 }}</span>
                             </div>
                             <div
                                 class="flex justify-between py-3 mt-2 border-t border-gray-200 text-base font-semibold text-primary-600">
@@ -216,11 +216,11 @@
                 <div class="px-8 py-4 bg-white border-t border-gray-100">
                     <div class="flex items-center justify-between">
                         <p class="text-xs text-gray-500">Thank you for your business!</p>
-                        <div class="flex space-x-4 no-print">
+                        <div class="flex space-x-4 no-print gap-3">
                             <x-filament::button color="primary" icon="heroicon-o-printer" id="print-invoice-btn">
                                 Print Invoice
                             </x-filament::button>
-                            <x-filament::button color="secondary" icon="heroicon-o-arrow-down-tray">
+                            <x-filament::button color="secondary" icon="heroicon-o-arrow-down-tray" style="background-color: #209EBB; color: white;">
                                 Download PDF
                             </x-filament::button>
                         </div>

@@ -37,7 +37,7 @@ class ProductResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('shop_id', auth()->id());
+            ->where('shop_id', Auth()->user()->shop->id)->whereNull('parent_id');
     }
 
 
@@ -160,10 +160,11 @@ class ProductResource extends Resource
                     })
                     ->toggleable(),
 
-                TextColumn::make('prodcats.name')
+                TextColumn::make('prodcats')
                     ->label('Categories')
                     ->badge()
                     ->separator(',')
+                    ->formatStateUsing(fn($state, $record) => $record->prodcats->pluck('name')->implode(', '))
                     ->limit(20)
                     ->toggleable(),
 

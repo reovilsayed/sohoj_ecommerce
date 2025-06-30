@@ -48,7 +48,7 @@ class VendorStats extends BaseWidget
 
             Card::make(
                 'Pending Orders',
-                Order::where('shop_id', $vendor->id)->where('status', 'pending')->count()
+                Order::where('shop_id', $vendor->id)->where('status', 0)->count()
             )
                 ->description('Orders awaiting processing')
                 ->descriptionIcon('heroicon-o-clock')
@@ -60,7 +60,7 @@ class VendorStats extends BaseWidget
 
             Card::make(
                 'Delivered Orders',
-                Order::where('shop_id', $vendor->id)->where('status', 'delivered')->count()
+                Order::where('shop_id', $vendor->id)->where('status', 4)->count()
             )
                 ->description('Orders delivered to customers')
                 ->descriptionIcon('heroicon-o-truck')

@@ -3,6 +3,7 @@
 namespace App\Filament\Vendor\Resources;
 
 use App\Filament\Vendor\Resources\OrderResource\Pages;
+use App\Filament\Vendor\Resources\OrderResource\Pages\OrderDetails;
 use App\Filament\Vendor\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use Filament\Forms;
@@ -148,6 +149,10 @@ class OrderResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     // Tables\Actions\EditAction::make(),
                     // Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\Action::make('orderDetails')
+                        ->label('Order Details')
+                        ->icon('heroicon-o-document-text')
+                        ->url(fn($record) => route('filament.vendor.resources.orders.order-details', ['record' => $record])),
                 ])->iconButton()
             ])
             ->bulkActions([
@@ -170,8 +175,8 @@ class OrderResource extends Resource
             'index' => Pages\ListOrders::route('/'),
             'create' => Pages\CreateOrder::route('/create'),
             // 'edit' => Pages\EditOrder::route('/{record}/edit'),
-            'view' => Pages\ViewOrder::route('/{record}')
-
+            'view' => Pages\ViewOrder::route('/{record}'),
+            'order-details' => Pages\OrderDetails::route('/{record}/details'),
         ];
     }
 

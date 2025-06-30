@@ -92,7 +92,7 @@
                                                     class="text-danger">*</span></label>
                                             <input id="govt_id_front" type="file"
                                                 class="form-control bg-light @error('govt_id_front') is-invalid @enderror"
-                                                name="govt_id_front" value="{{ old('govt_id_front') ?? '' }}" required
+                                                name="govt_id_front" value="{{ old('govt_id_front') ?? '' }}" 
                                                 autofocus>
 
                                             @error('govt_id_front')
@@ -107,7 +107,7 @@
                                             <input id="govt_id_back" type="file" multiple
                                                 placeholder="One Government ID for verification"
                                                 class="form-control bg-light @error('govt_id_back') is-invalid @enderror"
-                                                name="govt_id_back" value="{{ old('govt_id_back') ?? '' }}" required
+                                                name="govt_id_back" value="{{ old('govt_id_back') ?? '' }}" 
                                                 autofocus>
 
                                             @error('govt_id_back')

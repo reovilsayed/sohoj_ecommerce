@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductVariationController;
 use App\Http\Controllers\Seller\ProductController;
 use App\Http\Controllers\Seller\SellerPagesController;
 use App\Http\Controllers\TicketsController;
+use App\Http\Controllers\Vendor\OrderInvoiceController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Invoice;
@@ -78,8 +79,12 @@ Route::group(
         Route::get('copy-product/{product}', [ProductVariationController::class, 'CopyProduct'])->name('copy.product');
         Route::get('create-all-variation-from-attribute/{product}', [ProductVariationController::class, 'create_all_variation'])->name('create.all.variation');
         Route::get('delete-all-child/{product}', [ProductVariationController::class, 'delete_all_child'])->name('delete.all.child');
-  
+
         Route::get('cards', [SellerPagesController::class, 'cards'])->name('cards');
-        Route::get('refund-request/accept/{order}',[SellerPagesController::class,'refundRequestAccept'])->name('refund.request.accept');
+        Route::get('refund-request/accept/{order}', [SellerPagesController::class, 'refundRequestAccept'])->name('refund.request.accept');
+
+
+        Route::get('/orders/{order}/download-pdf', [OrderInvoiceController::class, 'downloadPdf'])
+            ->name('orders.download-pdf');
     }
 );

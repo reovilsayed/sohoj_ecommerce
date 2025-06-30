@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Vendor\Resources\OrderResource\Widgets\VendorOrdersChart;
 use App\Filament\Vendor\Resources\VendorResource\Widgets\VendorStats;
 use App\Http\Middleware\RoleMiddleware;
 use Filament\Http\Middleware\Authenticate;
@@ -60,6 +61,7 @@ class VendorPanelProvider extends PanelProvider
             ])
             ->widgets([
                 VendorStats::class, // Custom widget for vendor stats
+                VendorOrdersChart::class,
             ]);
     }
 }
