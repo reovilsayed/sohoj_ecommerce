@@ -9,6 +9,7 @@ use Filament\Resources\Pages\ListRecords;
 class ListShopPolicies extends ListRecords
 {
     protected static string $resource = ShopPoliciesResource::class;
+    protected static ?string $title = "Shop Policy";
 
     protected function getHeaderActions(): array
     {

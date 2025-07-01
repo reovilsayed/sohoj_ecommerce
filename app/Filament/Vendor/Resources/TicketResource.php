@@ -14,19 +14,23 @@ use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TicketResource extends Resource
 {
     protected static ?string $model = Ticket::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Tickets';
+    protected static ?string $pluralLabel = 'Tickets';
+    protected static ?string $navigationGroup = 'Support';
+    protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
     public static function getEloquentQuery(): Builder
     {
+        $shop = auth()->user()->shop;
         return parent::getEloquentQuery()
-            ->where('shop_id', auth()->user()->shop_id); // assuming vendor has `shop_id`
+            ->where('shop_id', $shop->id)->where('parent_id', null)->latest(); 
     }
 
     public static function form(Form $form): Form
@@ -46,7 +50,19 @@ class TicketResource extends Resource
                 TextColumn::make('user.name')->label('User')->searchable()->toggleable(),
                 TextColumn::make('shop.name')->label('Shop')->searchable()->toggleable(),
                 TextColumn::make('subject')->limit(30)->searchable()->toggleable(),
-                BooleanColumn::make('status')->label('Resolved')->toggleable(),
+                TextColumn::make('massage')->limit(30)->searchable()->toggleable(),
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->formatStateUsing(fn($state) => match ($state) {
+                        1 => 'Open',
+                        0 => 'Closed',
+                    })
+                    ->badge()
+                    ->color(fn($state) => match ($state) {
+                        1 => 'success',
+                        0 => 'danger',
+                    })
+                    ->toggleable(),
                 BadgeColumn::make('action')
                     ->colors([
                         'gray' => fn($state) => is_null($state) || $state === 0,
@@ -62,14 +78,25 @@ class TicketResource extends Resource
                         default => 'Unknown',
                     })
                     ->toggleable(),
-                ImageColumn::make('image')->disk('public')->label('Attachment')->circular()->toggleable(),
                 TextColumn::make('created_at')->label('Created')->dateTime()->toggleable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                    ->label('Massage Reply'),
+                    Tables\Actions\Action::make('toggleStatus')
+                        ->label(fn($record) => $record->status ? 'Closed' : 'Open')
+                        ->icon(fn($record) => $record->status ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
+                        ->color(fn($record) => $record->status ? 'danger' : 'success')
+                        ->action(function ($record) {
+                            $record->status = $record->status ? 0 : 1;
+                            $record->save();
+                        })
+                        ->requiresConfirmation()
+                ])->iconButton()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -91,6 +118,7 @@ class TicketResource extends Resource
             'index' => Pages\ListTickets::route('/'),
             'create' => Pages\CreateTicket::route('/create'),
             'edit' => Pages\EditTicket::route('/{record}/edit'),
+            'view' => Pages\ViewTicket::route('/{record}'),
         ];
     }
 }

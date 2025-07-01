@@ -148,7 +148,7 @@ Route::get('page/{slug}', [PageController::class, 'getPage']);
 
 Route::get('/order/seen', [SellerPagesController::class, 'orderSeen'])->name('order.seen');
 
-Route::post('ticket/reply/{ticket}', [TicketsController::class, 'reply'])->name('ticket.reply');
+Route::post('vendor/tickets/{ticket}', [TicketsController::class, 'reply'])->name('ticket.reply');
 Route::get('ticket/{ticket}', [TicketsController::class, 'show'])->name('ticket.show');
 Route::get('ticket/close/{ticket}', [TicketsController::class, 'close'])->name('ticket.close');
 

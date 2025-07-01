@@ -406,7 +406,7 @@ class SellerPagesController extends Controller
     {
         $charges = Auth()->user()->invoices();
     
-      
+      dd($charges);
         return view('auth.seller.charges', compact('charges'));
     }
     public function charge($charge)
@@ -512,6 +512,7 @@ class SellerPagesController extends Controller
     public function cards() {
         $status = $this->subscriptionStatus();
         $intent = auth()->user()->createSetupIntent();
+        
         return view('auth.seller.cards',compact('intent','status'));
     }
     public function refundRequestAccept(Order $order) {

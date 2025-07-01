@@ -19,24 +19,35 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ShopPoliciesResource extends Resource
 {
     protected static ?string $model = ShopPolicy::class;
+    public static ?string $label = "Shop Policy";
+    public static ?string $title = "Shop Policy";
+    public static ?string $description = "Manage your shop policies here.";
+
+
+   
     public static function getEloquentQuery(): Builder
     {
+        $shop = auth()->user()->shop;
         return parent::getEloquentQuery()
-            ->where('shop_id', auth()->user()->shop_id); // assuming vendor has `shop_id`
+            ->where('shop_id', $shop->id); // assuming vendor has `shop_id`
     }
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+     public static function canCreate(): bool
+    {
+        return false;
+    }
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Hidden::make('shop_id')
-                    ->default(auth()->id()),
-                Textarea::make('delivery')->required(),
-                Textarea::make('payment_option')->required(),
-                Textarea::make('return_exchange')->required(),
-                Textarea::make('cancellation')->required(),
+                    ->default(auth()->user()->shop->id),
+                Textarea::make('delivery')->required()->rows(6),
+                Textarea::make('payment_option')->required()->rows(6),
+                Textarea::make('return_exchange')->required()->rows(6),
+                Textarea::make('cancellation')->required()->rows(6),
             ]);
     }
 
@@ -53,7 +64,7 @@ class ShopPoliciesResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -73,7 +84,7 @@ class ShopPoliciesResource extends Resource
     {
         return [
             'index' => Pages\ListShopPolicies::route('/'),
-            'create' => Pages\CreateShopPolicies::route('/create'),
+            // 'create' => Pages\CreateShopPolicies::route('/create'),
             'edit' => Pages\EditShopPolicies::route('/{record}/edit'),
         ];
     }

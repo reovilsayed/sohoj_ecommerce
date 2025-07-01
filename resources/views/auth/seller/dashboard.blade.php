@@ -177,7 +177,9 @@
                     @foreach ($offers as $offer)
                         <div class="row border-bottom ">
                             <div class="col-md-8 d-flex  align-items-center">
-                                <img src="{{ Voyager::image($offer->product->image) }}" width="65" height="70"
+                                {{-- <img src="{{ Voyager::image($offer->product->image) }}" width="65" height="70"
+                                    alt=""> --}}
+                                <img src="{{ $offer->product->image ?? '' }}" width="65" height="70"
                                     alt="">
                                 <div class="p-1">
                                     <p>{{ $offer->user->name }}</p>

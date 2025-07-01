@@ -37,8 +37,10 @@ class TicketsController extends Controller
                 'image' => $request->has('image') ? $request->image->store('tickets') : null,
 
             ]);
-            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new TicketPlaced($ticket, 'Thank your for tickets'));
+            Mail::to('asalaminsikder787@gmail.com')->send(new TicketPlaced($ticket, 'Thank your for tickets'));
             return redirect()->route('vendor.ticket.index')->withSuccess('Tickets create successfully');
+            // Mail::to(env('MAIL_FROM_ADDRESS'))->send(new TicketPlaced($ticket, 'Thank your for tickets'));
+            // return redirect()->route('vendor.ticket.index')->withSuccess('Tickets create successfully');
         } catch (Exception $e) {
             return redirect()->back()->withErrors($e->getMessage());
         } catch (Error $e) {
@@ -59,36 +61,31 @@ class TicketsController extends Controller
         $request->validate([
             'massage' => 'required|string',
             'image' => 'nullable|image',
-
         ]);
-        if (auth()->user()->role_id == 1) {
-            $action = 1;
-        } else {
-            $action = 0;
-        }
+        $action = auth()->user()->role_id == 1 ? 1 : 0;
 
         try {
             $reply = Ticket::create([
-                'shop_id' => Auth::user()->shop->id ?? null,
-                'user_id' => Auth()->id(),
+                'shop_id' => $ticket->shop_id,
+                'user_id' => Auth()->id(),  
                 'parent_id' => $ticket->id,
                 'massage' => $request->massage,
                 'status' => 0,
-                'image' => $request->has('image') ? $request->image->store('tickets') : null,
-
-
-
+                'image'      => ($request->hasFile('image') && $request->file('image')->isValid())
+                    ? $request->file('image')->store('tickets')
+                    : null,
             ]);
             $ticket->update([
                 'updated_at' => Carbon::now()->timestamp,
                 'action' => $action,
             ]);
-            if (auth()->user()->role_id == 1) {
-                $email = $ticket->user->email;
-            } else {
-                $email = env('MAIL_FROM_ADDRESS');
-            }
+
+            $email = auth()->user()->role_id == 1
+                ? $ticket->user->email
+                : env('MAIL_FROM_ADDRESS');
+
             Mail::to($email)->send(new TicketPlaced($reply, 'Thank your for replay'));
+
             return redirect()->back()->withSuccess('Tickets Reply successfully');
         } catch (Exception $e) {
             return redirect()->back()->withErrors($e->getMessage());

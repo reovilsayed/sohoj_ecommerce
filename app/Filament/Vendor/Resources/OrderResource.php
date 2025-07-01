@@ -3,7 +3,6 @@
 namespace App\Filament\Vendor\Resources;
 
 use App\Filament\Vendor\Resources\OrderResource\Pages;
-use App\Filament\Vendor\Resources\OrderResource\Pages\OrderDetails;
 use App\Filament\Vendor\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use Filament\Forms;
@@ -123,7 +122,7 @@ class OrderResource extends Resource
                     })
                     ->toggleable(),
                 TextColumn::make('total')->money('USD')->sortable()->toggleable(),
-                // BooleanColumn::make('seen')->toggleable(),
+                BooleanColumn::make('seen')->toggleable(),
                 BooleanColumn::make('order_accept')->label('Accepted')->toggleable(),
                 TextColumn::make('created_at')->dateTime('F j, Y')->toggleable(),
             ])
@@ -144,7 +143,7 @@ class OrderResource extends Resource
                     ->label('Accepted')
                     ->query(fn(Builder $query) => $query->where('order_accept', true)),
             ])
-            ->actions([
+             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     // Tables\Actions\EditAction::make(),

@@ -17,10 +17,16 @@ use Filament\Tables\Columns\{TextColumn, BooleanColumn, ImageColumn, BadgeColumn
 
 class TicketResource extends Resource
 {
-    
+
     protected static ?string $model = Ticket::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('parent_id', null)->latest(); // assuming vendor has `shop_id`
+    }
 
     public static function form(Form $form): Form
     {
@@ -91,7 +97,7 @@ class TicketResource extends Resource
                     ->toggleable(),
                 ImageColumn::make('image')->disk('public')->label('Attachment')->circular()->toggleable(),
                 TextColumn::make('created_at')->label('Created')->dateTime()->toggleable(),
-                
+
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
@@ -123,7 +129,12 @@ class TicketResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                    ->label('Massage Reply'),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -145,9 +156,10 @@ class TicketResource extends Resource
             'index' => Pages\ListTickets::route('/'),
             'create' => Pages\CreateTicket::route('/create'),
             'edit' => Pages\EditTicket::route('/{record}/edit'),
+            'view' => Pages\ViewTicket::route('/{record}'),
         ];
     }
-    
+
     public static function getNavigationBadge(): ?string
     {
         return static::$model::count();

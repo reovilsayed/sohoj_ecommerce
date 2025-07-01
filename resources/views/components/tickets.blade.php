@@ -166,7 +166,7 @@
             <p class="other-item">
 
                 @if ($ticket->image)
-                <a href="{{ Voyager::image($ticket->image) }}" target="_blank">See Image </a>
+                <a href="{{ Srtoge::url($ticket->image) }}" target="_blank">See Image </a>
                 @else
                 none
                 @endif

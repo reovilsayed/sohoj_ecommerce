@@ -10,10 +10,12 @@ class EditShopPolicies extends EditRecord
 {
     protected static string $resource = ShopPoliciesResource::class;
 
+    
     protected function getHeaderActions(): array
     {
+        // dd(request());
         return [
-            Actions\DeleteAction::make(),
+            // Actions\DeleteAction::make(),
         ];
     }
 }

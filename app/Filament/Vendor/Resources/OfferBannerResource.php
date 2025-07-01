@@ -19,9 +19,9 @@ class OfferBannerResource extends Resource
 {
     protected static ?string $model = OfferBanner::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-photo';
 
-     public static function getEloquentQuery(): Builder
+    public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
             ->where('shop_id', auth()->user()->shop_id); // assuming vendor has `shop_id`
