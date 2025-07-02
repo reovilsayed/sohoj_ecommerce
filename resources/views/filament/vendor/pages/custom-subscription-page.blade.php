@@ -1,57 +1,188 @@
 <x-filament-panels::page>
+    @push('styles')
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ['Inter', 'sans-serif'],
+                        },
+                        colors: {
+                            primary: {
+                                50: '#f0f9ff',
+                                100: '#e0f2fe',
+                                500: '#3b82f6',
+                                600: '#2563eb',
+                            },
+                            secondary: {
+                                500: '#8b5cf6',
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            @media print {
+                #body {
+                    width: 210mm;
+                    height: 297mm;
+                }
+
+                .no-print {
+                    display: none !important;
+                }
+
+                body {
+                    background: white !important;
+                }
+
+                .print-shadow-none {
+                    box-shadow: none !important;
+                }
+            }
+        </style>
+    @endpush
     @php
         $methods = auth()->user()->paymentMethods();
+        $status = $status == 1 ? true : false;
     @endphp
-    <!-- Header Section -->
-    <x-filament::card>
-        <div class="mb-6">
-            <div class="px-6 py-4 flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-900">Subscription Settings</h1>
-                    <p class="text-gray-500 mt-1">Manage your payment methods and subscription preferences</p>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span
-                        class="px-3 py-1 rounded-full text-sm font-medium 
-                    {{ $status ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                        {{ $status ? 'Active' : 'Paused' }}
-                    </span>
-                </div>
-            </div>
-        </div>
-    </x-filament::card>
-    <!-- Main Content -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Left Column - Payment Methods -->
-        <div class="lg:col-span-2 space-y-6">
-            <!-- Payment Methods Card -->
-            <x-filament::card>
-                <div class="px-6 py-4 border-b border-gray-100">
+
+
+    <div id="body" class="bg-gray-50 font-sans text-gray-700 print:bg-white">
+        <div class=" mx-auto my-8 print:my-0">
+            <!-- Invoice Container -->
+            <div
+                class="bg-white shadow-sm print-shadow-none overflow-hidden p-6 mt-6 mb-5 print:border print:border-gray-200">
+                <div class="px-6 py-4 border-gray-100 flex justify-between items-center border-b">
                     <h2 class="text-lg font-semibold text-gray-900">Payment Methods</h2>
+
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="openModal()"
+                        style="background: #17a589">Add Payment Card</button>
                 </div>
 
-                <!-- Add New Card -->
-                <div class="p-6">
-                    <button id="add-card-toggle"
-                        class="w-full flex items-center justify-between p-4 border-2 border-dashed border-gray-200 rounded-lg hover:border-primary-500 transition-colors"
-                        onclick="toggleCardForm()">
-                        <div class="flex items-center">
-                            <svg class="w-6 h-6 text-primary-500 mr-3" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
-                            <span class="font-medium text-gray-700">Add new payment method</span>
-                        </div>
-                        <svg id="toggle-icon" class="w-5 h-5 text-gray-400 transform transition-transform"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                            </path>
-                        </svg>
-                    </button>
+                <div class="px-6 py-6 border-gray-100">
+                    <h4 class="text-2xl font-bold mb-5">Saved card</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-5">
+                        @foreach ($methods as $payment)
+                            <div>
+                                <div class="max-w-sm mx-auto">
+                                    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl shadow-lg p-6 relative overflow-hidden"
+                                        style="background: #3B556E;">
+                                        <!-- Card brand -->
+                                        <div class="flex justify-between items-center mb-4">
+                                            <div class="text-lg font-bold text-primary-400"
+                                                style="text-transform: uppercase;">
+                                                {{ ucwords($payment->card->brand) }}
+                                                @if (auth()->user()->getCard() && auth()->user()->getCard()->id == $payment->id)
+                                                    <p class="text-xs uppercase opacity-80" style="color: #17a589">
+                                                        Default
+                                                    </p>
+                                                @endif
+                                            </div>
+                                            <div class="flex items-center">
+                                                <svg class="w-12 h-8" viewBox="0 0 48 32"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <rect x="0" y="0" width="48" height="32" rx="4"
+                                                        ry="4" fill="#D4AF37" />
+                                                    <path d="M12 0v32M24 0v32M36 0v32M0 8h48M0 16h48M0 24h48"
+                                                        stroke="#8C6D1F" stroke-width="2" />
+                                                </svg>
+                                            </div>
 
-                    <!-- Card Form (Hidden by default) -->
-                    <div id="add-card-form" class="hidden mt-4 bg-gray-50 p-5 rounded-lg">
+                                        </div>
+
+                                        <!-- Card number -->
+                                        <div class="text-xl font-mono tracking-widest text-dark mb-6">
+                                            •••• •••• •••• {{ $payment->card->last4 }}
+                                        </div>
+
+                                        <!-- Card holder and expiry -->
+                                        <div class="flex justify-between items-center mb-4">
+                                            <div>
+                                                <div class="text-xs uppercase opacity-80">Card Holder</div>
+                                                <div class="text-base font-semibold">
+                                                    {{ $payment->billing_details->name . ' ' . $payment->billing_details->l_name }}
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="text-xs uppercase opacity-80">Expires</div>
+                                                <div class="text-base font-semibold">
+                                                    {{ $payment->card->exp_month }}/{{ $payment->card->exp_year }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            @if (!(auth()->user()->getCard() && auth()->user()->getCard()->id == $payment->id))
+                                                <button
+                                                    onclick="setAsDefault('{{ route('user.setCardAsDefault', ['method' => $payment->id]) }}')"
+                                                    class="px-2 text-white text-xs rounded-md"
+                                                    style="background: #17a589">
+                                                    Set Default
+                                                </button>
+                                            @endif
+                                            <button
+                                                onclick="confirmRemove('{{ route('user.removeCard', ['method' => $payment->id]) }}')"
+                                                class="px-2 text-white text-xs rounded-md" style="background: #e74c3c;">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <h2 class="text-lg font-semibold text-gray-900 text-center py-6 text-bold">Payment Methods</h2>
+                <div class="flex flex-col md:flex-row gap-4 mb-4">
+                    <!-- Cancel Subscription -->
+                    <div class="w-full md:w-1/2 bg-white rounded shadow p-4">
+                        <h6 class="text-lg font-semibold mb-2 uppercase">Cancel your Monthly Subscription</h6>
+                        <span class="text-sm text-gray-700">
+                            Your subscription won't be renewed if you cancel your subscription.
+                        </span>
+                        <div class="flex justify-end mt-4">
+                            @if ($status == true)
+                                <a href="{{ route('vendor.cancelSubscription') }}"
+                                    onclick="return confirm('Are you sure you want to cancel the subscription? Your subscription will be canceled after the billing cycle');"
+                                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
+                                    style="background: #dad60c">
+                                    Cancel
+                                </a>
+                            @else
+                                <a href="{{ route('vendor.resumeSubscription') }}"
+                                    onclick="return confirm('Do you want to resume your subscription?');"
+                                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
+                                    style="background: #e74c3c">
+                                    Resume
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Deactivate Shop -->
+                    <div class="w-full md:w-1/2 bg-white rounded shadow p-4">
+                        <h6 class="text-lg font-semibold mb-2 uppercase">Deactivate your Shop</h6>
+                        <span class="text-sm text-gray-700">
+                            Your shop will be deactivated. You won't be able to access any vendor features.
+                        </span>
+                        <div class="flex justify-end mt-4">
+                            <a href="{{ route('vendor.cancelSubscriptionNow') }}"
+                                onclick="return confirm('Are you sure you want to deactivate your shop?');"
+                                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                                style="background: #e74c3c">
+                                Deactivate
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="myModal"
+                    class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+                    <div class="bg-white rounded-lg shadow p-6 w-full max-w-xl">
+                        <h2 class="text-xl font-semibold mb-4">Modal Title</h2>
                         <form id="cardAddFrom" action="{{ route('user.card.add') }}" method="POST">
                             @csrf
                             <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
@@ -65,8 +196,8 @@
                                     <div id="card-errors" class="mt-2 text-sm text-red-600"></div>
                                 </div>
 
-                                <div class="flex justify-end space-x-3 pt-2">
-                                    <button type="button" onclick="toggleCardForm()"
+                                <div class="flex justify-end gap-3 space-x-3 pt-2">
+                                    <button type="button" onclick="closeModal()"
                                         class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                                         Cancel
                                     </button>
@@ -89,168 +220,7 @@
                         </form>
                     </div>
                 </div>
-
-                <!-- Saved Payment Methods -->
-                <div class="px-6 pb-6">
-                    <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Saved Methods</h3>
-                    <div class="space-y-4">
-                        @foreach ($methods as $payment)
-                            <div class="border rounded-xl overflow-hidden transition-all hover:shadow-md">
-                                <div class="p-5">
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex items-center">
-                                            <!-- Card Brand Icon -->
-                                            <div
-                                                class="w-10 h-7 mr-3 flex items-center justify-center rounded bg-white shadow-xs border">
-                                                @if (strtolower($payment->card->brand) === 'visa')
-                                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visa/visa-original.svg"
-                                                        class="h-4" alt="Visa">
-                                                @elseif(strtolower($payment->card->brand) === 'mastercard')
-                                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mastercard/mastercard-original.svg"
-                                                        class="h-4" alt="Mastercard">
-                                                @elseif(strtolower($payment->card->brand) === 'amex')
-                                                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/americanexpress/americanexpress-original.svg"
-                                                        class="h-4" alt="American Express">
-                                                @else
-                                                    <span
-                                                        class="text-xs font-bold text-gray-700">{{ strtoupper(substr($payment->card->brand, 0, 2)) }}</span>
-                                                @endif
-                                            </div>
-                                            <div>
-                                                <h4 class="font-medium text-gray-900">
-                                                    {{ ucwords($payment->card->brand) }}</h4>
-                                                <p class="text-sm text-gray-500">Expires
-                                                    {{ $payment->card->exp_month }}/{{ $payment->card->exp_year }}</p>
-                                            </div>
-                                        </div>
-                                        @if (auth()->user()->getCard() && auth()->user()->getCard()->id == $payment->id)
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                Default
-                                            </span>
-                                        @endif
-                                    </div>
-
-                                    <div class="mt-4 flex justify-between items-center">
-                                        <p class="text-sm font-mono text-gray-600">•••• •••• ••••
-                                            {{ $payment->card->last4 }}</p>
-                                        <div class="flex space-x-3">
-                                            @if (!(auth()->user()->getCard() && auth()->user()->getCard()->id == $payment->id))
-                                                <button
-                                                    onclick="setAsDefault('{{ route('user.setCardAsDefault', ['method' => $payment->id]) }}')"
-                                                    class="text-sm font-medium text-primary-600 hover:text-primary-800">
-                                                    Set Default
-                                                </button>
-                                            @endif
-                                            <button
-                                                onclick="confirmRemove('{{ route('user.removeCard', ['method' => $payment->id]) }}')"
-                                                class="text-sm font-medium text-red-600 hover:text-red-800">
-                                                Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </x-filament::card>
-        </div>
-
-        <!-- Right Column - Subscription Actions -->
-        <div class="space-y-6">
-            <!-- Subscription Status Card -->
-            <x-filament::card>
-                <div class="px-6 py-4 border-b border-gray-100">
-                    <h2 class="text-lg font-semibold text-gray-900">Subscription Status</h2>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-start">
-                        <div
-                            class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-medium text-gray-900">
-                                {{ $status ? 'Active Subscription' : 'Subscription Paused' }}</h3>
-                            <p class="text-sm text-gray-500 mt-1">
-                                {{ $status
-                                    ? 'Your subscription is active and will renew automatically'
-                                    : 'Your subscription is currently paused' }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </x-filament::card>
-
-            <!-- Subscription Actions Card -->
-            <x-filament::card>
-                <div class="px-6 py-4 border-b border-gray-100">
-                    <h2 class="text-lg font-semibold text-gray-900">Actions</h2>
-                </div>
-                <div class="p-6 space-y-4">
-                    @if ($status)
-                        <button onclick="confirmPause()"
-                            class="w-full flex items-center justify-between p-4 bg-yellow-50 border border-yellow-100 rounded-lg hover:bg-yellow-100 transition-colors">
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 text-yellow-600 mr-3" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <span class="font-medium text-yellow-800">Pause Subscription</span>
-                            </div>
-                            <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </button>
-                    @else
-                        <button onclick="confirmResume()"
-                            class="w-full flex items-center justify-between p-4 bg-green-50 border border-green-100 rounded-lg hover:bg-green-100 transition-colors">
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
-                                    </path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <span class="font-medium text-green-800">Resume Subscription</span>
-                            </div>
-                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </button>
-                    @endif
-
-                    <button onclick="confirmDeactivate()"
-                        class="w-full flex items-center justify-between p-4 bg-red-50 border border-red-100 rounded-lg hover:bg-red-100 transition-colors">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-red-600 mr-3" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                </path>
-                            </svg>
-                            <span class="font-medium text-red-800">Deactivate Shop</span>
-                        </div>
-                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-            </x-filament::card>
+            </div>
         </div>
     </div>
 
@@ -260,23 +230,6 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
         <script>
-            // Toastr configuration
-            toastr.options = {
-                "closeButton": true,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "timeOut": "5000"
-            };
-
-            // Toggle card form
-            function toggleCardForm() {
-                const form = document.getElementById('add-card-form');
-                const toggleIcon = document.getElementById('toggle-icon');
-
-                form.classList.toggle('hidden');
-                toggleIcon.classList.toggle('rotate-180');
-            }
-
             // Set card as default
             function setAsDefault(url) {
                 if (confirm('Set this card as your default payment method?')) {
@@ -290,98 +243,62 @@
                     window.location.href = url;
                 }
             }
+        </script>
+        <script>
+            const stripe = Stripe("{{ env('STRIPE_KEY') }}");
 
-            // Confirm subscription pause
-            function confirmPause() {
-                if (confirm(
-                        'Pause your subscription?\n\nYour access will continue until the end of the current billing period, but will not renew automatically.'
-                        )) {
-                    window.location.href = "{{ route('vendor.cancelSubscription') }}";
-                }
-            }
+            const elements = stripe.elements();
+            const cardElement = elements.create('card');
 
-            // Confirm subscription resume
-            function confirmResume() {
-                if (confirm('Resume your subscription?\n\nYour subscription will be reactivated immediately.')) {
-                    window.location.href = "{{ route('vendor.resumeSubscription') }}";
-                }
-            }
+            cardElement.mount('#card-element');
 
-            // Confirm shop deactivation
-            function confirmDeactivate() {
-                if (confirm(
-                        'WARNING: This will immediately deactivate your shop and cancel your subscription.\n\nAll vendor features will be disabled.\n\nAre you absolutely sure?'
-                        )) {
-                    window.location.href = "{{ route('vendor.cancelSubscriptionNow') }}";
-                }
-            }
+            const cardHolderName = document.getElementById('card-holder-name');
+            const cardButton = document.getElementById('card-button');
+            const clientSecret = cardButton.dataset.secret;
 
-            // Stripe Elements initialization
-            document.addEventListener('DOMContentLoaded', function() {
-                const stripe = Stripe("{{ env('STRIPE_KEY') }}");
-                const elements = stripe.elements();
-
-                const cardElement = elements.create('card', {
-                    style: {
-                        base: {
-                            fontSize: '16px',
-                            color: '#32325d',
-                            '::placeholder': {
-                                color: '#aab7c4'
+            cardButton.addEventListener('click', async (e) => {
+                const {
+                    setupIntent,
+                    error
+                } = await stripe.confirmCardSetup(
+                    clientSecret, {
+                        payment_method: {
+                            card: cardElement,
+                            billing_details: {
+                                name: cardHolderName.value
                             }
-                        },
-                        invalid: {
-                            color: '#fa755a',
-                            iconColor: '#fa755a'
                         }
                     }
-                });
+                );
 
-                cardElement.mount('#card-element');
-
-                const cardHolderName = document.getElementById('card-holder-name');
-                const cardButton = document.getElementById('card-button');
-                const clientSecret = cardButton.dataset.secret;
-
-                cardButton.addEventListener('click', async (e) => {
-                    e.preventDefault();
-
-                    // Show loading state
-                    document.getElementById('submit-text').classList.add('hidden');
-                    document.getElementById('spinner').classList.remove('hidden');
-                    cardButton.disabled = true;
-
-                    const {
-                        setupIntent,
-                        error
-                    } = await stripe.confirmCardSetup(
-                        clientSecret, {
-                            payment_method: {
-                                card: cardElement,
-                                billing_details: {
-                                    name: cardHolderName.value
-                                }
-                            }
-                        }
-                    );
-
-                    if (error) {
-                        // Show error to customer
-                        const errorElement = document.getElementById('card-errors');
-                        errorElement.textContent = error.message;
-
-                        // Reset button state
-                        document.getElementById('submit-text').classList.remove('hidden');
-                        document.getElementById('spinner').classList.add('hidden');
-                        cardButton.disabled = false;
+                if (error) {
+                    if (error?.setupIntent) {
+                        document.getElementById('paymentmethod').value = error.setupIntent.payment_method
+                        toastr.success('Card added');
+                        window.location.href = url;
                     } else {
-                        // Success - submit the form
-                        document.getElementById('paymentmethod').value = setupIntent.payment_method;
-                        toastr.success('Payment method added successfully');
-                        document.getElementById('cardAddFrom').submit();
+                        toastr.error('Something went wrong. Try again letter');
                     }
-                });
+
+                } else {
+                    document.getElementById('paymentmethod').value = setupIntent.payment_method
+                    toastr.success('Card added');
+                    $('#cardAddFrom').submit();
+                    window.location.href = url;
+                }
             });
+        </script>
+
+        <script>
+            function openModal() {
+                document.getElementById('myModal').classList.remove('hidden');
+                document.getElementById('myModal').classList.add('flex');
+            }
+
+            function closeModal() {
+                document.getElementById('myModal').classList.add('hidden');
+                document.getElementById('myModal').classList.remove('flex');
+            }
         </script>
     @endpush
 </x-filament-panels::page>

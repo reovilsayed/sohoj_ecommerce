@@ -405,8 +405,6 @@ class SellerPagesController extends Controller
     public function charges()
     {
         $charges = Auth()->user()->invoices();
-    
-      dd($charges);
         return view('auth.seller.charges', compact('charges'));
     }
     public function charge($charge)

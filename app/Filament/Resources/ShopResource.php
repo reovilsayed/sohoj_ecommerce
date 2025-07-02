@@ -39,54 +39,135 @@ class ShopResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\Card::make()
+            Forms\Components\Section::make('Shop Details')
+                ->icon('heroicon-o-shopping-bag')
+                ->description('Basic information about the shop')
                 ->schema([
-                    Forms\Components\Section::make('Shop Details')
+                    Forms\Components\Grid::make(2)
                         ->schema([
                             TextInput::make('name')
+                                ->label('Shop Name')
                                 ->required()
                                 ->maxLength(255)
+                                ->placeholder('Enter shop name')
                                 ->reactive()
                                 ->afterStateUpdated(fn(string $state, callable $set) => $set('slug', Str::slug($state))),
                             Select::make('user_id')
+                                ->label('Owner')
                                 ->relationship('user', 'name')
                                 ->searchable()
                                 ->required(),
-
-                            TextInput::make('slug')->nullable()->unique(Shop::class, 'slug', ignoreRecord: true)->maxLength(255),
-                            TextInput::make('email')->email()->required()->maxLength(255),
-                            TextInput::make('phone')->required()->maxLength(20),
-                        ]),
-                    Forms\Components\Section::make('Media')
-                        ->schema([
-                            FileUpload::make('logo')->image()->directory('shops/logos')->nullable(),
-                            FileUpload::make('banner')->image()->directory('shops/banners')->nullable(),
-                        ]),
-                    Forms\Components\Section::make('Descriptions')
-                        ->schema([
-                            Textarea::make('description')->required(),
-                            Textarea::make('short_description')->required(),
-                            TagsInput::make('tags')->required(),
-                            RichEditor::make('terms')->nullable(),
-                        ]),
-                    Forms\Components\Section::make('Company Information')
-                        ->schema([
-                            TextInput::make('company_name')->required()->maxLength(255),
-                            TextInput::make('company_registration')->required()->maxLength(255),
-                        ]),
-                    Forms\Components\Section::make('Location')
-                        ->schema([
-                            TextInput::make('city')->required()->maxLength(100),
-                            TextInput::make('state')->required()->maxLength(100),
-                            TextInput::make('post_code')->nullable()->maxLength(20),
-                            TextInput::make('country')->required()->maxLength(100),
-                        ]),
-                    Forms\Components\Section::make('Status')
-                        ->schema([
-                            Toggle::make('status')->label('Active')->default(false),
+                            TextInput::make('slug')
+                                ->label('Slug')
+                                ->nullable()
+                                ->unique(Shop::class, 'slug', ignoreRecord: true)
+                                ->maxLength(255)
+                                ->placeholder('Auto-generated from name'),
+                            TextInput::make('email')
+                                ->label('Email')
+                                ->email()
+                                ->required()
+                                ->maxLength(255)
+                                ->placeholder('shop@email.com'),
+                            TextInput::make('phone')
+                                ->label('Phone')
+                                ->required()
+                                ->maxLength(20)
+                                ->placeholder('e.g. +8801XXXXXXXXX'),
                         ]),
                 ]),
-        ]);
+            Forms\Components\Section::make('Media')
+                ->icon('heroicon-o-photo')
+                ->description('Shop logo and banner')
+                ->schema([
+                    Forms\Components\Grid::make(2)
+                        ->schema([
+                            FileUpload::make('logo')
+                                ->label('Logo')
+                                ->image()
+                                ->directory('shops/logos')
+                                ->imagePreviewHeight('80')
+                                ->nullable(),
+                            FileUpload::make('banner')
+                                ->label('Banner')
+                                ->image()
+                                ->directory('shops/banners')
+                                ->imagePreviewHeight('80')
+                                ->nullable(),
+                        ]),
+                ]),
+            Forms\Components\Section::make('Descriptions')
+                ->icon('heroicon-o-document-text')
+                ->description('Detailed and short descriptions')
+                ->schema([
+                    Textarea::make('description')
+                        ->label('Description')
+                        ->required()
+                        ->rows(3)
+                        ->placeholder('Full shop description'),
+                    Textarea::make('short_description')
+                        ->label('Short Description')
+                        ->required()
+                        ->rows(2)
+                        ->placeholder('Short summary for listings'),
+                    TagsInput::make('tags')
+                        ->label('Tags')
+                        ->required()
+                        ->placeholder('Add tags'),
+                    RichEditor::make('terms')
+                        ->label('Terms & Conditions')
+                        ->nullable(),
+                ]),
+            Forms\Components\Section::make('Company Information')
+                ->icon('heroicon-o-building-office')
+                ->description('Legal and company details')
+                ->schema([
+                    Forms\Components\Grid::make(2)
+                        ->schema([
+                            TextInput::make('company_name')
+                                ->label('Company Name')
+                                ->required()
+                                ->maxLength(255),
+                            TextInput::make('company_registration')
+                                ->label('Registration No.')
+                                ->required()
+                                ->maxLength(255),
+                        ]),
+                ]),
+            Forms\Components\Section::make('Location')
+                ->icon('heroicon-o-map-pin')
+                ->description('Shop address details')
+                ->schema([
+                    Forms\Components\Grid::make(2)
+                        ->schema([
+                            TextInput::make('city')
+                                ->label('City')
+                                ->required()
+                                ->maxLength(100),
+                            TextInput::make('state')
+                                ->label('State')
+                                ->required()
+                                ->maxLength(100),
+                            TextInput::make('post_code')
+                                ->label('Post Code')
+                                ->nullable()
+                                ->maxLength(20),
+                            TextInput::make('country')
+                                ->label('Country')
+                                ->required()
+                                ->maxLength(100),
+                        ]),
+                ]),
+            Forms\Components\Section::make('Status')
+                ->icon('heroicon-o-check-circle')
+                ->description('Shop activation status')
+                ->schema([
+                    Toggle::make('status')
+                        ->label('Active')
+                        ->default(false)
+                        ->helperText('Toggle to activate or deactivate this shop.'),
+                ]),
+        ])->columns(1);
     }
 
     public static function table(Table $table): Table

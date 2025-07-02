@@ -95,8 +95,8 @@ Route::get('wishlist-to-cart/{product_id}', [WishlistController::class, 'wishlis
 //cart
 Route::post('/add-cart', [CartController::class, 'add'])->name('cart.store');
 Route::post('/buynow', [CartController::class, 'buynow'])->name('cart.boynow');
-Route::post('/add-update', [CartController::class, 'update'])->name('cart.update');
-Route::get('/cart-destroy/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+Route::post('/add-update/', [CartController::class, 'update'])->name('cart.update');
+Route::get('/cart-destroy/{rowId}', [CartController::class, 'destroy'])->name('cart.destroy');
 Route::get('/cart-qty', [CartController::class, 'cartQty'])->name('cart.qty');
 
 

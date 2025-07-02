@@ -26,37 +26,86 @@ class VerificationResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->searchable()
-                    ->required(),
-
-                TextInput::make('phone')->required(),
-                TextInput::make('paypal_email')->email()->required(),
-                DatePicker::make('dob')->required(),
-                TextInput::make('tax_no')->label('Tax Number')->required(),
-                TextInput::make('card_no')->label('Card Number')->required(),
-
-                FileUpload::make('govt_id_front')
-                    ->label('Government ID Front')
-                    ->directory('verifications')
-                    ->image()
-                    ->required(),
-
-                FileUpload::make('govt_id_back')
-                    ->label('Government ID Back')
-                    ->directory('verifications')
-                    ->image()
-                    ->required(),
-
-                TextInput::make('bank_ac')->label('Bank Account')->required(),
-                TextInput::make('ac_holder_name')->label('Account Holder Name')->required(),
-                TextInput::make('address')->required(),
-                TextInput::make('rtn')->label('Routing Number')->required(),
-
-                Toggle::make('ismonthly_charge')
-                    ->label('Monthly Charge Enabled')
-                    ->default(false),
+                Forms\Components\Section::make('User & Contact')
+                    ->icon('heroicon-o-user')
+                    ->description('User selection and contact details')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Select::make('user_id')
+                                    ->label('User')
+                                    ->relationship('user', 'name')
+                                    ->searchable()
+                                    ->required(),
+                                TextInput::make('phone')
+                                    ->label('Phone Number')
+                                    ->required()
+                                    ->placeholder('e.g. +8801XXXXXXXXX'),
+                                TextInput::make('paypal_email')
+                                    ->label('PayPal Email')
+                                    ->email()
+                                    ->required()
+                                    ->placeholder('user@email.com'),
+                                DatePicker::make('dob')
+                                    ->label('Date of Birth')
+                                    ->required(),
+                            ]),
+                    ]),
+                Forms\Components\Section::make('Identification')
+                    ->icon('heroicon-o-identification')
+                    ->description('Government and card identification')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                TextInput::make('tax_no')
+                                    ->label('Tax Number')
+                                    ->required(),
+                                TextInput::make('card_no')
+                                    ->label('Card Number')
+                                    ->required(),
+                                FileUpload::make('govt_id_front')
+                                    ->label('Government ID Front')
+                                    ->directory('verifications')
+                                    ->image()
+                                    ->imagePreviewHeight('80')
+                                    ->required(),
+                                FileUpload::make('govt_id_back')
+                                    ->label('Government ID Back')
+                                    ->directory('verifications')
+                                    ->image()
+                                    ->imagePreviewHeight('80')
+                                    ->required(),
+                            ]),
+                    ]),
+                Forms\Components\Section::make('Bank Details')
+                    ->icon('heroicon-o-banknotes')
+                    ->description('Bank account and routing information')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                TextInput::make('bank_ac')
+                                    ->label('Bank Account')
+                                    ->required(),
+                                TextInput::make('ac_holder_name')
+                                    ->label('Account Holder Name')
+                                    ->required(),
+                                TextInput::make('address')
+                                    ->label('Address')
+                                    ->required(),
+                                TextInput::make('rtn')
+                                    ->label('Routing Number')
+                                    ->required(),
+                            ]),
+                    ]),
+                Forms\Components\Section::make('Settings')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->description('Verification settings')
+                    ->schema([
+                        Toggle::make('ismonthly_charge')
+                            ->label('Monthly Charge Enabled')
+                            ->default(false)
+                            ->helperText('Enable if this user should be charged monthly.'),
+                    ]),
             ]);
     }
 

@@ -30,9 +30,9 @@ class OrderResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
     protected static ?string $navigationGroup = 'Orders';
-    
+
     protected static ?int $navigationSort = 1;
-    
+
     protected static ?string $navigationLabel = 'Orders List';
 
     public static function getNavigationBadge(): ?string
@@ -40,58 +40,80 @@ class OrderResource extends Resource
         return static::$model::count();
     }
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('user_id')->relationship('user', 'name')->searchable()->nullable(),
-                Select::make('shop_id')->relationship('shop', 'name')->searchable()->nullable(),
-                Select::make('product_id')->relationship('product', 'name')->searchable()->nullable(),
+                Forms\Components\Grid::make()
+                    ->schema([
+                        Forms\Components\Section::make('Order Details')
+                            ->description('Basic information about the order')
+                            ->icon('heroicon-o-shopping-cart')
+                            ->schema([
+                                Select::make('user_id')->relationship('user', 'name')->searchable()->nullable()->label('Customer'),
+                                Select::make('shop_id')->relationship('shop', 'name')->searchable()->nullable()->label('Shop'),
+                                Select::make('product_id')->relationship('product', 'name')->searchable()->nullable()->label('Product'),
+                                Select::make('status')
+                                    ->options([
+                                        0 => 'Pending',
+                                        1 => 'Paid',
+                                        2 => 'On Its Way',
+                                        3 => 'Cancelled',
+                                        4 => 'Delivered',
+                                    ])
+                                    ->default(0)
+                                    ->required()
+                                    ->label('Order Status'),
+                                TextInput::make('quantity')->required()->numeric()->label('Quantity'),
 
-                Select::make('status')
-                    ->options([
-                        0 => 'Pending',
-                        1 => 'Paid',
-                        2 => 'On Its Way',
-                        3 => 'Cancelled',
-                        4 => 'Delivered',
-                    ])
-                    ->default(0)
-                    ->required(),
+                                TextInput::make('customer_note')->nullable()->label('Customer Note'),
+                                Toggle::make('order_accept')->label('Accepted')->default(false),
+                                Toggle::make('seen')->default(false)->label('Seen'),
+                            ])->columns(3),
 
-                TextInput::make('currency')->maxLength(5)->nullable(),
-                TextInput::make('discount')->numeric()->nullable(),
-                TextInput::make('discount_code')->nullable(),
-                TextInput::make('shipping_total')->numeric()->nullable(),
-                TextInput::make('shipping_method')->nullable(),
-                TextInput::make('shipping_url')->nullable(),
+                        Forms\Components\Section::make('Financials')
+                            ->description('Order pricing and payment details')
+                            ->icon('heroicon-o-currency-dollar')
+                            ->schema([
+                                TextInput::make('currency')->maxLength(5)->nullable()->label('Currency'),
+                                TextInput::make('subtotal')->required()->numeric()->label('Subtotal'),
+                                TextInput::make('discount')->numeric()->nullable()->label('Discount'),
+                                TextInput::make('discount_code')->nullable()->label('Discount Code'),
+                                TextInput::make('shipping_total')->numeric()->nullable()->label('Shipping Total'),
+                                TextInput::make('shipping_method')->nullable()->label('Shipping Method'),
+                                TextInput::make('shipping_url')->nullable()->label('Shipping URL'),
+                                TextInput::make('total')->required()->numeric()->label('Total'),
+                                TextInput::make('vendor_total')->required()->numeric()->label('Vendor Total'),
+                                TextInput::make('tax')->nullable()->numeric()->label('Tax'),
+                            ])->columns(3),
 
-                TextInput::make('subtotal')->required()->numeric(),
-                TextInput::make('total')->required()->numeric(),
-                TextInput::make('vendor_total')->required()->numeric(),
-                TextInput::make('tax')->nullable()->numeric(),
+                        Forms\Components\Section::make('Payment & Fulfillment')
+                            ->description('Payment and fulfillment information')
+                            ->icon('heroicon-o-credit-card')
+                            ->schema([
+                                TextInput::make('payment_method')->nullable()->label('Payment Method'),
+                                TextInput::make('payment_method_title')->nullable()->label('Payment Method Title'),
+                                TextInput::make('transaction_id')->nullable()->label('Transaction ID'),
+                                DatePicker::make('date_paid')->nullable()->label('Date Paid'),
+                                DatePicker::make('date_completed')->nullable()->label('Date Completed'),
+                                TextInput::make('refund_amount')->nullable()->label('Refund Amount'),
+                                TextInput::make('company')->nullable()->label('Company'),
+                                TextInput::make('aptment')->nullable()->label('Apartment'),
+                            ])->columns(2),
 
-                Toggle::make('seen')->default(false),
-                Toggle::make('order_accept')->label('Accepted')->default(false),
-
-                TextInput::make('customer_note')->nullable(),
-                // KeyValue::make('billing')->nullable(),
-                // KeyValue::make('shipping')->required(),
-
-                TextInput::make('payment_method')->nullable(),
-                TextInput::make('payment_method_title')->nullable(),
-                TextInput::make('transaction_id')->nullable(),
-
-                DatePicker::make('date_paid')->nullable(),
-                DatePicker::make('date_completed')->nullable(),
-
-                TextInput::make('refund_amount')->nullable(),
-                TextInput::make('company')->nullable(),
-                TextInput::make('aptment')->nullable(),
-                TextInput::make('quantity')->required()->numeric(),
-
-                Textarea::make('return_reason')->nullable(),
-                FileUpload::make('return_file')->directory('returns')->nullable(),
+                        Forms\Components\Section::make('Returns')
+                            ->description('Return reason and file upload')
+                            ->icon('heroicon-o-arrow-uturn-left')
+                            ->schema([
+                                Textarea::make('return_reason')->nullable()->label('Return Reason'),
+                                FileUpload::make('return_file')->directory('returns')->nullable()->label('Return File'),
+                            ])->columns(1),
+                    ])->columns(1),
             ]);
     }
 
@@ -146,8 +168,10 @@ class OrderResource extends Resource
                 // Tables\Filters\TrashedFilter::make(), // Remove or comment this line if not using SoftDeletes
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

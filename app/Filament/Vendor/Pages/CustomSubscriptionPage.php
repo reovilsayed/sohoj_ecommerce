@@ -36,7 +36,12 @@ class CustomSubscriptionPage extends Page
 
     protected function subscriptionStatus(): string
     {
-        // Example logic — change it as you wish
-        return auth()->user()->onTrial() ? 'Trial' : (auth()->user()->subscribed() ? 'true' : 'false');
+        $getSubscription = auth()->user()->getSubscription();
+        if ($getSubscription->stripe_status !== 'active' || $getSubscription->ends_at !== null) {
+            $status = false;
+        } else {
+            $status = true;
+        }
+        return $status;
     }
 }

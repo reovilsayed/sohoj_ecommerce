@@ -32,15 +32,25 @@ class RoleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(50),
-
-                Forms\Components\TextInput::make('display_name')
-                    ->label('Display Name')
-                    ->required()
-                    ->maxLength(100),
+                Forms\Components\Section::make('Role Details')
+                    ->icon('heroicon-o-user-group')
+                    ->description('Define the role and its display name for user management.')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Role Name')
+                                    ->required()
+                                    ->unique(ignoreRecord: true)
+                                    ->maxLength(50)
+                                    ->placeholder('E.g. admin, vendor, customer'),
+                                Forms\Components\TextInput::make('display_name')
+                                    ->label('Display Name')
+                                    ->required()
+                                    ->maxLength(100)
+                                    ->placeholder('E.g. Administrator'),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -51,16 +61,22 @@ class RoleResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->toggleable(isToggledHiddenByDefault: true),
-                    
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Role Name')
                     ->sortable()
                     ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
+                    ->badge()
+                    ->color('primary')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('display_name')
                     ->label('Display Name')
                     ->sortable()
                     ->searchable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->date('F j, Y')
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -77,8 +93,14 @@ class RoleResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->icon('heroicon-o-pencil')->color('primary'),
-                Tables\Actions\DeleteAction::make()->icon('heroicon-o-trash')->color('danger'),
+                Tables\Actions\EditAction::make()
+                    ->icon('heroicon-o-pencil-square')
+                    ->label('Edit')
+                    ->color('primary'),
+                Tables\Actions\DeleteAction::make()
+                    ->icon('heroicon-o-trash')
+                    ->label('Delete')
+                    ->color('danger'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

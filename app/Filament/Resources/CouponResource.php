@@ -25,31 +25,44 @@ class CouponResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        
             ->schema([
-                
-                TextInput::make('code')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(50),
-
-                TextInput::make('discount')
-                    ->numeric()
-                    ->minValue(1)
-                    ->required(),
-
-                DatePicker::make('expire_at')
-                    ->required(),
-
-                TextInput::make('limit')
-                    ->numeric()
-                    ->minValue(1)
-                    ->required(),
-
-                TextInput::make('minimum_cart')
-                    ->numeric()
-                    ->minValue(0)
-                    ->required(),
+                Forms\Components\Section::make('Coupon Details')
+                    ->icon('heroicon-o-ticket')
+                    ->description('Create or update a discount coupon for your customers.')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                TextInput::make('code')
+                                    ->label('Coupon Code')
+                                    ->required()
+                                    ->unique(ignoreRecord: true)
+                                    ->maxLength(50)
+                                    ->placeholder('E.g. SUMMER25'),
+                                TextInput::make('discount')
+                                    ->label('Discount (%)')
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->maxValue(100)
+                                    ->required()
+                                    ->placeholder('E.g. 10'),
+                                TextInput::make('minimum_cart')
+                                    ->label('Minimum Cart Value')
+                                    ->numeric()
+                                    ->minValue(0)
+                                    ->required()
+                                    ->placeholder('E.g. 500'),
+                                TextInput::make('limit')
+                                    ->label('Usage Limit')
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->required()
+                                    ->placeholder('E.g. 100'),
+                                DatePicker::make('expire_at')
+                                    ->label('Expiry Date')
+                                    ->required()
+                                    ->placeholder('Select expiry date'),
+                            ]),
+                    ]),
             ]);
     }
 

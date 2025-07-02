@@ -7,6 +7,7 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
@@ -49,16 +50,6 @@ class UserResource extends Resource
                             ->email()
                             ->required()
                             ->unique(ignoreRecord: true),
-                        FileUpload::make('avatar')
-                            ->image()
-                            ->directory('avatars')
-                            ->nullable(),
-                    ])
-                    ->columns(2),
-
-                Forms\Components\Section::make('Security')
-                    ->description('Set or update the user password.')
-                    ->schema([
                         TextInput::make('password')
                             ->label('Password')
                             ->password()
@@ -68,23 +59,32 @@ class UserResource extends Resource
                             ->dehydrateStateUsing(fn($state) => Hash::make($state))
                             ->dehydrated(fn($state) => filled($state))
                             ->autocomplete('new-password'),
-                    ]),
+                    ])
+                    ->columns(2),
 
                 Forms\Components\Section::make('Roles & Permissions')
                     ->description('Assign roles to the user.')
                     ->schema([
-                        Select::make('role_id')
-                            ->label('Primary Role')
-                            ->relationship('role', 'name')
-                            ->required(),
-                        Select::make('roles')
-                            ->label('Additional Roles')
-                            ->relationship('roles', 'name')
-                            ->multiple()
-                            ->preload()
-                            ->required(),
+                        Grid::make(2)
+                            ->schema([
+                                Select::make('role_id')
+                                    ->label('Primary Role')
+                                    ->relationship('role', 'name')
+                                    ->required(),
+                                Select::make('roles')
+                                    ->label('Additional Roles')
+                                    ->relationship('roles', 'name')
+                                    ->multiple()
+                                    ->preload()
+                                    ->required(),
+                            ]),
+
+                        FileUpload::make('avatar')
+                            ->image()
+                            ->directory('avatars')
+                    
+                            ->nullable(),
                     ])
-                    ->columns(2),
             ]);
     }
 

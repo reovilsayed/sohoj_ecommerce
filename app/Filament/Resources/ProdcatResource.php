@@ -37,37 +37,47 @@ class ProdcatResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
-
-                TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255)
-                    ->unique(Prodcat::class, 'slug', ignoreRecord: true)
-                    ->rules(['alpha_dash']),
-
-                Select::make('shop_id')
-                    ->label('Shop')
-                    ->relationship('shop', 'name')
-                    ->required()
-                    ->searchable()
-                    ->preload(),
-
-                Select::make('parent_id')
-                    ->label('Parent Category')
-                    ->relationship('parent', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->nullable(),
-
-                FileUpload::make('logo')
-                    ->label('Category Logo')
-                    ->image()
-                    ->directory('categories')
-                    ->visibility('public'),
+                Forms\Components\Section::make('Category Details')
+                    ->icon('heroicon-o-squares-2x2')
+                    ->description('Create or update a product category for your shop.')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Category Name')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null)
+                                    ->placeholder('E.g. Electronics'),
+                                TextInput::make('slug')
+                                    ->label('Slug')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->unique(Prodcat::class, 'slug', ignoreRecord: true)
+                                    ->rules(['alpha_dash'])
+                                    ->placeholder('Auto-generated from name'),
+                                Select::make('shop_id')
+                                    ->label('Shop')
+                                    ->relationship('shop', 'name')
+                                    ->required()
+                                    ->searchable()
+                                    ->preload(),
+                                Select::make('parent_id')
+                                    ->label('Parent Category')
+                                    ->relationship('parent', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->nullable(),
+                                FileUpload::make('logo')
+                                    ->label('Category Logo')
+                                    ->image()
+                                    ->directory('categories')
+                                    ->visibility('public')
+                                    ->columnSpanFull('full')
+                                    ->imagePreviewHeight('80'),
+                            ]),
+                    ]),
             ]);
     }
 

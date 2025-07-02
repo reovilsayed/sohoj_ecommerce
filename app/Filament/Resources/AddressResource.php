@@ -34,58 +34,68 @@ class AddressResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()
+                Forms\Components\Section::make('Address Information')
+                    ->description('Enter the address details for the user')
+                    ->icon('heroicon-o-map-pin')
                     ->schema([
-                        Forms\Components\TextInput::make('first_name')
-                            ->label('First Name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('last_name')
-                            ->label('Last Name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Select::make('user_id')
-                            ->searchable()
-                            ->placeholder('Search User')
-                            ->label('User')
-                            ->relationship('user', 'name')
-                            ->required(),
-                        Forms\Components\TextInput::make('company')
-                            ->label('Company')
-                            ->maxLength(255),
-                        Forms\Components\Textarea::make('address_1')
-                            ->label('Address Line 1')
-                            ->required()
-                            ->rows(2),
-                        Forms\Components\Textarea::make('address_2')
-                            ->label('Address Line 2')
-                            ->rows(2),
-                        Forms\Components\TextInput::make('city')
-                            ->label('City')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('state')
-                            ->label('State')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('post_code')
-                            ->label('Postal Code')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('country')
-                            ->label('Country')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('email')
-                            ->label('Email')
-                            ->required()
-                            ->email()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('phone')
-                            ->label('Phone')
-                            ->required()
-                            ->maxLength(255),
+                        Forms\Components\Grid::make(3)
+                            ->schema([
+                                Forms\Components\TextInput::make('first_name')
+                                    ->label('First Name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('last_name')
+                                    ->label('Last Name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\Select::make('user_id')
+                                    ->searchable()
+                                    ->placeholder('Search User')
+                                    ->label('User')
+                                    ->relationship('user', 'name')
+                                    ->required(),
+                                Forms\Components\TextInput::make('company')
+                                    ->label('Company')
+                                    ->maxLength(255),
+                               
+                                Forms\Components\TextInput::make('phone')
+                                    ->label('Phone')
+                                    ->required()
+                                    ->maxLength(255),
+
+                                Forms\Components\TextInput::make('city')
+                                    ->label('City')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('state')
+                                    ->label('State')
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('post_code')
+                                    ->label('Postal Code')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('country')
+                                    ->label('Country')
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                        Forms\Components\Grid::make(1)
+                            ->schema([
+                                Forms\Components\TextInput::make('email')
+                                    ->label('Email')
+                                    ->required()
+                                    ->email()
+                                    ->maxLength(255),
+                                Forms\Components\Textarea::make('address_1')
+                                    ->label('Address Line 1')
+                                    ->required()
+                                    ->rows(4),
+                                Forms\Components\Textarea::make('address_2')
+                                    ->label('Address Line 2')
+                                    ->rows(4),
+
+                            ]),
                     ])
-                    ->columns(2),
             ]);
     }
 
@@ -128,8 +138,10 @@ class AddressResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

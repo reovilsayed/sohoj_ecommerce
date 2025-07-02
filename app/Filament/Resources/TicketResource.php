@@ -32,41 +32,62 @@ class TicketResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('parent_id')
-                    ->label('Parent Ticket')
-                    ->relationship('parent', 'subject') // optional if parent is self-referencing
-                    ->searchable()
-                    ->nullable(),
-
-                Select::make('shop_id')
-                    ->relationship('shop', 'name')
-                    ->required(),
-
-                Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-
-                TextInput::make('subject')
-                    ->maxLength(255),
-
-                Textarea::make('massage'),
-
-                FileUpload::make('image')
-                    ->image()
-                    ->directory('tickets')
-                    ->nullable(),
-
-                Toggle::make('status')
-                    ->label('Resolved'),
-
-                Select::make('action')
-                    ->options([
-                        0 => 'No Action',
-                        1 => 'In Progress',
-                        2 => 'Escalated',
-                        3 => 'Closed',
-                    ])
-                    ->nullable(),
+                Forms\Components\Section::make('Ticket Details')
+                    ->icon('heroicon-o-ticket')
+                    ->description('Basic information about the support ticket')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Select::make('parent_id')
+                                    ->label('Parent Ticket')
+                                    ->relationship('parent', 'subject')
+                                    ->searchable()
+                                    ->nullable(),
+                                Select::make('shop_id')
+                                    ->label('Shop')
+                                    ->relationship('shop', 'name')
+                                    ->required(),
+                                Select::make('user_id')
+                                    ->label('User')
+                                    ->relationship('user', 'name')
+                                    ->required(),
+                                TextInput::make('subject')
+                                    ->label('Subject')
+                                    ->maxLength(255)
+                                    ->placeholder('Enter ticket subject'),
+                            ]),
+                    ]),
+                Forms\Components\Section::make('Message & Attachment')
+                    ->icon('heroicon-o-chat-bubble-left-ellipsis')
+                    ->description('Ticket message and optional image')
+                    ->schema([
+                        Textarea::make('massage')
+                            ->label('Message')
+                            ->rows(4)
+                            ->placeholder('Describe your issue or request'),
+                        FileUpload::make('image')
+                            ->label('Attachment')
+                            ->image()
+                            ->directory('tickets')
+                            ->nullable(),
+                    ]),
+                Forms\Components\Section::make('Status & Action')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->description('Ticket status and workflow action')
+                    ->schema([
+                        Toggle::make('status')
+                            ->label('Resolved')
+                            ->helperText('Mark as resolved when the issue is fixed.'),
+                        Select::make('action')
+                            ->label('Action')
+                            ->options([
+                                0 => 'No Action',
+                                1 => 'In Progress',
+                                2 => 'Escalated',
+                                3 => 'Closed',
+                            ])
+                            ->nullable(),
+                    ]),
             ]);
     }
 
@@ -74,13 +95,14 @@ class TicketResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->sortable()->toggleable(),
+                TextColumn::make('id')->label('Ticket ID')->sortable()->toggleable(),
                 ImageColumn::make('image')->disk('public')->label('Image')->circular()->toggleable(),
                 TextColumn::make('user.name')->label('User')->searchable()->toggleable(),
                 TextColumn::make('shop.name')->label('Shop')->searchable()->toggleable(),
-                TextColumn::make('subject')->limit(30)->searchable()->toggleable(),
+                TextColumn::make('subject')->label('Subject')->limit(30)->searchable()->toggleable(),
                 BooleanColumn::make('status')->label('Resolved')->toggleable(),
                 BadgeColumn::make('action')
+                    ->label('Action')
                     ->colors([
                         'gray' => fn($state) => is_null($state) || $state === 0,
                         'warning' => 1,
@@ -97,7 +119,6 @@ class TicketResource extends Resource
                     ->toggleable(),
                 ImageColumn::make('image')->disk('public')->label('Attachment')->circular()->toggleable(),
                 TextColumn::make('created_at')->label('Created')->dateTime()->toggleable(),
-
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
@@ -106,7 +127,6 @@ class TicketResource extends Resource
                         1 => 'Yes',
                         0 => 'No',
                     ]),
-
                 Tables\Filters\SelectFilter::make('action')
                     ->label('Action')
                     ->options([
@@ -115,7 +135,6 @@ class TicketResource extends Resource
                         2 => 'Escalated',
                         3 => 'Closed',
                     ]),
-
                 Tables\Filters\Filter::make('created_at')
                     ->label('Created Date')
                     ->form([
@@ -131,9 +150,14 @@ class TicketResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make()
-                    ->label('Massage Reply'),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                        ->label('Reply to Ticket')
+                        ->icon('heroicon-o-chat-bubble-left-ellipsis'),
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit Ticket')
+                        ->icon('heroicon-o-pencil-square'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Delete Ticket')
+                        ->icon('heroicon-o-trash'),
                 ])->iconButton(),
             ])
             ->bulkActions([

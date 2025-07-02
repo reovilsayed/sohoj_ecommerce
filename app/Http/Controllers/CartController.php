@@ -30,22 +30,40 @@ class CartController extends Controller
 	// 	return back()->with('success_msg', 'Item has been updated!');
 	// }
 
+	// public function update(Request $request)
+	// {
+	// 	$request->validate([
+	// 		'rowId' => 'required',
+	// 		'quantity' => 'required|integer|min:1',
+	// 	]);
+	// 	Cart::update($request->rowId, [
+	// 		'qty' => $request->quantity // You can also use 'quantity' => $value but qty is preferred
+	// 	]);
+
+	// 	return back()->with('success_msg', 'Item has been updated!');
+	// }
 	public function update(Request $request)
 	{
-		$request->validate([
-			'rowId' => 'required',
-			'quantity' => 'required|integer|min:1',
-		]);
-		Cart::update($request->rowId, [
-			'qty' => $request->quantity // You can also use 'quantity' => $value but qty is preferred
-		]);
+		
+		$rowId = $request->input('rowId');
+		$qty = $request->input('qty');
 
-		return back()->with('success_msg', 'Item has been updated!');
+		if ($request->action == 'increase') {
+			Cart::update($rowId, $qty + 1);
+
+			return back()->with('success_msg', 'Item has been updated!');
+		} elseif ($request->action == 'decrease' && $qty > 1) {
+			Cart::update($rowId, $qty - 1);
+
+			return back()->with('success_msg', 'Item has been updated!');
+		}
+		return back()->with('success_msg', 'Quantity cannot be less than 1!');
 	}
 
-	public function destroy($id)
+
+	public function destroy($rowId)
 	{
-		Cart::remove($id);
+		Cart::remove($rowId);
 		return back()->with('success_msg', 'Item has been removed!');
 	}
 

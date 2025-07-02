@@ -29,10 +29,18 @@ class SliderResource extends Resource
     {
         return $form
             ->schema([
-                FileUpload::make('image')
-                    ->image()
-                    ->directory('sliders')
-                    ->required(),
+                Forms\Components\Section::make('Slider Image')
+                    ->icon('heroicon-o-photo')
+                    ->description('Upload a high-quality image for the homepage slider.')
+                    ->schema([
+                        FileUpload::make('image')
+                            ->label('Slider Image')
+                            ->image()
+                            ->imagePreviewHeight('120')
+                            ->directory('sliders')
+                            ->required()
+                            ->helperText('Recommended size: 1200x400px. JPG or PNG.'),
+                    ]),
             ]);
     }
 

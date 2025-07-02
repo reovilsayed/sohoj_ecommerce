@@ -7,9 +7,8 @@ use App\Http\Controllers\ProductVariationController;
 use App\Http\Controllers\Seller\ProductController;
 use App\Http\Controllers\Seller\SellerPagesController;
 use App\Http\Controllers\TicketsController;
-use App\Http\Controllers\Vendor\OrderInvoiceController;
-use App\Models\Product;
 use Illuminate\Support\Facades\Route;
+use App\Models\Product;
 use Laravel\Cashier\Invoice;
 
 Route::group(
@@ -84,7 +83,12 @@ Route::group(
         Route::get('refund-request/accept/{order}', [SellerPagesController::class, 'refundRequestAccept'])->name('refund.request.accept');
 
 
-        Route::get('/orders/{order}/download-pdf', [OrderInvoiceController::class, 'downloadPdf'])
-            ->name('orders.download-pdf');
+
+        Route::get('/filament-invoice/{charge}', function ($charge) {
+            $invoice = auth()->user()->findInvoice($charge);
+            return view('filament.vendor.pages.invoice', [
+                'record' => $invoice
+            ]);
+        });
     }
 );
