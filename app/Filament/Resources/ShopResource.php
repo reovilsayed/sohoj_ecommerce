@@ -174,22 +174,69 @@ class ShopResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('logo')->label('Logo')->circular()->toggleable(),
-                ImageColumn::make('banner')->label('Banner')->toggleable(),
-                TextColumn::make('name')->searchable()->sortable()->toggleable(),
-                TextColumn::make('user.name')->label('Owner')->toggleable(),
-                TextColumn::make('slug')->toggleable(),
-                TextColumn::make('email')->toggleable(),
-                TextColumn::make('phone')->toggleable(),
-                TextColumn::make('company_name')->toggleable(),
-                TextColumn::make('company_registration')->toggleable(),
-                TextColumn::make('city')->toggleable(),
-                TextColumn::make('state')->toggleable(),
-                TextColumn::make('post_code')->toggleable(),
-                TextColumn::make('country')->toggleable(),
-                TagsColumn::make('tags')->toggleable(),
-                BooleanColumn::make('status')->label('Active')->toggleable(),
-                TextColumn::make('created_at')->date('F j, Y')->toggleable(),
+                ImageColumn::make('logo')
+                    ->label('Logo')
+                    ->circular()
+                    ->size(48)
+                    ->toggleable(),
+                ImageColumn::make('banner')
+                    ->label('Banner')
+                    ->size(64)
+                    ->toggleable(),
+                TextColumn::make('name')
+                    ->label('Shop Name')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('primary')
+                    ->toggleable(),
+                TextColumn::make('user.name')
+                    ->label('Owner')
+                    ->icon('heroicon-o-user')
+                    ->toggleable(),
+                TextColumn::make('slug')
+                    ->label('Slug')
+                    ->toggleable(),
+                TextColumn::make('email')
+                    ->label('Email')
+                    ->icon('heroicon-o-envelope')
+                    ->toggleable(),
+                TextColumn::make('phone')
+                    ->label('Phone')
+                    ->icon('heroicon-o-phone')
+                    ->toggleable(),
+                TextColumn::make('company_name')
+                    ->label('Company Name')
+                    ->toggleable(),
+                TextColumn::make('company_registration')
+                    ->label('Registration No.')
+                    ->toggleable(),
+                TextColumn::make('city')
+                    ->label('City')
+                    ->toggleable(),
+                TextColumn::make('state')
+                    ->label('State')
+                    ->toggleable(),
+                TextColumn::make('post_code')
+                    ->label('Post Code')
+                    ->toggleable(),
+                TextColumn::make('country')
+                    ->label('Country')
+                    ->badge()
+                    ->color('success')
+                    ->toggleable(),
+                TagsColumn::make('tags')
+                    ->label('Tags')
+                    ->toggleable(),
+                BooleanColumn::make('status')
+                    ->label('Active')
+                    ->icon('heroicon-o-check-circle')
+                    ->toggleable(),
+                TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->date('F j, Y')
+                    ->icon('heroicon-o-calendar-days')
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('active')
@@ -211,19 +258,24 @@ class ShopResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\Action::make('toggleStatus')
-                    ->label(fn ($record) => $record->status ? 'Deactivate' : 'Activate')
-                    ->icon(fn ($record) => $record->status ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
-                    ->color(fn ($record) => $record->status ? 'danger' : 'success')
-                    ->action(function ($record) {
-                        $record->status = $record->status ? 0 : 1;
-                        $record->save();
-                    })
-                    ->requiresConfirmation()
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit')
+                        ->icon('heroicon-o-pencil-square'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Delete')
+                        ->icon('heroicon-o-trash'),
+                    Tables\Actions\Action::make('toggleStatus')
+                        ->label(fn ($record) => $record->status ? 'Deactivate' : 'Activate')
+                        ->icon(fn ($record) => $record->status ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
+                        ->color(fn ($record) => $record->status ? 'danger' : 'success')
+                        ->action(function ($record) {
+                            $record->status = $record->status ? 0 : 1;
+                            $record->save();
+                        })
+                        ->requiresConfirmation(),
+                ])->iconButton(),
             ])
-
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

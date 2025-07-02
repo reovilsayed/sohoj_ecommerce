@@ -95,12 +95,37 @@ class TicketResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->label('Ticket ID')->sortable()->toggleable(),
-                ImageColumn::make('image')->disk('public')->label('Image')->circular()->toggleable(),
-                TextColumn::make('user.name')->label('User')->searchable()->toggleable(),
-                TextColumn::make('shop.name')->label('Shop')->searchable()->toggleable(),
-                TextColumn::make('subject')->label('Subject')->limit(30)->searchable()->toggleable(),
-                BooleanColumn::make('status')->label('Resolved')->toggleable(),
+                TextColumn::make('id')
+                    ->label('Ticket ID')
+                    ->badge()
+                    ->color('primary')
+                    ->sortable()
+                    ->toggleable(),
+                ImageColumn::make('image')
+                    ->disk('public')
+                    ->label('Image')
+                    ->circular()
+                    ->size(48)
+                    ->toggleable(),
+                TextColumn::make('user.name')
+                    ->label('User')
+                    ->icon('heroicon-o-user')
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('shop.name')
+                    ->label('Shop')
+                    ->icon('heroicon-o-building-storefront')
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('subject')
+                    ->label('Subject')
+                    ->limit(30)
+                    ->searchable()
+                    ->toggleable(),
+                BooleanColumn::make('status')
+                    ->label('Resolved')
+                    ->icon('heroicon-o-check-circle')
+                    ->toggleable(),
                 BadgeColumn::make('action')
                     ->label('Action')
                     ->colors([
@@ -116,9 +141,25 @@ class TicketResource extends Resource
                         3 => 'Closed',
                         default => 'Unknown',
                     })
+                    ->icon(fn($state) => match ($state) {
+                        0 => 'heroicon-o-minus-circle',
+                        1 => 'heroicon-o-arrow-path',
+                        2 => 'heroicon-o-exclamation-triangle',
+                        3 => 'heroicon-o-check-circle',
+                        default => 'heroicon-o-question-mark-circle',
+                    })
                     ->toggleable(),
-                ImageColumn::make('image')->disk('public')->label('Attachment')->circular()->toggleable(),
-                TextColumn::make('created_at')->label('Created')->dateTime()->toggleable(),
+                ImageColumn::make('image')
+                    ->disk('public')
+                    ->label('Attachment')
+                    ->circular()
+                    ->size(48)
+                    ->toggleable(),
+                TextColumn::make('created_at')
+                    ->label('Created')
+                    ->dateTime('F j, Y')
+                    ->icon('heroicon-o-calendar-days')
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')

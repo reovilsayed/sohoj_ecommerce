@@ -259,19 +259,23 @@ class ProductResource extends Resource
                     ->label('Image')
                     ->circular()
                     ->size(60),
-
                 TextColumn::make('name')
+                    ->label('Product Name')
                     ->searchable()
                     ->sortable()
+                    ->badge()
+                    ->color('primary')
                     ->weight(FontWeight::Medium)
                     ->limit(30),
-
                 TextColumn::make('sku')
                     ->label('SKU')
                     ->searchable()
+                    ->icon('heroicon-o-hashtag')
                     ->toggleable(),
                 TextColumn::make('type')
+                    ->label('Type')
                     ->badge()
+                    ->icon('heroicon-o-cube')
                     ->color(fn(string $state): string => match ($state) {
                         'simple' => 'success',
                         'variable' => 'warning',
@@ -280,51 +284,54 @@ class ProductResource extends Resource
                         'digital' => 'primary',
                         default => 'gray',
                     }),
-
                 TextColumn::make('prodcats.name')
                     ->label('Categories')
                     ->badge()
                     ->separator(',')
                     ->limit(20)
+                    ->icon('heroicon-o-tag')
                     ->toggleable(),
-
                 TextColumn::make('price')
                     ->label('Regular Price')
                     ->money('USD')
+                    ->color('success')
                     ->sortable(),
-
                 TextColumn::make('sale_price')
                     ->label('Sale Price')
                     ->money('USD')
+                    ->color('danger')
                     ->sortable()
                     ->toggleable(),
-
                 TextColumn::make('quantity')
                     ->label('Stock')
                     ->sortable()
-                    ->toggleable()
-                    ->color(fn($state) => $state > 10 ? 'success' : ($state > 0 ? 'warning' : 'danger')),
-
+                    ->badge()
+                    ->color(fn($state) => $state > 10 ? 'success' : ($state > 0 ? 'warning' : 'danger'))
+                    ->toggleable(),
                 BooleanColumn::make('status')
                     ->label('Active')
+                    ->icon('heroicon-o-check-circle')
                     ->sortable(),
-
                 BooleanColumn::make('featured')
                     ->label('Featured')
+                    ->icon('heroicon-o-star')
                     ->sortable(),
-
                 TextColumn::make('total_sale')
                     ->label('Sales')
+                    ->badge()
+                    ->color('info')
                     ->sortable()
                     ->toggleable(),
-
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Created At')
+                    ->dateTime('F j, Y')
+                    ->icon('heroicon-o-calendar-days')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Updated At')
+                    ->dateTime('F j, Y')
+                    ->icon('heroicon-o-arrow-path')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -355,9 +362,17 @@ class ProductResource extends Resource
                     ->label('Low Stock (1-10)'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->label('View Product')
+                        ->icon('heroicon-o-eye'),
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit Product')
+                        ->icon('heroicon-o-pencil-square'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Delete Product')
+                        ->icon('heroicon-o-trash'),
+                ])->iconButton(),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

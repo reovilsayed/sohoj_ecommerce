@@ -97,24 +97,24 @@ class UserResource extends Resource
                     ->label('Avatar')
                     ->disk('public')
                     ->circular()
-                    ->toggleable(), // Allow show/hide
+                    ->size(48)
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('First Name')
-                    ->toggleable(), // Allow show/hide
+                    ->badge()
+                    ->color('primary')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('l_name')
                     ->label('Last Name')
-                    ->toggleable(), // Allow show/hide
-
-
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Phone')
-                    ->icon('heroicon-m-phone')
-                    ->toggleable(), // Add this for show/hide
+                    ->icon('heroicon-o-phone')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label('Email')
-                    ->icon('heroicon-m-envelope')
-                    ->toggleable(isToggledHiddenByDefault: false), // Already toggleable
-
+                    ->icon('heroicon-o-envelope')
+                    ->toggleable(isToggledHiddenByDefault: false),
             ])
 
             ->filters([

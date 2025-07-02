@@ -121,9 +121,25 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->sortable()->searchable()->toggleable(),
-                TextColumn::make('user.name')->label('Customer')->sortable()->searchable()->toggleable(),
-                TextColumn::make('shop.name')->label('Shop')->sortable()->searchable()->toggleable(),
+                TextColumn::make('id')
+                    ->label('Order #')
+                    ->sortable()
+                    ->searchable()
+                    ->badge()
+                    ->color('primary')
+                    ->toggleable(),
+                TextColumn::make('user.name')
+                    ->label('Customer')
+                    ->sortable()
+                    ->searchable()
+                    ->icon('heroicon-o-user')
+                    ->toggleable(),
+                TextColumn::make('shop.name')
+                    ->label('Shop')
+                    ->sortable()
+                    ->searchable()
+                    ->icon('heroicon-o-building-storefront')
+                    ->toggleable(),
                 BadgeColumn::make('status')
                     ->label('Status')
                     ->formatStateUsing(fn($state) => match ($state) {
@@ -142,13 +158,35 @@ class OrderResource extends Resource
                         4 => 'primary',
                         default => 'gray',
                     })
+                    ->icon(fn($state) => match ($state) {
+                        0 => 'heroicon-o-clock',
+                        1 => 'heroicon-o-currency-dollar',
+                        2 => 'heroicon-o-truck',
+                        3 => 'heroicon-o-x-circle',
+                        4 => 'heroicon-o-check-circle',
+                        default => 'heroicon-o-question-mark-circle',
+                    })
                     ->toggleable(),
-                TextColumn::make('total')->money('USD')->sortable()->toggleable(),
-                BooleanColumn::make('seen')->toggleable(),
-                BooleanColumn::make('order_accept')->label('Accepted')->toggleable(),
-                TextColumn::make('created_at')->dateTime('F j, Y')->toggleable(),
+                TextColumn::make('total')
+                    ->label('Total')
+                    ->money('USD')
+                    ->sortable()
+                    ->color('success')
+                    ->toggleable(),
+                BooleanColumn::make('seen')
+                    ->label('Seen')
+                    ->icon('heroicon-o-eye')
+                    ->toggleable(),
+                BooleanColumn::make('order_accept')
+                    ->label('Accepted')
+                    ->icon('heroicon-o-check')
+                    ->toggleable(),
+                TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->dateTime('F j, Y')
+                    ->icon('heroicon-o-calendar-days')
+                    ->toggleable(),
             ])
-
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Order Status')
@@ -165,12 +203,15 @@ class OrderResource extends Resource
                 Tables\Filters\Filter::make('order_accept')
                     ->label('Accepted')
                     ->query(fn(Builder $query) => $query->where('order_accept', true)),
-                // Tables\Filters\TrashedFilter::make(), // Remove or comment this line if not using SoftDeletes
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit')
+                        ->icon('heroicon-o-pencil-square'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Delete')
+                        ->icon('heroicon-o-trash'),
                 ]),
             ])
             ->bulkActions([

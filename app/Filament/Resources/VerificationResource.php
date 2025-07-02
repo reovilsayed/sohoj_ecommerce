@@ -113,19 +113,77 @@ class VerificationResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')->label('User')->sortable()->searchable()->toggleable(),
-                TextColumn::make('phone')->sortable()->searchable()->toggleable(),
-                TextColumn::make('paypal_email')->label('PayPal Email')->sortable()->searchable()->toggleable(),
-                TextColumn::make('dob')->label('Date of Birth')->sortable()->searchable()->toggleable(),
-                TextColumn::make('tax_no')->label('Tax Number')->sortable()->searchable()->toggleable(),
-                TextColumn::make('card_no')->label('Card Number')->sortable()->searchable()->toggleable(),
-                ImageColumn::make('govt_id_front')->label('Government ID Front')->sortable()->searchable()->toggleable(),
-                ImageColumn::make('govt_id_back')->label('Government ID Back')->sortable()->searchable()->toggleable(),
-                TextColumn::make('bank_ac')->label('Bank Account')->sortable()->searchable()->toggleable(),
-                TextColumn::make('ac_holder_name')->label('Account Holder Name')->sortable()->searchable()->toggleable(),
-                TextColumn::make('address')->sortable()->searchable()->toggleable(),
-                TextColumn::make('rtn')->label('Routing Number')->sortable()->searchable()->toggleable(),
-                BooleanColumn::make('ismonthly_charge')->label('Monthly Charge Enabled')->sortable()->toggleable(),
+                TextColumn::make('user.name')
+                    ->label('User')
+                    ->sortable()
+                    ->searchable()
+                    ->icon('heroicon-o-user')
+                    ->badge()
+                    ->color('primary')
+                    ->toggleable(),
+                TextColumn::make('phone')
+                    ->label('Phone')
+                    ->sortable()
+                    ->searchable()
+                    ->icon('heroicon-o-phone')
+                    ->toggleable(),
+                TextColumn::make('paypal_email')
+                    ->label('PayPal Email')
+                    ->sortable()
+                    ->searchable()
+                    ->icon('heroicon-o-envelope')
+                    ->toggleable(),
+                TextColumn::make('dob')
+                    ->label('Date of Birth')
+                    ->sortable()
+                    ->searchable()
+                    ->icon('heroicon-o-calendar-days')
+                    ->toggleable(),
+                TextColumn::make('tax_no')
+                    ->label('Tax Number')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('card_no')
+                    ->label('Card Number')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+                ImageColumn::make('govt_id_front')
+                    ->label('Govt. ID Front')
+                    ->size(48)
+                    ->toggleable(),
+                ImageColumn::make('govt_id_back')
+                    ->label('Govt. ID Back')
+                    ->size(48)
+                    ->toggleable(),
+                TextColumn::make('bank_ac')
+                    ->label('Bank Account')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('ac_holder_name')
+                    ->label('Account Holder Name')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('address')
+                    ->label('Address')
+                    ->sortable()
+                    ->searchable()
+                    ->limit(30)
+                    ->tooltip(fn($record) => $record->address)
+                    ->toggleable(),
+                TextColumn::make('rtn')
+                    ->label('Routing Number')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+                BooleanColumn::make('ismonthly_charge')
+                    ->label('Monthly Charge Enabled')
+                    ->icon('heroicon-o-currency-dollar')
+                    ->sortable()
+                    ->toggleable(),
             ])
 
             ->filters([

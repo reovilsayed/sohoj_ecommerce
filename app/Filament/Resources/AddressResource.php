@@ -104,20 +104,54 @@ class AddressResource extends Resource
     {
         return $table
             ->columns([
-                // Tables\Columns\ToggleColumn::make('is_active')
-                //     ->label('Active')
-                //     ->sortable(),
-
-                Tables\Columns\TextColumn::make('first_name')->searchable()->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('last_name')->searchable()->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('company')->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('address_1')->limit(30)->toggleable(),
-                Tables\Columns\TextColumn::make('city')->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('state')->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('post_code')->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('country')->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('email')->searchable()->toggleable(),
-                Tables\Columns\TextColumn::make('phone')->toggleable(),
+                Tables\Columns\TextColumn::make('first_name')
+                    ->label('First Name')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('primary')
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('last_name')
+                    ->label('Last Name')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('company')
+                    ->label('Company')
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('address_1')
+                    ->label('Address Line 1')
+                    ->limit(30)
+                    ->tooltip(fn($record) => $record->address_1)
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('city')
+                    ->label('City')
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('state')
+                    ->label('State')
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('post_code')
+                    ->label('Postal Code')
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('country')
+                    ->label('Country')
+                    ->sortable()
+                    ->badge()
+                    ->color('success')
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable()
+                    ->icon('heroicon-o-envelope')
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->label('Phone')
+                    ->icon('heroicon-o-phone')
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('country')
@@ -139,8 +173,12 @@ class AddressResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make()
+                        ->label('View')
+                        ->icon('heroicon-o-eye'),
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit')
+                        ->icon('heroicon-o-pencil-square'),
                 ]),
             ])
             ->bulkActions([

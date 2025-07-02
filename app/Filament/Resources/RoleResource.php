@@ -60,6 +60,8 @@ class RoleResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
+                    ->badge()
+                    ->color('info')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Role Name')
@@ -67,15 +69,18 @@ class RoleResource extends Resource
                     ->searchable()
                     ->badge()
                     ->color('primary')
+                    ->icon('heroicon-o-user-group')
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('display_name')
                     ->label('Display Name')
                     ->sortable()
                     ->searchable()
+                    ->icon('heroicon-o-identification')
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created At')
                     ->date('F j, Y')
+                    ->icon('heroicon-o-calendar-days')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

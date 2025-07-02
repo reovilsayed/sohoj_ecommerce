@@ -70,25 +70,54 @@ class CouponResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('code')->sortable()->searchable()->toggleable(),
-                TextColumn::make('discount')->label('Discount (%)')->sortable()->toggleable(),
-                TextColumn::make('minimum_cart')->label('Min Cart')->sortable()->toggleable(),
-                TextColumn::make('limit')->label('Usage Limit')->sortable()->toggleable(),
-                TextColumn::make('expire_at')->date('F j, Y')->sortable()->toggleable(),
-                TextColumn::make('created_at')->label('Created')->date('F j, Y')->toggleable(),
+                TextColumn::make('code')
+                    ->label('Coupon Code')
+                    ->sortable()
+                    ->searchable()
+                    ->badge()
+                    ->color('primary')
+                    ->toggleable(),
+                TextColumn::make('discount')
+                    ->label('Discount (%)')
+                    ->sortable()
+                    ->color('success')
+                    ->toggleable(),
+                TextColumn::make('minimum_cart')
+                    ->label('Min Cart Value')
+                    ->sortable()
+                    ->money('USD')
+                    ->toggleable(),
+                TextColumn::make('limit')
+                    ->label('Usage Limit')
+                    ->sortable()
+                    ->toggleable(),
+                TextColumn::make('expire_at')
+                    ->label('Expiry Date')
+                    ->date('F j, Y')
+                    ->color(fn($record) => $record->expire_at < now() ? 'danger' : 'primary')
+                    ->sortable()
+                    ->toggleable(),
+                TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->date('F j, Y')
+                    ->icon('heroicon-o-calendar-days')
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('expired')
                     ->label('Expired Coupons')
                     ->query(fn (Builder $query): Builder => $query->where('expire_at', '<', now())),
-
                 Tables\Filters\Filter::make('active')
                     ->label('Active Coupons')
                     ->query(fn (Builder $query): Builder => $query->where('expire_at', '>=', now())),
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Edit')
+                    ->icon('heroicon-o-pencil-square'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Delete')
+                    ->icon('heroicon-o-trash'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
