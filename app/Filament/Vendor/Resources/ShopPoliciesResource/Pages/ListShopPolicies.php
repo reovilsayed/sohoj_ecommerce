@@ -5,6 +5,7 @@ namespace App\Filament\Vendor\Resources\ShopPoliciesResource\Pages;
 use App\Filament\Vendor\Resources\ShopPoliciesResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Tables\Table;
 
 class ListShopPolicies extends ListRecords
 {
@@ -17,4 +18,16 @@ class ListShopPolicies extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    public function getTable(): Table
+    {
+        return parent::getTable()
+            ->paginated(false); // disables pagination
+    }
+
+    public function getHeader(): ?\Illuminate\Contracts\View\View
+    {
+        return view('filament.vendor.pages.shop-policies-header');
+    }
 }
+

@@ -31,61 +31,15 @@ class ShopPoliciesResource extends Resource
         return parent::getEloquentQuery()
             ->where('shop_id', $shop->id); // assuming vendor has `shop_id`
     }
+    
 
-     public static function canCreate(): bool
-    {
-        return false;
-    }
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Hidden::make('shop_id')
-                    ->default(auth()->user()->shop->id),
-                Textarea::make('delivery')->required()->rows(6),
-                Textarea::make('payment_option')->required()->rows(6),
-                Textarea::make('return_exchange')->required()->rows(6),
-                Textarea::make('cancellation')->required()->rows(6),
-            ]);
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                TextColumn::make('shop.name')->label('Shop'),
-                TextColumn::make('delivery')->limit(30),
-                TextColumn::make('payment_option')->limit(30),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListShopPolicies::route('/'),
-            // 'create' => Pages\CreateShopPolicies::route('/create'),
-            'edit' => Pages\EditShopPolicies::route('/{record}/edit'),
         ];
     }
 }
