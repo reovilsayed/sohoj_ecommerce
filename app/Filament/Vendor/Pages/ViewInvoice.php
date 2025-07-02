@@ -11,8 +11,7 @@ class ViewInvoice extends Page
     {
         $this->invoiceId = request()->query('invoiceId');
     }
-
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static bool $shouldRegisterNavigation = false;
 
     protected static string $view = 'filament.vendor.pages.view-invoice';
 

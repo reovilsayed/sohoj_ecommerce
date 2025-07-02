@@ -4,7 +4,7 @@
         <div class="ec-sidebar-block">
             <div class="ec-vendor-block " style="position:relative">
                 @if (auth()->user()->shop)
-                    <img src="{{ auth()->user()->shop->banner ? Voyager::image(auth()->user()->shop->banner) : asset('assets/img/1.jpg') }}"
+                    <img src="{{ auth()->user()->shop->banner ? Storage::url(auth()->user()->shop->banner) : asset('assets/img/1.jpg') }}"
                         alt=""
                         style="    height: 190px;
                                     width: 100%;"
@@ -24,7 +24,7 @@
                     @if (auth()->user()->shop)
                         <div style="position: relative;">
                             <img class="v-img img-fluid"
-                                src="{{ auth()->user()->shop->logo ? Voyager::image(auth()->user()->shop->logo) : asset('assets/img/heaer.jpg') }}"
+                                src="{{ auth()->user()->shop->logo ? Storage::url(auth()->user()->shop->logo) : asset('assets/img/heaer.jpg') }}"
                                  alt="vendor image">
 
 

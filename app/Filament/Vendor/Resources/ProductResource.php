@@ -8,6 +8,7 @@ use App\Models\Product;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -44,87 +45,102 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Hidden::make('shop_id')
-                    ->default(auth()->id()->shop_id),
-                TextInput::make('name')
-                    ->required()
-                    ->maxLength(255)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
-                TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255)
-                    ->unique(Product::class, 'slug', ignoreRecord: true)
-                    ->rules(['alpha_dash']),
-                Select::make('prodcats')
-                    ->label('Categories')
-                    ->relationship('prodcats', 'name')
-                    ->multiple()
-                    ->searchable()
-                    ->preload(),
-
-                TextInput::make('price')
-                    ->label('Regular Price')
-                    ->numeric()
-                    ->prefix('$')
-                    ->maxValue(999999.99),
-                Toggle::make('manage_stock')
-                    ->label('Manage Stock')
-                    ->live(),
-                TextInput::make('quantity')
-                    ->label('Stock Quantity')
-                    ->numeric()
-                    ->minValue(0)
-                    ->visible(fn(callable $get) => $get('manage_stock')),
-
-                TextInput::make('weight')
-                    ->label('Weight (kg)')
-                    ->numeric(),
-
-                TextInput::make('dimensions')
-                    ->label('Dimensions (L x W x H)')
-                    ->placeholder('e.g., 10 x 5 x 3'),
-
-                Forms\Components\TextInput::make('shipping_cost')
-                    ->label('Shipping Cost')
-                    ->numeric()
-                    ->required()
-                    ->default(0),
-
-                FileUpload::make('image')
-                    ->label('Featured Image')
-                    ->image()
-                    ->directory('products')
-                    ->visibility('public'),
-
-                FileUpload::make('images')
-                    ->label('Gallery Images')
-                    ->image()
-                    ->multiple()
-                    ->directory('products')
-                    ->visibility('public'),
-
-                Textarea::make('short_description')
-                    ->label('Short Description')
-                    ->rows(6)
-                    ->maxLength(500),
-
-                Textarea::make('description')
-                    ->label('Full Description')
-                    ->rows(6),
-
-                Forms\Components\Toggle::make('is_variable_product')
-                    ->label('Variable Product')
-                    ->helperText('Enable if this product has variations like size, color')
-                    ->default(false),
-                Forms\Components\Toggle::make('is_offer')
-                    ->label('Offer')
-                    ->default(false)
-                    ->helperText('Enable this if the product has a special offer'),
-
-
-
-
+                Forms\Components\Section::make('Product Details')
+                    ->icon('heroicon-o-cube')
+                    ->description('Add or update your product information.')
+                    ->schema([
+                        Forms\Components\Hidden::make('shop_id')
+                            ->default(function () {
+                                $user = \Illuminate\Support\Facades\Auth::user();
+                                return $user && $user->shop ? $user->shop->id : null;
+                            }),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Product Name')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null)
+                                    ->placeholder('Enter product name'),
+                                TextInput::make('slug')
+                                    ->label('Slug')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->unique(Product::class, 'slug', ignoreRecord: true)
+                                    ->rules(['alpha_dash'])
+                                    ->placeholder('Auto-generated from name'),
+                                Select::make('prodcats')
+                                    ->label('Categories')
+                                    ->relationship('prodcats', 'name')
+                                    ->multiple()
+                                    ->searchable()
+                                    ->preload(),
+                                TextInput::make('price')
+                                    ->label('Regular Price')
+                                    ->numeric()
+                                    ->prefix('$')
+                                    ->maxValue(999999.99),
+                                Toggle::make('manage_stock')
+                                    ->label('Manage Stock')
+                                    ->live(),
+                                TextInput::make('quantity')
+                                    ->label('Stock Quantity')
+                                    ->numeric()
+                                    ->minValue(0)
+                                    ->visible(fn(callable $get) => $get('manage_stock')),
+                                TextInput::make('weight')
+                                    ->label('Weight (kg)')
+                                    ->numeric(),
+                                TextInput::make('dimensions')
+                                    ->label('Dimensions (L x W x H)')
+                                    ->placeholder('e.g., 10 x 5 x 3'),
+                                Forms\Components\TextInput::make('shipping_cost')
+                                    ->label('Shipping Cost')
+                                    ->numeric()
+                                    ->required()
+                                    ->default(0),
+                            ]),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                FileUpload::make('image')
+                                    ->label('Featured Image')
+                                    ->image()
+                                    ->directory('products')
+                                    ->imagePreviewHeight('80')
+                                    ->visibility('public'),
+                                FileUpload::make('images')
+                                    ->label('Gallery Images')
+                                    ->image()
+                                    ->multiple()
+                                    ->directory('products')
+                                    ->imagePreviewHeight('80')
+                                    ->visibility('public'),
+                            ]),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                RichEditor::make('short_description')
+                                    ->label('Short Description')
+                                    ->columnSpanFull('full')
+                                    ->maxLength(500)
+                                    ->placeholder('A short summary for listings'),
+                                RichEditor::make('description')
+                                    ->label('Full Description')
+                                    ->columnSpanFull('full')
+                                    ->placeholder('Detailed product description'),
+                            ]),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\Toggle::make('is_variable_product')
+                                    ->label('Variable Product')
+                                    ->helperText('Enable if this product has variations like size, color')
+                                    ->default(false),
+                                Forms\Components\Toggle::make('is_offer')
+                                    ->label('Offer')
+                                    ->default(false)
+                                    ->helperText('Enable this if the product has a special offer'),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -136,19 +152,23 @@ class ProductResource extends Resource
                     ->label('Image')
                     ->circular()
                     ->size(60),
-
                 TextColumn::make('name')
+                    ->label('Product Name')
                     ->searchable()
                     ->sortable()
+                    ->badge()
+                    ->color('primary')
                     ->weight(FontWeight::Medium)
                     ->limit(30),
-
                 TextColumn::make('sku')
                     ->label('SKU')
                     ->searchable()
+                    ->icon('heroicon-o-hashtag')
                     ->toggleable(),
                 TextColumn::make('type')
+                    ->label('Type')
                     ->badge()
+                    ->icon('heroicon-o-cube')
                     ->color(fn(string $state): string => match ($state) {
                         'simple' => 'success',
                         'variable' => 'warning',
@@ -158,52 +178,49 @@ class ProductResource extends Resource
                         default => 'gray',
                     })
                     ->toggleable(),
-
                 TextColumn::make('prodcats')
                     ->label('Categories')
                     ->badge()
                     ->separator(',')
+                    ->icon('heroicon-o-tag')
                     ->formatStateUsing(fn($state, $record) => $record->prodcats->pluck('name')->implode(', '))
                     ->limit(20)
                     ->toggleable(),
-
                 TextColumn::make('price')
                     ->label('Regular Price')
                     ->money('USD')
+                    ->color('success')
                     ->sortable(),
-
-                // TextColumn::make('sale_price')
-                //     ->label('Sale Price')
-                //     ->money('USD')
-                //     ->sortable()
-                //     ->toggleable(),
-
                 TextColumn::make('quantity')
                     ->label('Stock')
                     ->sortable()
-                    ->toggleable()
-                    ->color(fn($state) => $state > 10 ? 'success' : ($state > 0 ? 'warning' : 'danger')),
-
+                    ->badge()
+                    ->color(fn($state) => $state > 10 ? 'success' : ($state > 0 ? 'warning' : 'danger'))
+                    ->toggleable(),
                 BooleanColumn::make('status')
                     ->label('Active')
+                    ->icon('heroicon-o-check-circle')
                     ->sortable(),
-
                 BooleanColumn::make('featured')
                     ->label('Featured')
+                    ->icon('heroicon-o-star')
                     ->sortable(),
-
                 TextColumn::make('total_sale')
                     ->label('Sales')
+                    ->badge()
+                    ->color('info')
                     ->sortable()
                     ->toggleable(),
-
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Created At')
+                    ->dateTime('F j, Y')
+                    ->icon('heroicon-o-calendar-days')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Updated At')
+                    ->dateTime('F j, Y')
+                    ->icon('heroicon-o-arrow-path')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
