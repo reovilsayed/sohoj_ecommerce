@@ -227,6 +227,6 @@ class TicketResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::$model::count();
+        return static::$model::where('parent_id', null)->count();
     }
 }

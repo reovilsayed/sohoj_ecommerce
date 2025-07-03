@@ -104,8 +104,8 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 WidgetsStatsOverview::class,
                 RecentOrders::class,
-                DashboardChart::class,
-                WidgetsDashboardChart::class,
+                // DashboardChart::class,
+                // WidgetsDashboardChart::class,
             ]);
     }
 }

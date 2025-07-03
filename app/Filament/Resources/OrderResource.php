@@ -206,6 +206,11 @@ class OrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    // Tables\Actions\Action::make('orderDetails')
+                    //     ->label('Order Details')
+                    //     ->icon('heroicon-o-document-text')
+                    //     ->url(fn($record) => route('filament.vendor.resources.orders.order-details', ['record' => $record])),
                     Tables\Actions\EditAction::make()
                         ->label('Edit')
                         ->icon('heroicon-o-pencil-square'),
@@ -234,6 +239,8 @@ class OrderResource extends Resource
             'index' => Pages\ListOrders::route('/'),
             'create' => Pages\CreateOrder::route('/create'),
             'edit' => Pages\EditOrder::route('/{record}/edit'),
+            'view' => Pages\ViewOrder::route('/{record}'),
+            'order-details' => Pages\OrderDetails::route('/{record}/details'),
         ];
     }
 }

@@ -37,7 +37,6 @@
             }
         </style>
     @endpush
-
     <div id="body" class="bg-gray-50 font-sans text-gray-700">
         <div class="max-w-4xl mx-auto my-8">
             <!-- Invoice Container -->
@@ -54,7 +53,7 @@
                                         d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                                 </svg>
                             </div>
-                            <h1 class="text-2xl font-bold text-black">{{ $record->shop->name }}</h1>
+                            <h1 class="text-2xl font-bold text-black">{{ $record->shop->name ?? 'N/A' }}</h1>
                         </div>
                         <div class="text-right">
                             <h2 class="text-3xl font-bold text-white">INVOICE</h2>
@@ -86,9 +85,9 @@
                         <p class="font-bold">YourStore Inc.</p>
                         {{-- <p class="text-sm">123 Business Avenue</p> --}}
                         <p class="text-sm">
-                            {{ $record->shop->state . '-' . $record->shop->city . '-' . $record->shop->post_code }}</p>
-                        <p class="text-sm mt-2">Phone: {{ $record->shop->phone }}</p>
-                        <p class="text-sm">Email: {{ $record->shop->email }}</p>
+                            {{ ($record->shop && $record->shop->state ? $record->shop->state : 'N/A') . '-' . ($record->shop && $record->shop->city ? $record->shop->city : 'N/A') . '-' . ($record->shop && $record->shop->post_code ? $record->shop->post_code : 'N/A') }}</p>
+                        <p class="text-sm mt-2">Phone: {{ $record->shop->phone ?? 'N/A' }}</p>
+                        <p class="text-sm">Email: {{ $record->shop->email ?? 'N/A' }}</p>
                     </div>
 
                     @php
@@ -129,7 +128,7 @@
                             <tr>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
-                                        @if ($record->product->image)
+                                        @if ($record->product?->image)
                                             <div class="flex-shrink-0 h-12 w-12 bg-gray-100 rounded-md overflow-hidden">
                                                 <img src="{{ Storage::url($record->product->image) }}"
                                                     alt="{{ $record->product->name }}"
@@ -147,20 +146,20 @@
                                             </div>
                                         @endif
                                         <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">{{ $record->product->name }}
+                                            <div class="text-sm font-medium text-gray-900">{{ $record->product->name ?? 'N/A' }}
                                             </div>
-                                            <div class="text-sm text-gray-500">SKU: {{ $record->product->sku }}</div>
+                                            <div class="text-sm text-gray-500">SKU: {{ $record->product->sku  ?? 'N/A'}}</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ Sohoj::price($record->product->price) }}
+                                    {{ Sohoj::price($record->product->price ?? 'N/A') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $record->quantity }}
+                                    {{ $record->quantity  ?? 'N/A'}}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-right text-gray-900">
-                                    {{ Sohoj::price($record->product->price * $record->quantity) }}
+                                    {{ Sohoj::price(($record->product?->price ?? 0) * $record->quantity) }}
                                 </td>
                             </tr>
                         </tbody>
