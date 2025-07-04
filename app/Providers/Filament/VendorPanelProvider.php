@@ -14,6 +14,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use App\Filament\Vendor\Pages\ViewInvoice;
+use App\Filament\Vendor\Pages\VendorProfilePage;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -66,6 +67,7 @@ class VendorPanelProvider extends PanelProvider
             ])
             ->pages([
                 ViewInvoice::class,
+                VendorProfilePage::class,
             ]);
     }
 }

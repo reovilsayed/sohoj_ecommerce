@@ -7,6 +7,8 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Forms\Form;
 use Filament\Navigation\NavigationItem;
+use Illuminate\Support\Facades\Auth;
+use Filament\Notifications\Notification;
 
 class OfferBannerPage extends Page
 {
@@ -32,54 +34,77 @@ class OfferBannerPage extends Page
 
     public function mount(): void
     {
-        // initialize the form state
+        $shop = Auth::user()->shop;
+
         $this->form->fill([
-            'title1' => '',
-            'category1' => '',
-            'image1' => '',
-            'link1' => '',
+            'title1' => $shop->title1,
+            'category1' => $shop->category1,
+            'image1' => '', 
+            'link1' => $shop->link1,
+            'title2' => $shop->title2,
+            'category2' => $shop->category2,
+            'image2' => '', 
+            'link2' => $shop->link2,
         ]);
     }
 
     public function form(Form $form): Form
     {
         return $form
-            ->statePath('data') // this binds to $this->data
-
+            ->statePath('data')
             ->schema([
                 Grid::make('3')
                     ->schema([
                         \Filament\Forms\Components\TextInput::make('title1')
-                            ->label('Banner Title')
-                            ->required()
-                            ->maxLength(100)
-                            ->placeholder('E.g. Summer Sale'),
+                            ->label('Banner 1 Title')
+                            ->maxLength(100),
                         \Filament\Forms\Components\TextInput::make('category1')
-                            ->label('Category')
-                            ->required()
-                            ->maxLength(50)
-                            ->placeholder('E.g. Electronics'),
-
+                            ->label('Banner 1 Category')
+                            ->maxLength(50),
                         \Filament\Forms\Components\TextInput::make('link1')
-                            ->label('Banner URL')
-                            ->required()
+                            ->label('Banner 1 URL')
                             ->url(),
                     ]),
                 \Filament\Forms\Components\FileUpload::make('image1')
-                    ->label('Banner Image')
-                    ->required()
+                    ->label('Banner 1 Image')
                     ->image()
                     ->disk('public')
                     ->directory('offer-banners'),
 
+                Grid::make('3')
+                    ->schema([
+                        \Filament\Forms\Components\TextInput::make('title2')
+                            ->label('Banner 2 Title')
+                            ->maxLength(100),
+                        \Filament\Forms\Components\TextInput::make('category2')
+                            ->label('Banner 2 Category')
+                            ->maxLength(50),
+                        \Filament\Forms\Components\TextInput::make('link2')
+                            ->label('Banner 2 URL')
+                            ->url(),
+                    ]),
+                \Filament\Forms\Components\FileUpload::make('image2')
+                    ->label('Banner 2 Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('offer-banners'),
             ]);
     }
 
     public function submit()
     {
-        foreach ($this->data['image1'] as $image) {
-            $this->data['image1'] = $image;
+        if (is_array($this->data['image1'])) {
+            foreach ($this->data['image1'] as $image) {
+                $this->data['image1'] = $image;
+            }
         }
+
+        if (is_array($this->data['image2'])) {
+            foreach ($this->data['image2'] as $image) {
+                $this->data['image2'] = $image;
+            }
+        }
+
         $shop = auth()->user()->shop;
 
         $data = $this->data;
@@ -88,7 +113,17 @@ class OfferBannerPage extends Page
             $data['image1'] = $data['image1']->store('metas', 'public');
         }
 
+        if (isset($data['image2']) && $data['image2'] instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+            $data['image2'] = $data['image2']->store('metas', 'public');
+        }
+
         $data = $shop->createMetas($data);
         // dd($data);
+
+        Notification::make()
+            ->title('Success')
+            ->body('Offer banners updated successfully!')
+            ->success()
+            ->send();
     }
 }
