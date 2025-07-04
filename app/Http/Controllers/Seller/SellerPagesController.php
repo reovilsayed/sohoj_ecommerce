@@ -68,7 +68,7 @@ class SellerPagesController extends Controller
     }
     public function ordersIndex()
     {
-         $latest_orders =  Order::where('shop_id', auth()->user()->shop->id)->latest()->get();
+        $latest_orders =  Order::where('shop_id', auth()->user()->shop->id)->latest()->get();
 
         return view('auth.seller.order.index', compact('latest_orders'));
     }
@@ -78,7 +78,8 @@ class SellerPagesController extends Controller
 
         return view('auth.seller.order.view', compact('order'));
     }
-    public function returned_product_received(Order $order){
+    public function returned_product_received(Order $order)
+    {
         $order->returned_product_received = 1;
         $order->save();
         return back()->with('success_msg', 'Order update successfully');
@@ -260,7 +261,7 @@ class SellerPagesController extends Controller
         $offers = Offer::where('shop_id', auth()->user()->shop->id)->latest()->get();
         return view('auth.seller.offers');
     }
-  
+
     public function orderSeen()
     {
 
@@ -298,7 +299,7 @@ class SellerPagesController extends Controller
     {
         // Update the order status
         if ($order->status !== 3 && $order->shop_id == auth()->user()->shop->id) {
-            if($order->cancel_request==1){
+            if ($order->cancel_request == 1) {
                 $order->update([
                     'cancel_request' => 2,
                 ]);
@@ -317,7 +318,7 @@ class SellerPagesController extends Controller
         if ($order->status == 0 && $order->shop_id == auth()->user()->shop->id) {
             $order->update([
                 'status' => 1,
-                'cancel_request'=>0,
+                'cancel_request' => 0,
             ]);
         }
         $this->notification($order->user_id, auth()->user()->shop->id, 'Order Canceled', '/user/dashboard/orders/index');
@@ -380,7 +381,7 @@ class SellerPagesController extends Controller
         $data = $request->validate(
             [
                 "paypal_email" => "required",
-              
+
             ]
         );
         auth()->user()->verification()->update([
@@ -498,7 +499,8 @@ class SellerPagesController extends Controller
         return $status;
     }
 
-    public function cardAdd(Request $request) {
+    public function cardAdd(Request $request)
+    {
 
         $request->validate([
             'payment_method' => 'required'
@@ -507,20 +509,66 @@ class SellerPagesController extends Controller
         auth()->user()->addPaymentMethod($request->payment_method);
         return back()->with('success_msg', 'Subscription has been add Sucesss');
     }
-    public function cards() {
+    public function cards()
+    {
         $status = $this->subscriptionStatus();
         $intent = auth()->user()->createSetupIntent();
-        
-        return view('auth.seller.cards',compact('intent','status'));
+
+        return view('auth.seller.cards', compact('intent', 'status'));
     }
-    public function refundRequestAccept(Order $order) {
-        if($order->status==5){
+    public function refundRequestAccept(Order $order)
+    {
+        if ($order->status == 5) {
             $order->update([
-                'refund_request_accpet'=>1,
+                'refund_request_accpet' => 1,
             ]);
             return back()->with('success_msg', 'Refund request accepted');
-        }else{
+        } else {
             return redirect()->back()->withErrors('Please make sure user refund request send');
         }
+    }
+
+    public function personalInfoUpdate(Request $request)
+    {
+        $user = auth()->user();
+
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'email'      => 'required|email|unique:users,email,' . $user->id,
+            'avatar'     => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $user->name   = $validated['first_name'];
+        $user->l_name = $validated['last_name'];
+        $user->email  = $validated['email'];
+
+        if ($request->hasFile('avatar')) {
+            // delete old avatar if exists
+            if ($user->avatar) {
+                Storage::delete($user->avatar);
+            }
+
+            // store new avatar
+            $user->avatar = $request->file('avatar')->store('avatars');
+        }
+
+        $user->save();
+
+        return back()->with('success_msg', 'Profile updated successfully!');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password'          => ['required', 'current_password'],
+            'new_password'              => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $user = auth()->user();
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return back()->with('success_msg', 'Password updated successfully!');
     }
 }

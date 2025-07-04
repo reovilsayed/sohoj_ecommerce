@@ -6,6 +6,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
@@ -16,6 +17,8 @@ use Filament\Navigation\NavigationItem;
 use Illuminate\Support\Facades\Auth;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Hash;
+
+use function Laravel\Prompts\text;
 
 class VendorProfilePage extends Page
 {
@@ -42,212 +45,269 @@ class VendorProfilePage extends Page
     {
         $user = Auth::user();
         $shop = $user->shop;
-
-        // Fill user data
-        $this->form->fill([
-            'name' => $user->name,
-            'l_name' => $user->l_name,
-            'email' => $user->email,
-            'phone' => $user->phone,
-            'birth_date' => $user->birth_date,
-            'tax_no' => $user->tax_no,
-            'nid' => $user->nid,
-            'address' => $user->address,
-        ]);
-
         // Fill shop data
         $this->form->fill([
-            'data' => [
-                'name' => $user->name,
-                'l_name' => $user->l_name,
-                'email' => $user->email,
-                'phone' => $user->phone,
-                'birth_date' => $user->birth_date,
-                'tax_no' => $user->tax_no,
-                'nid' => $user->nid,
-                'address' => $user->address,
-            ],
             'shopData' => [
                 'name' => $shop->name ?? '',
+                'company_name' => $shop->company_name ?? '',
+                'short_description' => $shop->short_description ?? '',
                 'description' => $shop->description ?? '',
-                'logo' => $shop->logo ?? '',
-                'banner' => $shop->banner ?? '',
                 'phone' => $shop->phone ?? '',
+                'company_registration' => $shop->company_registration ?? '',
                 'email' => $shop->email ?? '',
-                'address' => $shop->address ?? '', // This will use the magic method from HasMeta
+                'country' => $shop->country ?? '', // This will use the magic method from HasMeta
                 'post_code' => $shop->post_code ?? '',
                 'city' => $shop->city ?? '',
                 'state' => $shop->state ?? '',
-                'country' => $shop->country ?? '',
-                'facebook' => $shop->facebook,
-                'linkedin' => $shop->linkedin,
-                'instagram' => $shop->instagram,
-                'twitter' => $shop->twitter,
             ]
         ]);
     }
 
+
     public function form(Form $form): Form
     {
+
         return $form
             ->schema([
-                Section::make('Personal Information')
-                    ->description('Update your personal details and contact information')
-                    ->icon('heroicon-o-user')
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('data.name')
-                                    ->label('First Name')
-                                    ->required()
-                                    ->maxLength(255),
-                                TextInput::make('data.l_name')
-                                    ->label('Last Name')
-                                    ->required()
-                                    ->maxLength(255),
-                            ]),
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('data.email')
-                                    ->label('Email Address')
-                                    ->email()
-                                    ->required()
-                                    ->maxLength(255),
-                                TextInput::make('data.phone')
-                                    ->label('Phone Number')
-                                    ->tel()
-                                    ->maxLength(20),
-                            ]),
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('data.birth_date')
-                                    ->label('Date of Birth')
-                                    ->type('date'),
-                                TextInput::make('data.tax_no')
-                                    ->label('Tax ID Number')
-                                    ->maxLength(50),
-                            ]),
-                        TextInput::make('data.nid')
-                            ->label('National ID')
-                            ->maxLength(50),
-                        Textarea::make('data.address')
-                            ->label('Address')
-                            ->rows(3)
-                            ->maxLength(500),
-                    ]),
 
-                Section::make('Security Settings')
-                    ->description('Change your password and security preferences')
-                    ->icon('heroicon-o-shield-check')
+                Grid::make(2)
                     ->schema([
-                        TextInput::make('data.current_password')
-                            ->label('Current Password')
-                            ->password()
-                            ->dehydrated(false),
-                        TextInput::make('data.new_password')
-                            ->label('New Password')
-                            ->password()
-                            ->minLength(8)
-                            ->dehydrated(false),
-                        TextInput::make('data.confirm_password')
-                            ->label('Confirm New Password')
-                            ->password()
-                            ->dehydrated(false)
-                            ->same('data.new_password'),
-                    ]),
+                        TextInput::make('shopData.name')
+                            ->label('Shop Name')
+                            ->required()
+                            ->maxLength(255),
+                        TextInput::make('shopData.company_name')
+                            ->label('Company name')
+                            ->nullable()
+                            ->maxLength(255),
+                        TextInput::make('shopData.phone')
+                            ->label('Shop Phone')
+                            ->tel()
+                            ->maxLength(20),
+                        TextInput::make('shopData.company_registration')
+                            ->label('Company Registration')
+                            ->nullable()
 
-                Section::make('Shop Information')
-                    ->description('Manage your shop details and branding')
-                    ->icon('heroicon-o-building-storefront')
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('shopData.name')
-                                    ->label('Shop Name')
-                                    ->required()
-                                    ->maxLength(255),
-                                TextInput::make('shopData.phone')
-                                    ->label('Shop Phone')
-                                    ->tel()
-                                    ->maxLength(20),
-                            ]),
+                            ->maxLength(255),
                         TextInput::make('shopData.email')
                             ->label('Shop Email')
                             ->email()
+                            ->readOnly()
                             ->maxLength(255),
-                        Textarea::make('shopData.description')
-                            ->label('Shop Description')
-                            ->rows(3)
-                            ->maxLength(1000),
-                        Grid::make(2)
-                            ->schema([
-                                FileUpload::make('shopData.logo')
-                                    ->label('Shop Logo')
-                                    ->image()
-                                    ->disk('public')
-                                    ->directory('shop-logos')
-                                    ->maxSize(2048),
-                                FileUpload::make('shopData.banner')
-                                    ->label('Shop Banner')
-                                    ->image()
-                                    ->disk('public')
-                                    ->directory('shop-banners')
-                                    ->maxSize(5120),
-                            ]),
+                        Select::make('shopData.country')
+                            ->label('Shop Country')
+                            ->options([
+                                'Afghanistan' => 'Afghanistan',
+                                'Albania' => 'Albania',
+                                'Algeria' => 'Algeria',
+                                'Andorra' => 'Andorra',
+                                'Angola' => 'Angola',
+                                'Argentina' => 'Argentina',
+                                'Armenia' => 'Armenia',
+                                'Australia' => 'Australia',
+                                'Austria' => 'Austria',
+                                'Azerbaijan' => 'Azerbaijan',
+                                'Bahamas' => 'Bahamas',
+                                'Bahrain' => 'Bahrain',
+                                'Bangladesh' => 'Bangladesh',
+                                'Belarus' => 'Belarus',
+                                'Belgium' => 'Belgium',
+                                'Belize' => 'Belize',
+                                'Benin' => 'Benin',
+                                'Bhutan' => 'Bhutan',
+                                'Bolivia' => 'Bolivia',
+                                'Bosnia and Herzegovina' => 'Bosnia and Herzegovina',
+                                'Botswana' => 'Botswana',
+                                'Brazil' => 'Brazil',
+                                'Brunei' => 'Brunei',
+                                'Bulgaria' => 'Bulgaria',
+                                'Burkina Faso' => 'Burkina Faso',
+                                'Burundi' => 'Burundi',
+                                'Cambodia' => 'Cambodia',
+                                'Cameroon' => 'Cameroon',
+                                'Canada' => 'Canada',
+                                'Cape Verde' => 'Cape Verde',
+                                'Central African Republic' => 'Central African Republic',
+                                'Chad' => 'Chad',
+                                'Chile' => 'Chile',
+                                'China' => 'China',
+                                'Colombia' => 'Colombia',
+                                'Comoros' => 'Comoros',
+                                'Congo' => 'Congo',
+                                'Costa Rica' => 'Costa Rica',
+                                'Croatia' => 'Croatia',
+                                'Cuba' => 'Cuba',
+                                'Cyprus' => 'Cyprus',
+                                'Czech Republic' => 'Czech Republic',
+                                'Denmark' => 'Denmark',
+                                'Djibouti' => 'Djibouti',
+                                'Dominica' => 'Dominica',
+                                'Dominican Republic' => 'Dominican Republic',
+                                'Ecuador' => 'Ecuador',
+                                'Egypt' => 'Egypt',
+                                'El Salvador' => 'El Salvador',
+                                'Equatorial Guinea' => 'Equatorial Guinea',
+                                'Eritrea' => 'Eritrea',
+                                'Estonia' => 'Estonia',
+                                'Eswatini' => 'Eswatini',
+                                'Ethiopia' => 'Ethiopia',
+                                'Fiji' => 'Fiji',
+                                'Finland' => 'Finland',
+                                'France' => 'France',
+                                'Gabon' => 'Gabon',
+                                'Gambia' => 'Gambia',
+                                'Georgia' => 'Georgia',
+                                'Germany' => 'Germany',
+                                'Ghana' => 'Ghana',
+                                'Greece' => 'Greece',
+                                'Grenada' => 'Grenada',
+                                'Guatemala' => 'Guatemala',
+                                'Guinea' => 'Guinea',
+                                'Guinea-Bissau' => 'Guinea-Bissau',
+                                'Guyana' => 'Guyana',
+                                'Haiti' => 'Haiti',
+                                'Honduras' => 'Honduras',
+                                'Hungary' => 'Hungary',
+                                'Iceland' => 'Iceland',
+                                'India' => 'India',
+                                'Indonesia' => 'Indonesia',
+                                'Iran' => 'Iran',
+                                'Iraq' => 'Iraq',
+                                'Ireland' => 'Ireland',
+                                'Israel' => 'Israel',
+                                'Italy' => 'Italy',
+                                'Jamaica' => 'Jamaica',
+                                'Japan' => 'Japan',
+                                'Jordan' => 'Jordan',
+                                'Kazakhstan' => 'Kazakhstan',
+                                'Kenya' => 'Kenya',
+                                'Kiribati' => 'Kiribati',
+                                'Kuwait' => 'Kuwait',
+                                'Kyrgyzstan' => 'Kyrgyzstan',
+                                'Laos' => 'Laos',
+                                'Latvia' => 'Latvia',
+                                'Lebanon' => 'Lebanon',
+                                'Lesotho' => 'Lesotho',
+                                'Liberia' => 'Liberia',
+                                'Libya' => 'Libya',
+                                'Liechtenstein' => 'Liechtenstein',
+                                'Lithuania' => 'Lithuania',
+                                'Luxembourg' => 'Luxembourg',
+                                'Madagascar' => 'Madagascar',
+                                'Malawi' => 'Malawi',
+                                'Malaysia' => 'Malaysia',
+                                'Maldives' => 'Maldives',
+                                'Mali' => 'Mali',
+                                'Malta' => 'Malta',
+                                'Mauritania' => 'Mauritania',
+                                'Mauritius' => 'Mauritius',
+                                'Mexico' => 'Mexico',
+                                'Moldova' => 'Moldova',
+                                'Monaco' => 'Monaco',
+                                'Mongolia' => 'Mongolia',
+                                'Montenegro' => 'Montenegro',
+                                'Morocco' => 'Morocco',
+                                'Mozambique' => 'Mozambique',
+                                'Myanmar' => 'Myanmar',
+                                'Namibia' => 'Namibia',
+                                'Nepal' => 'Nepal',
+                                'Netherlands' => 'Netherlands',
+                                'New Zealand' => 'New Zealand',
+                                'Nicaragua' => 'Nicaragua',
+                                'Niger' => 'Niger',
+                                'Nigeria' => 'Nigeria',
+                                'North Korea' => 'North Korea',
+                                'North Macedonia' => 'North Macedonia',
+                                'Norway' => 'Norway',
+                                'Oman' => 'Oman',
+                                'Pakistan' => 'Pakistan',
+                                'Palau' => 'Palau',
+                                'Palestine' => 'Palestine',
+                                'Panama' => 'Panama',
+                                'Papua New Guinea' => 'Papua New Guinea',
+                                'Paraguay' => 'Paraguay',
+                                'Peru' => 'Peru',
+                                'Philippines' => 'Philippines',
+                                'Poland' => 'Poland',
+                                'Portugal' => 'Portugal',
+                                'Qatar' => 'Qatar',
+                                'Romania' => 'Romania',
+                                'Russia' => 'Russia',
+                                'Rwanda' => 'Rwanda',
+                                'Saint Kitts and Nevis' => 'Saint Kitts and Nevis',
+                                'Saint Lucia' => 'Saint Lucia',
+                                'Saint Vincent and the Grenadines' => 'Saint Vincent and the Grenadines',
+                                'Samoa' => 'Samoa',
+                                'San Marino' => 'San Marino',
+                                'Saudi Arabia' => 'Saudi Arabia',
+                                'Senegal' => 'Senegal',
+                                'Serbia' => 'Serbia',
+                                'Seychelles' => 'Seychelles',
+                                'Sierra Leone' => 'Sierra Leone',
+                                'Singapore' => 'Singapore',
+                                'Slovakia' => 'Slovakia',
+                                'Slovenia' => 'Slovenia',
+                                'Solomon Islands' => 'Solomon Islands',
+                                'Somalia' => 'Somalia',
+                                'South Africa' => 'South Africa',
+                                'South Korea' => 'South Korea',
+                                'South Sudan' => 'South Sudan',
+                                'Spain' => 'Spain',
+                                'Sri Lanka' => 'Sri Lanka',
+                                'Sudan' => 'Sudan',
+                                'Suriname' => 'Suriname',
+                                'Sweden' => 'Sweden',
+                                'Switzerland' => 'Switzerland',
+                                'Syria' => 'Syria',
+                                'Taiwan' => 'Taiwan',
+                                'Tajikistan' => 'Tajikistan',
+                                'Tanzania' => 'Tanzania',
+                                'Thailand' => 'Thailand',
+                                'Togo' => 'Togo',
+                                'Tonga' => 'Tonga',
+                                'Trinidad and Tobago' => 'Trinidad and Tobago',
+                                'Tunisia' => 'Tunisia',
+                                'Turkey' => 'Turkey',
+                                'Turkmenistan' => 'Turkmenistan',
+                                'Tuvalu' => 'Tuvalu',
+                                'Uganda' => 'Uganda',
+                                'Ukraine' => 'Ukraine',
+                                'United Arab Emirates' => 'United Arab Emirates',
+                                'United Kingdom' => 'United Kingdom',
+                                'United States' => 'United States',
+                                'Uruguay' => 'Uruguay',
+                                'Uzbekistan' => 'Uzbekistan',
+                                'Vanuatu' => 'Vanuatu',
+                                'Vatican City' => 'Vatican City',
+                                'Venezuela' => 'Venezuela',
+                                'Vietnam' => 'Vietnam',
+                                'Yemen' => 'Yemen',
+                                'Zambia' => 'Zambia',
+                                'Zimbabwe' => 'Zimbabwe',
+                            ])
+                            ->searchable(),
                     ]),
-
-                Section::make('Location Information')
-                    ->description('Set your shop location and address')
-                    ->icon('heroicon-o-map-pin')
+                Grid::make(3)
                     ->schema([
-                        Textarea::make('shopData.address')
-                            ->label('Shop Address')
-                            ->rows(2)
-                            ->maxLength(500),
-                        Grid::make(3)
-                            ->schema([
-                                TextInput::make('shopData.city')
-                                    ->label('City')
-                                    ->maxLength(100),
-                                TextInput::make('shopData.state')
-                                    ->label('State/Province')
-                                    ->maxLength(100),
-                                TextInput::make('shopData.post_code')
-                                    ->label('Postal Code')
-                                    ->maxLength(20),
-                            ]),
-                        TextInput::make('shopData.country')
-                            ->label('Country')
+                        TextInput::make('shopData.city')
+                            ->label('City')
                             ->maxLength(100),
+                        TextInput::make('shopData.state')
+                            ->label('State/Province')
+                            ->maxLength(100),
+                        TextInput::make('shopData.post_code')
+                            ->label('Postal Code')
+                            ->maxLength(20),
                     ]),
 
-                Section::make('Social Media')
-                    ->description('Connect your social media accounts')
-                    ->icon('heroicon-o-share')
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('shopData.facebook')
-                                    ->label('Facebook URL')
-                                    ->url()
-                                    ->prefix('https://facebook.com/'),
-                                TextInput::make('shopData.instagram')
-                                    ->label('Instagram URL')
-                                    ->url()
-                                    ->prefix('https://instagram.com/'),
-                            ]),
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('shopData.twitter')
-                                    ->label('Twitter URL')
-                                    ->url()
-                                    ->prefix('https://twitter.com/'),
-                                TextInput::make('shopData.linkedin')
-                                    ->label('LinkedIn URL')
-                                    ->url()
-                                    ->prefix('https://linkedin.com/in/'),
-                            ]),
-                    ]),
+                Textarea::make('shopData.short_description')
+                    ->label('Short description')
+                    ->rows(4)
+                    ->maxLength(500),
+                RichEditor::make('shopData.description')
+                    ->label('Description')
+                    ->nullable()
+                    ->maxLength(1000),
             ]);
     }
 
@@ -255,43 +315,15 @@ class VendorProfilePage extends Page
     {
         $user = Auth::user();
         $shop = $user->shop;
-
-        // Update user data
-        $user->update([
-            'name' => $this->data['name'],
-            'l_name' => $this->data['l_name'],
-            'email' => $this->data['email'],
-        ]);
-
-        // Update user meta data
-        $user->createMeta('phone', $this->data['phone']);
-        $user->createMeta('birth_date', $this->data['birth_date']);
-        $user->createMeta('tax_no', $this->data['tax_no']);
-        $user->createMeta('nid', $this->data['nid']);
-        $user->createMeta('address', $this->data['address']);
-
-        // Handle password change
-        if (!empty($this->data['current_password']) && !empty($this->data['new_password'])) {
-            if (!Hash::check($this->data['current_password'], $user->password)) {
-                Notification::make()
-                    ->title('Error')
-                    ->body('Current password is incorrect.')
-                    ->danger()
-                    ->send();
-                return;
-            }
-
-            $user->update([
-                'password' => Hash::make($this->data['new_password'])
-            ]);
-        }
-
         // Update shop data
         if ($shop) {
             $shop->update([
                 'name' => $this->shopData['name'],
+                'company_name' => $this->shopData['company_name'],
+                'short_description' => $this->shopData['short_description'],
                 'description' => $this->shopData['description'],
                 'phone' => $this->shopData['phone'],
+                'company_registration' => $this->shopData['company_registration'],
                 'email' => $this->shopData['email'],
                 'post_code' => $this->shopData['post_code'],
                 'city' => $this->shopData['city'],
@@ -299,23 +331,11 @@ class VendorProfilePage extends Page
                 'country' => $this->shopData['country'],
             ]);
 
-            // Store address as meta data since it's not a direct column
-            $shop->createMeta('address', $this->shopData['address']);
-
-            // Handle file uploads
-            if (isset($this->shopData['logo']) && $this->shopData['logo'] instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
-                $shop->update(['logo' => $this->shopData['logo']->store('shop-logos', 'public')]);
-            }
-
-            if (isset($this->shopData['banner']) && $this->shopData['banner'] instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
-                $shop->update(['banner' => $this->shopData['banner']->store('shop-banners', 'public')]);
-            }
-
             // Update shop meta data
-            $shop->createMeta('facebook', $this->shopData['facebook']);
-            $shop->createMeta('linkedin', $this->shopData['linkedin']);
-            $shop->createMeta('instagram', $this->shopData['instagram']);
-            $shop->createMeta('twitter', $this->shopData['twitter']);
+            // $shop->createMeta('facebook', $this->shopData['facebook']);
+            // $shop->createMeta('linkedin', $this->shopData['linkedin']);
+            // $shop->createMeta('instagram', $this->shopData['instagram']);
+            // $shop->createMeta('twitter', $this->shopData['twitter']);
         }
 
         Notification::make()
@@ -324,4 +344,4 @@ class VendorProfilePage extends Page
             ->success()
             ->send();
     }
-} 
+}

@@ -55,7 +55,7 @@ Route::get('/test/{ticket}', function (Ticket $ticket) {
 
 Route::get('/vendors', [PageController::class, 'vendors'])->name('vendors');
 
-Route::any('/get-state', [PageController::class,'getShops']);
+Route::any('/get-state', [PageController::class, 'getShops']);
 
 Route::post('follow/{shop}', [PageController::class, 'follow'])->name('follow');
 Route::get('liked/shops', [PageController::class, 'followShops'])->name('follow.shops');
@@ -134,7 +134,7 @@ Route::get('/shop', [SellerPagesController::class, 'shop'])->name('vendor.shop')
 Route::post('/store-shop', [SellerPagesController::class, 'shopStore'])->middleware('auth', 'verifiedEmail', 'second')->name('vendor.store');
 
 Route::get('/shop/set-up-payment-method', [PaymentsController::class, 'setUpPaymentMethod'])->middleware('auth', 'verifiedEmail', 'second')->name('vendor.setUpPaymentMethod');
-Route::get('/admin/orders/details/{order}',[AdminController::class,'orderDetails'])->name('admin.order.details')->middleware('auth', 'role:admin');
+Route::get('/admin/orders/details/{order}', [AdminController::class, 'orderDetails'])->name('admin.order.details')->middleware('auth', 'role:admin');
 
 Route::get('email/{offer}', function (Offer $offer) {
     return new OfferEmail($offer);
@@ -156,7 +156,11 @@ Route::get('/vendor/settings', [SellerPagesController::class, 'setting'])->name(
 Route::get('/seen/{notification}', [MassageController::class, 'seen'])->name('massage.seen');
 Route::get('/massage/{id?}', [MassageController::class, 'create'])->name('massage.create')->middleware('auth');
 Route::get('/massage/store/{id}', [MassageController::class, 'store'])->name('massage.store')->middleware('auth');
-Route::post('logo-or-cover/upload', [SellerPagesController::class, 'logoCover'])->middleware('auth', 'verifiedEmail', 'second')->name('vendor.logo.cover');
+Route::post('vendor/vendor-profile-page', [SellerPagesController::class, 'logoCover'])->middleware('auth', 'verifiedEmail', 'second')->name('vendor.logo.cover');
+Route::post('vendor/personal-info', [SellerPagesController::class, 'personalInfoUpdate'])->name('vendor.personal_info');
+Route::post('/vendor/update-password', [SellerPagesController::class, 'updatePassword'])
+    ->name('vendor.update_password');
+
 
 
 Route::post('setting/bankInfo/update', [SellerPagesController::class, 'bankInfoUpdate'])->middleware('auth', 'verifiedEmail', 'second')->name('vendor.bankInfo.update');
@@ -174,5 +178,3 @@ Route::get('hello/{order}', function (Order $order) {
     return new OrderPlaced($order);
     // return  Mail::to($order->email)->send(new OrderPlaced($order));
 });
-
-
