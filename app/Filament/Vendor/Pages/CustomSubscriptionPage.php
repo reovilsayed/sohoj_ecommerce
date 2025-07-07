@@ -34,6 +34,12 @@ class CustomSubscriptionPage extends Page
         ];
     }
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $shop = auth()->user()->shop;
+        return $shop && $shop->status == 1;
+    }
+
     protected function subscriptionStatus(): string
     {
         $getSubscription = auth()->user()->getSubscription();

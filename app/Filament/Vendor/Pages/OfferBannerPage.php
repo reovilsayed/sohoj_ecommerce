@@ -32,6 +32,12 @@ class OfferBannerPage extends Page
         ];
     }
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $shop = auth()->user()->shop;
+        return $shop && $shop->status == 1;
+    }
+
     public function mount(): void
     {
         $shop = Auth::user()->shop;
@@ -39,11 +45,11 @@ class OfferBannerPage extends Page
         $this->form->fill([
             'title1' => $shop->title1,
             'category1' => $shop->category1,
-            'image1' => '', 
+            'image1' => '',
             'link1' => $shop->link1,
             'title2' => $shop->title2,
             'category2' => $shop->category2,
-            'image2' => '', 
+            'image2' => '',
             'link2' => $shop->link2,
         ]);
     }

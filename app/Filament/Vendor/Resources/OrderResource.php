@@ -35,6 +35,12 @@ class OrderResource extends Resource
             ->where('shop_id', auth()->user()->shop->id);
     }
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $shop = auth()->user()->shop;
+        return $shop && $shop->status == 1;
+    }
+
     public static function canCreate(): bool
     {
         return false;

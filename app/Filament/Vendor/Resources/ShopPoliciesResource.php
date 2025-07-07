@@ -24,14 +24,19 @@ class ShopPoliciesResource extends Resource
     public static ?string $description = "Manage your shop policies here.";
 
 
-   
+
     public static function getEloquentQuery(): Builder
     {
         $shop = auth()->user()->shop;
         return parent::getEloquentQuery()
             ->where('shop_id', $shop->id); // assuming vendor has `shop_id`
     }
-    
+    public static function shouldRegisterNavigation(): bool
+    {
+        $shop = auth()->user()->shop;
+        return $shop && $shop->status == 1;
+    }
+
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 

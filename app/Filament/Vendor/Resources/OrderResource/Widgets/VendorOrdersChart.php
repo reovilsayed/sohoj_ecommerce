@@ -11,7 +11,23 @@ class VendorOrdersChart extends ChartWidget
 
     protected function getData(): array
     {
-        $shopId = auth()->user()->shop->id;
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $shop = $user && property_exists($user, 'shop') ? $user->shop : null;
+        if (!$shop) {
+            // No shop, return empty chart
+            return [
+                'datasets' => [
+                    [
+                        'label' => 'Orders',
+                        'data' => [],
+                        'backgroundColor' => 'rgba(59, 130, 246, 0.5)',
+                        'borderColor' => 'rgba(59, 130, 246, 1)',
+                    ],
+                ],
+                'labels' => [],
+            ];
+        }
+        $shopId = $shop->id;
         $orders = Order::where('shop_id', $shopId)
             ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)

@@ -33,6 +33,12 @@ class TicketResource extends Resource
             ->where('shop_id', $shop->id)->where('parent_id', null)->latest(); 
     }
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $shop = auth()->user()->shop;
+        return $shop && $shop->status == 1;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -111,6 +117,8 @@ class TicketResource extends Resource
             //
         ];
     }
+
+    
 
     public static function getPages(): array
     {

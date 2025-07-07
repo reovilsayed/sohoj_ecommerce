@@ -141,7 +141,8 @@ class HomeController extends Controller
             'address_1' => $request->address,
             'phone' => $request->phone,
         ]);
-        return redirect()->route('vendor.shop')->with('success_msg', 'Thanks for your informations');
+        // return redirect()->route('vendor.shop')->with('success_msg', 'Thanks for your informations');
+        return redirect('/vendor')->with('success_msg', 'Thanks for your informations');
     }
     public function offer(ProductModel $product, Request $request)
     {

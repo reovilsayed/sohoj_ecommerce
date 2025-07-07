@@ -2,6 +2,8 @@
 
 namespace App\Filament\Vendor\Pages;
 
+use App\Models\Shop;
+use Closure;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -12,6 +14,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
+use Illuminate\Support\Str;
 use Filament\Forms\Form;
 use Filament\Navigation\NavigationItem;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +52,7 @@ class VendorProfilePage extends Page
         $this->form->fill([
             'shopData' => [
                 'name' => $shop->name ?? '',
+                'slug' => $shop->slug ?? '',
                 'company_name' => $shop->company_name ?? '',
                 'short_description' => $shop->short_description ?? '',
                 'description' => $shop->description ?? '',
@@ -75,7 +79,17 @@ class VendorProfilePage extends Page
                         TextInput::make('shopData.name')
                             ->label('Shop Name')
                             ->required()
+                        ->live(true)
+                            ->afterStateUpdated(fn(string $context, $state, callable $set) => $set('shopData.slug', Str::slug($state)) )
                             ->maxLength(255),
+
+                        TextInput::make('shopData.slug')
+                            ->label('Slug')
+                            ->required()
+                            ->maxLength(255)
+                            ->unique(Shop::class, 'slug', ignoreRecord: true)
+                            ->rules(['alpha_dash']),
+
                         TextInput::make('shopData.company_name')
                             ->label('Company name')
                             ->nullable()
@@ -92,7 +106,7 @@ class VendorProfilePage extends Page
                         TextInput::make('shopData.email')
                             ->label('Shop Email')
                             ->email()
-                            ->readOnly()
+                            // ->readOnly()
                             ->maxLength(255),
                         Select::make('shopData.country')
                             ->label('Shop Country')
@@ -319,6 +333,7 @@ class VendorProfilePage extends Page
         if ($shop) {
             $shop->update([
                 'name' => $this->shopData['name'],
+                'slug' => $this->shopData['slug'],
                 'company_name' => $this->shopData['company_name'],
                 'short_description' => $this->shopData['short_description'],
                 'description' => $this->shopData['description'],
@@ -330,12 +345,6 @@ class VendorProfilePage extends Page
                 'state' => $this->shopData['state'],
                 'country' => $this->shopData['country'],
             ]);
-
-            // Update shop meta data
-            // $shop->createMeta('facebook', $this->shopData['facebook']);
-            // $shop->createMeta('linkedin', $this->shopData['linkedin']);
-            // $shop->createMeta('instagram', $this->shopData['instagram']);
-            // $shop->createMeta('twitter', $this->shopData['twitter']);
         }
 
         Notification::make()

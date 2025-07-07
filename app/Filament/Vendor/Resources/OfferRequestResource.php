@@ -32,6 +32,12 @@ class OfferRequestResource extends Resource
             ->latest();
     }
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $shop = auth()->user()->shop;
+        return $shop && $shop->status == 1;
+    }
+
 
     public static function canCreate(): bool
     {

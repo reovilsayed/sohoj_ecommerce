@@ -295,6 +295,12 @@ class ProductResource extends Resource
         return static::getEloquentQuery()->count();
     }
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $shop = auth()->user()->shop;
+        return $shop && $shop->status == 1;
+    }
+
     public static function getNavigationBadgeColor(): string|array|null
     {
         return static::getModel()::where('quantity', '<=', 10)->count() > 0 ? 'warning' : 'primary';

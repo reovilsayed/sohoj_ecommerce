@@ -175,14 +175,18 @@
                         <div class="">
                             <div class="card">
                                 <div class="card-header avatar-banner-upload">
-                                    @if ($shop->banner)
+                                    @if ($shop && $shop->banner)
                                         <img src="{{ Storage::url($shop->banner) }}" alt="Shop Banner"
+                                            class="w-full object-cover rounded-t-lg" style="height: 250px; ">
+                                    @else
+                                        <img src="{{ asset('assets/img/heaer.jpg') }}" alt="Shop Banner"
                                             class="w-full object-cover rounded-t-lg" style="height: 250px; ">
                                     @endif
                                     <div class="avatar-banner-overlay">
                                         <div
                                             class="absolute inset-0 bg-black/40 flex items-center justify-center hover:bg-black/60 transition cursor-pointer">
-                                            <label for="banner-upload" class="flex flex-col items-center text-white">
+                                            <label for="banner-upload"
+                                                class="flex flex-col items-center text-white w-full">
                                                 <svg class="w-8 h-8 mb-1" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -202,14 +206,12 @@
                         <div class="flex items-center justify-between mt-6">
                             <div class="flex items-center space-x-4">
                                 <div class="avatar-upload">
-                                    @if ($shop->logo)
+                                    @if ($shop && $shop->logo)
                                         <img src="{{ Storage::url($shop->logo) }}" alt="Profile"
                                             class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg">
                                     @else
-                                        <div
-                                            class="w-16 h-16 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 flex items-center justify-center text-white font-bold text-xl border-4 border-white shadow-lg">
-                                            {{ strtoupper(substr($user->name, 0, 1)) }}{{ strtoupper(substr($user->l_name, 0, 1)) }}
-                                        </div>
+                                        <img src="{{ asset('assets/img/heaer.jpg') }}" alt="Profile"
+                                            class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg">
                                     @endif
                                     <div class="avatar-overlay">
                                         <label for="logo-upload" class="flex flex-col items-center text-white">

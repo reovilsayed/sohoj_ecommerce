@@ -12,8 +12,14 @@ class CustomChargesPage extends Page
 
     protected static string $view = 'filament.vendor.pages.custom-charges-page';
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        $shop = auth()->user()->shop;
+        return $shop && $shop->status == 1;
+    }
     public static function getNavigationItems(): array
     {
+
         return [
             NavigationItem::make('Charges')
                 ->url(fn() => route('filament.vendor.pages.custom-charges-page'))
