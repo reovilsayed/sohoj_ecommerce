@@ -1,19 +1,16 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\VerifyEmail;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use App\Models\Verification;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -78,14 +75,15 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'l_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'name'     => ['required', 'string', 'max:255'],
+            'l_name'   => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role_id' => ['required'],
+
         ]);
     }
 
+    
     /**
      * Create a new user instance after a valid registration.
      *
@@ -94,31 +92,26 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-      
-        $array=[
-            'name' => $data['name'],
-            'l_name' => $data['l_name'],
-            'email' => $data['email'],
+
+        $array = [
+            'name'     => $data['name'],
+            'l_name'   => $data['l_name'],
+            'email'    => $data['email'],
             'password' => Hash::make($data['password']),
-            'role_id' => $data['role_id'],
+            'role_id'  => 2,
 
         ];
-        $user= User::create($array);
-        $verify_token=Str::random(20);
+        $user         = User::create($array);
+        $verify_token = Str::random(20);
 
-        if($data['role_id']==3){
-            // Mail::to(setting('site.email'))->send(new NotifyEmail($user));
-            Mail::to($user->email)->send(new VerifyEmail($user,$verify_token));
-        }
-
+       
         return $user;
     }
+
     public function vendorCreate()
     {
 
         return view('auth.seller.register');
     }
-
- 
 
 }
