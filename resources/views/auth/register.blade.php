@@ -16,7 +16,7 @@
                 <div class="col-md-12 text-center">
                     <div class="section-title">
                         {{-- <h2 class="ec-bg-title">Log In</h2> --}}
-                        <h2 class="ec-title">Get Started with <span class="text-success">AhroMart</span> </h2>
+                        <h2 class="ec-title">Get Started with <span class="text-success">Sohoj Ecommerce</span> </h2>
                         <p class="sub-title mb-3">{{ __('Create your free account') }}</p>
                     </div>
                 </div>

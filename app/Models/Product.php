@@ -14,6 +14,10 @@ class Product extends Model
     protected $casts = [
         'images' => 'array',
     ];
+
+    public $with = ['ratings'];
+
+    
     public function shop()
     {
         return $this->belongsTo(Shop::class);

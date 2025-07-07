@@ -200,7 +200,7 @@
 
                                             <div class="col-md-6">
                                                 <label for="title" class="form-label ">Menu Title 1</label>
-                                                <input type="text" name="meta[menuTitle1]" value="{{ auth()->user()->shop->menuTitle1 }}" class="form-control @error('meta') is-invalid @enderror" id="menuTitle1">
+                                                <input type="text" name="meta[menuTitle1]" value="{{ auth()->user()->shop->menuTitle1 ?? '' }}" class="form-control @error('meta') is-invalid @enderror" id="menuTitle1">
                                                 @error('meta[menuTitle1]')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -210,7 +210,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="title" class="form-label">Menu Link 1</label>
-                                                <input type="text" name="meta[menuLink1]" value="{{ auth()->user()->shop->menuLink1 }}" class="form-control @error('meta') is-invalid @enderror" id="menuLink1">
+                                                <input type="text" name="meta[menuLink1]" value="{{ auth()->user()->shop->menuLink1 ?? '' }}" class="form-control @error('meta') is-invalid @enderror" id="menuLink1">
                                                 @error('meta[menuLink1]')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -219,7 +219,7 @@
                                             </div>
                                             <div class="col-md-6 mt-2">
                                                 <label for="title" class="form-label ">Menu Title 2</label>
-                                                <input type="text" name="meta[menuTitle2]" value="{{ auth()->user()->shop->menuTitle2 }}" class="form-control @error('meta') is-invalid @enderror" id="menuTitle2">
+                                                <input type="text" name="meta[menuTitle2]" value="{{ auth()->user()->shop->menuTitle2 ?? '' }}" class="form-control @error('meta') is-invalid @enderror" id="menuTitle2">
                                                 @error('meta[menuTitle2]')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -229,7 +229,7 @@
                                             </div>
                                             <div class="col-md-6 mt-2">
                                                 <label for="title" class="form-label">Menu Link 2</label>
-                                                <input type="text" name="meta[menuLink2]" value="{{ auth()->user()->shop->menuLink2 }}" class="form-control @error('meta') is-invalid @enderror" id="menuLink2">
+                                                <input type="text" name="meta[menuLink2]" value="{{ auth()->user()->shop->menuLink2 ?? '' }}" class="form-control @error('meta') is-invalid @enderror" id="menuLink2">
                                                 @error('meta[menuLink2]')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

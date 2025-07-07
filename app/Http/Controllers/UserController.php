@@ -190,10 +190,10 @@ class UserController extends Controller
     public function removeCard(Request $request)
     {
         $user = auth()->user();
-        if($user->role_id==2){
+        if ($user->role_id == 2) {
             $user->deletePaymentMethod($request->method);
             return redirect()->back()->with('success', 'Payment method deleted successfully.');
-        }else{
+        } else {
             if ($user->paymentMethods()->count() > 1) {
 
                 $user->deletePaymentMethod($request->method);
@@ -202,12 +202,26 @@ class UserController extends Controller
                 return redirect()->back()->withErrors('You must have at least one payment method.');
             }
         }
-
-  
     }
     public function setCardAsDefault(Request $request)
     {
         auth()->user()->updateDefaultPaymentMethod($request->method);
         return redirect()->back();
+    }
+
+    public function cardAdd(Request $request)
+    {
+        $request->validate([
+            'payment_method' => 'required'
+        ]);
+        $user = auth()->user();
+        $user->createOrGetStripeCustomer();
+        $user->addPaymentMethod($request->payment_method);
+
+        if ($request->default_card) {
+            $user->updateDefaultPaymentMethod($request->payment_method);
+        }
+
+        return back()->with('success_msg', 'Payment method added successfully.');
     }
 }

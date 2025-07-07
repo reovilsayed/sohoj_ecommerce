@@ -21,6 +21,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    public $with = ['followedShops'];
     protected $meta_attributes = [
         "phone",
         'birth_date',
@@ -112,7 +113,10 @@ class User extends Authenticatable
     }
     public function follows(Shop $shop)
     {
-        return $this->followedShops()->where('shop_id', $shop->id)->exists();
+        $cacheKey = 'user:' . $this->id . ':follows_shop:' . $shop->id;
+        return \Illuminate\Support\Facades\Cache::remember($cacheKey, now()->addMinutes(10), function () use ($shop) {
+            return $this->followedShops()->where('shop_id', $shop->id)->exists();
+        });
     }
 
     public function chargeWithSubscription($amount, $comment)

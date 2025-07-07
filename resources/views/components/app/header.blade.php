@@ -77,16 +77,24 @@
 </style>
 
 @php
+    // Use Laravel cache for expensive queries
+    use Illuminate\Support\Facades\Cache;
     use App\Models\Prodcat;
     use App\Models\Shop;
     use App\Models\Order;
-    $categories = Prodcat::whereNull('parent_id')
-        ->orderBy('role', 'asc')
-        ->get();
-    $shops = Shop::latest()->get();
+
+    $categories = Cache::remember('header_categories', 3600, function () {
+        return Prodcat::whereNull('parent_id')
+            ->orderBy('role', 'asc')
+            ->with('childrens')
+            ->get();
+    });
+
+    $shops = Cache::remember('header_shops', 3600, function () {
+        return Shop::latest()->get();
+    });
 
     $route = route('shops');
-
 @endphp
 <header class="ec-header">
     <!--Ec Header Top Start -->
@@ -95,27 +103,9 @@
             <div class="row align-items-center">
                 <!-- Header Top social Start -->
                 <div class="col text-left header-top-left d-none d-lg-block">
-                    <!-- <div class="header-top-social">
-                        <span class="social-text text-upper">Follow us on:</span>
-                        <ul class="mb-0">
-                            <li class="list-inline-item"><a class="hdr-facebook" href="#"><i
-                                        class="ecicon eci-facebook"></i></a></li>
-                            <li class="list-inline-item"><a class="hdr-twitter" href="#"><i
-                                        class="ecicon eci-twitter"></i></a></li>
-                            <li class="list-inline-item"><a class="hdr-instagram" href="#"><i
-                                        class="ecicon eci-instagram"></i></a></li>
-                            <li class="list-inline-item"><a class="hdr-linkedin" href="#"><i
-                                        class="ecicon eci-linkedin"></i></a></li>
-                        </ul>
-                    </div> -->
+                 
                 </div>
-                <!-- Header Top social End -->
-                <!-- Header Top Message Start -->
-                <!-- <div class="col text-center header-top-center">
-                    <div class="header-top-message text-upper">
-                        <span>Free Shipping</span>This Week Order Over - $75
-                    </div>
-                </div> -->
+            
                 <div class="col tab-logo">
                     <div class="header-logo">
                         <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo.avif')}}"
@@ -158,10 +148,7 @@
 
                         <!-- Header User End -->
                         <!-- Header Cart Start -->
-                        {{-- <a href="{{ route('location.search') }}" class="ec-header-btn ec-header-wishlist">
-                            <div class="header-icon"><i class="fas fa-map-marker-alt"></i></div>
-                            
-                        </a> --}}
+                    
                         <div
                             style="display: flex;width:180px;align-items:center;border-right: 2px solid;
                         padding-right: 5px;">

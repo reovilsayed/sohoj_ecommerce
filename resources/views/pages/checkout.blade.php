@@ -532,66 +532,38 @@
     </div> --}}
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Personal Information</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+                <form id="payment-form" action="{{ route('user.user.card_add') }}" method="post">
+                    @csrf
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Card</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
 
-                    <form action="{{ route('user.address.store') }}" method="post">
-                        @csrf
-                        <div class="row">
-                            <div class="col-12">
+                        <div id="card-element"></div>
 
-                                <input type="text" name="address_1" value="" required
-                                    class="form-control mb-2 @error('address_1') is-invalid @enderror" id="inputAddress"
-                                    placeholder="Street Address">
-                                @error('address_1')
-                                    <span class="text-danger">
-                                        {{ $message }}
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="col-md-6">
-
-                                <x-country />
-                            </div>
-                            <div class="col-md-6">
-
-                                <x-state />
-                            </div>
-                            <div class="col-md-6">
-
-                                <input type="text" placeholder="City" required value="" name="city"
-                                    class="form-control my-2 @error('city') is-invalid @enderror" id="inputPassword4">
-                                @error('city')
-                                    <span class="text-danger">
-                                        {{ $message }}
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="col-md-6">
-                                <input type="text" required
-                                    class="form-control my-2 @error('post_code') is-invalid @enderror" value=""
-                                    name="post_code" placeholder="Zip/Postal Code" id="inputEmail4">
-                                @error('post_code')
-                                    <span class="text-danger">
-                                        {{ $message }}
-                                    </span>
-                                @enderror
-                            </div>
-
+                        <div class="mt-3 d-flex justify-content-start align-items-center">
+                            <input class="form-check-input" name="default_card" type="checkbox" id="gridCheck"
+                                style="margin-right: 11px">
+                            <label class="form-check-label address-label" for="gridCheck">
+                                Make this my default card
+                            </label>
                         </div>
 
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
+                        <!-- IMPORTANT: hidden input for payment method -->
+                        <input type="hidden" name="payment_method" id="paymentmethod">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="card-button"
+                            data-secret="{{ $intent->client_secret }}">
+                            Save changes
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -600,28 +572,30 @@
     <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
-
-                    <div id="card-element"></div>
-
-                    <div class="mt-3 d-flex justify-content-start align-items-center">
-                        <input class="form-check-input " style="margin-right: 11px" type="checkbox" id="gridCheck">
-                        <label class="form-check-label address-label" for="gridCheck">
-                            Make this my default card
-
-                        </label>
+                <form action="{{ route('user.user.card_add') }}" method="post">
+                    @csrf
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="card-button"
-                        data-secret="{{ $intent->client_secret }}">Save changes</button>
-                </div>
+                    <div class="modal-body">
+                        <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
+
+                        <div id="card-element"></div>
+
+                        <div class="mt-3 d-flex justify-content-start align-items-center">
+                            <input class="form-check-input " style="margin-right: 11px" type="checkbox" id="gridCheck">
+                            <label class="form-check-label address-label" for="gridCheck">
+                                Make this my default card
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="card-button"
+                            data-secret="{{ $intent->client_secret }}">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -629,17 +603,13 @@
 @section('js')
     <script src="{{ asset('assets/frontend-assets/js/vendor/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('assets/frontend-assets/js/plugins/jquery.sticky-sidebar.js') }}"></script>
-
     <script src="{{ asset('assets/frontend-assets/js/main.js') }}"></script>
-
     <script src="https://js.stripe.com/v3/"></script>
 
     <script>
         const stripe = Stripe("{{ env('STRIPE_KEY') }}");
-
         const elements = stripe.elements();
         const cardElement = elements.create('card');
-
         cardElement.mount('#card-element');
 
         const cardHolderName = document.getElementById('card-holder-name');
@@ -647,6 +617,10 @@
         const clientSecret = cardButton.dataset.secret;
 
         cardButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            cardButton.disabled = true;
+
             const {
                 setupIntent,
                 error
@@ -662,21 +636,15 @@
             );
 
             if (error) {
-                if (error?.setupIntent) {
-                    document.getElementById('paymentmethod').value = error.setupIntent.payment_method
-                    document.getElementById('paymentmethod').checked = true
-                    document.getElementById('card-button').style.display = 'none'
-                    toastr.success('Card added');
-                } else {
-                    toastr.error('Something went wrong. Try again letter');
-                }
-
-            } else {
-                document.getElementById('paymentmethod').value = setupIntent.payment_method
-                document.getElementById('paymentmethod').checked = true
-                document.getElementById('card-button').style.display = 'none'
-                toastr.success('Card added');
+                toastr.error(error.message || 'Something went wrong. Try again later.');
+                cardButton.disabled = false;
+                return;
             }
+
+            // success: inject payment_method and submit form
+            document.getElementById('paymentmethod').value = setupIntent.payment_method;
+            toastr.success('Card added');
+            document.getElementById('payment-form').submit();
         });
     </script>
 @endsection

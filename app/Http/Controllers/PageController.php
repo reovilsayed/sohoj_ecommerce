@@ -19,33 +19,67 @@ class PageController extends Controller
 {
     public function home()
     {
-        $latest_products = Product::orderBy('views', 'desc')->where("status", 1)
-            ->whereHas('shop', function ($q) {
-                $q->where('status', 1);
-            })
-            ->when(Session::has('location'), function ($q) {
-                $postcode = Session::get('location.postcode');
-                $q->whereIn('post_code', $postcode);
-            })
-            ->latest()->limit(24)->whereNull('parent_id')->get();
-        $bestsaleproducts = Product::orderBy('total_sale', 'desc')
-            ->whereHas('shop', function ($q) {
-                $q->where('status', 1);
-            })
-            ->when(Session::has('location'), function ($q) {
-                $postcode = Session::get('location.postcode');
-                $q->whereIn('post_code', $postcode);
-            })
-            ->latest()->limit(16)->whereNull('parent_id')->get();
+        $locationPostcodes = Session::get('location.postcode', []);
+
+
+        $latest_products = \Cache::remember('latest_products:' . md5(json_encode($locationPostcodes)), 3600, function () use ($locationPostcodes) {
+            return Product::query()
+                ->select(['id','slug', 'name', 'shop_id', 'views', 'post_code', 'status', 'parent_id'])
+                ->where('status', 1)
+                ->whereNull('parent_id')
+                ->whereHas('shop', fn($q) => $q->where('status', 1))
+                ->when(!empty($locationPostcodes), fn($q) => $q->whereIn('post_code', $locationPostcodes))
+                ->orderByDesc('views')
+                ->latest()
+                ->limit(24)
+                ->with(relations: ['shop:id,name,status', 'ratings'])
+                ->get();
+        });
+
+        $bestsaleproducts = \Cache::remember('bestsaleproducts:' . md5(json_encode($locationPostcodes)), 3600, function () use ($locationPostcodes) {
+            return Product::query()
+                ->select(['id','slug', 'name', 'shop_id', 'total_sale', 'post_code', 'status', 'parent_id'])
+                ->where('status', 1)
+                ->whereNull('parent_id')
+                ->whereHas('shop', fn($q) => $q->where('status', 1))
+                ->when(!empty($locationPostcodes), fn($q) => $q->whereIn('post_code', $locationPostcodes))
+                ->orderByDesc('total_sale')
+                ->latest()
+                ->limit(16)
+                ->with(['shop:id,name,status'])
+                ->get();
+        });
 
         $recommand = session()->get('recommand', []);
-        $recommandProducts = Product::whereNull('parent_id')->whereIn('id', $recommand)->get();
+        $recommandProducts = \Cache::remember('recommandProducts:' . md5(json_encode($recommand)), 3600, function () use ($recommand) {
+            return Product::query()
+                ->select(['id', 'slug','name', 'shop_id', 'parent_id'])
+                ->whereNull('parent_id')
+                ->whereIn('id', $recommand)
+                ->with(['shop:id,name'])
+                ->get();
+        });
 
-        $latest_shops =  Shop::where("status", 1)->whereHas('products', function ($query) {
-            $query->whereNull('parent_id');
-        })->latest()->limit(8)->get();
-        $prodcats = Prodcat::with('childrens')->where('parent_id', null)->orderBy('role', 'asc')->get();
-        $sliders = Slider::latest()->get();
+        $latest_shops = \Cache::remember('latest_shops', 3600, function () {
+            return Shop::query()
+                ->where('status', 1)
+                ->whereHas('products', fn($q) => $q->whereNull('parent_id'))
+                ->latest()
+                ->limit(8)
+                ->with(['products:id,shop_id,slug'])
+                ->get();
+        });
+
+        $prodcats = \Cache::remember('prodcats', 3600, function () {
+            return Prodcat::with('childrens')
+                ->whereNull('parent_id')
+                ->orderBy('role', 'asc')
+                ->get();
+        });
+
+        $sliders = \Cache::remember('sliders', 3600, function () {
+            return Slider::latest()->get();
+        });
 
         return view('pages.home', compact('latest_products', 'bestsaleproducts', 'latest_shops', 'prodcats', 'sliders', 'recommandProducts'));
     }

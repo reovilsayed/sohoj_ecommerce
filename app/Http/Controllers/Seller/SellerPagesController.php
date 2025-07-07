@@ -502,6 +502,7 @@ class SellerPagesController extends Controller
     public function cardAdd(Request $request)
     {
 
+        dd($request->all());
         $request->validate([
             'payment_method' => 'required'
         ]);

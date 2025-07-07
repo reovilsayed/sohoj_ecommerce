@@ -22,6 +22,7 @@ Route::group(
 
         Route::get('/orders/index', [UserController::class, 'ordersIndex'])->name('ordersIndex');
         Route::post('/orders/accept/{order}', [UserController::class, 'orderAccept'])->name('order.accept');
+        Route::post('card/add', [UserController::class, 'cardAdd'])->name('user.card_add');
 
 
         Route::get('/invoice/{order}', [UserController::class, 'invoice'])->name('invoice');

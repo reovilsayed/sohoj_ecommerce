@@ -2,7 +2,6 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />
     <style>
-
         :root {
             --primary-color: #6C63FF;
             --primary-hover: #564FD9;
@@ -16,6 +15,7 @@
             --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
+
         .login-wrapper {
             display: flex;
             min-height: 100vh;
@@ -23,13 +23,13 @@
         }
 
         /* .login-image {
-            flex: 1;
-            background: url('/assets/img/login-bg.png') center/cover no-repeat;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            display: none;
-        } */
+                flex: 1;
+                background: url('/assets/img/login-bg.png') center/cover no-repeat;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                display: none;
+            } */
 
         .login-content {
             flex: 1;
@@ -220,6 +220,16 @@
                 padding: 3rem;
             }
         }
+
+        @media (min-width: 853px) and (max-width: 1280px) {
+            .login-wrapper {
+                min-height: 61vh;
+            }
+
+            .login-image {
+                display: none !important;
+            }
+        }
     </style>
 @endsection
 
@@ -227,11 +237,11 @@
     <x-app.header />
     <div class="login-wrapper">
         <!-- Image Section (Visible on desktop) -->
-        
+
         <!-- Login Form Section -->
         <div class="login-content">
             <div class="login-image d-flex justify-content-center align-items-center d-md-block d-none">
-                <img src="{{asset('/assets/img/login-bg.png')}}" alt="">
+                <img src="{{ asset('/assets/img/login-bg.png') }}" alt="">
             </div>
             <div class="login-card">
                 <span class="brand-logo">Sohoj Ecommerce</span>
@@ -249,7 +259,7 @@
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
                             name="email" value="{{ old('email') }}" required autocomplete="email" autofocus
                             placeholder="Enter your email">
-                            <i class="fas fa-envelope input-icon"></i>
+                        <i class="fas fa-envelope input-icon"></i>
                         @error('email')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -261,7 +271,7 @@
                         <label for="password" class="form-label">Password</label>
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
                             name="password" required autocomplete="current-password" placeholder="Enter your password">
-                            <i class="fas fa-lock input-icon"></i>
+                        <i class="fas fa-lock input-icon"></i>
                         @error('password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

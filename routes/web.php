@@ -44,13 +44,6 @@ use Stripe\Stripe;
 |
 */
 
-Route::get('/test/{ticket}', function (Ticket $ticket) {
-    return new TicketPlaced($ticket, 'This message is for test purpose');
-});
-// Route::get('/hello', function () {
-//     dd(Shop::find(1)->monthlyCharge());
-// });
-//Vendors
 
 
 Route::get('/vendors', [PageController::class, 'vendors'])->name('vendors');

@@ -6,12 +6,12 @@ use App\Http\Requests\OrderRequest;
 use App\Mail\OrderPlaced;
 use App\Models\Address;
 use App\Models\Notification;
-use Sohoj;
+// Use the Sohoj facade alias registered in config/app.php
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\User;
-use Cart;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Error;
 use Exception;
 use Illuminate\Http\Request;
@@ -62,22 +62,25 @@ class CheckoutController extends Controller
         }
         // try {
         // DB::beginTransaction();
-        $platform_fee = Sohoj::flatCommision(Cart::SubTotal());
-        $total = (Cart::SubTotal() + $platform_fee + Sohoj::shipping()) - Sohoj::discount();
+        $cartSubtotal = (float) (Cart::SubTotal() ?? 0);
+        $platform_fee = (float) (\Sohoj::flatCommision($cartSubtotal) ?? 0);
+        $shipping = (float) (\Sohoj::shipping() ?? 0);
+        $discount = (float) (\Sohoj::discount() ?? 0);
+        $total = $cartSubtotal + $platform_fee + $shipping - $discount;
 
         $order = Order::create([
-            'user_id' => auth()->user() ? auth()->user()->id : null,
+            'user_id' => \auth()->check() ? \auth()->id() : null,
             'shop_id' => null,
             'product_id' => null,
             'shipping' => json_encode($shipping),
             'aptment' => $request->aptment,
-            'subtotal' => Cart::SubTotal(),
-            'discount' => Sohoj::round_num(Sohoj::discount()),
-            'discount_code' => Sohoj::discount_code(),
+            'subtotal' => floatval(str_replace(',', '', Cart::SubTotal())),
+            'discount' => \Sohoj::round_num(\Sohoj::discount()),
+            'discount_code' => \Sohoj::discount_code(),
             'tax' => null,
-            'shipping_total' => Sohoj::round_num(Sohoj::shipping()),
-            'platform_fee' => $platform_fee,
-            'total' => Sohoj::round_num($total),
+            'shipping_total' => floatval(str_replace(',', '', \Sohoj::round_num(\Sohoj::shipping()))),
+            'platform_fee' => floatval(str_replace(',', '', $platform_fee)),
+            'total' => floatval(str_replace(',', '', \Sohoj::round_num($total))),
             'quantity' => null,
             'vendor_total' => null,
             'payment_method' => $request->payment_method[0],
@@ -94,19 +97,19 @@ class CheckoutController extends Controller
                 'shop_id' => $item->model->shop_id,
             ]);
             $childOrder = Order::create([
-                'user_id' => auth()->user() ? auth()->user()->id : null,
+                'user_id' => \auth()->check() ? \auth()->id() : null,
                 'parent_id' => $order->id,
                 'shop_id' => $item->model->shop_id,
                 'product_id' => $item->id,
                 'shipping' => json_encode($shipping),
                 'aptment' => $request->aptment,
-                'subtotal' => $item->price * $item->qty,
+                'subtotal' => floatval(str_replace(',', '', $item->price * $item->qty)),
                 'discount' => null,
                 'discount_code' => null,
                 'tax' => null,
-                'shipping_total' => $item->model->shipping_cost,
-                'platform_fee' => Sohoj::flatCommision($item->price),
-                'total' => Sohoj::round_num(($item->price * $item->qty) + $item->model->shipping_cost),
+                'shipping_total' => floatval(str_replace(',', '', $item->model->shipping_cost)),
+                'platform_fee' => floatval(str_replace(',', '', \Sohoj::flatCommision($item->price))),
+                'total' => floatval(str_replace(',', '', \Sohoj::round_num(($item->price * $item->qty) + $item->model->shipping_cost))),
                 'quantity' => $item->qty,
                 'vendor_total' => $item->model->vendor_price * $item->qty,
                 'payment_method' => $request->payment_method[0],
