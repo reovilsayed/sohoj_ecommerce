@@ -60,12 +60,14 @@ class ProdcatResource extends Resource
                                 Select::make('shop_id')
                                     ->label('Shop')
                                     ->relationship('shop', 'name')
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => $record?->name ?? '')
                                     ->required()
                                     ->searchable()
                                     ->preload(),
                                 Select::make('parent_id')
                                     ->label('Parent Category')
                                     ->relationship('parent', 'name')
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => $record?->name ?? '')
                                     ->searchable()
                                     ->preload()
                                     ->nullable(),
@@ -74,7 +76,7 @@ class ProdcatResource extends Resource
                                     ->image()
                                     ->directory('categories')
                                     ->visibility('public')
-                                    ->columnSpanFull('full')
+                                    ->columnSpanFull()
                                     ->imagePreviewHeight('80'),
                             ]),
                     ]),
