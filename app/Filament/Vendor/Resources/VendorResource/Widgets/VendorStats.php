@@ -11,7 +11,12 @@ class VendorStats extends BaseWidget
 {
     protected function getCards(): array
     {
-        $vendor = auth()->user()->shop;
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $vendor = $user && (property_exists($user, 'shop') || method_exists($user, 'shop')) ? $user->shop : null;
+        if (!$vendor || !isset($vendor->id)) {
+            // No shop, return empty cards
+            return [];
+        }
         $currentMonth = now()->format('M Y');
         $prevMonth = now()->subMonth()->format('M Y');
 
