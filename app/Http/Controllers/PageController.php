@@ -24,7 +24,7 @@ class PageController extends Controller
 
         $latest_products = \Cache::remember('latest_products:' . md5(json_encode($locationPostcodes)), 3600, function () use ($locationPostcodes) {
             return Product::query()
-                ->select(['id','slug', 'name', 'shop_id', 'views', 'post_code', 'status', 'parent_id'])
+                ->select(['id','slug', 'name', 'shop_id', 'views', 'post_code', 'status', 'parent_id','images','image'])
                 ->where('status', 1)
                 ->whereNull('parent_id')
                 ->whereHas('shop', fn($q) => $q->where('status', 1))

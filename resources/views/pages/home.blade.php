@@ -140,11 +140,13 @@
 
                                         <div class="ec-spe-products">
                                             @foreach ($latest_products->chunk(6) as $products)
+                                            {{-- @dd($products) --}}
                                                 <div class="ec-fs-product">
                                                     <div class="ec-fs-pro-inner">
 
                                                         <div class="row">
                                                             @foreach ($products as $product)
+                                                            {{-- @dd($product) --}}
                                                                 <x-products.product-1 :product="$product" />
                                                             @endforeach
 
