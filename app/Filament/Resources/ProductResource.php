@@ -123,12 +123,10 @@ class ProductResource extends Resource
                                     ->schema([
                                         RichEditor::make('short_description')
                                             ->label('Short Description')
-                                            ->rows(3)
                                             ->maxLength(500),
 
                                         RichEditor::make('description')
-                                            ->label('Full Description')
-                                            ->rows(6),
+                                            ->label('Full Description'),
                                     ]),
                             ]),
 
