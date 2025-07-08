@@ -72,10 +72,11 @@ class PageController extends Controller
         $prodcats = \Cache::remember('prodcats', 3600, function () {
             return Prodcat::with('childrens')
                 ->whereNull('parent_id')
-                ->with('products')
+                ->whereHas('products')
                 ->orderBy('role', 'asc')
                 ->get();
         });
+        // dd($prodcats);
 
         $sliders = \Cache::remember('sliders', 3600, function () {
             return Slider::latest()->get();
