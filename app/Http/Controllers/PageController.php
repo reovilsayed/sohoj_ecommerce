@@ -72,6 +72,7 @@ class PageController extends Controller
         $prodcats = \Cache::remember('prodcats', 3600, function () {
             return Prodcat::with('childrens')
                 ->whereNull('parent_id')
+                ->with('products')
                 ->orderBy('role', 'asc')
                 ->get();
         });
