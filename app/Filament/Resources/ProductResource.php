@@ -6,6 +6,7 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\Prodcat;
+use FiberError;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -120,12 +121,12 @@ class ProductResource extends Resource
 
                                 Section::make('Product Description')
                                     ->schema([
-                                        Textarea::make('short_description')
+                                        RichEditor::make('short_description')
                                             ->label('Short Description')
                                             ->rows(3)
                                             ->maxLength(500),
 
-                                        Textarea::make('description')
+                                        RichEditor::make('description')
                                             ->label('Full Description')
                                             ->rows(6),
                                     ]),
