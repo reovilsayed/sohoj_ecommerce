@@ -320,6 +320,8 @@
                                             <div class="col-md-9">
                                                 <div class="ec-spe-products">
                                                     @foreach ($shop->products->whereNull('parent_id')->chunk(4) as $products)
+                                                    {{-- @dd($products) --}}
+                                                        {{-- @dd($products) --}}
                                                         <div class="ec-fs-product">
                                                             <div class="ec-fs-pro-inner">
 
