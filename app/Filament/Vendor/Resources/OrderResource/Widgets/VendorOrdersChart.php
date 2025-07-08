@@ -12,8 +12,8 @@ class VendorOrdersChart extends ChartWidget
     protected function getData(): array
     {
         $user = \Illuminate\Support\Facades\Auth::user();
-        $shop = $user && property_exists($user, 'shop') ? $user->shop : null;
-        if (!$shop) {
+        $shop = $user?->shop;
+        if (!$shop || !$shop->id) {
             // No shop, return empty chart
             return [
                 'datasets' => [
