@@ -165,7 +165,7 @@
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         @if ($record->product->image)
-                                            <div class="flex-shrink-0 h-12 w-12 bg-gray-100 rounded-md overflow-hidden">
+                                            <div class="flex-shrink-0 h-32 bg-gray-100 rounded-md overflow-hidden">
                                                 <img src="{{ Storage::url($record->product->image) }}"
                                                     alt="{{ $record->product->name }}"
                                                     class="h-full w-full object-cover">
