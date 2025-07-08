@@ -53,13 +53,12 @@ class PageController extends Controller
         $recommand = session()->get('recommand', []);
         $recommandProducts = \Cache::remember('recommandProducts:' . md5(json_encode($recommand)), 3600, function () use ($recommand) {
             return Product::query()
-                ->select(['id', 'slug','name', 'shop_id', 'parent_id'])
+                ->select(['id', 'slug','name', 'shop_id', 'parent_id' ,'views', 'post_code', 'status','images','image'])
                 ->whereNull('parent_id')
                 ->whereIn('id', $recommand)
                 ->with(['shop:id,name'])
                 ->get();
         });
-
         $latest_shops = \Cache::remember('latest_shops', 3600, function () {
             return Shop::query()
                 ->where('status', 1)
