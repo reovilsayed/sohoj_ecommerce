@@ -201,6 +201,24 @@ class ProductResource extends Resource
                     ->label('Active')
                     ->icon('heroicon-o-check-circle')
                     ->sortable(),
+
+                TextColumn::make('sku')
+                    ->label('SKU')
+                    ->searchable()
+                    ->icon('heroicon-o-hashtag')
+                    ->toggleable(),
+                TextColumn::make('type')
+                    ->label('Type')
+                    ->badge()
+                    ->icon('heroicon-o-cube')
+                    ->color(fn(string $state): string => match ($state) {
+                        'simple' => 'success',
+                        'variable' => 'warning',
+                        'grouped' => 'info',
+                        'external' => 'danger',
+                        'digital' => 'primary',
+                        default => 'gray',
+                    }),
                 BooleanColumn::make('featured')
                     ->label('Featured')
                     ->icon('heroicon-o-star')
