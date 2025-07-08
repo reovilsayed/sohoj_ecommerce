@@ -293,7 +293,7 @@
                                                     Profile</a>
                                             @endif
                                             @if (Auth()->user()->role_id == 3)
-                                                <a class="dropdown-item" href="{{ route('vendor.dashboard') }}">Vendor
+                                                <a class="dropdown-item" href="{{ url('vendor') }}">Vendor
                                                     Profile</a>
                                             @endif
                                             <a class="dropdown-item" href="{{ route('logout') }}"
