@@ -5,97 +5,125 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend-assetss/responsive.css') }}" />
     <link rel="stylesheet" id="bg-switcher-css" href="{{ asset('assets/frontend-assetss/css/backgrounds/bg-4.css') }}">
     {{-- <link rel="stylesheet" href="{{ asset('assets/css/checkout.css') }}"> --}}
+    <style>
+        .sohoj-brand {
+            background-color: #373737;
+            color: white;
+            border-radius: 25px;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            background-image: linear-gradient(to right, #373737, #505050);
+            display: inline-block;
+        }
+    </style>
 @endsection
 @section('content')
     <x-app.header />
-
-
     <section class="ec-page-content section-space-p">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
+            <div class="row justify-content-center">
+                <div class="col-md-12 text-center mb-4">
                     <div class="section-title">
-                        {{-- <h2 class="ec-bg-title">Log In</h2> --}}
-                        <h2 class="ec-title">Get Started with <span class="text-success">Sohoj Ecommerce</span> </h2>
+                        <h1 class="ec-title">Get Started with <span class="sohoj-brand"
+                                style="
+        background-color: #373737; 
+        color: white; 
+        border-radius: 25px; 
+        padding: 10px 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        background-image: linear-gradient(to right, #373737, #505050);
+        display: inline-block;
+    ">Sohoj
+                                Ecommerce</span></h1>
+
                         <p class="sub-title mb-3">{{ __('Create your free account') }}</p>
+                        <div class="alert alert-primary mx-auto" role="alert" style="max-width: 622px;">
+                            Join SohjojEcommerce and start shopping or selling easily.
+                        </div>
                     </div>
                 </div>
-                <div class="ec-login-wrapper">
-                    <div class="ec-login-container" style="border: none">
-                        <div class="ec-login-form">
-                            <form method="POST" action="{{ route('register') }}">
+
+                <div class="col-lg-8 col-xl-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4 p-md-5">
+                            <form method="POST" action="{{ route('register') }}" novalidate>
                                 @csrf
-                                <span class="ec-login-wrap">
-                                    <label for="name">First Name <span class="text-danger">*</span></label>
-                                    <input id="name" type="text" placeholder="{{ __('First Name') }}"
-                                        class="form-control bg-light @error('name') is-invalid @enderror" name="name"
-                                        value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </span>
-                                <span class="ec-login-wrap">
-                                    <label for="l_name">Last Name <span class="text-danger">*</span></label>
-                                    <input id="l_name" type="text" placeholder="{{ __('Last Name') }}"
-                                        class="form-control bg-light @error('l_name') is-invalid @enderror" name="l_name"
-                                        value="{{ old('l_name') }}" required autocomplete="name" autofocus>
-
-                                    @error('l_name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </span>
-                                <span class="ec-login-wrap">
-                                    <label for="email">Email Address<span class="text-danger">*</span></label>
-                                    <input id="email" type="email" placeholder="{{ __('Email Address') }}"
-                                        class="form-control bg-light @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </span>
-                                <span class="ec-login-wrap">
-                                    <label for="password">Password <span class="text-danger">*</span></label>
-                                    <input id="password" type="password" placeholder="{{ __('Password') }}"
-                                        class="form-control bg-light @error('password') is-invalid @enderror"
-                                        name="password" required autocomplete="current-password">
-
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </span>
-                                <span class="ec-login-wrap">
-                                    <label for="password-confirm">Confirm Password<span class="text-danger">*</span></label>
-                                    <input id="password-confirm" type="password" placeholder="{{ __('Confirm Password') }}"
-                                        class="form-control bg-light" name="password_confirmation" required
-                                        autocomplete="new-password">
-                                </span>
-                                <input type="hidden" name="role_id" value="2" id="">
-
-                                <span class="ec-login-wrap ec-login-btn">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <button type="submit" class="btn btn-dark rounded rounded-4">
-                                                {{ __('Register') }}
-                                            </button>
-
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <span>Already have an account ? <a class="text-success"
-                                                    href="{{ route('login') }}"> login</a></span>
-                                        </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="name" class="form-label">First Name <span
+                                                class="text-danger">*</span></label>
+                                        <input id="name" type="text" placeholder="First name"
+                                            class="form-control @error('name') is-invalid @enderror" name="name"
+                                            value="{{ old('name') }}" required autocomplete="given-name" autofocus>
+                                        @error('name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
-                                </span>
+                                    <div class="col-md-6">
+                                        <label for="l_name" class="form-label">Last Name <span
+                                                class="text-danger">*</span></label>
+                                        <input id="l_name" type="text" placeholder="Last name"
+                                            class="form-control @error('l_name') is-invalid @enderror" name="l_name"
+                                            value="{{ old('l_name') }}" required autocomplete="family-name">
+                                        @error('l_name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address <span
+                                            class="text-danger">*</span></label>
+                                    <input id="email" type="email" placeholder="Email Address"
+                                        class="form-control @error('email') is-invalid @enderror" name="email"
+                                        value="{{ old('email') }}" required autocomplete="email">
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label for="password" class="form-label">Password <span
+                                                class="text-danger">*</span></label>
+                                        <input id="password" type="password" placeholder="Password"
+                                            class="form-control @error('password') is-invalid @enderror" name="password"
+                                            required autocomplete="new-password" minlength="8">
+                                        <div class="form-text">Minimum 8 characters</div>
+                                        @error('password')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="password-confirm" class="form-label">Confirm Password <span
+                                                class="text-danger">*</span></label>
+                                        <input id="password-confirm" type="password" placeholder="Confirm Password"
+                                            class="form-control" name="password_confirmation" required
+                                            autocomplete="new-password">
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-3">
+                                    <button type="submit" class="btn btn-dark btn-lg rounded-4"
+                                        style="background-color: #373737; color: white; border: none;
+                                               box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                                               transition: all 0.3s ease;
+                                               background-image: linear-gradient(to right, #373737, #505050);">
+                                        {{ __('Register') }}
+                                    </button>
+
+                                    <div class="text-center mt-2">
+                                        <p class="mb-0">Already have an account?
+                                            <a class="fw-semibold" style="color: red;" href="{{ route('login') }}">Login
+                                                here</a>
+                                        </p>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\VendorRegisterController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CouponController;
@@ -120,6 +121,7 @@ Route::get('admin/order/refund', [PayoutsController::class, 'refund'])->name('re
 Route::post('/refund/store', [PayoutsController::class, 'refund_store'])->name('refund.store');
 
 Route::get('/vendor-register', [RegisterController::class, 'vendorCreate'])->name('vendor.create');
+Route::post('/vendor-store', [VendorRegisterController::class, 'register'])->name('vendor.register.store');
 Route::get('/vendor-register-2nd-step', [HomeController::class, 'vendorSecondStep'])->name('vendor.second.step');
 Route::post('/2nd-step-store', [HomeController::class, 'vendorSecondStepStore'])->name('vendor.second.step.store');
 
