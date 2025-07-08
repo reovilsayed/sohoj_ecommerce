@@ -151,12 +151,12 @@
                                     @foreach ($items as $item)
                                         <tr>
                                             <td class="border-0">
-                                                <img src="https://images.pexels.com/photos/3612182/pexels-photo-3612182.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                                {{-- <img src="https://images.pexels.com/photos/3612182/pexels-photo-3612182.jpeg?auto=compress&cs=tinysrgb&w=600"
                                                     alt="File 19" class="product-image"
-                                                    style="width: 100px; height: 100px; object-fit: cover;">
-                                                {{-- <img src="{{ Storage::url($item->model->image) }}" alt="File 19"
+                                                    style="width: 100px; height: 100px; object-fit: cover;"> --}}
+                                                <img src="{{ Storage::url($item->model->image) }}" alt="File 19"
                                                         class="product-image"
-                                                        style="width: 100px; height: 100px; object-fit: cover;"> --}}
+                                                        style="width: 100px; height: 100px; object-fit: cover;">
                                             </td>
 
                                             <td class="border-0">
