@@ -65,7 +65,7 @@ class PageController extends Controller
                 ->whereHas('products', fn($q) => $q->whereNull('parent_id'))
                 ->latest()
                 ->limit(8)
-                ->with(['products:id,shop_id,slug'])
+                ->with(['products:id, slug,name, shop_id,parent_id ,views, post_code, status,images,image'])
                 ->get();
         });
 
