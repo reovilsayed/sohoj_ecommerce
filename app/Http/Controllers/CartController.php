@@ -16,7 +16,8 @@ class CartController extends Controller
 	{
 		$this->cart($request);
 
-		return response()->json(['success' => 'Item has been added to cart']);
+		return redirect()->back()->with('success_msg', 'Item has been added to cart!');
+		// return response()->json(['success' => 'Item has been added to cart']);
 	}
 	// public function update(Request $request)
 	// {
