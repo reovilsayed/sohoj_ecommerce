@@ -33,7 +33,7 @@
                     data-size="xs" readonly>
                 <small class="text-muted">({{ $product->ratings->count() }})</small>
             </div>
-            <form class="addToCartForm_{{ $product->id }}">
+             <form action="{{ route('cart.boynow') }}" method="POST">
                 @csrf
                 <input type="hidden" name="quantity" value="1">
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
