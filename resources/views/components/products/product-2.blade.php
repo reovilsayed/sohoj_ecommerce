@@ -51,7 +51,7 @@
 <div class="col-md-3 col-sm-6 col-xs-6 col-6 mb-4">
     <div class="card border-0 shadow-sm rounded-4 position-relative overflow-hidden product-hover-group">
         <a href="{{ route('product_details', $product->slug) }}" class="image">
-            <img src="https://5.imimg.com/data5/SELLER/Default/2021/11/JU/IF/CF/11337912/e-commerce-product-image-editing-services.jpg"
+            <img src="{{ Storage::url($product->image) }}"
                 alt="{{ $product->name }}" class="card-img-top"
                 style="object-fit:cover; min-height:220px; max-height:220px;">
         </a>
