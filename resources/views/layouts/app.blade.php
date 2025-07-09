@@ -208,7 +208,7 @@
 
                                 </div>
                                 <div class="ec-footer-links  col-sm-12  ">
-                                    {{-- {!! menu('leftside', 'menus.bootstrap') !!} --}}
+                                    <x-menu name="leftside"/>
                                 </div>
                             </div>
                         </div>
@@ -221,7 +221,7 @@
 
                                 </div>
                                 <div class="ec-footer-links  col-sm-12  ">
-                                    {{-- {!! menu('middle', 'menus.bootstrap') !!} --}}
+                                    <x-menu name="middle"/>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +236,7 @@
                                 <div class="ec-footer-links">
 
 
-                                    {{-- {!! menu('main', 'menus.bootstrap') !!} --}}
+                                    <x-menu name="main"/>
 
 
                                 </div>
