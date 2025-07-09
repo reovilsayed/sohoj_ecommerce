@@ -7,6 +7,8 @@
     {{-- <link rel="stylesheet" href="{{ asset('assets/css/star-rating.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/shops.css') }}">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+
     <style>
         .ec-product-inner .ec-pro-image .ec-pro-actions .wishlist {
             right: 10px;
@@ -389,47 +391,87 @@
     <!-- End Single product -->
 
     <!-- Related Product Start -->
-    <section class="section ec-new-product " style="margin-bottom: 100px">
+    <!-- Add Swiper styles in your <head> -->
+
+
+    <section class="section ec-new-product" style="margin-bottom: 100px">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 text-left">
-                    <div class="section-title">
+                <div class="section-title">
+                    <h2 class="related-product-sec-title">Related products</h2>
+                </div>
 
-                        <h2 class="related-product-sec-title"> Related products</h2>
-                    </div>
-                    <div class="ec-spe-section  data-animation=" slideInLeft">
+                <!-- Swiper Slider Container -->
+                <div class="swiper related-products-slider">
+                    <div class="swiper-wrapper">
+                        @foreach ($related_products as $product)
+                            <div class="swiper-slide">
+                                <div class="ec-product-inner">
+                                    <div
+                                        class="card border-0 shadow-sm rounded-4 position-relative overflow-hidden product-hover-group">
+                                        <a href="{{ route('product_details', $product->slug) }}" class="image">
+                                            <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
+                                                class="card-img-top"
+                                                style="object-fit: cover; min-height: 220px; max-height: 220px;">
+                                        </a>
 
+                                        <div class="card-body text-center">
+                                            <a href="{{ route('product_details', $product->slug) }}" class="image">
+                                                <h6 class="fw-semibold text-truncate mb-1">{{ $product->name }}</h6>
+                                            </a>
 
-                        <div class="ec-spe-products">
-                            @foreach ($related_products->chunk(6) as $products)
-                                <div class="ec-fs-product">
-                                    <div class="ec-fs-pro-inner">
+                                            <div class="mb-2 text-muted small">
+                                                {{ Str::limit(strip_tags($product->short_description), 40, '...') }}
+                                            </div>
 
-                                        <div class="row margin-minus-b-30">
-                                            <!-- Related Product Content -->
-                                            @foreach ($products as $product)
-                                                <x-products.product-2 :product="$product" />
-                                            @endforeach
+                                            <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
+                                                @if ($product->ratings->count() > 0)
+                                                    <input value="{{ Sohoj::average_rating($product->ratings) }}"
+                                                        class="rating published_rating" data-size="xs" readonly>
+                                                    <span
+                                                        class="text-muted small">({{ $product->ratings->count() }})</span>
+                                                @else
+                                                    <span class="text-muted small">No ratings yet</span>
+                                                @endif
+                                            </div>
 
+                                            <div class="fw-bold text-danger fs-5">
+                                                {{ Sohoj::price($product->sale_price ?? $product->price) }}</div>
 
+                                            @if ($product->sale_price && $product->price > $product->sale_price)
+                                                <span
+                                                    class="text-muted text-decoration-line-through ms-1">{{ Sohoj::price($product->price) }}</span>
+                                            @endif
 
+                                            <form class="mt-2 addToCartForm_{{ $product->id }}">
+                                                @csrf
+                                                <input type="hidden" name="quantity" value="1">
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                <button class="btn btn-sm w-100 px-3 cart-store"
+                                                    style="background-color: #CD184F; color: white" type="button"
+                                                    {{ $product->stock <= 0 ? 'disabled' : '' }}>
+                                                    <i class="fi-rr-shopping-cart me-1"></i>
+                                                    {{ $product->stock <= 0 ? 'Out of Stock' : 'Add to Cart' }}
+                                                </button>
+                                            </form>
                                         </div>
-
                                     </div>
                                 </div>
-                            @endforeach
-
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
 
+                    <!-- Navigation Buttons -->
+                    {{-- <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div> --}}
 
-
+                    <!-- Pagination Dots -->
+                    {{-- <div class="swiper-pagination"></div> --}}
                 </div>
             </div>
-            <!-- New Product Content -->
-
         </div>
     </section>
+
 
 
 
@@ -455,4 +497,39 @@
         readonly: true,
     });
 </script> --}}
+
+
+    <!-- Add Swiper JS just before </body> -->
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" /> --}}
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+    <script>
+        const swiper = new Swiper('.related-products-slider', {
+            slidesPerView: 4,
+            spaceBetween: 30,
+            loop: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                0: {
+                    slidesPerView: 1,
+                },
+                576: {
+                    slidesPerView: 2,
+                },
+                768: {
+                    slidesPerView: 3,
+                },
+                992: {
+                    slidesPerView: 4,
+                },
+            },
+        });
+    </script>
 @endsection
