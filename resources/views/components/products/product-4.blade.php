@@ -33,11 +33,12 @@
                     data-size="xs" readonly>
                 <small class="text-muted">({{ $product->ratings->count() }})</small>
             </div>
-             <form action="{{ route('cart.boynow') }}" method="POST">
+            <form action="{{ route('cart.boynow') }}" method="POST">
                 @csrf
                 <input type="hidden" name="quantity" value="1">
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <button class="btn btn-sm btn-dark w-100" data-product-id="{{ $product->id }}" type="button" {{ $product->manage_stock <= 0 ? 'disabled' : '' }}>
+                <button class="btn btn-sm btn-dark w-100" data-product-id="{{ $product->id }}" type="submit"
+                    {{ $product->manage_stock <= 0 ? 'disabled' : '' }}>
                     <i class="fi-rr-shopping-cart me-1"></i>
                     {{ $product->manage_stock <= 0 ? 'Out of Stock' : 'Add to Cart' }}
                 </button>
