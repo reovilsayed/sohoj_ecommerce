@@ -137,11 +137,11 @@
                 <p> Order No: {{ $order->id }}</p>
             </div>
             <div class="customer-info col-md-6">
-                <h5>AhroMart</h5>
+                <h5>Sohoj E-commerce</h5>
 
                 <p>New York, USA</p>
                 {{-- <p>+1 (518) 653-8997</p> --}}
-                <p> Info@ahromart.com</p>
+                <p> Info@sohojware.com</p>
 
             </div>
         </div>
@@ -307,7 +307,7 @@
                     <tr style="border-top: 2px solid black">
                         <td class="p-1 d-flex align-items-center">
                             
-                            <span class="ms-1">Thank You! -Ahromart</span>
+                            <span class="ms-1">Thank You! -Sohoj E-commerce</span>
                         </td>
                         <td class="text-end " style="text-transform:uppercase">usd</td>
                     </tr>

@@ -25,11 +25,11 @@
                         <p style="font-size: 12px;margin:0px"> Order No: {{ $order->id }}</p>
                     </td>
                     <td style="text-align: right">
-                        <h6 style="font-size: 16px;margin:0px">AhroMart</h6>
+                        <h6 style="font-size: 16px;margin:0px">Sohoj E-commerce</h6>
                         <br>
                         <p style="font-size: 12px;margin:0px">New York, USA</p>
                         {{-- <p>+1 (518) 653-8997</p> --}}
-                        <p style="font-size: 12px;margin:0px"> Info@ahromart.com</p>
+                        <p style="font-size: 12px;margin:0px"> Info@sohojware.com</p>
                     </td>
         </tr>
     </table>

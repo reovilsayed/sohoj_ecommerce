@@ -256,7 +256,7 @@
                                                 required><a href="{{ url('page/policies') }}" style="" target="_banl"
                                                 class="mt-3 ms-3">I have
                                                 read and agree to the <span>Terms &amp; Conditions of
-                                                    AhroMart</span></a><span class="checked"></span>
+                                                    Sohoj E-commerce</span></a><span class="checked"></span>
                                             @error('terms')
                                                 <span class="invalid-feedback " role="alert">
                                                     <strong>{{ $message }}</strong>
