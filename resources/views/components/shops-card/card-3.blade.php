@@ -6,10 +6,13 @@
                {{-- <a class="btn btn-sm btn-light rounded-circle"><i class="fa-solid fa-heart text-danger"></i></a> --}}
            </div>
 
-           <div class="ec-pro-image-outer p-3 bg-light text-center">
+           <div class="ec-pro-image-outer p-3 bg-light text-center"
+               style="background-image: url('{{ Storage::url($shop->banner) }}'); background-size: cover; background-position: center;">
+           @dd($shop)
                <a href="{{ route('store_front', $shop->slug) }}" class="d-inline-block">
                    <img src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}"
-                       class="img-fluid rounded-circle shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+                       class="img-fluid rounded-circle shadow-sm"
+                       style="width: 100px; height: 100px; object-fit: cover;">
                </a>
            </div>
 

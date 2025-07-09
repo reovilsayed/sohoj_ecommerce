@@ -414,7 +414,7 @@
                                                     style="height: 220px; object-fit: cover;">
                                             </a>
                                             <div class="position-absolute top-0 start-0 m-2">
-                                                @if ($product->stock <= 0)
+                                                @if ($product->manage_stock <= 0)
                                                     <span class="badge bg-danger">Out of Stock</span>
                                                 @elseif($product->sale_price)
                                                     <span class="badge bg-success">Sale</span>
@@ -449,9 +449,9 @@
                                                 <input type="hidden" name="quantity" value="1">
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                 <button class="btn btn-sm btn-dark w-100" type="button"
-                                                    {{ $product->stock <= 0 ? 'disabled' : '' }}>
+                                                    {{ $product->manage_stock <= 0 ? 'disabled' : '' }}>
                                                     <i class="fi-rr-shopping-cart me-1"></i>
-                                                    {{ $product->stock <= 0 ? 'Out of Stock' : 'Add to Cart' }}
+                                                    {{ $product->manage_stock <= 0 ? 'Out of Stock' : 'Add to Cart' }}
                                                 </button>
                                             </form>
                                         </div>
