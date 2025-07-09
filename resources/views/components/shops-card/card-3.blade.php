@@ -1,13 +1,9 @@
    <div class="col-lg-3 col-6 mb-4 pro-gl-content-shop">
        <div
-           class="ec-product-inner position-relative shop-card border rounded-3 shadow-sm h-100 overflow-hidden bg-white transition-hover">
-           <div class="position-absolute top-0 end-0 p-2 z-1">
-               {{-- Wishlist Button (optional) --}}
-               {{-- <a class="btn btn-sm btn-light rounded-circle"><i class="fa-solid fa-heart text-danger"></i></a> --}}
-           </div>
+           class="ec-product-inner position-relative shop-card border rounded-3 shadow-sm h-100 overflow-hidden bg-white transition-hover" style="padding-top: 0px !important;">
 
            <div class="ec-pro-image-outer p-3 bg-light text-center"
-               style="background-image: url('{{ Storage::url($shop->banner) }}'); background-size: cover; background-position: center;">
+               style="background-image: url('{{ Storage::url($shop->banner) }}'); background-size: cover; background-position: center; ">
 
                <a href="{{ route('store_front', $shop->slug) }}" class="d-inline-block">
                    <img src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}"
