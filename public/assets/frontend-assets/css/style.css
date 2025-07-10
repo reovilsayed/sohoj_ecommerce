@@ -3584,8 +3584,8 @@ textarea.form-control.is-invalid {
 
 .btn-secondary:hover {
     color: #ffffff;
-    background-color: #3474d4;
-    border-color: #3474d4;
+    background-color: #e7eaee !important;
+    border-color: #000000 !important;
 }
 
 .btn-secondary:focus {
