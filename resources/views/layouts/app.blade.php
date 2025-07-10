@@ -12,9 +12,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- site Favicon -->
-    <link rel="icon" href="" sizes="32x32" />
-    <link rel="apple-touch-icon" href="" />
-    <meta name="msapplication-TileImage" content="tile_image" />
+    <link rel="icon" href="{{ asset('assets/logo/favicon.png') }}" sizes="32x32" />
+    <link rel="apple-touch-icon" href="{{ asset('assets/logo/favicon.png') }}" />
+    <meta name="msapplication-TileImage" content="{{ asset('assets/logo/favicon.png') }}" />
+
 
     <!-- css Icon Font -->
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/vendor/ecicons.min.css') }}" />
@@ -118,7 +119,7 @@
                         <div class="col-md-3 d-flex align-items-center" style="height:140px">
                             <div class="align-self-center">
                                 <div class="header-logo">
-                                    <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo.avif') }}"
+                                    <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/LOGO.png') }}"
                                             alt="logo"></a>
                                 </div>
                             </div>
@@ -154,29 +155,26 @@
                                 <!-- <div class="ec-footer-logo"><a href="#"><img src="assets/images/logo/footer-logo.png" alt=""><img class="dark-footer-logo" src="assets/images/logo/dark-logo.png" alt="Site Logo" style="display: none;" /></a></div>
                                 <h4 class="ec-footer-heading">Contact us</h4> -->
                                 <ul class="mb-2" style="width: 280px">
-                                    <li class="list-inline-item"><a class="hdr-facebook"
-                                            href=""><i
+                                    <li class="list-inline-item"><a class="hdr-facebook" href=""><i
                                                 class="ecicon eci-facebook e rounded-circle p-3  d-flex justify-content-center"
                                                 style="font-size:15px; height:47px; width:45px;"></i></a>
                                     </li>
-                                    <li class="list-inline-item"><a class="hdr-linkedin"
-                                            href=""><i
+                                    <li class="list-inline-item"><a class="hdr-linkedin" href=""><i
                                                 class="ecicon eci-linkedin  rounded-circle p-3 "
                                                 style="font-size:15px"></i></a>
                                     </li>
-                                    <li class="list-inline-item"><a class="hdr-instagram"
-                                            href=""><i
+                                    <li class="list-inline-item"><a class="hdr-instagram" href=""><i
                                                 class="ecicon eci-instagram rounded-circle p-3  border"
                                                 style="font-size:15px; "></i></a>
                                     </li>
-                                    <li class="list-inline-item"><a class="hdr-twitter"
-                                            href=""><i
+                                    <li class="list-inline-item"><a class="hdr-twitter" href=""><i
                                                 class="ecicon eci-twitter  rounded-circle p-3  border"
                                                 style="font-size:15px"></i></a>
                                     </li>
 
 
-                                    <p class="py-4" style="font-size: 13px">Follow our social media for Sohoj E-commerce
+                                    <p class="py-4" style="font-size: 13px">Follow our social media for Sohoj
+                                        E-commerce
                                         news and updates. </p>
                                 </ul>
                                 <div class="ec-footer-links">
@@ -208,7 +206,7 @@
 
                                 </div>
                                 <div class="ec-footer-links  col-sm-12  ">
-                                    <x-menu name="leftside"/>
+                                    <x-menu name="leftside" />
                                 </div>
                             </div>
                         </div>
@@ -221,7 +219,7 @@
 
                                 </div>
                                 <div class="ec-footer-links  col-sm-12  ">
-                                    <x-menu name="middle"/>
+                                    <x-menu name="middle" />
                                 </div>
                             </div>
                         </div>
@@ -236,7 +234,7 @@
                                 <div class="ec-footer-links">
 
 
-                                    <x-menu name="main"/>
+                                    <x-menu name="main" />
 
 
                                 </div>
@@ -255,8 +253,8 @@
                         <div class="col text-center footer-copy">
                             <div class="footer-bottom-copy d-flex justify-content-start ">
                                 <div class="ec-copy text-dark text-left" style="color:#000000 !important;opacity:1;">
-                                    Copyright © 2023 <a class="site-name text-upper"
-                                        href="#">Sohoj E-commerce<span>.</span></a>. All Rights Reserved</div>
+                                    Copyright © 2023 <a class="site-name text-upper" href="#">Sohoj
+                                        E-commerce<span>.</span></a>. All Rights Reserved</div>
                                 <div class="img">
                                 </div>
                             </div>
