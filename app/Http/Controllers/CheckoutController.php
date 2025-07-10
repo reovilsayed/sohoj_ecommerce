@@ -26,7 +26,7 @@ class CheckoutController extends Controller
     {
 
         $request->validate([
-            'prevoius_address' => ['required'],
+            // 'prevoius_address' => ['required'],
             'first_name' => ['required', 'max:40'],
             'last_name' => ['required', 'max:40'],
             'email' => ['required', 'max:40', 'email'],
@@ -39,19 +39,19 @@ class CheckoutController extends Controller
         //  auth()->user()->createOrGetStripeCustomer();
 
         // auth()->user()->addPaymentMethod($request->payment_method[0]);
-        $address = Address::find($request->prevoius_address);
+        // $address = Address::find($request->prevoius_address);
 
         $shipping = [
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'address_1' => $address->address_1,
-            'address_2' => $address->address_2,
-            'city' => $address->city,
-            'post_code' => $address->post_code,
-            'country' => $address->country,
-            'state' => $address->state,
-            'phone' => $address->phone,
+            'address_1' => $request->address_1,
+            'address_2' => $request->address_2,
+            'city' => $request->city,
+            'post_code' => $request->post_code,
+            'country' => $request->country,
+            'state' => $request->state,
+            'phone' => $request->phone,
             'shipping_method' => null,
             'shipping_url' => null,
         ];
