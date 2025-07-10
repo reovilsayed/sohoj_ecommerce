@@ -22,10 +22,8 @@
 
         {{-- Product Image --}}
         <a href="{{ route('product_details', $product->slug) }}">
-            <img src="{{ Storage::url($product->image) }}" 
-                 alt="{{ $product->name }}" 
-                 class="w-100 mt-1" 
-                 style=" border-radius: 12px 12px 0px 0px; object-fit: contain;">
+           <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="w-100 mt-1"
+                style="border-radius: 12px 12px 0px 0px; object-fit: cover; height: 220px;">
         </a>
 
         {{-- Product Content --}}
