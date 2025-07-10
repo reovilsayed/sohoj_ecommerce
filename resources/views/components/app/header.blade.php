@@ -108,7 +108,7 @@
             
                 <div class="col tab-logo">
                     <div class="header-logo">
-                        <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/LOGO.png')}}"
+                        <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo007.png')}}"
                                 alt="logo"></a>
                     </div>
                 </div>
@@ -202,7 +202,7 @@
 
                     <div class="align-self-center">
                         <div class="header-logo">
-                            <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/LOGO.png')}}"
+                            <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo007.png')}}"
                                     alt="logo"></a>
                         </div>
                     </div>
@@ -396,7 +396,7 @@
                 <!-- Ec Header Logo Start -->
                 <div class="col mobile-logo">
                     <div class="header-logo">
-                        <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/LOGO.png')}}"
+                        <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo007.png')}}"
                                 alt="logo"></a>
                     </div>
                 </div>

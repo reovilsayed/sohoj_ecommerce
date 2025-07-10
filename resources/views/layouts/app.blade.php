@@ -119,7 +119,7 @@
                         <div class="col-md-3 d-flex align-items-center" style="height:140px">
                             <div class="align-self-center">
                                 <div class="header-logo">
-                                    <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/LOGO.png') }}"
+                                    <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo007.png') }}"
                                             alt="logo"></a>
                                 </div>
                             </div>
@@ -152,7 +152,7 @@
                     <div class="row justify-content-between">
                         <div class="col-sm-12 col-lg-3 ec-footer-contact d-flex justify-content-center">
                             <div class="ec-footer-widget">
-                                <!-- <div class="ec-footer-logo"><a href="#"><img src="assets/images/logo/footer-logo.png" alt=""><img class="dark-footer-logo" src="assets/images/logo/dark-logo.png" alt="Site Logo" style="display: none;" /></a></div>
+                                <!-- <div class="ec-footer-logo"><a href="#"><img src="assets/images/logo/footer-logo007.png" alt=""><img class="dark-footer-logo" src="assets/images/logo/dark-logo007.png" alt="Site Logo" style="display: none;" /></a></div>
                                 <h4 class="ec-footer-heading">Contact us</h4> -->
                                 <ul class="mb-2" style="width: 280px">
                                     <li class="list-inline-item"><a class="hdr-facebook" href=""><i
