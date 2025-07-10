@@ -406,66 +406,63 @@
                     <div class="swiper-wrapper">
                         @foreach ($related_products as $product)
                             <div class="swiper-slide">
-                               <div class="card border-0 rounded-4 shadow-sm text-center position-relative h-100">
+                                <div class="card border-0 rounded-4 shadow-sm text-center position-relative h-100">
 
-        {{-- Wishlist button --}}
-       <button
-  class="btn btn-sm btn-secondary opacity-75 rounded-circle position-absolute top-0 end-0 m-2 d-flex justify-content-center align-items-center"
-  title="Wishlist"
-  aria-label="Add to Wishlist"
-  style="height: 30px; width: 30px;"
->
-  <i class="fa-regular fa-heart fa-fw"></i>
-</button>
+                                    {{-- Wishlist button --}}
+                                    <button
+                                        class="btn btn-sm btn-secondary opacity-75 rounded-circle position-absolute top-0 end-0 m-2 d-flex justify-content-center align-items-center"
+                                        title="Wishlist" aria-label="Add to Wishlist" style="height: 30px; width: 30px;">
+                                        <i class="fa-regular fa-heart fa-fw"></i>
+                                    </button>
 
 
-        {{-- Product Image --}}
-        <a href="{{ route('product_details', $product->slug) }}">
-            <img src="https://img.freepik.com/free-vector/drink-ad-nature-pear-juice_52683-34246.jpg?t=st=1752153655~exp=1752157255~hmac=b23df161723399572cd9f46ed2fb8095e836d28e1f9212924cd5ac0e59381350&w=1380"
-                 alt="{{ $product->name }}"
-                 class="w-100 mt-1"
-                 style=" border-radius: 12px 12px 0px 0px; object-fit: contain;">
-        </a>
+                                    {{-- Product Image --}}
+                                    <a href="{{ route('product_details', $product->slug) }}">
+                                        <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
+                                            class="w-100 mt-1"
+                                            style=" border-radius: 12px 12px 0px 0px; object-fit: contain;">
+                                    </a>
 
-        {{-- Product Content --}}
-        <div class="card-body p-2">
-            {{-- Product Name --}}
-            <h6 class="fw-bold text-truncate">{{ $product->name }}</h6>
+                                    {{-- Product Content --}}
+                                    <div class="card-body p-2">
+                                        {{-- Product Name --}}
+                                        <h6 class="fw-bold text-truncate">{{ $product->name }}</h6>
 
-            {{-- Rating & Reviews --}}
-            <div class="d-flex justify-content-center align-items-center gap-1 mb-2 small">
-                <i class="fa fa-star text-warning"></i>
-                <span class="fw-bold">{{ Sohoj::average_rating($product->ratings) }}</span>
-                <span class="text-muted">({{ $product->ratings->count() }} Reviews)</span>
-            </div>
+                                        {{-- Rating & Reviews --}}
+                                        <div class="d-flex justify-content-center align-items-center gap-1 mb-2 small">
+                                            <i class="fa fa-star text-warning"></i>
+                                            <span class="fw-bold">{{ Sohoj::average_rating($product->ratings) }}</span>
+                                            <span class="text-muted">({{ $product->ratings->count() }} Reviews)</span>
+                                        </div>
 
-            {{-- Price --}}
-            <div class="fw-bold fs-5 text-dark mb-3">
-                {{ Sohoj::price($product->sale_price ?? $product->price) }}
-                @if ($product->sale_price)
-                    <small class="text-muted text-decoration-line-through ms-1 fs-6">
-                        {{ Sohoj::price($product->price) }}
-                    </small>
-                @endif
-            </div>
+                                        {{-- Price --}}
+                                        <div class="fw-bold fs-5 text-dark mb-3">
+                                            {{ Sohoj::price($product->sale_price ?? $product->price) }}
+                                            @if ($product->sale_price)
+                                                <small class="text-muted text-decoration-line-through ms-1 fs-6">
+                                                    {{ Sohoj::price($product->price) }}
+                                                </small>
+                                            @endif
+                                        </div>
 
-            {{-- Add to Cart --}}
-            <form action="{{ route('cart.store') }}" method="post">
-                @csrf
-                <input type="hidden" name="quantity" value="1">
-                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <button class="btn btn-sm btn-secondary w-100" type="submit" style="border-radius: 8px;">
-                    Add to Cart
-                </button>
-            </form>
-        </div>
-    </div>
+                                        {{-- Add to Cart --}}
+                                        <form action="{{ route('cart.store') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="quantity" value="1">
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <button class="btn btn-sm btn-secondary w-100" type="submit"
+                                                style="border-radius: 8px;">
+                                                Add to Cart
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                                 <style>
-                                     .btn-secondary:hover {
-    color:rgb(0, 0, 0);
-    background-color: #e7eaee !important;
-    border-color: #000000 !important;
-}
+                                    .btn-secondary:hover {
+                                        color: rgb(0, 0, 0);
+                                        background-color: #e7eaee !important;
+                                        border-color: #000000 !important;
+                                    }
                                 </style>
 
                             </div>

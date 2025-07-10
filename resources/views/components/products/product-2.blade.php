@@ -22,7 +22,7 @@
 
         {{-- Product Image --}}
         <a href="{{ route('product_details', $product->slug) }}">
-            <img src="https://img.freepik.com/free-vector/drink-ad-nature-pear-juice_52683-34246.jpg?t=st=1752153655~exp=1752157255~hmac=b23df161723399572cd9f46ed2fb8095e836d28e1f9212924cd5ac0e59381350&w=1380" 
+            <img src="{{ Storage::url($product->image) }}" 
                  alt="{{ $product->name }}" 
                  class="w-100 mt-1" 
                  style=" border-radius: 12px 12px 0px 0px; object-fit: contain;">
