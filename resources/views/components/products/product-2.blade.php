@@ -26,7 +26,9 @@
         {{-- Product Content --}}
         <div class="card-body p-2">
             {{-- Product Name --}}
-            <h6 class="fw-bold text-truncate">{{ $product->name }}</h6>
+            <h6 class="fw-bold text-truncate mb-1" style="font-size: 1.05rem; font-family: 'Segoe UI', 'Optima', Arial, sans-serif; letter-spacing: 0.01em;">
+                {{ Str::limit($product->name, 40) }}
+            </h6>
 
             {{-- Rating & Reviews --}}
             <div class="d-flex justify-content-center align-items-center gap-1 mb-2 small">

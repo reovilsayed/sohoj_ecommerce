@@ -1,23 +1,19 @@
 <style>
     .btn-secondary:hover {
-    color:rgb(0, 0, 0);
-    background-color: #e7eaee !important;
-    border-color: #000000 !important;
-}
-
+        color: rgb(0, 0, 0);
+        background-color: #e7eaee !important;
+        border-color: #000000 !important;
+    }
 </style>
 <div class=" col-md-2 col-sm-6 col-6 mb-4">
     <div class="card border-0 rounded-4 shadow-sm text-center position-relative h-100">
-        
+
         {{-- Wishlist button --}}
-       <button 
-  class="btn btn-sm btn-secondary opacity-75 rounded-circle position-absolute top-0 end-0 m-2 d-flex justify-content-center align-items-center" 
-  title="Wishlist" 
-  aria-label="Add to Wishlist" 
-  style="height: 30px; width: 30px;"
->
-  <i class="fa-regular fa-heart fa-fw"></i>
-</button>
+        <button
+            class="btn btn-sm btn-secondary opacity-75 rounded-circle position-absolute top-0 end-0 m-2 d-flex justify-content-center align-items-center"
+            title="Wishlist" aria-label="Add to Wishlist" style="height: 30px; width: 30px;">
+            <i class="fa-regular fa-heart fa-fw"></i>
+        </button>
 
 
         {{-- Product Image --}}
@@ -29,7 +25,10 @@
         {{-- Product Content --}}
         <div class="card-body p-2">
             {{-- Product Name --}}
-            <h6 class="fw-bold text-truncate">{{ $product->name }}</h6>
+            <h6 class="fw-bold text-truncate mb-1"
+                style="font-size: 1.05rem; font-family: 'Segoe UI', 'Optima', Arial, sans-serif; letter-spacing: 0.01em;">
+                {{ Str::limit($product->name, 40) }}
+            </h6>
 
             {{-- Rating & Reviews --}}
             <div class="d-flex justify-content-center align-items-center gap-1 mb-2 small">
@@ -62,9 +61,9 @@
 </div>
 
 <style>
-.card:hover {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
-    transform: translateY(-3px);
-    transition: 0.3s ease;
-}
+    .card:hover {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+        transform: translateY(-3px);
+        transition: 0.3s ease;
+    }
 </style>
