@@ -304,6 +304,331 @@
                 font-size: 10px;
             }
         }
+
+        /* New Category Cards Design */
+        .category-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3bb77e, #2d9d6b, #1a7a4a);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border-color: #3bb77e;
+        }
+
+        .category-card-inner {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .category-image {
+            position: relative;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .category-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover .category-img {
+            transform: scale(1.1);
+        }
+
+        .category-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(59, 183, 126, 0.9), rgba(45, 157, 107, 0.9));
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-card:hover .category-overlay {
+            opacity: 1;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .category-icon i {
+            color: white;
+            font-size: 20px;
+        }
+
+        /* Category Badge */
+        .category-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 2;
+        }
+
+        .category-badge .badge {
+            background: linear-gradient(135deg, #3bb77e, #2d9d6b) !important;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        /* Category Stats */
+        .category-stats {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 2;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-item i {
+            color: #3bb77e;
+            font-size: 0.7rem;
+        }
+
+        .category-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .category-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0;
+            line-height: 1.3;
+            flex: 1;
+        }
+
+        .category-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .stars i {
+            color: #ffc107;
+            font-size: 0.8rem;
+        }
+
+        .rating-text {
+            font-size: 0.75rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .category-meta {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .shop-count {
+            font-size: 0.85rem;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+        }
+
+        .shop-count i {
+            color: #3bb77e;
+        }
+
+        .product-count {
+            font-size: 0.85rem;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+        }
+
+        .product-count i {
+            color: #6c757d;
+        }
+
+        /* Category Tags */
+        .category-tags {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            color: #2d9d6b;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid rgba(45, 157, 107, 0.2);
+        }
+
+        .category-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #3bb77e;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            margin-top: auto;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            border: 1px solid rgba(59, 183, 126, 0.1);
+        }
+
+        .category-link:hover {
+            color: #2d9d6b;
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            border-color: #3bb77e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 183, 126, 0.2);
+        }
+
+        .link-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: #3bb77e;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .link-icon i {
+            color: white;
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        .category-link:hover .link-icon {
+            background: #2d9d6b;
+            transform: scale(1.1);
+        }
+
+        .category-link:hover .link-icon i {
+            transform: translateX(2px);
+        }
+
+        /* Category section responsive */
+        @media (max-width: 768px) {
+            .category-card {
+                margin-bottom: 1rem;
+            }
+
+            .category-image {
+                height: 150px;
+            }
+
+            .category-content {
+                padding: 1rem;
+            }
+
+            .category-title {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .category-image {
+                height: 120px;
+            }
+
+            .category-content {
+                padding: 0.75rem;
+            }
+
+            .category-title {
+                font-size: 0.9rem;
+            }
+
+            .category-link {
+                font-size: 0.8rem;
+            }
+        }
     </style>
     <livewire:styles />
 @endsection
@@ -465,66 +790,62 @@
     <!-- Main Slider End -->
 
     <!--  category Section Start -->
-
-
-    <section class="section ec-category-section ">
+    <section class="section ec-category-section py-5">
         <div class="container">
-            <div class="">
-                <h2 class="related-product-sec-title my-5"> Browse Shops by Categories </h2>
-                {{-- <div class="row margin-minus-b-15 margin-minus-t-15">
-                <div class="ec-spe-section" data-animation="slideInLeft">
-                    <div class="ec-spe-products">
-                        @foreach ($prodcats->chunk(6) as $prodcats)
-                        <div class="ec_cat_content ec_cat_content_1 me-5 d-flex ">
-
-                            <div class="ec-fs-product">
-                                <div class="ec-fs-pro-inner">
-
-                                    <div class="row">
-                                        @foreach ($prodcats as $prodcat)
-                                        <div class="col-md-2 col-sm-6">
-                                            <div class="category-thumbnail border-hover" style="background-color: #f5f5f5;height: 200px;">
-                                                <a href="{{ route('shops', ['category' => $prodcat->slug]) }}"><img src="{{ Storage::url($prodcat->logo) }}" class="card-img-top " alt="..."></a>
-                                            </div>
-                                            <p class="card-title p-3" style="font-size: 15px;text-align:center">
-                                                {{ $prodcat->name }}
-                                            </p>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div> --}}
-                <div class="row ">
-                    <div class="ec_cat_slider">
-                        @foreach ($prodcats as $prodcat)
-                            <div class="ec_cat_content">
-                                <div class="ec_cat_inner">
-                                    <div class="category-thumbnail border-hover"
-                                        style="background-color: #f5f5f5;height: 200px;">
-                                        <a href="{{ route('shops', ['category' => $prodcat->slug]) }}"><img
-                                                style="height: 100%" src="{{ Storage::url($prodcat->logo) }}"
-                                                class="card-img-top " alt="..."></a>
-                                    </div>
-                                    <p class="card-title p-3" style="font-size: 15px;text-align:center">
-                                        {{ $prodcat->name }}
-                                    </p>
-                                </div>
-                            </div>
-                        @endforeach
-
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-center mb-5">
+                        <h2 class="related-product-sec-title mb-3">Browse Shops by Categories</h2>
+                        <p class="text-muted fs-6">Discover amazing shops organized by categories</p>
                     </div>
                 </div>
             </div>
+            
+            <div class="row g-4">
+                @foreach ($prodcats as $prodcat)
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-card-inner">
+                                <div class="category-image-wrapper">
+                                    <div class="category-image">
+                                        <img src="https://wpmayor.com/wp-content/uploads/2016/10/The-Beginners-Guide-To-WooCommerce-Product-Categories-Tags-Attributes-Banner-630x350.jpg" 
+                                             alt="{{ $prodcat->name }}" 
+                                             class="category-img">
+                                        <div class="category-overlay">
+                                            <div class="category-icon">
+                                                <i class="fas fa-shopping-bag"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="category-content">
+                                    <div class="category-header">
+                                        <h5 class="category-title">{{ $prodcat->name }}</h5>
+                                        
+                                    </div>
+                                    <div class="category-meta">
+                                       
+                                        <span class="product-count">
+                                            <i class="fas fa-box me-1"></i>
+                                            {{ $prodcat->Products->count() ?? 0 }} products
+                                        </span>
+                                    </div>
+                                    
+                                    <a href="{{ route('shops', ['category' => $prodcat->slug]) }}" 
+                                       class="category-link">
+                                        <span>Explore Category</span>
+                                        <div class="link-icon">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </section>
-
-
     <!--category Section End -->
 
     <!-- Product tab Area Start -->

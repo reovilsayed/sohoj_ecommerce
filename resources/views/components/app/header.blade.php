@@ -6,7 +6,7 @@
                 <i class="fas fa-phone-alt me-2"></i> <span>+123 5678 890</span>
                 <span class="mx-3">|</span>
                 <i class="fas fa-envelope me-2"></i> <span>support@sohoj.com</span>
-            </div>
+                </div>
             <div class="d-flex align-items-center gap-2">
                 <a href="#" class="text-light me-2"><i class="fab fa-facebook-f"></i></a>
                 <a href="#" class="text-light me-2"><i class="fab fa-instagram"></i></a>
@@ -23,10 +23,10 @@
                 <div class="dropdown d-inline">
                     <a class="dropdown-toggle text-light" href="#" role="button"
                         data-bs-toggle="dropdown">USD</a>
-                    <ul class="dropdown-menu">
+                            <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">USD</a></li>
                         <li><a class="dropdown-item" href="#">EUR</a></li>
-                    </ul>
+                            </ul>
                 </div>
             </div>
         </div>
@@ -55,26 +55,26 @@
                         placeholder="Search products...">
                     <select class="form-select border rounded-0 pt-2 h-100" name="category" style="max-width: 200px;">
                         <option value="">All Categories</option>
-                        @foreach ($categories as $category)
+                                            @foreach ($categories as $category)
                             @if ($category->childrens->count())
                                 <optgroup label="{{ $category->name }}">
-                                    @foreach ($category->childrens as $child)
+                                                @foreach ($category->childrens as $child)
                                         <option value="{{ $child->slug }}"
                                             @if (request('category') == $child->slug) selected @endif>
                                             {{ $child->name }}
-                                        </option>
-                                    @endforeach
+                                                    </option>
+                                                @endforeach
                                 </optgroup>
                             @else
                                 <option value="{{ $category->slug }}" @if (request('category') == $category->slug) selected @endif>
-                                    {{ $category->name }}
-                                </option>
+                        {{ $category->name }}
+                    </option>
                             @endif
-                        @endforeach
-                    </select>
+                @endforeach
+            </select>
                     <button class="btn btn-success rounded-end h-100" type="submit"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
+        </div>
+    </form>
             <!-- Icons -->
             <div class="d-flex align-items-center gap-3">
                 <a href="{{ route('wishlist.index') }}" class="text-dark position-relative">
@@ -86,8 +86,8 @@
                         style="font-size: 0.7rem;">
                         {{ Cart::content()->count() }}
                     </span>
-                </a>
-                @auth
+                            </a>
+                            @auth
                     <div class="dropdown">
                         <a class="dropdown-toggle text-dark" href="#" data-bs-toggle="dropdown">
                             <i class="fas fa-user-circle fs-5"></i>
@@ -97,16 +97,16 @@
                             <li><a class="dropdown-item" href="{{ route('user.dashboard') }}">Profile</a></li>
                             @if (Auth()->user()->role_id == 3)
                                 <li><a class="dropdown-item" href="{{ url('vendor') }}">Vendor Profile</a></li>
-                            @endif
+                                        @endif
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                            </li>
+                                                </li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf
                             </form>
-                        </ul>
+                                    </ul>
                     </div>
-                @else
+                                    @else
                     <div class="dropdown">
                         <a class="dropdown-toggle text-dark" href="#" data-bs-toggle="dropdown">
                             <i class="fas fa-user-circle fs-5"></i>
@@ -133,20 +133,20 @@
                     placeholder="Search products...">
                 <select class="form-select" name="category" style="max-width: 200px;">
                     <option value="">All Categories</option>
-                    @foreach ($categories as $category)
+                                @foreach ($categories as $category)
                         <option value="{{ $category->slug }}" @if (request('category') == $category->slug) selected @endif>
-                            {{ $category->name }}
-                        </option>
-                        @foreach ($category->childrens as $child)
+                                        {{ $category->name }}
+                                    </option>
+                                    @foreach ($category->childrens as $child)
                             <option value="{{ $child->slug }}" @if (request('category') == $child->slug) selected @endif
                                 style="font-weight:300;">&nbsp;&nbsp;&nbsp;&nbsp;{{ $child->name }}</option>
-                        @endforeach
-                    @endforeach
-                </select>
+                                    @endforeach
+                                @endforeach
+                            </select>
                 <button class="btn btn-success rounded-end" type="submit"><i class="fas fa-search"></i></button>
             </div>
         </form>
-    </div>
+                        </div>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-md navbar-light bg-light shadow">
         <div class="container">
@@ -191,7 +191,7 @@
                 <i class="fas fa-shopping-cart me-2"></i>Shopping Cart
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
+            </div>
         <div class="offcanvas-body">
             @if (Cart::count() > 0)
                 <div class="cart-items">
@@ -217,11 +217,11 @@
                     <div class="d-flex justify-content-between mb-2">
                         <span>Subtotal:</span>
                         <span class="fw-bold">${{ Cart::subtotal() }}</span>
-                    </div>
+        </div>
                     <div class="d-flex justify-content-between mb-3">
                         <span>Total:</span>
                         <span class="fw-bold text-success">${{ Cart::subtotal() }}</span>
-                    </div>
+    </div>
                     <div class="d-grid gap-2">
                         <a href="{{ route('cart') }}" class="btn btn-outline-primary">View Cart</a>
                         <a href="{{ route('checkout') }}" class="btn btn-success">Checkout</a>
