@@ -128,6 +128,7 @@
             .hero__item {
                 padding-left: 75px;
             }
+
         }
 
 
@@ -136,35 +137,129 @@
 
         /* Header */
         .hero__categories__all {
-            background-color: #eaeaea !important;
+            background: linear-gradient(135deg, #3bb77e 0%, #2d9d6b 100%) !important;
             cursor: pointer;
-            transition: background 0.3s ease;
-            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero__categories__all::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .hero__categories__all:hover::before {
+            left: 100%;
         }
 
         .hero__categories__all:hover {
-            background-color: #f1f1f1;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(59, 183, 126, 0.3);
         }
 
-        /* List styling */
-        .hero__categories ul li {
-            list-style: none;
+        .category-icon-wrapper {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
         }
 
-        .hero__categories ul li a.category-link {
-            display: block;
-            padding: 8px 12px;
-            font-size: 15px;
-            color: #333;
-            font-weight: 500;
-            border-radius: 6px;
-            transition: background 0.2s ease, color 0.2s ease;
+        .category-toggle-icon {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .category-toggle-icon:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Category List Styling */
+        .category-list-wrapper {
+            background: #f8f9fa;
+        }
+
+        .category-item {
+            transition: all 0.3s ease;
+        }
+
+        .category-link {
+            background: white;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
 
-        .hero__categories ul li a.category-link:hover {
-            background-color: #eaeaea;
-            color: #000;
+        .category-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 183, 126, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .category-link:hover::before {
+            left: 100%;
+        }
+
+        .category-link:hover {
+            background: #f8f9fa;
+            border-color: #3bb77e;
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(59, 183, 126, 0.15);
+        }
+
+        .category-link:hover .fas.fa-chevron-right {
+            transform: translateX(3px);
+            color: #3bb77e !important;
+        }
+
+        .category-icon {
+            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white !important;
+            font-size: 12px;
+        }
+
+        .category-sub-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+        }
+
+        .category-sub-icon .fas.fa-circle {
+            color: #6c757d !important;
         }
 
         /* Scrollbar styling */
@@ -173,12 +268,41 @@
         }
 
         #static-category-list::-webkit-scrollbar-thumb {
-            background-color: #ccc;
+            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
             border-radius: 4px;
         }
 
         #static-category-list::-webkit-scrollbar-track {
-            background-color: transparent;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        /* Animation for chevron */
+        .transition {
+            transition: all 0.3s ease;
+        }
+
+        /* Hover effects for category items */
+        .category-item:hover .category-icon {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(59, 183, 126, 0.3);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero__categories {
+                margin-bottom: 1rem;
+            }
+
+            .category-link {
+                padding: 0.75rem !important;
+            }
+
+            .category-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 10px;
+            }
         }
     </style>
     <livewire:styles />
@@ -190,9 +314,6 @@
         // Use Laravel cache for expensive queries
         use Illuminate\Support\Facades\Cache;
         use App\Models\Prodcat;
-        use App\Models\Shop;
-        use App\Models\Order;
-
         $categories = Cache::remember('header_categories', 3600, function () {
             return Prodcat::whereNull('parent_id')->orderBy('role', 'asc')->with('childrens')->get();
         });
@@ -200,96 +321,120 @@
         $shops = Cache::remember('header_shops', 3600, function () {
             return Shop::latest()->get();
         });
-
-        $route = route('shops');
     @endphp
     <x-app.header />
-    <div class="container">
-        <div class="row mt-4">
-            <div class="col-lg-3 ps-0">
-                <div class="hero__categories rounded-4 shadow-sm overflow-hidden bg-white">
-                    <!-- Toggle Header -->
-                    <div class="hero__categories__all d-flex align-items-center justify-content-between px-4 py-3 bg-light"
-                        onclick="toggleStaticCategory()">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="fa fa-bars text-dark fs-5"></i>
-                            <span class="fw-bold text-dark">All Categories</span>
+    <!-- hero section start -->
+    <div class="hero">
+        <div class="container">
+            <div class="row mt-4">
+                <div class="col-lg-3 ps-0">
+                    <div class="hero__categories rounded-4 shadow-lg overflow-hidden bg-white border-0">
+                        <!-- Toggle Header -->
+                        <div class="hero__categories__all d-flex align-items-center justify-content-between px-4 py-4 bg-gradient-primary"
+                            onclick="toggleStaticCategory()">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="category-icon-wrapper">
+                                    <i class="fas fa-th-large text-white fs-5"></i>
+                                </div>
+                                <div>
+                                    <span class="fw-bold text-white fs-6">All Categories</span>
+                                    <div class="text-white-50 small">Browse by category</div>
+                                </div>
+                            </div>
+                            <div class="category-toggle-icon">
+                                <i class="fas fa-chevron-down text-white transition" id="static-category-chevron"></i>
+                            </div>
                         </div>
-                        <i class="fa fa-chevron-down text-dark transition" id="static-category-chevron"></i>
-                    </div>
 
-                    <!-- Category List -->
-                    <div id="static-category-list" style="display: block; max-height: 375px; overflow-y: auto;">
-                        <ul class="list-unstyled mb-0 pt-2 px-3">
-                            @foreach ($categories as $category)
-                                <li>
-                                    <a href="{{ route('vendors', ['category' => $category->slug]) }}"
-                                        class="category-link fw-semibold">
-                                        {{ $category->name }}
-                                    </a>
-                                </li>
-
-                                @foreach ($category->childrens as $child)
-                                    <li>
-                                        <a href="{{ route('vendors', ['category' => $child->slug]) }}"
-                                            class="category-link ps-4 text-secondary">
-                                            ↳ {{ $child->name }}
+                        <!-- Category List -->
+                        <div id="static-category-list" style="display: block; max-height: 375px; overflow-y: auto;">
+                            <div class="category-list-wrapper p-3">
+                                @foreach ($categories as $category)
+                                    <div class="category-item mb-2">
+                                        <a href="{{ route('vendors', ['category' => $category->slug]) }}"
+                                            class="category-link d-flex align-items-center justify-content-between p-3 rounded-3">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <div class="category-icon">
+                                                    <i class="fas fa-shopping-bag text-primary"></i>
+                                                </div>
+                                                <span class="fw-semibold text-dark">{{ $category->name }}</span>
+                                            </div>
+                                            <i class="fas fa-chevron-right text-muted small"></i>
                                         </a>
-                                    </li>
+                                    </div>
+
+                                    @foreach ($category->childrens as $child)
+                                        <div class="category-item mb-1 ms-4">
+                                            <a href="{{ route('vendors', ['category' => $child->slug]) }}"
+                                                class="category-link d-flex align-items-center justify-content-between p-2 rounded-3">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <div class="category-sub-icon">
+                                                        <i class="fas fa-circle text-muted" style="font-size: 6px;"></i>
+                                                    </div>
+                                                    <span class="text-secondary small">{{ $child->name }}</span>
+                                                </div>
+                                                <i class="fas fa-chevron-right text-muted" style="font-size: 10px;"></i>
+                                            </a>
+                                        </div>
+                                    @endforeach
                                 @endforeach
-                            @endforeach
-                        </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-lg-9 pe-0">
-                <div class="hero-slider-wrapper">
-                    <div class="hero-slider" role="region" aria-label="Product carousel">
-                        <!-- Slide 1 -->
-                        <div class="hero__item set-bg"
-                            style="background-image: url('{{asset('assets/slider/fashion1.jpg')}}');"
-                            aria-hidden="false">
-                            {{-- <div class="hero__text">
-                                <span>FRUIT FRESH</span>
-                                <h2>Vegetable <br>100% Organic</h2>
-                                <p>Free Pickup and Delivery Available</p>
-                                <a href="#" class="primary-btn">SHOP NOW</a>
-                            </div> --}}
+                <div class="col-lg-9 pe-0">
+                    <div class="hero-slider-wrapper">
+                        <div class="hero-slider" role="region" aria-label="Product carousel">
+                            <!-- Slide 1 -->
+                            <div class="hero__item set-bg"
+                                style="background-image: url('{{ asset('assets/slider/fashion1.jpg') }}');"
+                                aria-hidden="false">
+                                {{-- <div class="hero__text">
+                                    <span>FRUIT FRESH</span>
+                                    <h2>Vegetable <br>100% Organic</h2>
+                                    <p>Free Pickup and Delivery Available</p>
+                                    <a href="#" class="primary-btn">SHOP NOW</a>
+                                </div> --}}
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="hero__item set-bg"
+                                style="background-image: url('{{ asset('assets/slider/fashion2.jpg') }}');"
+                                aria-hidden="true">
+                            </div>
+                            <div class="hero__item set-bg"
+                                style="background-image: url('{{ asset('assets/slider/fashion3.jpg') }}');"
+                                aria-hidden="true">
+                            </div>
+                            <div class="hero__item set-bg"
+                                style="background-image: url('{{ asset('assets/slider/fashion4.jpg') }}');"
+                                aria-hidden="true">
+                            </div>
+                            <div class="hero__item set-bg"
+                                style="background-image: url('{{ asset('assets/slider/fashion5.jpg') }}');"
+                                aria-hidden="true">
+                            </div>
                         </div>
-                        <!-- Slide 2 -->
-                        <div class="hero__item set-bg"
-                            style="background-image: url('{{asset('assets/slider/fashion2.jpg')}}');"
-                            aria-hidden="true">
-                        </div>
-                        <div class="hero__item set-bg"
-                            style="background-image: url('{{asset('assets/slider/fashion3.jpg')}}');"
-                            aria-hidden="true">
-                        </div>
-                        <div class="hero__item set-bg"
-                            style="background-image: url('{{asset('assets/slider/fashion4.jpg')}}');"
-                            aria-hidden="true">
-                        </div>
-                        <div class="hero__item set-bg"
-                            style="background-image: url('{{asset('assets/slider/fashion5.jpg')}}');"
-                            aria-hidden="true">
-                        </div>
-                    </div>
 
-                    <!-- Navigation Dots -->
-                    <div class="slider-dots">
-                        <button class="dot active" aria-label="Slide 1"></button>
-                        <button class="dot" aria-label="Slide 2"></button>
-                        <button class="dot" aria-label="Slide 3"></button>
-                        <button class="dot" aria-label="Slide 4"></button>
-                        <button class="dot" aria-label="Slide 5"></button>
+                        <!-- Navigation Dots -->
+                        <div class="slider-dots">
+                            <button class="dot active" aria-label="Slide 1"></button>
+                            <button class="dot" aria-label="Slide 2"></button>
+                            <button class="dot" aria-label="Slide 3"></button>
+                            <button class="dot" aria-label="Slide 4"></button>
+                            <button class="dot" aria-label="Slide 5"></button>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
-
     </div>
+
+    <!-- hero section end -->
+
+
     <!-- Main Slider Start -->
     <div id="carouselExampleIndicators" class="carousel slide container my-2" data-bs-ride="carousel">
         <div class="carousel-indicators" style="justify-content: start;margin-left: 100px;margin-bottom:20px">
@@ -565,10 +710,10 @@
                         <!-- Product tab area start -->
                         <div class="row space-t-50">
                             <!-- <div class="col-md-12">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="section-title">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <h2 class="ec-title">New Products</h2>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="section-title">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <h2 class="ec-title">New Products</h2>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
                             <h2 class="related-product-sec-title my-5"> Recommended For You</h2>
                         </div>
 
