@@ -629,6 +629,64 @@
                 font-size: 0.8rem;
             }
         }
+
+        /* Category Slider Styles */
+        .category-slider-container {
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .category-slider-wrapper {
+            position: relative;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        .category-slider {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 30px;
+        }
+
+        .category-slide {
+            flex: 0 0 calc(25% - 22.5px);
+            min-width: 280px;
+            max-width: 320px;
+        }
+
+
+
+
+
+        /* Responsive Slider */
+        @media (max-width: 1200px) {
+            .category-slide {
+                flex: 0 0 calc(33.333% - 20px);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .category-slide {
+                flex: 0 0 calc(50% - 15px);
+            }
+            
+            .category-slider-container {
+                padding: 0 50px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .category-slide {
+                flex: 0 0 calc(100% - 10px);
+                min-width: 250px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .category-slider-wrapper {
+                padding: 15px 0;
+            }
+        }
     </style>
     <livewire:styles />
 @endsection
@@ -801,48 +859,53 @@
                 </div>
             </div>
             
-            <div class="row g-4">
-                @foreach ($prodcats as $prodcat)
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                        <div class="category-card">
-                            <div class="category-card-inner">
-                                <div class="category-image-wrapper">
-                                    <div class="category-image">
-                                        <img src="https://wpmayor.com/wp-content/uploads/2016/10/The-Beginners-Guide-To-WooCommerce-Product-Categories-Tags-Attributes-Banner-630x350.jpg" 
-                                             alt="{{ $prodcat->name }}" 
-                                             class="category-img">
-                                        <div class="category-overlay">
-                                            <div class="category-icon">
-                                                <i class="fas fa-shopping-bag"></i>
+            <div class="category-slider-container">
+                <div class="category-slider-wrapper">
+                    <div class="category-slider" id="categorySlider">
+                        @foreach ($prodcats as $prodcat)
+                            <div class="category-slide">
+                                <div class="category-card">
+                                    <div class="category-card-inner">
+                                        <div class="category-image-wrapper">
+                                            <div class="category-image">
+                                                <img src="https://wpmayor.com/wp-content/uploads/2016/10/The-Beginners-Guide-To-WooCommerce-Product-Categories-Tags-Attributes-Banner-630x350.jpg" 
+                                                     alt="{{ $prodcat->name }}" 
+                                                     class="category-img">
+                                                <div class="category-overlay">
+                                                    <div class="category-icon">
+                                                        <i class="fas fa-shopping-bag"></i>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="category-content">
-                                    <div class="category-header">
-                                        <h5 class="category-title">{{ $prodcat->name }}</h5>
-                                        
-                                    </div>
-                                    <div class="category-meta">
-                                       
-                                        <span class="product-count">
-                                            <i class="fas fa-box me-1"></i>
-                                            {{ $prodcat->Products->count() ?? 0 }} products
-                                        </span>
-                                    </div>
-                                    
-                                    <a href="{{ route('shops', ['category' => $prodcat->slug]) }}" 
-                                       class="category-link">
-                                        <span>Explore Category</span>
-                                        <div class="link-icon">
-                                            <i class="fas fa-arrow-right"></i>
+                                        <div class="category-content">
+                                            <div class="category-header">
+                                                <h5 class="category-title">{{ $prodcat->name }}</h5>
+                                            </div>
+                                            <div class="category-meta">
+                                                <span class="product-count">
+                                                    <i class="fas fa-box me-1"></i>
+                                                    {{ $prodcat->Products->count() ?? 0 }} products
+                                                </span>
+                                            </div>
+                                            <a href="{{ route('shops', ['category' => $prodcat->slug]) }}" 
+                                               class="category-link">
+                                                <span>Explore Category</span>
+                                                <div class="link-icon">
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </div>
+                                            </a>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                @endforeach
+                    
+
+                    
+
+                </div>
             </div>
         </div>
     </section>
@@ -1123,6 +1186,95 @@
             list.style.display = isVisible ? 'none' : 'block';
             icon.className = isVisible ? 'fa fa-chevron-down text-dark' : 'fa fa-chevron-up text-dark';
         }
+
+        // Category Slider Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.getElementById('categorySlider');
+            const slides = document.querySelectorAll('.category-slide');
+            
+            let currentSlide = 0;
+            const slidesPerView = getSlidesPerView();
+            const maxSlides = slides.length - slidesPerView;
+            
+            function getSlidesPerView() {
+                if (window.innerWidth <= 576) return 1;
+                if (window.innerWidth <= 768) return 1;
+                if (window.innerWidth <= 992) return 2;
+                if (window.innerWidth <= 1200) return 3;
+                return 4;
+            }
+            
+            function updateSlider() {
+                const slideWidth = slides[0].offsetWidth + 30; // 30px gap
+                const translateX = -currentSlide * slideWidth;
+                slider.style.transform = `translateX(${translateX}px)`;
+            }
+            
+
+            
+            function nextSlide() {
+                if (currentSlide < maxSlides) {
+                    currentSlide++;
+                    updateSlider();
+                }
+            }
+            
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlider();
+                }
+            }
+            
+
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                } else if (e.key === 'ArrowRight') {
+                    nextSlide();
+                }
+            });
+            
+            // Touch/swipe support
+            let startX = 0;
+            let endX = 0;
+            
+            slider.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+            });
+            
+            slider.addEventListener('touchend', function(e) {
+                endX = e.changedTouches[0].clientX;
+                handleSwipe();
+            });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = startX - endX;
+                
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+            }
+            
+            // Resize handler
+            window.addEventListener('resize', function() {
+                const newSlidesPerView = getSlidesPerView();
+                if (newSlidesPerView !== slidesPerView) {
+                    currentSlide = 0;
+                    updateSlider();
+                }
+            });
+            
+            // Initialize slider
+            updateSlider();
+        });
     </script>
 
     <script>
