@@ -1,69 +1,59 @@
-<div class="col-12 mb-6  pro-gl-content-shop shadow-sm shop-cards">
-    <div class="ec-product-inner position-relative pt-3">
-        <!-- @auth
-            <form id="followForm" action="{{ route('follow', $shop) }}" method="post">
-                <div class="ec-pro-actions shop-end position-absolute" style="right: 0px; top:-10px">
-                    @csrf
-                    @php
-                        $follow = auth()->user()->follows($shop);
-                    @endphp
-                    @if (auth()->user()->isFollowingShop($shop->id))
-    <button type="button" data-shop-id="{{ $shop->id }}" style="cursor:pointer; z-index: 9;justify-content: center;display: flex;align-items: center; color:rgba(252, 79, 79, 0.96); background-color:#C5C5C5;padding:10px 10px;border-radius:50%" class="wishlist-shop-btn"><i id="shop_heart_{{ $shop->id }}" class="fas fa-heart "></i> </button>
-@else
-    <button type="button" data-shop-id="{{ $shop->id }}" style="cursor:pointer; z-index: 9;justify-content: center;display: flex;align-items: center; background-color:#C5C5C5;padding:10px 10px;border-radius:50%" class="wishlist-shop-btn"><i id="shop_heart_{{ $shop->id }}" class="far fa-heart text-white"></i></button>
-    @endif
-                </div>
-            </form>
-        @endauth -->
+<div class="col-12 mb-6 mt-4">
+    <div class="ec-product-inner position-relative shop-card border rounded-3 shadow-sm h-100 overflow-hidden bg-white transition-hover"
+        style="padding-top: 0px !important;">
 
-        <!-- <a href="#" class="ec-btn-group wishlist-shop"
-                style="z-index: 9;justify-content: center;display: flex;align-items: center;"><i class="fa-solid fa-heart"
-                    style="color: #ffffff;"></i></a> -->
+        <div class="ec-pro-image-outer p-3 bg-light text-center"
+            style="background-image: url('{{ Storage::url($shop->banner) }}'); background-size: cover; background-position: center; ">
 
-        <div class="ec-pro-image-outer ">
-            <div class="ec-pro-image " style="border:none">
-                <a href="{{ route('store_front', $shop->slug) }}" class="image">
-                    <img class="main-image" src="{{ Storage::url($shop->logo) }}" style="object-fit: cover;"
-                        alt="Product" />
-                    <img class="hover-image" src="{{ Storage::url($shop->logo) }}" style="object-fit: cover;"
-                        alt="Product" />
-                </a>
-
-
-            </div>
+            <a href="{{ route('store_front', $shop->slug) }}" class="d-inline-block">
+                <img src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}"
+                    class="img-fluid rounded-circle shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+            </a>
         </div>
-        <div class="ec-pro-content text-center" style=" background-color: inherit">
-            <h5 class="ec-pro-title ec-pro-title-shop"><a style="font-size: 15px"
-                    href="{{ route('store_front', $shop->slug) }}">{{ $shop->name }}</a></h5>
-            <div class="ec-pro-list-desc">
-                <p style="font-size: 13px">{{ Str::limit($shop->short_description, $limit = 30, $end = '...') }}</p>
-            </div>
-            <div class="d-flex flex-wrap justify-content-center btn-group-sm" style="margin-right: 5px" role="group"
-                aria-label="Basic example">
-                @if (!empty($shop->tags))
-                    @php
-                        $tags = is_array($shop->tags) ? $shop->tags : explode(',', $shop->tags);
-                    @endphp
+
+        <div class="ec-pro-content text-center p-3">
+            <h5 class="mb-1">
+                <a href="{{ route('store_front', $shop->slug) }}" class="text-dark fw-semibold text-decoration-none"
+                    style="font-size: 16px;">
+                    {{ $shop->name }}
+                </a>
+            </h5>
+
+            <p class="text-muted mb-2" style="font-size: 13px;">
+                {{ Str::limit($shop->short_description, 30, '...') }}
+            </p>
+
+            @if (!empty($shop->tags))
+                @php
+                    $tags = is_array($shop->tags) ? $shop->tags : explode(',', $shop->tags);
+                @endphp
+                <div class="d-flex justify-content-center flex-wrap gap-2 mb-2">
                     @foreach ($tags as $tag)
-                        <span class="btn-light py-1 px-2 me-2"
-                            style="font-size: 12px;color: #787885;height: 25px;">{{ Str::limit($tag, $limit = 7, $end = '...') }}</span>
+                        <span class="badge bg-light text-muted border small fw-normal" title="{{ $tag }}">
+                            {{ Str::limit($tag, 5, '...') }}
+                        </span>
                     @endforeach
-                @endif
+                </div>
+            @endif
 
 
-
-            </div>
-
-            <div class="ec-pro-rating d-flex justify-content-center align-items-center" style="margin-top:13px">
+            <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
                 <input value="{{ Sohoj::average_rating($shop->ratings) }}" class="rating published_rating"
-                    data-size="sm">
-                <span style="font-size: 13px;">({{ $shop->ratings->count() }})</span>
+                    data-size="sm" readonly>
+                <span class="text-muted" style="font-size: 13px;">({{ $shop->ratings->count() }})</span>
             </div>
-
-
-
         </div>
     </div>
+    <style>
+        .transition-hover {
+            transition: all 0.3s ease;
+        }
+
+        .transition-hover:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+    </style>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
