@@ -1,50 +1,69 @@
-<div class="col-lg-2 col-md-3 col-sm-6 col-xs-6 mb-6  pro-gl-content col-6">
-    <div class="ec-product-inner" style="border-radius: 5px; position:relative">
-        <div class="ec-pro-image-outer">
-            <div class="ec-pro-image">
-                <a href="{{ route('product_details', $product->slug) }}" class="image">
-                    <img class="main-image" src="{{ Storage::url($product->image) }}" alt="Product" />
-                    <img class="hover-image" src="{{ Storage::url($product->image) }}" alt="Product" />
-                </a>
+<style>
+    .btn-secondary:hover {
+        color: rgb(0, 0, 0);
+        background-color: #e7eaee !important;
+        border-color: #000000 !important;
+    }
+</style>
+<div class=" col-md-2 col-sm-6 col-6 mb-4">
+    <div class="card border-0 rounded-4 shadow-sm text-center position-relative h-100">
+
+        {{-- Wishlist button --}}
+        <button
+            class="btn btn-sm btn-secondary opacity-75 rounded-circle position-absolute top-0 end-0 m-2 d-flex justify-content-center align-items-center"
+            title="Wishlist" aria-label="Add to Wishlist" style="height: 30px; width: 30px;">
+            <i class="fa-regular fa-heart fa-fw"></i>
+        </button>
 
 
-                <div class="ec-pro-actions">
-                    <a href="JavaScript:void(0)" onclick="quickView({{ $product->id }})" class="quickview"><i
-                            class="fi-rr-eye"></i></a>
-                    <form action="{{ route('cart.store') }}" method="post">
-                        @csrf
-                        <input type="hidden" class="form-control qty" value="1" min="1" name="quantity">
-                        <input type="hidden" name="product_id"value="{{ $product->id }}" />
-                        <button title="Add To Cart" class="add-to-cart" style="right: 6px; bottom: 86px"
-                            type="submit"><i class="fi-rr-shopping-basket"></i> Add To
-                            Cart</button>
-                    </form>
-                    @if (!in_array($product->id, session()->get('wishlist', [])))
-                        <a href="javascript:void(0)" onclick="wishlist({{ $product->id }})"
-                            class="ec-btn-group wishlist" style="bottom: 50px"><i class="fa-regular fa-heart"></i></a>
-                    @else
-                        <a href="{{ route('wishlist.remove', ['productId' => $product->id]) }}"
-                            class="ec-btn-group wishlist" style="bottom: 50px"><i class="fa-solid fa-heart "
-                                style="color: #3BB77E"></i></a>
-                    @endif
-                </div>
+        {{-- Product Image --}}
+        <a href="{{ route('product_details', $product->slug) }}">
+            <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="w-100 mt-1"
+                style="border-radius: 12px 12px 0px 0px; object-fit: cover; height: 220px;">
+        </a>
+
+        {{-- Product Content --}}
+        <div class="card-body p-2">
+            {{-- Product Name --}}
+            <h6 class="fw-bold text-truncate mb-1"
+                style="font-size: 1.05rem; font-family: 'Segoe UI', 'Optima', Arial, sans-serif; letter-spacing: 0.01em;">
+                {{ Str::limit($product->name, 40) }}
+            </h6>
+
+            {{-- Rating & Reviews --}}
+            <div class="d-flex justify-content-center align-items-center gap-1 mb-2 small">
+                <i class="fa fa-star text-warning"></i>
+                <span class="fw-bold">{{ Sohoj::average_rating($product->ratings) }}</span>
+                <span class="text-muted">({{ $product->ratings->count() }} Reviews)</span>
             </div>
-        </div>
-        <div class="ec-pro-content text-center" style="margin-top: 14px;height: 100px;">
-            <h5 class="ec-pro-title">
-                <a href="{{ route('product_details', $product->slug) }}">{{ $product->name }}</a>
-            </h5>
 
-            <div class="ec-pro-list-desc" style="font-size: 9px; color: #787885">
-                {{ Str::limit(strip_tags($product->short_description), $limit = 50, $end = '...') }}</div>
+            {{-- Price --}}
+            <div class="fw-bold fs-5 text-dark mb-3">
+                {{ Sohoj::price($product->sale_price ?? $product->price) }}
+                @if ($product->sale_price)
+                    <small class="text-muted text-decoration-line-through ms-1 fs-6">
+                        {{ Sohoj::price($product->price) }}
+                    </small>
+                @endif
+            </div>
 
-
-
-
-        </div>
-        <div class="ec-pro-rating d-flex justify-content-center">
-            <input value="{{ Sohoj::average_rating($product->ratings) }}" class="rating published_rating"
-                data-size="xs">
+            {{-- Add to Cart --}}
+            <form action="{{ route('cart.store') }}" method="post">
+                @csrf
+                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <button class="btn btn-sm btn-secondary w-100" type="submit" style="border-radius: 8px;">
+                    Add to Cart
+                </button>
+            </form>
         </div>
     </div>
 </div>
+
+<style>
+    .card:hover {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+        transform: translateY(-3px);
+        transition: 0.3s ease;
+    }
+</style>
