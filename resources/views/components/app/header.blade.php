@@ -80,7 +80,7 @@
                 <a href="{{ route('wishlist.index') }}" class="text-dark position-relative">
                     <i class="far fa-heart fs-5"></i>
                 </a>
-                <a href="{{ route('cart') }}" class="text-dark position-relative">
+                <a href="#" class="text-dark position-relative" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
                     <i class="fas fa-shopping-cart fs-5"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                         style="font-size: 0.7rem;">
@@ -95,6 +95,10 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('user.dashboard') }}">Profile</a></li>
+                            @if (Auth()->user()->role_id == 3)
+                                <li><a class="dropdown-item" href="{{ url('vendor') }}">Vendor Profile</a></li>
+                            @endif
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                             </li>
@@ -103,7 +107,18 @@
                         </ul>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="text-dark"><i class="fas fa-user fs-5"></i></a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle text-dark" href="#" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle fs-5"></i>
+                            <span class="d-none d-lg-inline">Account</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ route('login') }}"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
+                            <li><a class="dropdown-item" href="{{ route('register') }}"><i class="fas fa-user-plus me-2"></i>Register</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ route('vendor.create') }}"><i class="fas fa-store me-2"></i>Register as Vendor</a></li>
+                        </ul>
+                    </div>
                 @endauth
             </div>
             <!-- Mobile Menu Toggle -->
@@ -165,8 +180,61 @@
                         href="{{ route('shops', ['filter_products' => 'most-popular']) }}">Best Seller</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Vendors</a></li>
                 <li class="nav-item"><a class="nav-link" href="#footer">Help</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login/Register</a></li>
+                {{-- <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login/Register</a></li> --}}
             </ul>
+        </div>
+    </div>
+    <!-- Cart Offcanvas -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="cartOffcanvasLabel">
+                <i class="fas fa-shopping-cart me-2"></i>Shopping Cart
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            @if (Cart::count() > 0)
+                <div class="cart-items">
+                    @foreach (Cart::content() as $product)
+                        <div class="cart-item d-flex align-items-center mb-3 p-3 border rounded">
+                            <img src="{{ Storage::url($product->model->image) }}" alt="{{ $product->name }}" 
+                                 class="me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">{{ $product->name }}</h6>
+                                <p class="mb-1 text-muted">Qty: {{ $product->quantity }}</p>
+                                <p class="mb-0 fw-bold">${{ $product->price }}</p>
+                            </div>
+                            <a href="{{ route('cart.destroy', $product->rowId) }}" 
+                               onclick="return confirm('Remove this item?');" 
+                               class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+                <hr>
+                <div class="cart-summary">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal:</span>
+                        <span class="fw-bold">${{ Cart::subtotal() }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Total:</span>
+                        <span class="fw-bold text-success">${{ Cart::subtotal() }}</span>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="{{ route('cart') }}" class="btn btn-outline-primary">View Cart</a>
+                        <a href="{{ route('checkout') }}" class="btn btn-success">Checkout</a>
+                    </div>
+                </div>
+            @else
+                <div class="text-center py-5">
+                    <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">Your cart is empty</h5>
+                    <p class="text-muted">Add some products to your cart to see them here.</p>
+                    <a href="{{ route('shops') }}" class="btn btn-primary">Start Shopping</a>
+                </div>
+            @endif
         </div>
     </div>
     <style>
