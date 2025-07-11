@@ -111,170 +111,91 @@
     @yield('content')
 
     <!-- Footer Start -->
-    <footer class="ec-footer border-0" id="footer">
-        <div class="footer-container">
-            <div class="footer-offer">
-                <div class="container">
-                    <div class="row justify-content-between">
-                        <div class="col-md-3 d-flex align-items-center" style="height:140px">
-                            <div class="align-self-center">
-                                <div class="header-logo">
-                                    <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo007.png') }}"
-                                            alt="logo"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mt-3 mb-3 d-flex justify-content-end align-items-center p-0">
-                            <div><span class="text-white" style="font-size: 13px">Join our weekly email list! </span>
-                            </div>
-                            <form style="width: 70%" name="ec-newsletter-form" method="post"
-                                action="{{ route('subscribe') }}">
-                                @csrf
-                                <div class="ec-subscribe-form ms-3 ">
-                                    <div id="ec_news_signup" class="ec-form footer-email">
-                                        <input class="ec-email pt-2" type="email" required=""
-                                            placeholder="Enter your email here..." name="email" value="" />
-                                        <button id="ec-news-btn" class="btn btn-dark ms-3 rounded-pill mx-1 shadow-sm"
-                                            type="submit" name="subscribe" value="">Subscribe</button>
-                                    </div>
-
-                                </div>
-                            </form>
-
-
-                        </div>
-
+    <footer class="footer-next py-5 text-light" id="footer" style="background: #181c24;">
+        <div class="container">
+            <div class="row gy-5 align-items-start">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <h6 class="fw-bold mb-3 text-uppercase" style="color:#fff;letter-spacing:1px;">Newsletter</h6>
+                    <form class="d-flex" name="ec-newsletter-form" method="post" action="{{ route('subscribe') }}">
+                        @csrf
+                        <input type="email" class="form-control form-control-sm bg-dark border-0 text-light"
+                            name="email" placeholder="Your email" required>
+                        <button class="btn-success btn-sm px-3" type="submit">Subscribe</button>
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                    <h6 class="fw-bold mb-3 text-uppercase" style="color:#fff;letter-spacing:1px;">Account</h6>
+                    <x-menu name="leftside" />
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                    <h6 class="fw-bold mb-3 text-uppercase" style="color:#fff;letter-spacing:1px;">Useful Links</h6>
+                    <x-menu name="middle" />
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                    <h6 class="fw-bold mb-3 text-uppercase" style="color:#fff;letter-spacing:1px;">Customer Service
+                    </h6>
+                    <x-menu name="main" />
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                    <a href="{{ route('homepage') }}">
+                        <img src="{{ asset('assets/logo/logo007.png') }}" alt="logo" style="height: 48px;">
+                    </a>
+                    <p class="mt-3 small" style="color:#b0b8c1;">Your trusted marketplace for quality products and
+                        great deals.</p>
+                    <div class="d-flex gap-2 mt-3">
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
+                                class="fab fa-twitter"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
+                                class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
+
             </div>
-            <div class="footer-top section-space-footer-p border-0" id="#footer">
-                <div class="container">
-                    <div class="row justify-content-between">
-                        <div class="col-sm-12 col-lg-3 ec-footer-contact d-flex justify-content-center">
-                            <div class="ec-footer-widget">
-                                <!-- <div class="ec-footer-logo"><a href="#"><img src="assets/images/logo/footer-logo007.png" alt=""><img class="dark-footer-logo" src="assets/images/logo/dark-logo007.png" alt="Site Logo" style="display: none;" /></a></div>
-                                <h4 class="ec-footer-heading">Contact us</h4> -->
-                                <ul class="mb-2" style="width: 280px">
-                                    <li class="list-inline-item"><a class="hdr-facebook" href=""><i
-                                                class="ecicon eci-facebook e rounded-circle p-3  d-flex justify-content-center"
-                                                style="font-size:15px; height:47px; width:45px;"></i></a>
-                                    </li>
-                                    <li class="list-inline-item"><a class="hdr-linkedin" href=""><i
-                                                class="ecicon eci-linkedin  rounded-circle p-3 "
-                                                style="font-size:15px"></i></a>
-                                    </li>
-                                    <li class="list-inline-item"><a class="hdr-instagram" href=""><i
-                                                class="ecicon eci-instagram rounded-circle p-3  border"
-                                                style="font-size:15px; "></i></a>
-                                    </li>
-                                    <li class="list-inline-item"><a class="hdr-twitter" href=""><i
-                                                class="ecicon eci-twitter  rounded-circle p-3  border"
-                                                style="font-size:15px"></i></a>
-                                    </li>
-
-
-                                    <p class="py-4" style="font-size: 13px">Follow our social media for Sohoj
-                                        E-commerce
-                                        news and updates. </p>
-                                </ul>
-                                <div class="ec-footer-links">
-
-                                    <ul class="align-items-center">
-
-                                        <li class=" text-dark " style="font-size:13px"><span><i
-                                                    class="fa-solid fa-phone me-1"></i><strong>Call
-                                                    Us:</strong></span></li>
-                                        <li class=" text-dark " style="font-size:13px"><span><i
-                                                    class="fa-solid fa-envelope me-1"></i><strong>Email:</strong></span>
-                                        </li>
-
-
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-lg-3">
-
-                        </div>
-
-                        <div class="col-sm-12 col-lg-2 ec-footer-account d-flex justify-content-center">
-                            <div class="ec-footer-widget ">
-                                <h4 class="ec-footer-heading" class="text-dark "
-                                    style="border: none;padding-bottom: 0px;color: #0B1D42 !important;">Account
-                                </h4>
-                                <div class="div" style="width: 15%;border-bottom: 3px solid #3BB77E;">
-
-                                </div>
-                                <div class="ec-footer-links  col-sm-12  ">
-                                    <x-menu name="leftside" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-lg-2 ec-footer-account d-flex justify-content-center">
-                            <div class="ec-footer-widget ">
-                                <h4 class="ec-footer-heading" class="text-dark "
-                                    style="border: none;padding-bottom: 0px;color: #0B1D42 !important;">Useful links
-                                </h4>
-                                <div class="div" style="width: 15%;border-bottom: 3px solid #3BB77E;">
-
-                                </div>
-                                <div class="ec-footer-links  col-sm-12  ">
-                                    <x-menu name="middle" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-lg-2 ec-footer-service d-flex justify-content-center">
-                            <div class="ec-footer-widget">
-                                <h4 class="ec-footer-heading" class="text-dark "
-                                    style="border: none;padding-bottom: 0px;color: #0B1D42 !important;">Useful links
-                                </h4>
-                                <div class="div" style="width: 15%;border-bottom: 3px solid #3BB77E;">
-
-                                </div>
-                                <div class="ec-footer-links">
-
-
-                                    <x-menu name="main" />
-
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
+            <hr class="my-4" style="border-color: #232a36;">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start small" style="color:#b0b8c1;">
+                    &copy; {{ date('Y') }} <a href="{{ route('homepage') }}"
+                        class="fw-bold text-light text-decoration-none">Sohoj E-commerce</a>. All rights reserved.
                 </div>
-            </div>
-            <div class="footer-bottom border-top">
-                <div class="container">
-                    <div class="row align-items-center">
-
-                        <!-- Footer Copyright Start -->
-                        <div class="col text-center footer-copy">
-                            <div class="footer-bottom-copy d-flex justify-content-start ">
-                                <div class="ec-copy text-dark text-left" style="color:#000000 !important;opacity:1;">
-                                    Copyright © 2023 <a class="site-name text-upper" href="#">Sohoj
-                                        E-commerce<span>.</span></a>. All Rights Reserved</div>
-                                <div class="img">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Footer Copyright End -->
-                        <!-- Footer payment -->
-                        <div class="col footer-bottom-right">
-                            <div class="footer-bottom-payment d-flex justify-content-end">
-                                <div class="payment-link">
-                                    <img src="{{ asset('assets/img/cards.png') }}" alt="">
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- Footer payment -->
-                    </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <img src="{{ asset('assets/img/cards.png') }}" alt="Payment Methods" style="height: 32px;">
                 </div>
             </div>
         </div>
     </footer>
+    <style>
+        .footer-next h6 {
+            border-bottom: 2px solid #3BB77E;
+            display: inline-block;
+            padding-bottom: 6px;
+            margin-bottom: 18px;
+        }
+
+        .footer-next .btn-outline-light {
+            border: 1px solid #3BB77E;
+            color: #fff;
+            background: transparent;
+            transition: all 0.2s;
+        }
+
+        .footer-next .btn-outline-light:hover {
+            background: #3BB77E;
+            color: #fff;
+            border-color: #3BB77E;
+        }
+
+        .footer-next input[type="email"] {
+            min-width: 120px;
+        }
+
+        .footer-next hr {
+            border-color: #232a36;
+        }
+    </style>
     <!-- Footer Area End -->
 
 
