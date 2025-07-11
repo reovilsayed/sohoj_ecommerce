@@ -6,7 +6,7 @@
 }
 
 </style>
-<div class=" col-md-3 col-sm-6 col-6 mb-4">
+<div class=" col-md-4 col-sm-6 col-6 mb-4">
     <div class="card border-0 rounded-4 shadow-sm text-center position-relative h-100">
         
         {{-- Wishlist button --}}
