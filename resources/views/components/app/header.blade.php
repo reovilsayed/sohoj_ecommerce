@@ -1,5 +1,56 @@
 @php
-    $states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
+    $states = [
+        'Alabama',
+        'Alaska',
+        'Arizona',
+        'Arkansas',
+        'California',
+        'Colorado',
+        'Connecticut',
+        'Delaware',
+        'Florida',
+        'Georgia',
+        'Hawaii',
+        'Idaho',
+        'Illinois',
+        'Indiana',
+        'Iowa',
+        'Kansas',
+        'Kentucky',
+        'Louisiana',
+        'Maine',
+        'Maryland',
+        'Massachusetts',
+        'Michigan',
+        'Minnesota',
+        'Mississippi',
+        'Missouri',
+        'Montana',
+        'Nebraska',
+        'Nevada',
+        'New Hampshire',
+        'New Jersey',
+        'New Mexico',
+        'New York',
+        'North Carolina',
+        'North Dakota',
+        'Ohio',
+        'Oklahoma',
+        'Oregon',
+        'Pennsylvania',
+        'Rhode Island',
+        'South Carolina',
+        'South Dakota',
+        'Tennessee',
+        'Texas',
+        'Utah',
+        'Vermont',
+        'Virginia',
+        'Washington',
+        'West Virginia',
+        'Wisconsin',
+        'Wyoming',
+    ];
 @endphp
 <style>
     /* .ec-select-inner::after {
@@ -74,6 +125,20 @@
     .select2-selection {
         height: 50px;
     }
+
+    .ec-main-menu>ul>li.active>a:before {
+        background: #e9e9e9;
+        color: #ffffff;
+        width: 100%;
+    }
+
+    .ec-main-menu ul li.active>a {
+        color: #ffffff !important;
+    }
+
+    .ec-main-menu ul li:hover>a {
+        color: #ffffff !important;
+    }
 </style>
 
 @php
@@ -84,10 +149,7 @@
     use App\Models\Order;
 
     $categories = Cache::remember('header_categories', 3600, function () {
-        return Prodcat::whereNull('parent_id')
-            ->orderBy('role', 'asc')
-            ->with('childrens')
-            ->get();
+        return Prodcat::whereNull('parent_id')->orderBy('role', 'asc')->with('childrens')->get();
     });
 
     $shops = Cache::remember('header_shops', 3600, function () {
@@ -103,12 +165,12 @@
             <div class="row align-items-center">
                 <!-- Header Top social Start -->
                 <div class="col text-left header-top-left d-none d-lg-block">
-                 
+
                 </div>
-            
+
                 <div class="col tab-logo">
                     <div class="header-logo">
-                        <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo007.png')}}"
+                        <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo007.png') }}"
                                 alt="logo"></a>
                     </div>
                 </div>
@@ -143,12 +205,6 @@
                 <!-- Header Top responsive Action -->
                 <div class="col d-lg-none ">
                     <div class="ec-header-bottons">
-                        <!-- Header User Start -->
-
-
-                        <!-- Header User End -->
-                        <!-- Header Cart Start -->
-                    
                         <div
                             style="display: flex;width:180px;align-items:center;border-right: 2px solid;
                         padding-right: 5px;">
@@ -194,7 +250,7 @@
     </div>
     <!-- Ec Header Top  End -->
     <!-- Ec Header Bottom  Start -->
-    <div class="ec-header-bottom d-none d-lg-block">
+    <div class=" d-none d-lg-block">
         <div class="container position-relative">
             <div class="row">
                 <div class="ec-flex">
@@ -202,7 +258,7 @@
 
                     <div class="align-self-center">
                         <div class="header-logo">
-                            <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo007.png')}}"
+                            <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo007.png') }}"
                                     alt="logo"></a>
                         </div>
                     </div>
@@ -238,10 +294,7 @@
                                     type="text">
                                 <button class="submit header-search-btn" type="submit"><i
                                         class="fi-rr-search"></i></button>
-
                             </form>
-
-
                         </div>
 
                     </div>
@@ -322,7 +375,8 @@
                                     <i class="fa-solid fa-cart-shopping" style="font-size: 20px"></i>
                                 </div>
 
-                                <span class="ec-header-count cart-count-lable" id="cartQty">{{ Cart::content()->count() }}</span>
+                                <span class="ec-header-count cart-count-lable"
+                                    id="cartQty">{{ Cart::content()->count() }}</span>
 
                             </a>
                             @auth
@@ -381,7 +435,8 @@
             <div class="row justify-content-center m-0">
                 <div class="ec-header-user dropdown col-12 my-3">
 
-                    <form class="ec-btn-group-form d-flex " action="{{ route('shops') }}" method="get" style="">
+                    <form class="ec-btn-group-form d-flex " action="{{ route('shops') }}" method="get"
+                        style="">
 
                         <input class="form-control ec-search-bar" style="border: 1px solid #373737;" name="search"
                             value="{{ request('search') }}" placeholder="Search products..." type="text">
@@ -396,7 +451,7 @@
                 <!-- Ec Header Logo Start -->
                 <div class="col mobile-logo">
                     <div class="header-logo">
-                        <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo007.png')}}"
+                        <a href="{{ route('homepage') }}"><img src="{{ asset('assets/logo/logo007.png') }}"
                                 alt="logo"></a>
                     </div>
                 </div>
@@ -405,56 +460,29 @@
     </div>
     <!-- Header responsive Bottom  End -->
     <!-- EC Main Menu Start -->
+
+
     <div id="ec-main-menu-desk" class="d-none d-lg-block sticky-nav">
         <div class="container position-relative">
-            <div class="row">
-                <div class="col-md-12 align-self-center my-3">
+            <div class="row bg-black">
+                <div class="col-md-12 align-self-center py-2">
                     <div class="ec-main-menu">
                         <ul>
-                            <li>
-                                <div class="ec-select-inner category-drop  sellers-dropdown mid-header"
-                                    style="background-color: #000000;border-radius: 10px">
-                                    <select name="ec-select custom-select"
-                                        @php $vendor_route=route('vendors') ; @endphp
-                                        onchange='updateSearchParams("category",this.value,"{{ $vendor_route }}")'
-                                        class="cat-select" id="ec-select"
-                                        style="font-weight: 600;color:#fff !important;font-size:16px;">
+                            <li><a class="text-light" href="{{ route('homepage') }}">Home</a></li>
 
-                                        <option value="1">
-                                            Browse Shop By Category
-                                        </option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->slug }}"
-                                                @if (request('category') == $category->slug) selected @endif
-                                                style="font-weight:500">
-                                                {{ $category->name }}
-                                            </option>
-                                            @foreach ($category->childrens as $child)
-                                                <option value="{{ $child->slug }}"
-                                                    @if (request('category') == $child->slug) selected @endif
-                                                    style="font-weight:300">
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $child->name }}
-                                                </option>
-                                            @endforeach
-                                        @endforeach
-
-
-
-                                    </select>
-                                </div>
-                            </li>
-                            <li><a href="{{ route('shops', ['filter_products' => 'trending']) }}"
+                            <li><a class="text-light" href="{{ route('shops', ['filter_products' => 'trending']) }}"
                                     style="font-size: 14px">Trending </a></li>
-                            <li class=""><a href="{{ route('shops', ['filter_products' => 'most-popular']) }}"
+                            <li class=""><a class="text-light"
+                                    href="{{ route('shops', ['filter_products' => 'most-popular']) }}"
                                     style="font-size: 14px">Best
                                     Seller</a>
 
 
                             </li>
-                            <li class="dropdown"><a href="javascript:void(0)">Saves</a>
+                            <li class="dropdown"><a class="text-light" href="javascript:void(0)">Saves</a>
                                 <ul class="sub-menu">
-                                    <li><a href="{{ route('wishlist.index') }}">Save Products</a></li>
-                                    <li><a href="{{ route('follow.shops') }}">Followed Shops</a></li>
+                                    <li><a href="{{ route('wishlist.index') }}" style="color: #000000 !important">Save Products</a></li>
+                                    <li><a href="{{ route('follow.shops') }}" style="color: #000000 !important">Followed Shops</a></li>
 
                                 </ul>
                             </li>
@@ -464,16 +492,17 @@
                                     Method <i class="fa-solid fa-angle-down ms-3"></i></a>
 
                             </li> -->
-                            <li class="dropdown"><a href="{{ url('/vendors') }}" id=""
+                            <li class="dropdown"><a class="text-light" href="{{ url('/vendors') }}" id=""
                                     style="font-size: 14px">Vendors </a>
 
                             </li>
-                            <li class="dropdown"><a href="#footer" id="" style="font-size: 14px">Help <i
-                                        class="far fa-question-circle ml-1"></i></a>
+                            <li class="dropdown"><a class="text-light" href="#footer" id=""
+                                    style="font-size: 14px">Help <i class="far fa-question-circle ml-1"></i></a>
 
                             </li>
-                            <li class="dropdown"><a href="javascript:void(0)" data-bs-toggle="modal"
-                                    data-bs-target="#location" style="font-size: 14px;width:70%;line-height: 16px;"><i
+                            <li class="dropdown"><a class="text-light" href="javascript:void(0)"
+                                    data-bs-toggle="modal" data-bs-target="#location"
+                                    style="font-size: 14px;width:70%;line-height: 16px;"><i
                                         class="fas fa-map-marker-alt mr-1" style="font-size: 18px"></i>
 
                                     @if (session()->has('state') || session()->has('post_city'))
@@ -732,36 +761,36 @@
     $(document).ready(function() {
 
         $('#cityInput').select2();
-    
+
         var selectedState = $('#stateSearch').val();
 
-            if (selectedState) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/get-state',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        state: selectedState,
-                    },
+        if (selectedState) {
+            $.ajax({
+                type: 'POST',
+                url: '/get-state',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    state: selectedState,
+                },
 
-                    success: function(data) {
-                        var cityInput = $('#cityInput');
-                        cityInput.empty();
-                        cityInput.append('<option value="">Select your City</option>');
-                        $.each(data, function(key, value) {
-                            var selectedCities =
-                                @json(session()->get('post_city', [])); // Laravel code
-                            var selected = selectedCities.includes(key) ?
-                                'selected' : '';
-                            cityInput.append('<option value="' + key + '" ' +
-                                selected + '>' +
-                                value + '</option>');
-                        });
-                    }
-                });
-            } else {
-                $('#cityInput').empty(); // Clear the city dropdown if no state is selected.
-            }
+                success: function(data) {
+                    var cityInput = $('#cityInput');
+                    cityInput.empty();
+                    cityInput.append('<option value="">Select your City</option>');
+                    $.each(data, function(key, value) {
+                        var selectedCities =
+                            @json(session()->get('post_city', [])); // Laravel code
+                        var selected = selectedCities.includes(key) ?
+                            'selected' : '';
+                        cityInput.append('<option value="' + key + '" ' +
+                            selected + '>' +
+                            value + '</option>');
+                    });
+                }
+            });
+        } else {
+            $('#cityInput').empty(); // Clear the city dropdown if no state is selected.
+        }
 
 
         $('#stateSearch').on('change', function() {
@@ -977,4 +1006,3 @@
 </script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initMap"></script>
-
