@@ -111,17 +111,20 @@
     @yield('content')
 
     <!-- Footer Start -->
-    <footer class="footer-next py-5 text-light" id="footer" style="background: #181c24;">
+    <footer class="footer-modern py-5 text-light" id="footer" style="background: #1a2238;">
         <div class="container">
             <div class="row gy-5 align-items-start">
-                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-                    <h6 class="fw-bold mb-3 text-uppercase" style="color:#fff;letter-spacing:1px;">Newsletter</h6>
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                    <h6 class="fw-bold mb-3 text-uppercase">Newsletter</h6>
+                    <p class="mb-2" style="color:#b8c1ec; font-size: 0.97rem;">Subscribe to our newsletter and be the
+                        first to know about new arrivals, exclusive deals, and special offers!</p>
                     <form class="d-flex" name="ec-newsletter-form" method="post" action="{{ route('subscribe') }}">
                         @csrf
-                        <input type="email" class="form-control form-control-sm bg-dark border-0 text-light"
+                        <input type="email" class="form-control form-control-sm bg-dark border-0 text-light me-2"
                             name="email" placeholder="Your email" required>
-                        <button class="btn-success btn-sm px-3" type="submit">Subscribe</button>
+                        <button class="btn btn-pink btn-sm px-3" type="submit">Subscribe</button>
                     </form>
+                    <small class="d-block mt-2" style="color:#b8c1ec;">Get the latest updates and offers.</small>
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
                     <h6 class="fw-bold mb-3 text-uppercase" style="color:#fff;letter-spacing:1px;">Account</h6>
@@ -137,9 +140,7 @@
                     <x-menu name="main" />
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-                    <a href="{{ route('homepage') }}">
-                        <img src="{{ asset('assets/logo/logo007.png') }}" alt="logo" style="height: 48px;">
-                    </a>
+                    <h6 class="fw-bold mb-3 text-uppercase" style="color:#fff;letter-spacing:1px;">Social links</h6>
                     <p class="mt-3 small" style="color:#b0b8c1;">Your trusted marketplace for quality products and
                         great deals.</p>
                     <div class="d-flex gap-2 mt-3">
@@ -168,32 +169,43 @@
         </div>
     </footer>
     <style>
-        .footer-next h6 {
-            border-bottom: 2px solid #3BB77E;
-            display: inline-block;
-            padding-bottom: 6px;
-            margin-bottom: 18px;
+        .footer-modern h6 {
+            /* border-bottom: 2px solid #f4d160; */
+            color: #ffffff;
         }
 
-        .footer-next .btn-outline-light {
-            border: 1px solid #3BB77E;
-            color: #fff;
-            background: transparent;
-            transition: all 0.2s;
+        .footer-modern .footer-link {
+            color: #eaeaea;
         }
 
-        .footer-next .btn-outline-light:hover {
-            background: #3BB77E;
-            color: #fff;
-            border-color: #3BB77E;
+        .footer-modern .footer-link:hover {
+            color: #f4d160;
         }
 
-        .footer-next input[type="email"] {
-            min-width: 120px;
+        .footer-modern .btn-outline-light {
+            border: 1px solid #009e4a;
         }
 
-        .footer-next hr {
-            border-color: #232a36;
+        .footer-modern .btn-outline-light:hover {
+            background: #009e4a;
+            color: #ffffff !important;
+        }
+
+        .footer-modern .btn-pink,
+        .btn-pink {
+            background: #009e4a !important;
+            color: #fcfcfc !important;
+            border: none !important;
+        }
+
+        .footer-modern .btn-pink:hover,
+        .btn-pink:hover {
+            background: #fff !important;
+            color: #1a2238 !important;
+        }
+
+        .footer-modern hr {
+            border-color: #222b45;
         }
     </style>
     <!-- Footer Area End -->
