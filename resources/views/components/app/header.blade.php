@@ -205,6 +205,12 @@
                 <!-- Header Top responsive Action -->
                 <div class="col d-lg-none ">
                     <div class="ec-header-bottons">
+                        <!-- Header User Start -->
+
+
+                        <!-- Header User End -->
+                        <!-- Header Cart Start -->
+                    
                         <div
                             style="display: flex;width:180px;align-items:center;border-right: 2px solid;
                         padding-right: 5px;">
@@ -265,7 +271,7 @@
                     <!-- Ec Header Logo End -->
 
                     <!-- Ec Header Search Start -->
-                    <div class="align-self-center">
+                    <!-- <div class="align-self-center">
                         <div class="header-search">
                             <form class="ec-btn-group-form d-flex" action="{{ route('shops') }}" method="get">
                                 <div id="desktop-search" class="ec-sort-select ">
@@ -295,9 +301,70 @@
                                 <button class="submit header-search-btn" type="submit"><i
                                         class="fi-rr-search"></i></button>
                             </form>
+
+
                         </div>
 
-                    </div>
+                    </div> -->
+
+
+                    <!-- Header Search Bar (Updated Design Like Image) -->
+
+                    
+<div class="container d-flex justify-content-between align-items-center py-3">
+    <!-- Search Form -->
+    <form class="search-form d-flex flex-grow-1 mx-4" action="{{ route('shops') }}" method="get" style="max-width: 700px;">
+        <div class="input-group w-100 ">
+            <input
+                type="text"
+                class="form-control border-0 bg-light opacity-100 text-dark"
+                name="search"
+                value="{{ request('search') }}"
+                placeholder="Search..."
+                aria-label="Search"
+                 style=" border-radius: 30px 0px 0px 30px;"
+            >
+
+            <select
+                class="form-select border-start h-100 ms-0 bg-light opacity-100 border-end-0"
+                name="category"
+                style="max-width: 200px;"
+            >
+                <option value="">All Categories</option>
+                @foreach ($categories as $category)
+                    <option
+                        value="{{ $category->slug }}"
+                        @if (request('category') == $category->slug) selected @endif
+                    >
+                        {{ $category->name }}
+                    </option>
+                    @foreach ($category->childrens as $child)
+                        <option
+                            value="{{ $child->slug }}"
+                            style="font-weight: 300;"
+                            @if (request('category') == $child->slug) selected @endif
+                        >
+                            &nbsp;&nbsp;&nbsp;&nbsp;{{ $child->name }}
+                        </option>
+                    @endforeach
+                @endforeach
+            </select>
+
+            <button class="btn btn-light border-start h-100 opacity-100"  style="border-radius: 0px 30px 30px 0px;" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
+
+    <!-- Icons Section -->
+    <div class="header-icons d-flex align-items-center">
+        <div class="me-4 text-end">
+            <small class="text-muted d-block">CALL US NOW</small>
+            <strong>+123 5678 890</strong>
+        </div>
+    </div>
+</div>
+
 
                     <!-- Ec Header Search End -->
 
@@ -367,7 +434,7 @@
                             </div>
                             <!-- Header User End -->
                             <!-- Header wishlist Start -->
-
+                               <a href="#" class="me-3 text-dark"><i class="far fa-heart"></i></a>
                             <!-- Header wishlist End -->
                             <!-- Header Cart Start -->
                             <a href="{{ route('homepage', ['cart' => 'show']) }}" class="ec-header-btn">
