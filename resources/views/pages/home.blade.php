@@ -697,6 +697,7 @@
         // Use Laravel cache for expensive queries
         use Illuminate\Support\Facades\Cache;
         use App\Models\Prodcat;
+        use App\Models\Shop;
         $categories = Cache::remember('header_categories', 3600, function () {
             return Prodcat::whereNull('parent_id')->orderBy('role', 'asc')->with('childrens')->get();
         });
