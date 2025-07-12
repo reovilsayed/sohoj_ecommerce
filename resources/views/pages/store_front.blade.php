@@ -12,6 +12,13 @@
     .footer-font {
         font-size: 25px !important;
     }
+    .shop-info-card .fa {
+        color: #6c757d;
+        font-size: 1.2em;
+    }
+    .shop-policy-card .fa {
+        opacity: 0.85;
+    }
 </style>
 @endsection
 @section('content')
@@ -162,25 +169,67 @@
             <div class="d-flex justify-content-center align-items-end mb-2"></div>
             <div style="border-top: 1px solid #eeeeee;border-bottom: 1px solid #eeeeee;"></div>
         </div>
-        <div class="container mt-5">
-            <div class="row text-center g-3">
-                <div class="col-md-3"><span class="footer-font">Owner:</span> <strong>{{ $shop->user->name }}</strong></div>
-                <div class="col-md-3"><span class="footer-font">Company:</span> <strong>{{ $shop->company_name }}</strong></div>
-                <div class="col-md-3"><span class="footer-font">Joined:</span> <strong>{{ $shop->created_at ? $shop->created_at->format('Y') : '' }}</strong></div>
-                <div class="col-md-3"><span class="footer-font">Sales:</span> <strong>{{ $shop->orders->count() }}</strong></div>
+        <div class="container my-4">
+            <div class="card shadow-sm rounded p-3">
+                <div class="row text-center">
+                    <div class="col-6 col-md-3 mb-3 mb-md-0">
+                        <div class="mb-1 text-muted small"><i class="fa fa-user-circle me-1"></i>Owner</div>
+                        <div class="fw-bold fs-5">{{ $shop->user->name }}</div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3 mb-md-0">
+                        <div class="mb-1 text-muted small"><i class="fa fa-building me-1"></i>Company</div>
+                        <div class="fw-bold fs-5">{{ $shop->company_name }}</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="mb-1 text-muted small"><i class="fa fa-calendar-alt me-1"></i>Joined</div>
+                        <div class="fw-bold fs-5">{{ $shop->created_at ? $shop->created_at->format('Y') : '' }}</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="mb-1 text-muted small"><i class="fa fa-shopping-cart me-1"></i>Sales</div>
+                        <div class="fw-bold fs-5">{{ $shop->orders->count() }}</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="container mb-3" style="border: 1px solid #eeeeee"></div>
+        {{-- <div class="container mb-3" style="border: 1px solid #eeeeee"></div> --}}
         @if ($shop->shopPolicy)
-        <div class="container d-flex mt-4 mb-4 flex-wrap gap-5 align-items-start">
-            <div>
-                <h5>Shop Policy</h5>
-                <ul class="list-unstyled">
-                    <li><i class="fa fa-ban text-danger me-2"></i>{{ $shop->shopPolicy->cancellation }}</li>
-                    <li><i class="fa fa-exchange-alt text-warning me-2"></i>{{ $shop->shopPolicy->return_exchange }}</li>
-                    <li><i class="fa fa-credit-card text-success me-2"></i>{{ $shop->shopPolicy->payment_option }}</li>
-                    <li><i class="fa fa-truck text-primary me-2"></i>{{ $shop->shopPolicy->delivery }}</li>
-                </ul>
+        <div class="container my-4">
+            <div class="card shadow-sm rounded p-4">
+                <h4 class="mb-4"><i class="fa fa-info-circle me-2 text-primary"></i>Shop Policy</h4>
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-start mb-3">
+                            <span class="me-3 fs-3 text-danger"><i class="fa fa-ban"></i></span>
+                            <div>
+                                <div class="fw-bold">Cancellation</div>
+                                <div class="text-muted small">{{ $shop->shopPolicy->cancellation }}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-3">
+                            <span class="me-3 fs-3 text-warning"><i class="fa fa-exchange-alt"></i></span>
+                            <div>
+                                <div class="fw-bold">Return & Exchange</div>
+                                <div class="text-muted small">{{ $shop->shopPolicy->return_exchange }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="d-flex align-items-start mb-3">
+                            <span class="me-3 fs-3 text-success"><i class="fa fa-credit-card"></i></span>
+                            <div>
+                                <div class="fw-bold">Payment Option</div>
+                                <div class="text-muted small">{{ $shop->shopPolicy->payment_option }}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-3">
+                            <span class="me-3 fs-3 text-primary"><i class="fa fa-truck"></i></span>
+                            <div>
+                                <div class="fw-bold">Delivery</div>
+                                <div class="text-muted small">{{ $shop->shopPolicy->delivery }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         @else
