@@ -434,7 +434,7 @@
 
     .shop-follow-btn:hover {
         background: #3bb77e;
-        color: white !important
+        color: white !important;
         transform: translateY(-1px);
     }
 
