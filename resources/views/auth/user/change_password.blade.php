@@ -6,7 +6,7 @@
         <div class="password-header-section mb-4">
             <div class="header-content">
                 <div class="header-left">
-                    <h1 class="page-title">
+                    <h1 class="page-title" style="color: #ffffff">
                         <i class="fas fa-lock me-2"></i>
                         Change Password
                     </h1>

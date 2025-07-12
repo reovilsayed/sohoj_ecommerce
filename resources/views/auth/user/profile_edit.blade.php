@@ -6,7 +6,7 @@
         <div class="profile-header-section mb-4">
             <div class="header-content">
                 <div class="header-left">
-                    <h1 class="page-title">
+                    <h1 class="page-title text-light" style="color: #ffffff">
                         <i class="fas fa-user-edit me-2"></i>
                         Edit Profile
                     </h1>

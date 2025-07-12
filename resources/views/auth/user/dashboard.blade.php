@@ -12,7 +12,7 @@
                             <i class="fas fa-user-circle"></i>
                         </div>
                         <div class="welcome-text">
-                            <h1>Welcome back, {{ Auth::user()->name }}!</h1>
+                            <h1 style="color: #ffffff">Welcome back, {{ Auth::user()->name }}!</h1>
                             <p>Manage your account, addresses, and payment methods</p>
                         </div>
                     </div>

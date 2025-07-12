@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="profile-info">
-                    <h4 class="user-name">{{ auth()->user()->name }} {{ auth()->user()->l_name }}</h4>
+                    <h4 class="user-name" style="color: #ffffff">{{ auth()->user()->name }} {{ auth()->user()->l_name }}</h4>
                     <p class="user-role">Customer</p>
                 </div>
             </div>
