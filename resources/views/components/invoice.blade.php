@@ -5,8 +5,6 @@
 
 <div id="printableArea">
     <div class="invoice-container">
-
-
         <div class="invoice-info row">
             <div class="shop-info col-md-6">
                 <h4>Invoice</h4>

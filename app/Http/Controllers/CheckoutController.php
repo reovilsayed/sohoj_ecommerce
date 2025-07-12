@@ -64,9 +64,9 @@ class CheckoutController extends Controller
         // DB::beginTransaction();
         $cartSubtotal = (float) (Cart::SubTotal() ?? 0);
         $platform_fee = (float) (\Sohoj::flatCommision($cartSubtotal) ?? 0);
-        $shipping = (float) (\Sohoj::shipping() ?? 0);
+        $shipping_cost = (float) (\Sohoj::shipping() ?? 0);
         $discount = (float) (\Sohoj::discount() ?? 0);
-        $total = $cartSubtotal + $platform_fee + $shipping - $discount;
+        $total = $cartSubtotal + $platform_fee + $shipping_cost - $discount;
 
         $order = Order::create([
             'user_id' => \auth()->check() ? \auth()->id() : null,

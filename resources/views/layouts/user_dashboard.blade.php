@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ asset('assets/frontend-assetss/responsive.css') }}" />
 <link rel="stylesheet" id="bg-switcher-css"
     href="{{ asset('assets/frontend-assetss/css/backgrounds/bg-4.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/seller.css') }}">
+{{-- <link rel="stylesheet" href="{{ asset('assets/css/seller.css') }}"> --}}
 @endsection
 
 @section('content')
