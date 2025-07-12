@@ -16,126 +16,95 @@
 @endsection
 @section('content')
 <x-app.header />
-<section class="w-100 " style="background-color: #EDEDED;border:1px 0 solid #EDEDED">
-    <div class="top-bn container p-0 flex-wrap ">
-
-        <div class="row align-items-center">
-            <div class="col-md-3 d-flex justify-content-center">
-                <a href=""><img style="width: 120px; height: 100px; object-fit: cover; margin-left: 10px" class="img-fluid" src="{{ Storage::url($shop->logo) }}" alt=""></a>
+<section class="w-100 bg-light py-4 shadow-sm mb-4">
+    <div class="container">
+        <div class="row align-items-center g-3">
+            <div class="col-md-3 d-flex justify-content-center align-items-center">
+                <a href="">
+                    <img class="img-fluid rounded-circle shadow" style="width: 110px; height: 110px; object-fit: cover;" src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }} logo">
+                </a>
             </div>
-
             <div class="col-md-6">
-                <div>
-                    <h2 class="text-center"><span style="
-                    font-size: 25px;
-                ">{{ $shop->name }}</span></h2>
-                    <p class="text-center" style="color: #787885">{{ $shop->short_description }}
-                    </p>
-                    <p class="text-center" style="font-size: 15px;
-                font-weight: 400;color: #373737;">
-                        {{ $shop->city }}, {{ $shop->state }}
-                    </p>
-                </div>
-                <div class="d-flex justify-content-center flex-wrap">
-                    <p class="text-center " style="font-size: 15px;
-                    font-weight: 400;"> <span class="" style="background-color:#373737; border-radius:50%; padding:0 3px"><i class="far fa-star text-white"></i></span> Silver Seller | {{ $shop->orders->count() }}
-                        items sold |
-
-                    </p>
-                    <div class="ec-single-rating-wrap d-inline">
-                        <div class="ec-single-rating">
+                <div class="card border-0 shadow-sm p-3 mb-2 bg-white rounded">
+                    <h2 class="text-center mb-1" style="font-size: 26px;">{{ $shop->name }}</h2>
+                    <p class="text-center text-muted mb-1">{{ $shop->short_description }}</p>
+                    <p class="text-center small text-secondary mb-2">{{ $shop->city }}, {{ $shop->state }}</p>
+                    <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
+                        <span class="badge bg-secondary">Silver Seller</span>
+                        <span class="badge bg-success">{{ $shop->orders->count() }} Sold</span>
+                        <span class="ms-2">({{ $shop->ratings->count() }} Reviews)</span>
+                        <div class="ec-single-rating ms-2">
                             <input value="{{ Sohoj::average_rating($shop->ratings) }}" class="rating published_rating" data-size="sm">
                         </div>
-
                     </div>
-                    <span class="mt-2 ms-2">
-                        ({{ $shop->ratings->count() }})
-                    </span>
                 </div>
             </div>
-            <div class="col-md-3 d-flex justify-content-center">
-                <div>
-                    @auth
-                    <form action="{{ route('follow', $shop) }}" method="post" style="display:inline">
-                        @csrf
-                        @php
-                        $follow = auth()
-                        ->user()
-                        ->follows($shop);
-                        @endphp
-                        <button class="btn btn-dark rounded-3 btn-hover button-bn" style="height: 36px; line-height: 36px">{{ $follow ? 'Unfollow' : 'Follow' }}</button>
-                    </form>
-                    @else
-                    <a class="btn btn-dark" href="{{route('login')}}">Follow</a>
-                    @endauth
-
-                    <a href="{{route('massage.create',$shop->id)}}"><i class="fa-regular fa-envelope fa-2xl" style="width: 40px; height: 40px;margin-left: 38px"></i></a>
-                </div>
+            <div class="col-md-3 d-flex flex-column align-items-center gap-2">
+                @auth
+                <form action="{{ route('follow', $shop) }}" method="post" style="display:inline">
+                    @csrf
+                    @php
+                    $follow = auth()
+                    ->user()
+                    ->follows($shop);
+                    @endphp
+                    <button class="btn btn-dark rounded-pill px-4 mb-2">
+                        <i class="fa fa-user-plus me-2"></i>{{ $follow ? 'Unfollow' : 'Follow' }}
+                    </button>
+                </form>
+                @else
+                <a class="btn btn-dark rounded-pill px-4 mb-2" href="{{route('login')}}">
+                    <i class="fa fa-user-plus me-2"></i>Follow
+                </a>
+                @endauth
+                <a href="{{route('massage.create',$shop->id)}}" data-bs-toggle="tooltip" title="Send Message">
+                    <i class="fa-regular fa-envelope fa-2xl"></i>
+                </a>
             </div>
         </div>
-
-
     </div>
 </section>
 
-<section class="w-100 ">
-    <div class="">
-
-        <a href=""> <img class="banner img-fluid" src=" {{ $shop->banner ? Storage::url($shop->banner) : asset('assets/img/store_front/banner.png') }}" alt=""></a>
+<section class="w-100 mb-4">
+    <div class="container">
+        <a href="">
+            <img class="banner img-fluid rounded shadow" src="{{ $shop->banner ? Storage::url($shop->banner) : asset('assets/img/store_front/banner.png') }}" alt="{{ $shop->name }} banner">
+        </a>
     </div>
-
 </section>
 
 <section>
-    <nav class="navbar navbar-expand-lg bg-light mt-0" style="height: 50px;z-index:99">
-        <div class="w-100">
-
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm rounded mb-3" style="height: 56px;z-index:99">
+        <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fa fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" style="background-color:#EAFAE1;" id="navbarSupportedContent">
-                <div class="container">
-                    <div class="col-md-12 align-self-center">
-                        <div class="ec-main-menu d-flex ">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li>
-                                    <a href="#">Home</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('store_front', [$shop->slug, 'shop_products' => 'most-popular']) }}">Popular
-                                        Items</a>
-
-                                </li>
-                                <li>
-                                    <a href="#offer">Promotions </a>
-                                </li>
-                                @if ($shop->menuTitle1)
-                                <li>
-                                    <a href="{{ $shop->menuLink1 }}">{{ $shop->menuTitle1 }} </a>
-                                </li>
-                                @endif
-                                @if ($shop->menuTitle2)
-                                <li>
-                                    <a href="{{ $shop->menuLink2 }}">{{ $shop->menuTitle2 }} </a>
-                                </li>
-                                @endif
-
-                                <div class="wrap mt-3 ms-md-5">
-                                    <form action="{{ route('store_front', $shop->slug) }}" method="get">
-                                        <div class="search">
-                                            <input type="text" name="search" class="searchTerm" placeholder="Search for product?">
-                                            <button type="submit" class="searchButton">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('store_front', [$shop->slug, 'shop_products' => 'most-popular']) }}">Popular Items</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#offer">Promotions</a>
+                    </li>
+                    @if ($shop->menuTitle1)
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ $shop->menuLink1 }}">{{ $shop->menuTitle1 }}</a>
+                    </li>
+                    @endif
+                    @if ($shop->menuTitle2)
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ $shop->menuLink2 }}">{{ $shop->menuTitle2 }}</a>
+                    </li>
+                    @endif
+                </ul>
+                <form class="d-flex ms-3" action="{{ route('store_front', $shop->slug) }}" method="get">
+                    <input type="text" name="search" class="form-control me-2" placeholder="Search for product?">
+                    <button type="submit" class="btn btn-outline-dark"><i class="fa fa-search"></i></button>
+                </form>
             </div>
         </div>
     </nav>
@@ -143,127 +112,81 @@
 
 <section class="container mt-4">
     <div class="shop-pro-inner">
-        <div class="row">
+        <div class="row g-4">
             @if (count($shop->products) == !0)
             @foreach ($shop->products as $product)
-            <x-products.product-2 :product="$product" />
+                <x-products.product-2 :product="$product" />
             @endforeach
             @endif
         </div>
     </div>
 </section>
+
 <section class="container mt-2" id="offer">
-
     <x-offer :shop="$shop" />
-
 </section>
 
-<!-- <section class="container mt-4">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="shop-pro-inner">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="row">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <x-products.product-2 :product ="$products" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </section> -->
-
-<section class="seller-footer">
-    <div class="col-md-12 seller-icon p-4">
-
-        <ul class="mb-2" style="width: 280px">
-            <li class="list-inline-item"><a target="_blank" class="hdr-facebook" href="{{ $shop->facebook }}"><i class="ecicon eci-facebook e rounded-circle p-3  d-flex justify-content-center" style="font-size:15px; height:47px; width:45px;"></i></a>
-            </li>
-            <li class="list-inline-item"><a target="_blank" class="hdr-linkedin" href="{{ $shop->linkedin }}"><i class="ecicon eci-linkedin  rounded-circle p-3 " style="font-size:15px"></i></a>
-            </li>
-            <li class="list-inline-item"><a target="_blank" class="hdr-instagram" href="{{ $shop->instagram }}"><i class="ecicon eci-instagram rounded-circle p-3  border" style="font-size:15px; "></i></a>
-            </li>
-            <li class="list-inline-item"><a target="_blank" class="hdr-twitter" href="{{ $shop->twitter }}"><i class="ecicon eci-twitter  rounded-circle p-3  border" style="font-size:15px"></i></a>
-            </li>
-
+<section class="seller-footer mt-5">
+    <div class="col-md-12 seller-icon p-4 bg-white rounded shadow-sm">
+        <ul class="mb-2 d-flex justify-content-center gap-3" style="width: 100%;">
+            <li class="list-inline-item"><a target="_blank" class="hdr-facebook" href="{{ $shop->facebook }}"><i class="ecicon eci-facebook e rounded-circle p-3 d-flex justify-content-center" style="font-size:15px; height:47px; width:45px;"></i></a></li>
+            <li class="list-inline-item"><a target="_blank" class="hdr-linkedin" href="{{ $shop->linkedin }}"><i class="ecicon eci-linkedin rounded-circle p-3" style="font-size:15px"></i></a></li>
+            <li class="list-inline-item"><a target="_blank" class="hdr-instagram" href="{{ $shop->instagram }}"><i class="ecicon eci-instagram rounded-circle p-3 border" style="font-size:15px;"></i></a></li>
+            <li class="list-inline-item"><a target="_blank" class="hdr-twitter" href="{{ $shop->twitter }}"><i class="ecicon eci-twitter rounded-circle p-3 border" style="font-size:15px"></i></a></li>
         </ul>
-
         <div class="seller-footer mt-4 text-center">
             <h2><strong>About</strong> {{ $shop->name }}</h2>
             <p>{{ $shop->description }}</p>
-            {{-- <span><a href="">Read more</a></span> --}}
-            <div style="border-top: 1px solid #eeeeee;border-bottom: 1px solid #eeeeee; "></div>
+            <div style="border-top: 1px solid #eeeeee;border-bottom: 1px solid #eeeeee;"></div>
         </div>
         <div class="container flex-wrap">
             <h5 class="my-5" style="margin-left:30px;">Reviews</h5>
             @if ($shop->ratings()->count())
             @foreach ($shop->ratings as $rating)
-            <div class="row mb-5">
-                <div class="ec-t-review-item d-flex align-items-center">
-                    <div class="ec-t-review-avtar">
-                        <img style="height: 60px; width:60px;" src="{{ asset('assets/img/single_product/person.png') }}" alt="" />
-                    </div>
-                    <div class="ec-t-review-content">
-                        <div class="ec-t-review-top">
-                            <div class="ec-t-review-name">{{ $rating->name }}</div>
-                            <div class="ec-t-review-rating">
-                                <input name="rating" type="number" value="{{ $rating->rating }}" class="rating published_rating" data-size="sm">
-                            </div>
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                    <img src="{{ asset('assets/img/single_product/person.png') }}" class="rounded-circle me-3" style="width: 50px; height: 50px;" alt="Reviewer avatar">
+                    <div>
+                        <h6 class="mb-0">{{ $rating->name }}</h6>
+                        <div>
+                            <input name="rating" type="number" value="{{ $rating->rating }}" class="rating published_rating" data-size="sm">
                         </div>
-
+                        <p class="mb-0 text-muted">{{ $rating->review }}</p>
                     </div>
-                </div>
-                <div class="ec-t-review-bottom">
-                    <p style="margin-left:15px; width:350px;">
-                        {{ $rating->review }}
-                    </p>
                 </div>
             </div>
             @endforeach
             @else
-            <p class="d-flex justify-content-center" style="color: red">No reviews</p>
+            <p class="d-flex justify-content-center text-danger">No reviews</p>
             @endif
-
-            <div class="d-flex justify-content-center align-items-end mb-2">
-                {{-- <a href="">See
-                        more reviews</a> --}}
-
-            </div>
-            <div style="border-top: 1px solid #eeeeee;border-bottom: 1px solid #eeeeee; "></div>
+            <div class="d-flex justify-content-center align-items-end mb-2"></div>
+            <div style="border-top: 1px solid #eeeeee;border-bottom: 1px solid #eeeeee;"></div>
         </div>
-        <div class="container mt-5 d-flex justify-content-around flex-wrap" style="margin-left:7px;">
-            <p class="footer-font">Owner : <strong>{{ $shop->user->name }}</strong></p>
-            <p class="footer-font">Company Name : <strong>{{ $shop->company_name }} </strong></p>
-            <p class="footer-font">Joined :
-                <strong>{{ $shop->created_at ? $shop->created_at->format('Y') : '' }}</strong>
-            </p>
-            <p class="footer-font">Sales : <strong>{{ $shop->orders->count() }} </strong></p>
-
-
-
+        <div class="container mt-5">
+            <div class="row text-center g-3">
+                <div class="col-md-3"><span class="footer-font">Owner:</span> <strong>{{ $shop->user->name }}</strong></div>
+                <div class="col-md-3"><span class="footer-font">Company:</span> <strong>{{ $shop->company_name }}</strong></div>
+                <div class="col-md-3"><span class="footer-font">Joined:</span> <strong>{{ $shop->created_at ? $shop->created_at->format('Y') : '' }}</strong></div>
+                <div class="col-md-3"><span class="footer-font">Sales:</span> <strong>{{ $shop->orders->count() }}</strong></div>
+            </div>
         </div>
         <div class="container mb-3" style="border: 1px solid #eeeeee"></div>
         @if ($shop->shopPolicy)
-        <div class="container d-flex mt-4 mb-4 flex-wrap" style="gap: 200px; margin-left:100px;">
-            <h5>Shop policy</h5>
+        <div class="container d-flex mt-4 mb-4 flex-wrap gap-5 align-items-start">
             <div>
-
-                <li><i class="fa-solid fa-circle p-2"></i>{{ $shop->shopPolicy ? $shop->shopPolicy->cancellation : '' }}
-                </li>
-
-                <li><i class="fa-solid fa-circle p-2"></i>
-                    {{ $shop->shopPolicy ? $shop->shopPolicy->return_exchange : '' }}
-                </li>
-                <li><i class="fa-solid fa-circle p-2"></i>
-                    {{ $shop->shopPolicy ? $shop->shopPolicy->payment_option : '' }}
-                </li>
-                <li><i class="fa-solid fa-circle p-2"></i>
-                    {{ $shop->shopPolicy ? $shop->shopPolicy->delivery : '' }}
-                </li>
-
+                <h5>Shop Policy</h5>
+                <ul class="list-unstyled">
+                    <li><i class="fa fa-ban text-danger me-2"></i>{{ $shop->shopPolicy->cancellation }}</li>
+                    <li><i class="fa fa-exchange-alt text-warning me-2"></i>{{ $shop->shopPolicy->return_exchange }}</li>
+                    <li><i class="fa fa-credit-card text-success me-2"></i>{{ $shop->shopPolicy->payment_option }}</li>
+                    <li><i class="fa fa-truck text-primary me-2"></i>{{ $shop->shopPolicy->delivery }}</li>
+                </ul>
             </div>
         </div>
         @else
         <span class="text-danger">No Shop Policy Added</span>
         @endif
     </div>
-
-
-    </div>
-
 </section>
 
 <!-- Modal -->
