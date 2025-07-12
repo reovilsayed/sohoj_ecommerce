@@ -401,7 +401,7 @@
                                 <i class="fas fa-filter"></i>
                                 Filters
                             </h2>
-                            <a href="{{ route('shops') }}" class="clear-filters-btn text-light">
+                            <a href="{{ route('shops') }}" class="clear-filters-btn" style="color: #ffffff">
                                 <i class="fas fa-times"></i>
                                 Clear All
                             </a>

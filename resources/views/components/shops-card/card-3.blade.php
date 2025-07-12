@@ -100,11 +100,11 @@
                         @php
                             $follow = auth()->user()->follows($shop);
                         @endphp
-                        <button class="shop-follow-btn w-100 text-center d-block" type="submit"><i class="fas fa-heart"></i>
+                        <button class="shop-follow-btn text-center d-block" type="submit"><i class="fas fa-heart"></i>
                             {{ $follow ? 'Unfollow' : 'Follow' }}</button>
                     </form>
                 @else
-                    <a class="shop-follow-btn w-100 text-center d-block" href="{{ route('login') }}"><i class="fas fa-heart"></i>
+                    <a class="shop-follow-btn text-center d-block" href="{{ route('login') }}"><i class="fas fa-heart"></i>
                         <span>Follow</span></a>
                 @endauth
             </div>
