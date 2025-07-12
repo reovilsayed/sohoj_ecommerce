@@ -19,458 +19,532 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <style>
-        .ec-product-inner .ec-pro-image .ec-pro-actions .wishlist {
-            position: absolute !important;
-            right: 6px !important;
-            bottom: 62px !important;
-            border: 1px solid #eeeeee;
+        /* Modern Shops Page Design */
+        .modern-shops-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
         }
 
-        label {
+        .modern-filter-sidebar {
+            background: white;
+            /* border-radius: 20px; */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .filter-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .clear-filters-btn {
+            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .clear-filters-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 183, 126, 0.3);
+            color: white;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+
+        .filter-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-section-title i {
+            color: #3bb77e;
+        }
+
+        /* Price Range Styling */
+        .price-range-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .price-range-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .price-slider {
+            margin: 1rem 0;
+        }
+
+        .price-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+            font-weight: 600;
+            color: #3bb77e;
+        }
+
+        /* Category Filter Styling */
+        .category-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .category-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .category-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .category-link:hover {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            border-color: #3bb77e;
+            color: #2d9d6b;
+            transform: translateX(5px);
+        }
+
+        .category-badge {
+            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Rating Filter Styling */
+        .rating-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        /* Improved custom checkbox for rating filter */
+        .rating-option {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            transition: box-shadow 0.2s, background 0.2s;
+            box-shadow: 0 1px 4px rgba(59,183,126,0.04);
+        }
+        .rating-option input[type="checkbox"] {
+            opacity: 0;
+            position: absolute;
+            left: 0; top: 0; width: 100%; height: 100%;
+            margin: 0; cursor: pointer;
+            z-index: 2;
+        }
+        .rating-checkmark {
+            display: inline-block;
+            width: 22px; height: 22px;
+            border: 2px solid #3bb77e;
+            border-radius: 6px;
+            background: #fff;
+            margin-right: 1rem;
+            position: relative;
+            transition: border-color 0.2s, background 0.2s;
+            vertical-align: middle;
+        }
+        .rating-option input[type="checkbox"]:checked ~ .rating-checkmark {
+            background: linear-gradient(135deg, #3bb77e 60%, #2d9d6b 100%);
+            border-color: #2d9d6b;
+        }
+        .rating-checkmark:after {
+            content: '';
+            position: absolute;
+            display: none;
+        }
+        .rating-option input[type="checkbox"]:checked ~ .rating-checkmark:after {
             display: block;
         }
-
-        input[type="checkbox"] {
-            margin-right: 10px;
+        .rating-option .rating-checkmark:after {
+            left: 6px; top: 2px;
+            width: 6px; height: 12px;
+            border: solid #fff;
+            border-width: 0 3px 3px 0;
+            border-radius: 1px;
+            transform: rotate(45deg);
+            content: '';
+        }
+        .rating-option:hover, .rating-option input[type="checkbox"]:focus ~ .rating-checkmark {
+            background: #e8f5e8;
+            box-shadow: 0 2px 8px rgba(59,183,126,0.10);
         }
 
-        #price-range {
-            margin-top: 20px;
+        .rating-option input[type="checkbox"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
         }
 
-        #price-display {
-            margin-top: 10px;
+        .rating-stars {
+            color: #ffc107;
+            margin-right: 1rem;
         }
-        /* .rating-container .filled-stars{
-            left: 5px;
-        } */
+
+        .rating-text {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* Main Content Area */
+        .modern-content-area {
+            background: white;
+            /* border-radius: 20px; */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .search-results {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .search-term {
+            color: #3bb77e;
+            font-weight: 800;
+        }
+
+        .sort-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sort-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .sort-select {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            background: white;
+            font-weight: 600;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        .sort-select:focus {
+            outline: none;
+            border-color: #3bb77e;
+            box-shadow: 0 0 0 3px rgba(59, 183, 126, 0.1);
+        }
+
+        /* Shop Cards Section */
+        .shop-section {
+            margin-bottom: 3rem;
+        }
+
+        .shop-section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .shop-card-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .shop-card-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        /* View More Button */
+        .view-more-container {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .view-more-btn {
+            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 8px 25px rgba(59, 183, 126, 0.3);
+        }
+
+        .view-more-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(59, 183, 126, 0.4);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .modern-shops-container {
+                padding: 1rem 0;
+            }
+
+            .modern-filter-sidebar {
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .modern-content-area {
+                padding: 1.5rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .sort-container {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        /* Animation for page load */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modern-filter-sidebar,
+        .modern-content-area {
+            animation: fadeInUp 0.6s ease-out;
+        }
     </style>
 @endsection
 @section('content')
     <x-app.header />
-    <div class="">
-        <div class="row container-fluid">
-            <aside class="col-md-3 col-sm-12">
-                <div class="wrapper">
-                    <div class="content py-md-0 py-3">
-                        <aside id="sideba" class="col-12 col-sm-12 col-md-12 col-lg-12">
-                            <a href="{{ route('shops') }}" class="w-100 btn btn-dark">Remove Filter</a>
-            
-                            <div id="price-range">
-                                <h4 class="font-weight-bold" for="price-slider">Price Range:</h4>
-                                <div id="price-slider"></div>
-                                <div id="price-display">
-                                    Min: <span id="minPriceDisplay"></span>, Max: <span id="maxPriceDisplay"></span>
+    
+    <div class="modern-shops-container">
+        <div class="container">
+            <div class="row">
+                <!-- Modern Filter Sidebar -->
+                <aside class="col-md-3 col-sm-12">
+                    <div class="modern-filter-sidebar">
+                        <div class="filter-header">
+                            <h2 class="filter-title">
+                                <i class="fas fa-filter"></i>
+                                Filters
+                            </h2>
+                            <a href="{{ route('shops') }}" class="clear-filters-btn">
+                                <i class="fas fa-times"></i>
+                                Clear All
+                            </a>
+                        </div>
+                        <!-- Price Range Filter -->
+                        <div class="filter-section">
+                            <h3 class="filter-section-title">
+                                <i class="fas fa-dollar-sign"></i>
+                                Price Range
+                            </h3>
+                            <div class="price-range-container">
+                                <div class="price-range-title">Set your budget</div>
+                                <div id="price-slider" class="price-slider"></div>
+                                <div id="price-display" class="price-display">
+                                    <span>Min: <span id="minPriceDisplay">$0</span></span>
+                                    <span>Max: <span id="maxPriceDisplay">$1000</span></span>
                                 </div>
                             </div>
-                            <div class="py-3">
-                                <h5 class="font-weight-bold">Categories</h5>
-                                <ul class="list-group">
-                                    @foreach ($categories as $category)
-                                        <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center category"
-                                            style="cursor: default">
-                                            <a href="javascript::void(0)"
-                                                onclick='updateSearchParams("category","{{ $category->slug }}","{{ $route }}")'>
-                                                {{ $category->name }}
-                                            </a>
-                                            <span class="badge badge-primary badge-pill">{{ $category->products->count() }}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            <div class="py-3">
-                                <h5 class="font-weight-bold">Rating</h5>
+                        </div>
+                        <!-- Categories Filter -->
+                        <div class="filter-section">
+                            <h3 class="filter-section-title">
+                                <i class="fas fa-tags"></i>
+                                Categories
+                            </h3>
+                            <ul class="category-list">
+                                @foreach ($categories as $category)
+                                    <li class="category-item">
+                                        <a href="javascript::void(0)" class="category-link" onclick='updateSearchParams("category","{{ $category->slug }}","{{ $route }}")'>
+                                            <span>{{ $category->name }}</span>
+                                            <span class="category-badge">{{ $category->products->count() }}</span>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <!-- Rating Filter -->
+                        <div class="filter-section">
+                            <h3 class="filter-section-title">
+                                <i class="fas fa-star"></i>
+                                Rating
+                            </h3>
+                            <div class="rating-container">
                                 <form class="rating" id="ratingForm">
-                                    <div class="form-inline d-flex align-items-center py-2"> <label class="tick"><span
-                                                class="fas fa-star"></span> <span class="fas fa-star"></span> <span
-                                                class="fas fa-star"></span> <span class="fas fa-star"></span> <span
-                                                class="fas fa-star"></span> <input type="checkbox" value="5"
-                                                {{ request('ratings') == 5 ? 'checked' : '' }}> <span class="check"></span>
-                                        </label> </div>
-                                    <div class="form-inline d-flex align-items-center py-2"> <label class="tick"> <span
-                                                class="fas fa-star"></span> <span class="fas fa-star"></span> <span
-                                                class="fas fa-star"></span> <span class="fas fa-star"></span> <span
-                                                class="far fa-star px-1 text-muted"></span> <input type="checkbox"
-                                                value="4" {{ request('ratings') == 4 ? 'checked' : '' }}> <span
-                                                class="check"></span> </label> </div>
-                                    <div class="form-inline d-flex align-items-center py-2"> <label class="tick"><span
-                                                class="fas fa-star"></span> <span class="fas fa-star"></span> <span
-                                                class="fas fa-star"></span> <span
-                                                class="far fa-star px-1 text-muted"></span> <span
-                                                class="far fa-star px-1 text-muted"></span> <input type="checkbox"
-                                                value="3" {{ request('ratings') == 3 ? 'checked' : '' }}> <span
-                                                class="check"></span> </label> </div>
-                                    <div class="form-inline d-flex align-items-center py-2"> <label class="tick"><span
-                                                class="fas fa-star"></span> <span class="fas fa-star"></span> <span
-                                                class="far fa-star px-1 text-muted"></span> <span
-                                                class="far fa-star px-1 text-muted"></span> <span
-                                                class="far fa-star px-1 text-muted"></span> <input type="checkbox"
-                                                value="2" {{ request('ratings') == 2 ? 'checked' : '' }}> <span
-                                                class="check"></span> </label> </div>
-                                    <div class="form-inline d-flex align-items-center py-2"> <label class="tick"> <span
-                                                class="fas fa-star"></span> <span
-                                                class="far fa-star px-1 text-muted"></span> <span
-                                                class="far fa-star px-1 text-muted"></span> <span
-                                                class="far fa-star px-1 text-muted"></span> <span
-                                                class="far fa-star px-1 text-muted"></span> <input type="checkbox"
-                                                value="1" {{ request('ratings') == 1 ? 'checked' : '' }}> <span
-                                                class="check"></span> </label> </div>
+                                    <div class="rating-option">
+                                        <input type="checkbox" value="5" {{ request('ratings') == 5 ? 'checked' : '' }}>
+                                        <span class="rating-checkmark"></span>
+                                        <div class="rating-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="rating-text">5</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="checkbox" value="4" {{ request('ratings') == 4 ? 'checked' : '' }}>
+                                        <span class="rating-checkmark"></span>
+                                        <div class="rating-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="rating-text">4</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="checkbox" value="3" {{ request('ratings') == 3 ? 'checked' : '' }}>
+                                        <span class="rating-checkmark"></span>
+                                        <div class="rating-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="rating-text">3</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="checkbox" value="2" {{ request('ratings') == 2 ? 'checked' : '' }}>
+                                        <span class="rating-checkmark"></span>
+                                        <div class="rating-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="rating-text">2</span>
+                                    </div>
+                                    <div class="rating-option">
+                                        <input type="checkbox" value="1" {{ request('ratings') == 1 ? 'checked' : '' }}>
+                                        <span class="rating-checkmark"></span>
+                                        <div class="rating-stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="rating-text">1</span>
+                                    </div>
                                 </form>
                             </div>
-                        </aside>
-                    </div>
-                </div>
-            </aside>
-            
-            <div class="col-md-9">
-
-                <section class="ec-page-content section-space-p">
-                    <div class="container">
-                        <div class="row">
-                            <div class="ec-shop-rightside col-lg-12 col-md-12">
-                                <!-- Shop Top Start -->
-                                <div class="ec-pro-list-top d-flex ">
-                                    <div class="col-md-6 ec-grid-list">
-                                        <div class="ec-gl-btn">
-                                            <p>Results For “ <span style="color:#3BB77E ">{{ request()->search }}</span> ”
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 ec-sort-select">
-                                        <span class="sort-by text-end">Sort by:</span>
-                                        <div class="ec-select-inner" style="border: none">
-                                            <select name="ec-select"
-                                                onchange='updateSearchParams("filter_products",this.value,"{{ $route }}")'
-                                                id="ec-select" style="font-weight: 600;">
-
-                                                <option value="most-sold"
-                                                    {{ request()->filter_products == 'most-sold' ? 'selected' : '' }}>Most
-                                                    Sold
-                                                </option>
-                                                <option value="price-low-high "
-                                                    {{ request()->filter_products == 'price-low-high' ? 'selected' : '' }}>
-                                                    Price, low
-                                                    to
-                                                    high</option>
-                                                <option value="price-high-low"
-                                                    {{ request()->filter_products == 'price-high-low' ? 'selected' : '' }}>
-                                                    Price, high
-                                                    to
-                                                    low</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Shop Top End -->
-
-                                <!-- Shop content Start -->
-                                <div class="shop-pro-content">
-                                    <div class="shop-pro-inner">
-                                        <div class="row">
-                                            @foreach ($products as $shopId => $items)
-                                                @foreach ($items as $product)
-                                                    <x-products.product-2 :product="$product" />
-                                                @endforeach
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                    {{-- {{$products->links()}} --}}
-                                    <!-- Ec Pagination Start -->
-                                    {{-- <div class="col d-flex justify-content-center">
-                                    <div class="pagination d-flex justify-content-center  align-items-center">
-                                        <button class="btn btn-dark-light rounded"><i class="fi-rr-arrow-alt-left"></i></button>
-                                        <p>View More</p>
-                                        <button class="btn btn-dark rounded"><i class="fi-rr-arrow-alt-right"></i></button>
-                                    </div>
-                                </div> --}}
-                                    <!-- Ec Pagination End -->
-                                    {{-- Start sort by popular --}}
-                                    <div class="col hr-border">
-
-                                    </div>
-                                    <!-- Shop Top Start -->
-                                    <div class="ec-pro-list-top d-flex " style="margin-top: 40px">
-                                        {{-- <div class="col-md-6 ec-grid-list">
-                                    <div class="ec-gl-btn">
-                                        <p>Results For “ <span style="color:#3BB77E ">{{request()->search}}</span> ”</p>
-                                </div>
-                                </div> --}}
-                                            {{-- <div class="col-md-12 ec-sort-select">
-                                    <span class="sort-by text-end">Sort by:</span>
-                                    <div class="ec-select-inner" style="border: none">
-                                        <select onchange='updateSearchParams("shop_products",this.value,"{{ $route }}")' name="ec-select" id="ec-select" style="font-weight: 600;">
-
-                                            <option value="most-populer" {{ request()->filter_products == 'most-populer' ? 'selected' : '' }}>Most
-                                                Popular
-                                            </option>
-                                            <option value="price-low-hight" {{ request()->filter_products == 'price-low-hight' ? 'selected' : '' }}>Price,
-                                                low
-                                                to high</option>
-                                            <option value="price-high-low" {{ request()->filter_products == 'price-high-low' ? 'selected' : '' }}>Price,
-                                                high
-                                                to low</option>
-                                        </select>
-                                    </div>
-                                </div> --}}
-                                    </div>
-                                    <div>
-                                        @foreach ($products as $shopId => $items)
-                                            <div class="row mb-4">
-                                                <div class="col-md-3">
-                                                    <x-shops-card.card-1 :shop="$items[0]->shop" />
-                                                </div>
-                                                <div class="col-md-9">
-                                                    <div class="ec-spe-products">
-                                                        @foreach ($items->whereNull('parent_id')->chunk(4) as $products)
-                                                            <div class="ec-fs-product">
-                                                                <div class="ec-fs-pro-inner">
-
-                                                                    <div class="row">
-                                                                        @php
-                                                                            
-                                                                            $last = $loop->last;
-                                                                            $count = $items[0]->shop->products->count();
-                                                                        @endphp
-                                                                        @foreach ($products as $product)
-                                                                            <x-products.product-4 :product="$product" />
-                                                                        @endforeach
-
-                                                                        @if ($last && $count >= 8)
-                                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pro-gl-content d-flex align-items-center"
-                                                                                style="margin-bottom: 35px;">
-                                                                                <a href="{{ route('store_front', $items[0]->shop->slug) }}"
-                                                                                    class="btn btn-dark">View More</a>
-                                                                            </div>
-                                                                        @endif
-
-
-                                                                    </div>
-
-                                                                </div>
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                    <div class=" d-flex justify-content-center  align-items-center mt-4">
-                                        <a href="{{ route('vendors') }}" class="btn btn-dark rounded rounded-3 px-5">View
-                                            More Shops <i class="fa-solid fa-angle-right ms-2"></i></a>
-                                    </div>
-                                    {{-- <livewire:shops /> --}}
-                                    <!-- Shop Top End -->
-                                    {{-- End sort by popular --}}
-                                </div>
-
-                            </div>
-                            <!-- Sidebar Area Start -->
-                            <div class="filter-sidebar-overlay"></div>
-                            <div class="ec-shop-leftside filter-sidebar">
-                                <div class="ec-sidebar-heading">
-                                    <h1>Filter Products By</h1>
-                                    <a class="filter-cls-btn" href="javascript:void(0)">×</a>
-                                </div>
-                                <div class="ec-sidebar-wrap">
-                                    <!-- Sidebar Category Block -->
-                                    <div class="ec-sidebar-block">
-                                        <div class="ec-sb-title">
-                                            <h3 class="ec-sidebar-title">Category</h3>
-                                        </div>
-                                        <div class="ec-sb-block-content">
-                                            <ul>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item">
-                                                        <input type="checkbox" checked /> <a
-                                                            href="#">clothes</a><span class="checked"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item">
-                                                        <input type="checkbox" /> <a href="#">Bags</a><span
-                                                            class="checked"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item">
-                                                        <input type="checkbox" /> <a href="#">Shoes</a><span
-                                                            class="checked"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item">
-                                                        <input type="checkbox" /> <a href="#">cosmetics</a><span
-                                                            class="checked"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item">
-                                                        <input type="checkbox" /> <a href="#">electrics</a><span
-                                                            class="checked"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item">
-                                                        <input type="checkbox" /> <a href="#">phone</a><span
-                                                            class="checked"></span>
-                                                    </div>
-                                                </li>
-                                                <li id="ec-more-toggle-content" style="padding: 0; display: none;">
-                                                    <ul>
-                                                        <li>
-                                                            <div class="ec-sidebar-block-item">
-                                                                <input type="checkbox" /> <a href="#">Watch</a><span
-                                                                    class="checked"></span>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="ec-sidebar-block-item">
-                                                                <input type="checkbox" /> <a href="#">Cap</a><span
-                                                                    class="checked"></span>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item ec-more-toggle">
-                                                        <span class="checked"></span><span id="ec-more-toggle">More
-                                                            Categories</span>
-                                                    </div>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!-- Sidebar Size Block -->
-                                    <div class="ec-sidebar-block">
-                                        <div class="ec-sb-title">
-                                            <h3 class="ec-sidebar-title">Size</h3>
-                                        </div>
-                                        <div class="ec-sb-block-content">
-                                            <ul>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item">
-                                                        <input type="checkbox" value="" checked /><a
-                                                            href="#">S</a><span class="checked"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item">
-                                                        <input type="checkbox" value="" /><a
-                                                            href="#">M</a><span class="checked"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item">
-                                                        <input type="checkbox" value="" /> <a
-                                                            href="#">L</a><span class="checked"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item">
-                                                        <input type="checkbox" value="" /><a
-                                                            href="#">XL</a><span class="checked"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item">
-                                                        <input type="checkbox" value="" /><a
-                                                            href="#">XXL</a><span class="checked"></span>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!-- Sidebar Color item -->
-                                    <div class="ec-sidebar-block ec-sidebar-block-clr">
-                                        <div class="ec-sb-title">
-                                            <h3 class="ec-sidebar-title">Color</h3>
-                                        </div>
-                                        <div class="ec-sb-block-content">
-                                            <ul>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item"><span
-                                                            style="background-color:#c4d6f9;"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item"><span
-                                                            style="background-color:#ff748b;"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item"><span
-                                                            style="background-color:#000000;"></span>
-                                                    </div>
-                                                </li>
-                                                <li class="active">
-                                                    <div class="ec-sidebar-block-item"><span
-                                                            style="background-color:#2bff4a;"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item"><span
-                                                            style="background-color:#ff7c5e;"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item"><span
-                                                            style="background-color:#f155ff;"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item"><span
-                                                            style="background-color:#ffef00;"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item"><span
-                                                            style="background-color:#c89fff;"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item"><span
-                                                            style="background-color:#7bfffa;"></span>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="ec-sidebar-block-item"><span
-                                                            style="background-color:#56ffc1;"></span>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <!-- Sidebar Price Block -->
-                                    <div class="ec-sidebar-block">
-                                        <div class="ec-sb-title">
-                                            <h3 class="ec-sidebar-title">Price</h3>
-                                        </div>
-                                        <div class="ec-sb-block-content es-price-slider">
-                                            <div class="ec-price-filter">
-                                                <div id="ec-sliderPrice" class="filter__slider-price" data-min="0"
-                                                    data-max="250" data-step="10"></div>
-                                                <div class="ec-price-input">
-                                                    <label class="filter__label"><input type="text"
-                                                            class="filter__input"></label>
-                                                    <span class="ec-price-divider"></span>
-                                                    <label class="filter__label"><input type="text"
-                                                            class="filter__input"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-                </section>
+                </aside>
+                <!-- Main Content Area -->
+                <div class="col-md-9">
+                    <div class="modern-content-area">
+                        <!-- Content Header -->
+                        <div class="content-header">
+                            <div class="search-results">
+                                Results for "<span class="search-term">{{ request()->search }}</span>"
+                            </div>
+                            <div class="sort-container">
+                                <span class="sort-label">Sort by:</span>
+                                <select name="ec-select" class="sort-select" onchange='updateSearchParams("filter_products",this.value,"{{ $route }}")'>
+                                    <option value="most-sold" {{ request()->filter_products == 'most-sold' ? 'selected' : '' }}>Most Sold</option>
+                                    <option value="price-low-high" {{ request()->filter_products == 'price-low-high' ? 'selected' : '' }}>Price, low to high</option>
+                                    <option value="price-high-low" {{ request()->filter_products == 'price-high-low' ? 'selected' : '' }}>Price, high to low</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Products Grid -->
+                        <div class="shop-pro-content">
+                            <div class="shop-pro-inner">
+                                <div class="row">
+                                    @foreach ($products as $shopId => $items)
+                                        @foreach ($items as $product)
+                                            <x-products.product-2 :product="$product" />
+                                        @endforeach
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <!-- End Shop page -->
 @endsection
 @section('js')
 
