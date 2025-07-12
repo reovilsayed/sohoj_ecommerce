@@ -258,9 +258,9 @@
             font-size: 0.95rem;
         }
 
-        .main-header .offcanvas {
+        /* .main-header .offcanvas {
             width: 250px;
-        }
+        } */
 
         /* Custom Select Styling */
         .main-header .form-select {

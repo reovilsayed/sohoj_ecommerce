@@ -504,33 +504,6 @@
             border-top: 2px solid #f8f9fa;
         }
 
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
         .btn-primary {
             background: linear-gradient(135deg, #3bb77e, #2d9d6b);
             color: white;
@@ -587,10 +560,6 @@
 
             .form-actions {
                 flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
             }
         }
 

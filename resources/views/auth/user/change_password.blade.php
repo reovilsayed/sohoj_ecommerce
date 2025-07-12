@@ -259,10 +259,6 @@
             position: relative;
             overflow: hidden;
         }
-        .btn{
-            padding: 0;
-            border-radius: 0px;
-        }
 
         .form-container::before {
             content: '';
@@ -677,32 +673,6 @@
             border-top: 2px solid #f8f9fa;
         }
 
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
 
         .btn-primary {
             background: linear-gradient(135deg, #3bb77e, #2d9d6b);
@@ -754,10 +724,6 @@
 
             .form-actions {
                 flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
             }
 
             .tips-grid {
@@ -817,12 +783,6 @@
             100% {
                 background-position: calc(200px + 100%) 0;
             }
-        }
-
-        .btn.loading {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200px 100%;
-            animation: shimmer 1.5s infinite;
         }
     </style>
 
