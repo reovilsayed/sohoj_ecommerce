@@ -1054,7 +1054,7 @@
                                     <div class="category-card-inner">
                                         <div class="category-image-wrapper">
                                             <div class="category-image">
-                                                <img src="https://wpmayor.com/wp-content/uploads/2016/10/The-Beginners-Guide-To-WooCommerce-Product-Categories-Tags-Attributes-Banner-630x350.jpg"
+                                                <img src="{{ Storage::url($prodcat->logo) }}"
                                                     alt="{{ $prodcat->name }}" class="category-img">
                                                 <div class="category-overlay">
                                                     <div class="category-icon">
