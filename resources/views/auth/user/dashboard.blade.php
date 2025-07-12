@@ -330,13 +330,13 @@
                                             </div>
                                             <div class="address-actions">
                                                 @if (!$address->is_default)
-                                                    <form action="" method="POST" class="d-inline">
-                                                        @csrf
+                                                    {{-- <form action="" method="POST" class="d-inline">
+                                                        @csrf --}}
                                                         <button type="submit" class="btn-set-default"
                                                             title="Set as default">
                                                             <i class="fas fa-star"></i>
                                                         </button>
-                                                    </form>
+                                                    {{-- </form> --}}
                                                 @endif
                                                 <a href="{{ route('user.address-edit', $address->id) }}" class="btn-edit"
                                                     title="Edit address">
