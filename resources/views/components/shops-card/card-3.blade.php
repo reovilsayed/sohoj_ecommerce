@@ -2,13 +2,11 @@
     <div class="modern-shop-card">
         <div class="shop-card-image-wrapper">
             <div class="shop-card-image">
-                <img src="{{ Storage::url($shop->logo) }}" 
-                     alt="{{ $shop->name }}" 
-                     class="shop-card-img">
+                <img src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}" class="shop-card-img">
                 <div class="shop-card-overlay">
                     <div class="shop-card-actions">
                         <a href="{{ route('store_front', $shop->slug) }}" class="shop-action-btn" title="Visit Shop">
-                            <i class="fas fa-external-link-alt"></i>
+                            <i class="fas fa-external-link-alt text-light"></i>
                         </a>
                         <button class="shop-action-btn" title="Follow Shop">
                             <i class="fas fa-heart"></i>
@@ -18,13 +16,13 @@
                         </button>
                     </div>
                 </div>
-                @if($shop->is_featured)
+                @if ($shop->is_featured)
                     <div class="shop-featured-badge">
                         <i class="fas fa-star"></i>
                         <span>Featured</span>
                     </div>
                 @endif
-                @if($shop->is_verified)
+                @if ($shop->is_verified)
                     <div class="shop-verified-badge">
                         <i class="fas fa-check-circle"></i>
                         <span>Verified</span>
@@ -40,7 +38,7 @@
                 </h5>
                 <div class="shop-card-rating">
                     <div class="shop-stars">
-                        @for($i = 1; $i <= 5; $i++)
+                        @for ($i = 1; $i <= 5; $i++)
                             <i class="fas fa-star {{ $i <= 4 ? 'filled' : '' }}"></i>
                         @endfor
                     </div>
@@ -54,11 +52,11 @@
                 </div>
                 <div class="shop-card-location">
                     <i class="fas fa-map-marker-alt"></i>
-                    <span>{{ $shop->city.' '.$shop->state .' '. $shop->post_code .' '. $shop->country ?? 'Unknown Location' }}</span>
+                    <span>{{ $shop->city . ' ' . $shop->state . ' ' . $shop->post_code . ' ' . $shop->country ?? 'Unknown Location' }}</span>
                 </div>
             </div>
 
-            @if (!empty($shop->tags))
+            {{-- @if (!empty($shop->tags))
                 @php $tags = explode(',', $shop->tags); @endphp
                 <div class="shop-card-tags">
                     @foreach (array_slice($tags, 0, 3) as $tag)
@@ -67,7 +65,7 @@
                         </span>
                     @endforeach
                 </div>
-            @endif
+            @endif --}}
 
             <div class="shop-card-stats">
                 <div class="shop-stat-item">
@@ -87,18 +85,28 @@
             </div>
 
             <div class="shop-card-description">
-                <p>{{ Str::limit($shop->short_description ?? 'A trusted shop offering quality products and excellent service.', 60, '...') }}</p>
+                <p>{{ Str::limit($shop->short_description ?? 'A trusted shop offering quality products and excellent service.', 60, '...') }}
+                </p>
             </div>
 
             <div class="shop-card-footer">
                 <a href="{{ route('store_front', $shop->slug) }}" class="shop-visit-btn">
-                    <span>Visit Shop</span>
-                    <i class="fas fa-arrow-right"></i>
+                    <span class="text-light">Visit Shop</span>
+                    <i class="fas fa-arrow-right text-light"></i>
                 </a>
-                <button class="shop-follow-btn">
-                    <i class="fas fa-heart"></i>
-                    <span>Follow</span>
-                </button>
+                @auth
+                    <form action="{{ route('follow', $shop) }}" method="post" style="display:inline">
+                        @csrf
+                        @php
+                            $follow = auth()->user()->follows($shop);
+                        @endphp
+                        <button class="shop-follow-btn" type="submit"><i class="fas fa-heart"></i>
+                            {{ $follow ? 'Unfollow' : 'Follow' }}</button>
+                    </form>
+                @else
+                    <a class="shop-follow-btn" href="{{ route('login') }}"><i class="fas fa-heart"></i>
+                        <span>Follow</span></a>
+                @endauth
             </div>
         </div>
     </div>
