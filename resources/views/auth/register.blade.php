@@ -9,7 +9,7 @@
         }
         .register-header {
             background: var(--primary-green) !important;
-            border-radius: 1.5rem 1.5rem 0 0;
+            border-radius: 0.5rem 0.5rem 0 0;
         }
         .register-header h1, .register-header p {
             color: #fff !important;
@@ -51,7 +51,7 @@
     <section class="ec-page-content section-space-p" style="background-color: #f8f9fa;">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-12 text-center mb-4">
+                <div class="col-md-7 col-12  text-center mb-4">
                     <div class="register-header py-4 mb-0">
                         <h1 class="mb-1">Get Started with <span style="font-weight:700;">Sohoj Ecommerce</span></h1>
                         <p class="mb-0">Create your free account</p>
@@ -60,7 +60,7 @@
                         Join SohjojEcommerce and start shopping or selling easily.
                     </div>
                 </div>
-                <div class="col-lg-8 col-xl-6">
+                <div class="col-md-7 col-12">
                     <div class="card shadow-sm border-0 rounded-4">
                         <div class="card-body p-4 p-md-5">
                             <form method="POST" action="{{ route('register') }}" novalidate>
