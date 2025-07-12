@@ -108,7 +108,7 @@
                         </div>
                         <div class="card-body">
                             <div class="actions-grid">
-                                <a href="" class="action-item">
+                                <a href="{{route('user.ordersIndex')}}" class="action-item">
                                     <div class="action-icon">
                                         <i class="fas fa-shopping-bag"></i>
                                     </div>
@@ -118,7 +118,7 @@
                                     </div>
                                 </a>
 
-                                <a href="" class="action-item">
+                                <a href="{{route('wishlist.index')}}" class="action-item">
                                     <div class="action-icon">
                                         <i class="fas fa-heart"></i>
                                     </div>
@@ -145,6 +145,16 @@
                                     <div class="action-text">
                                         <h3>Change Password</h3>
                                         <p>Update your account password</p>
+                                    </div>
+                                </a>
+
+                                <a href="{{ route('user.offers') }}" class="action-item">
+                                    <div class="action-icon">
+                                        <i class="fas fa-gift"></i>
+                                    </div>
+                                    <div class="action-text">
+                                        <h3>Offers</h3>
+                                        <p>View your Offers history</p>
                                     </div>
                                 </a>
                             </div>
