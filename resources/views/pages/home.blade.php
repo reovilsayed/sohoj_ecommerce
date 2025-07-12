@@ -687,6 +687,191 @@
                 padding: 15px 0;
             }
         }
+
+        /* View More Shops Button Design */
+        .view-more-shops-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .view-more-shops-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 32px;
+            background: linear-gradient(135deg, #3bb77e 0%, #2d9d6b 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(59, 183, 126, 0.3);
+            border: 2px solid transparent;
+            min-width: 280px;
+            justify-content: center;
+        }
+
+        .view-more-shops-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .view-more-shops-btn:hover::before {
+            left: 100%;
+        }
+
+        .view-more-shops-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 16px 48px rgba(59, 183, 126, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .view-more-shops-btn:active {
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .btn-text {
+            position: relative;
+            z-index: 2;
+            font-weight: 700;
+        }
+
+        .btn-icon {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-icon i {
+            font-size: 14px;
+            color: white;
+        }
+
+        .view-more-shops-btn:hover .btn-icon {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .btn-arrow {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-arrow i {
+            font-size: 12px;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .view-more-shops-btn:hover .btn-arrow {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+        }
+
+        .view-more-shops-btn:hover .btn-arrow i {
+            transform: translateX(3px);
+        }
+
+        .btn-shine {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .view-more-shops-btn:hover .btn-shine {
+            opacity: 1;
+        }
+
+        /* Button responsive design */
+        @media (max-width: 768px) {
+            .view-more-shops-btn {
+                padding: 16px 28px;
+                font-size: 1rem;
+                min-width: 260px;
+                gap: 10px;
+            }
+
+            .btn-icon {
+                width: 28px;
+                height: 28px;
+            }
+
+            .btn-icon i {
+                font-size: 12px;
+            }
+
+            .btn-arrow {
+                width: 20px;
+                height: 20px;
+            }
+
+            .btn-arrow i {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .view-more-shops-btn {
+                padding: 14px 24px;
+                font-size: 0.95rem;
+                min-width: 240px;
+                gap: 8px;
+            }
+
+            .btn-text {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Button animation on page load */
+        @keyframes buttonEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .view-more-shops-btn {
+            animation: buttonEntrance 0.6s ease-out;
+        }
     </style>
     <livewire:styles />
 @endsection
@@ -942,9 +1127,6 @@
                                                                 {{-- @dd($product) --}}
                                                                 <x-products.product-1 :product="$product" />
                                                             @endforeach
-
-
-
                                                         </div>
 
                                                     </div>
@@ -1142,11 +1324,17 @@
                             </div>
 
 
-                            <!-- Product tab area end -->
-
-                            <div class=" d-flex justify-content-center  align-items-center mt-4">
-                                <a href="{{ route('vendors') }}" class="btn btn-dark rounded rounded-3 px-5">View More
-                                    Shops <i class="fa-solid fa-angle-right ms-2"></i></a>
+                            <div class="view-more-shops-container">
+                                <a href="{{ route('vendors') }}" class="view-more-shops-btn">
+                                    <span class="btn-text" style="color: #ffffff">Explore All Shops</span>
+                                    <div class="btn-icon">
+                                        <i class="fas fa-store"></i>
+                                    </div>
+                                    <div class="btn-arrow">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </div>
+                                    <div class="btn-shine"></div>
+                                </a>
                             </div>
 
                         </div>
