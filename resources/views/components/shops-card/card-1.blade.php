@@ -128,7 +128,7 @@
                           style="display:inline"
                           class="follow-form">
                         @csrf
-                        <button class="shop-follow-btn" 
+                        <button class="shop-follow-btn w-100 text-center d-block" 
                                 type="submit"
                                 aria-label="{{ $isFollowing ? 'Unfollow' : 'Follow' }} {{ $shop->name }}">
                             <i class="fas fa-heart" aria-hidden="true"></i>
@@ -136,7 +136,7 @@
                         </button>
                     </form>
                 @else
-                    <a class="shop-follow-btn" 
+                    <a class="shop-follow-btn w-100 text-center d-block" 
                        href="{{ route('login') }}"
                        aria-label="Login to follow {{ $shop->name }}">
                         <i class="fas fa-heart" aria-hidden="true"></i>

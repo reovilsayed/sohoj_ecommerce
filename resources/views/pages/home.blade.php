@@ -1038,7 +1038,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="text-center mb-5">
+                    <div class="mb-5">
                         <h2 class="related-product-sec-title mb-3">Browse Shops by Categories</h2>
                         <p class="text-muted fs-6">Discover amazing shops organized by categories</p>
                     </div>
