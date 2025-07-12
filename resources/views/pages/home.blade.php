@@ -920,7 +920,7 @@
                             <div class="category-list-wrapper p-3">
                                 @foreach ($categories as $category)
                                     <div class="category-item mb-2">
-                                        <a href="{{ route('vendors', ['category' => $category->slug]) }}"
+                                        <a href="{{ route('shops', ['category' => $category->slug]) }}"
                                             class="category-link d-flex align-items-center justify-content-between p-3 rounded-3">
                                             <div class="d-flex align-items-center gap-3">
                                                 <div class="category-icon">
@@ -934,7 +934,7 @@
 
                                     @foreach ($category->childrens as $child)
                                         <div class="category-item mb-1 ms-4">
-                                            <a href="{{ route('vendors', ['category' => $child->slug]) }}"
+                                            <a href="{{ route('shops', ['category' => $child->slug]) }}"
                                                 class="category-link d-flex align-items-center justify-content-between p-2 rounded-3">
                                                 <div class="d-flex align-items-center gap-2">
                                                     <div class="category-sub-icon">
