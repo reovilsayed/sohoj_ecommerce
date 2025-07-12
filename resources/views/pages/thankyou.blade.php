@@ -1,82 +1,108 @@
 @extends('layouts.app')
 @section('css')
-    <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/frontend-assetss/responsive.css') }}" />
-    <link rel="stylesheet" id="bg-switcher-css" href="{{ asset('assets/frontend-assetss/css/backgrounds/bg-4.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/shops.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/store_front.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/shops.css') }}" />
+    <style>
+        .thankyou-wrapper {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            margin: 2rem 0;
+            padding: 3rem 1rem 2rem 1rem;
+        }
+
+        .thankyou-icon {
+            font-size: 5rem;
+            color: #198754;
+            margin-bottom: 1.5rem;
+        }
+
+        .thankyou-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #198754;
+            margin-bottom: 0.5rem;
+        }
+
+        .thankyou-subtitle {
+            font-size: 1.25rem;
+            color: #495057;
+            margin-bottom: 1.5rem;
+        }
+
+        .thankyou-track {
+            margin-top: 2rem;
+        }
+
+        .btn-green,
+        .btn-green:active,
+        .btn-green:focus {
+            background: #198754;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-green:hover {
+            background: #146c43;
+            color: #fff;
+        }
+
+        .new-arrivals-section {
+            margin-top: 3rem;
+        }
+
+        .new-arrivals-title {
+            color: #198754;
+            font-weight: 700;
+            font-size: 2rem;
+        }
+    </style>
 @endsection
+
 @section('content')
     <x-app.header />
-    <!-- Ec Thank You page -->
-    <section class="ec-thank-you-page section-space-p">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="ec-thank-you section-space-p">
-                        <!-- thank content Start -->
-                        <div class="ec-thank-content">
-                            <i class="ecicon eci-check-circle" aria-hidden="true"></i>
-                            <div class="section-title">
-                                <h2 class="ec-title">Thank You</h2>
-                                <p class="sub-title">For Shopping with us.</p>
-                            </div>
-                        </div>
-                        <!--thank content End -->
-                        <div class="ec-hunger">
-                            <div class="ec-hunger-detial">
-                                <h3>Want to track your order?</h3>
-                                <h6>Just click the link below.</h6>
-                                <a href="{{ route('user.ordersIndex') }}" class="btn btn-danger rounded">Track Order</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="thankyou-wrapper text-center">
+            <i class="ecicon eci-check-circle thankyou-icon" aria-hidden="true"></i>
+            <div class="thankyou-title">Thank You!</div>
+            <div class="thankyou-subtitle">Your order was placed successfully.<br>We appreciate your business.</div>
+            <div class="thankyou-track">
+                <a href="{{ route('user.ordersIndex') }}" class="btn btn-green btn-lg rounded-pill px-4">Track Order</a>
             </div>
         </div>
-    </section>
-    <section class="section ec-new-product section-space-p">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="section-title">
-                        <h2 class="ec-bg-title">New Arrivals</h2>
-                        <h2 class="ec-title">New Arrivals</h2>
-                        <p class="sub-title">Browse The Collection of Top Products</p>
-                    </div>
-                </div>
+        <div class="new-arrivals-section">
+            <div class="text-center mb-4">
+                <div class="new-arrivals-title">New Arrivals</div>
+                <div class="text-muted">Browse the collection of top products</div>
             </div>
             <div class="row">
                 <!-- New Product Content -->
                 <div class="ec-spe-section  data-animation=" slideInLeft">
-
                     <div class="ec-spe-products">
                         @foreach ($latest_products->chunk(6) as $products)
                             <div class="ec-fs-product">
                                 <div class="ec-fs-pro-inner">
-
                                     <div class="row">
                                         @foreach ($products as $product)
                                             <x-products.product-3 :product="$product" />
                                         @endforeach
-
-
-
                                     </div>
-
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
-
             </div>
         </div>
-    </section>
+    </div>
 @endsection
+
 @section('js')
     <script src="{{ asset('assets/frontend-assets/js/vendor/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('assets/frontend-assets/js/plugins/jquery.sticky-sidebar.js') }}"></script>
-
     <script src="{{ asset('assets/frontend-assets/js/main.js') }}"></script>
 @endsection
