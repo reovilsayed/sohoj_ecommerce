@@ -361,8 +361,8 @@
         }
 
         .category-img {
-            width: 100%;
-            height: 100%;
+            /* width: 100%; */
+            height: 100% !important;
             object-fit: cover;
             transition: transform 0.3s ease;
         }
