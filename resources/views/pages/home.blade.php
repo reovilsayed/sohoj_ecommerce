@@ -958,7 +958,7 @@
                         <div class="hero-slider" role="region" aria-label="Product carousel">
                             <!-- Slide 1 -->
                             <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/fashion1.jpg') }}');"
+                                style="background-image: url('{{ asset('assets/slider/freestocks.jpg') }}');"
                                 aria-hidden="false">
                                 {{-- <div class="hero__text">
                                     <span>FRUIT FRESH</span>
@@ -969,19 +969,19 @@
                             </div>
                             <!-- Slide 2 -->
                             <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/fashion2.jpg') }}');"
+                                style="background-image: url('{{ asset('assets/slider/pexels.jpg') }}');"
                                 aria-hidden="true">
                             </div>
                             <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/fashion3.jpg') }}');"
+                                style="background-image: url('{{ asset('assets/slider/pexels-gustavo.jpg') }}');"
                                 aria-hidden="true">
                             </div>
                             <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/fashion4.jpg') }}');"
+                                style="background-image: url('{{ asset('assets/slider/Pokecut_.jpg') }}');"
                                 aria-hidden="true">
                             </div>
                             <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/fashion5.jpg') }}');"
+                                style="background-image: url('{{ asset('assets/slider/wmremove-1.jpeg') }}');"
                                 aria-hidden="true">
                             </div>
                         </div>
