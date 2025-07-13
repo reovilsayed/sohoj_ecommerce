@@ -958,7 +958,7 @@
                         <div class="hero-slider" role="region" aria-label="Product carousel">
                             <!-- Slide 1 -->
                             <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/freestocks.jpg') }}');"
+                                style="background-image: url('{{ asset('assets/slider/Pokecut_.jpg') }}');"
                                 aria-hidden="false">
                                 {{-- <div class="hero__text">
                                     <span>FRUIT FRESH</span>
@@ -977,7 +977,7 @@
                                 aria-hidden="true">
                             </div>
                             <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/Pokecut_.jpg') }}');"
+                                style="background-image: url('{{ asset('assets/slider/freestocks.jpg') }}');"
                                 aria-hidden="true">
                             </div>
                             <div class="hero__item set-bg"
