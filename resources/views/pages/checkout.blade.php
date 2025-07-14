@@ -1,3 +1,20 @@
+@section('title', 'Checkout | Sohoj E-commerce')
+@section('meta_description', 'Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple payment options and order tracking.')
+@section('meta_keywords', 'checkout, payment, order, purchase, ecommerce, online shopping, sohoj')
+@section('canonical_url', route('checkout'))
+@section('meta_og')
+    <meta property="og:title" content="Checkout | Sohoj E-commerce">
+    <meta property="og:description" content="Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
+    <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+@endsection
+@section('meta_twitter')
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Checkout | Sohoj E-commerce">
+    <meta name="twitter:description" content="Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
+    <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
+@endsection
 @extends('layouts.app')
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />

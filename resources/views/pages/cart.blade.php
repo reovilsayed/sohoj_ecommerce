@@ -1,3 +1,21 @@
+@section('title', 'Shopping Cart | Sohoj E-commerce')
+@section('meta_description', 'Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy quantity updates, and instant price calculations.')
+@section('meta_keywords', 'shopping cart, cart, checkout, ecommerce, online shopping, sohoj')
+@section('canonical_url', route('cart'))
+@section('meta_og')
+    <meta property="og:title" content="Shopping Cart | Sohoj E-commerce">
+    <meta property="og:description" content="Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy quantity updates, and instant price calculations.">
+    <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+@endsection
+@section('meta_twitter')
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Shopping Cart | Sohoj E-commerce">
+    <meta name="twitter:description" content="Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy quantity updates, and instant price calculations.">
+    <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
+@endsection
+
 @extends('layouts.app')
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />
@@ -271,6 +289,7 @@
     </style>
 @endsection
 @section('content')
+<main>
     <x-app.header />
     @php
         $items = Cart::Content();
@@ -279,13 +298,15 @@
             return $item->model->shop_id;
         });
     @endphp
-    <div class="container mb-5">
-        <div class="cart-container">
-            <div class="cart-items">
-                <div class="cart-header">
-                    <h1 class="cart-title">Shopping Cart</h1>
-                    <span class="item-count">{{ Cart::count() }} Items</span>
-                </div>
+    <section class="cart-section">
+        <div class="container mb-5">
+            <header class="cart-header">
+                <h1 class="cart-title">Shopping Cart</h1>
+                <span class="item-count">{{ Cart::count() }} Items</span>
+            </header>
+            
+            <div class="cart-container">
+                <div class="cart-items">
                 @if (Cart::count() > 0)
                     <table class="cart-table">
                         <thead>
