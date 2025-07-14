@@ -1185,7 +1185,7 @@
                 </button>
                 <div class="category-carousel py-3" id="categoryCarousel">
                     @foreach ($categories as $category)
-                        <a href="{{ route('shops', ['category' => $category->slug]) }}" class="category-circle-link">
+                        <a href="{{ route('shops', ['category' => $category->slug]) }}" class="category-circle-link" style="border: 1px solid #d8caca63; border-radius: 50%;">
                             <div class="category-circle text-center">
                                 <div class="circle-icon mx-auto mb-2">
                                     @if (!empty($category->logo))
