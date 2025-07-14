@@ -306,6 +306,7 @@
         }
     </style>
 @endsection
+@section('canonical_url', route('product_details', $product->slug))
 @section('title', $product->name . ' | Sohoj E-commerce')
 @section('meta_description', Str::limit(strip_tags($product->short_description ?? $product->description), 150))
 @section('meta_keywords', $product->name . ', ' . ($product->prodcats->pluck('name')->implode(', ') ?? 'product'))
@@ -322,6 +323,61 @@
     <meta name="twitter:description" content="{{ Str::limit(strip_tags($product->short_description ?? $product->description), 150) }}">
     <meta name="twitter:image" content="{{ Storage::url($product->image) }}">
 @endsection
+{{-- @section('jsonld')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ $product->name }}",
+  "image": [
+    "{{ Storage::url($product->image) }}"
+  ],
+  "description": "{{ Str::limit(strip_tags($product->short_description ?? $product->description), 150) }}",
+  "sku": "{{ $product->sku ?? $product->id }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "{{ $product->brand->name ?? 'Sohoj' }}"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ route('product_details', $product->slug) }}",
+    "priceCurrency": "USD",
+    "price": "{{ $product->sale_price ?? $product->price }}",
+    "availability": "https://schema.org/{{ $product->quantity > 0 ? 'InStock' : 'OutOfStock' }}"
+  }
+}
+</script>
+@endsection
+@section('jsonld_breadcrumb')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://shop.sohojware.com/"
+    },
+    @if($product->prodcats && $product->prodcats->count())
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ $product->prodcats->first()->name }}",
+      "item": "{{ route('shops', ['category' => $product->prodcats->first()->slug]) }}"
+    },
+    @endif
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ $product->name }}",
+      "item": "{{ route('product_details', $product->slug) }}"
+    }
+  ]
+}
+</script>
+@endsection --}}
 @section('content')
 <main>
     <x-app.header />

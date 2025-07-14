@@ -15,6 +15,24 @@
     <meta name="twitter:description" content="Discover trending products, top shops, and exclusive deals on Sohoj E-commerce. Shop by category and enjoy a seamless online shopping experience.">
     <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
 @endsection
+@section('canonical_url', route('homepage'))
+{{-- @section('jsonld')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Sohoj E-commerce",
+  "url": "https://shop.sohojware.com/",
+  "logo": "https://shop.sohojware.com/assets/logo/logo007.png",
+  "contactPoint": [{
+    "@type": "ContactPoint",
+    "telephone": "+123 5678 890",
+    "contactType": "customer service",
+    "email": "support@sohoj.com"
+  }]
+}
+</script>
+@endsection --}}
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/responsive.css') }}" />

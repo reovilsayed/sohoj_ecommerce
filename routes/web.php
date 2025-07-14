@@ -173,3 +173,5 @@ Route::get('hello/{order}', function (Order $order) {
     return new OrderPlaced($order);
     // return  Mail::to($order->email)->send(new OrderPlaced($order));
 });
+
+Route::get('/sitemap.xml', [App\Http\Controllers\SitemapController::class, 'index']);
