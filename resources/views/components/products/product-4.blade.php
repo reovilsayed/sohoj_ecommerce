@@ -8,44 +8,35 @@
     $discountPercentage = $hasDiscount ? round((($originalPrice - $currentPrice) / $originalPrice) * 100) : 0;
     $fullStars = floor($averageRating);
     $hasHalfStar = $averageRating - $fullStars >= 0.5;
-    $categoryName = $product->category->name ?? 'General';
 @endphp
-
 <div class="col-md-4 col-sm-6 col-6 mb-4">
     <div class="product-card">
         {{-- Product Image Section --}}
         <div class="product-image-wrapper">
             <div class="product-image">
-                <img src="{{ Storage::url($product->image) }}" 
-                     alt="{{ $product->name }}" 
-                     class="product-img"
-                     loading="lazy">
+                <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="product-img"
+                    loading="lazy">
 
                 {{-- Product Actions Overlay --}}
                 <div class="product-overlay">
                     <div class="product-actions">
-                        <a href="{{ route('product_details', $product->slug) }}" 
-                           class="action-btn" 
-                           title="Quick View"
-                           aria-label="View {{ $product->name }} details">
+                        <a href="{{ route('product_details', $product->slug) }}" class="action-btn" title="Quick View"
+                            aria-label="View {{ $product->name }} details">
                             <i class="fas fa-eye text-light"></i>
                         </a>
-                        
+
                         <form action="{{ route('cart.store') }}" method="post" class="cart-form">
                             @csrf
                             <input type="hidden" name="quantity" value="1">
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <button class="action-btn" 
-                                    title="Add to Cart" 
-                                    type="submit"
-                                    aria-label="Add {{ $product->name }} to cart">
+                            <button class="action-btn" title="Add to Cart" type="submit"
+                                aria-label="Add {{ $product->name }} to cart">
                                 <i class="fas fa-shopping-cart"></i>
                             </button>
                         </form>
-                        
-                        <button class="action-btn compare-btn" 
-                                title="Compare"
-                                aria-label="Compare {{ $product->name }}">
+
+                        <button class="action-btn compare-btn" title="Compare"
+                            aria-label="Compare {{ $product->name }}">
                             <i class="fas fa-exchange-alt"></i>
                         </button>
                     </div>
@@ -64,13 +55,15 @@
         <div class="product-content">
             {{-- Product Category --}}
             <div class="product-category">
-                <span>{{ $categoryName }}</span>
+                @foreach ($product->prodcats as $categoryName)
+                    <span>{{ $categoryName->name }}</span>
+                @endforeach
             </div>
 
             {{-- Product Title --}}
             <h3 class="product-title">
-                <a href="{{ route('product_details', $product->slug) }}" 
-                   aria-label="View {{ $product->name }} details">
+                <a href="{{ route('product_details', $product->slug) }}"
+                    aria-label="View {{ $product->name }} details">
                     {{ Str::limit($product->name, 35) }}
                 </a>
             </h3>
@@ -100,22 +93,24 @@
             </div>
 
             {{-- Add to Cart Button --}}
-            <form action="{{ route('cart.store') }}" method="post" class="add-to-cart-form">
+            <form action="{{ route('cart.store') }}" method="POST" class="add-to-cart-form">
                 @csrf
                 <input type="hidden" name="quantity" value="1">
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <button class="add-to-cart-btn" 
-                        type="submit"
-                        aria-label="Add {{ $product->name }} to cart">
+                <button class="add-to-cart-btn" type="submit" aria-label="Add {{ $product->name }} to cart">
+                    <span class="spinner" style="display:none;margin-right:8px;"><i class="fas fa-spinner fa-spin"></i></span>
                     <i class="fas fa-shopping-cart me-2" aria-hidden="true"></i>
-                    Add to Cart
+                    <span class="btn-text">Add to Cart</span>
                 </button>
             </form>
+
         </div>
     </div>
 </div>
 
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+
     /* Optimized CSS with better organization and performance */
     .product-card {
         background: white;
@@ -127,12 +122,13 @@
         height: 100%;
         border: 1px solid rgba(0, 0, 0, 0.05);
         will-change: transform;
+        font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
     }
 
     .product-card:hover {
         transform: translateY(-8px);
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-        border-color: #3bb77e;
+        border-color: #FF0000;
     }
 
     /* Image Section */
@@ -167,7 +163,7 @@
     .product-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(59, 183, 126, 0.9), rgba(45, 157, 107, 0.9));
+        background: #c1bebe91;
         opacity: 0;
         display: flex;
         align-items: center;
@@ -241,7 +237,7 @@
 
     .product-category span {
         background: linear-gradient(135deg, #e8f5e8, #d4edda);
-        color: #2d9d6b;
+        color: #01949a;
         padding: 4px 10px;
         border-radius: 12px;
         font-size: 0.7rem;
@@ -254,16 +250,14 @@
         margin-bottom: 8px;
         line-height: 1.3;
         flex-grow: 1;
+        font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+        color: #000 !important;
     }
 
     .product-title a {
-        color: #2c3e50;
+        color: #000 !important;
         text-decoration: none;
         transition: color 0.3s ease;
-    }
-
-    .product-title a:hover {
-        color: #3bb77e;
     }
 
     /* Rating */
@@ -308,7 +302,7 @@
     }
 
     .current-price {
-        color: #3bb77e;
+        color: #000;
         font-size: 1.2rem;
         font-weight: 700;
     }
@@ -319,10 +313,10 @@
     }
 
     .add-to-cart-btn {
-        background: linear-gradient(135deg, #3bb77e, #2d9d6b);
-        color: white;
+        background: #FF0000 !important;
+        color: #fff;
         border: none;
-        padding: 12px 20px;
+        padding: 7px 12px;
         border-radius: 12px;
         font-weight: 600;
         font-size: 0.9rem;
@@ -331,37 +325,46 @@
         width: 100%;
         margin-top: auto;
         will-change: transform;
+        box-shadow: 0 2px 8px rgba(58, 112, 151, 0.10);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .add-to-cart-btn:hover {
-        background: linear-gradient(135deg, #2d9d6b, #1a7a4a);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(59, 183, 126, 0.3);
+    .add-to-cart-btn .spinner {
+        display: none;
+        margin-right: 8px;
+        font-size: 1rem;
+        animation: spin 1s linear infinite;
     }
 
-    .add-to-cart-btn:active {
-        transform: translateY(0);
+    .add-to-cart-btn.loading .spinner {
+        display: inline-block;
     }
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .product-image {
-            height: 200px;
-        }
+    .add-to-cart-btn.loading .btn-text {
+        opacity: 0.6;
+    }
 
-        .product-content {
-            padding: 15px;
-        }
+    .add-to-cart-btn.loading {
+        pointer-events: none;
+        opacity: 0.7;
+    }
 
-        .product-title {
-            font-size: 0.9rem;
-        }
+    /* @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    } */
 
-        .action-btn {
-            width: 35px;
-            height: 35px;
-            font-size: 12px;
-        }
+    .product-title {
+        font-size: 0.9rem;
+    }
+
+    .action-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 12px;
     }
 
     @media (max-width: 576px) {
@@ -387,7 +390,7 @@
     .action-btn:focus,
     .add-to-cart-btn:focus,
     .product-title a:focus {
-        outline: 2px solid #3bb77e;
+        outline: 2px solid #01949a;
         outline-offset: 2px;
     }
 
@@ -400,15 +403,9 @@
     .add-to-cart-btn.loading i {
         animation: spin 1s linear infinite;
     }
-
-    @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
 </style>
 
-<script>
-    // Optimized JavaScript with better performance and error handling
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Add to cart form enhancement
         document.addEventListener('submit', function(e) {
@@ -420,12 +417,9 @@
 
         function handleAddToCart(form) {
             const button = form.querySelector('.add-to-cart-btn');
-            const originalText = button.innerHTML;
-            
-            // Show loading state
             button.classList.add('loading');
-            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Adding...';
             button.disabled = true;
+            button.querySelector('.spinner').style.display = 'inline-block';
 
             // Submit form
             fetch(form.action, {
@@ -442,10 +436,7 @@
                 return response.json();
             })
             .then(data => {
-                // Show success message
                 showNotification('Product added to cart successfully!', 'success');
-                
-                // Update cart count if available
                 updateCartCount();
             })
             .catch(error => {
@@ -453,89 +444,12 @@
                 showNotification('Failed to add product to cart. Please try again.', 'error');
             })
             .finally(() => {
-                // Restore button state
                 button.classList.remove('loading');
-                button.innerHTML = originalText;
                 button.disabled = false;
+                button.querySelector('.spinner').style.display = 'none';
             });
         }
-
-        // Compare functionality
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.compare-btn')) {
-                e.preventDefault();
-                handleCompare(e.target.closest('.compare-btn'));
-            }
-        });
-
-        function handleCompare(button) {
-            const productCard = button.closest('.product-card');
-            const productName = productCard.querySelector('.product-title a').textContent;
-            
-            // Add to compare list (implement your compare logic here)
-            console.log('Compare product:', productName);
-            
-            // Show feedback
-            button.style.background = '#3bb77e';
-            button.style.color = 'white';
-            
-            setTimeout(() => {
-                button.style.background = '';
-                button.style.color = '';
-            }, 1000);
-        }
-
-        // Utility functions
-        function showNotification(message, type) {
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.className = `notification notification-${type}`;
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 12px 20px;
-                border-radius: 8px;
-                color: white;
-                font-weight: 600;
-                z-index: 9999;
-                animation: slideIn 0.3s ease;
-                background: ${type === 'success' ? '#3bb77e' : '#ff6b6b'};
-            `;
-
-            document.body.appendChild(notification);
-
-            // Remove after 3 seconds
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-        }
-
-        function updateCartCount() {
-            // Update cart count in header if available
-            const cartCountElement = document.querySelector('.cart-count');
-            if (cartCountElement) {
-                const currentCount = parseInt(cartCountElement.textContent) || 0;
-                cartCountElement.textContent = currentCount + 1;
-            }
-        }
-
-        // Add CSS animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(style);
     });
-</script>
+</script> --}}
+
+

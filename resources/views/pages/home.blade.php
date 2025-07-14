@@ -701,8 +701,8 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            padding: 18px 32px;
-            background: linear-gradient(135deg, #3bb77e 0%, #2d9d6b 100%);
+            padding: 7px 14px;
+            background: #01949a;
             color: white;
             text-decoration: none;
             border-radius: 50px;
@@ -873,6 +873,122 @@
         .view-more-shops-btn {
             animation: buttonEntrance 0.6s ease-out;
         }
+
+        /* Category Carousel Section */
+        /* Container */
+        .category-carousel-container {
+            position: relative;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        /* Carousel */
+        .category-carousel {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 20px;
+            padding: 0 60px;
+            scrollbar-width: none;
+        }
+
+        .category-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Category Item */
+        .category-circle {
+            flex: 0 0 calc(50% - 20px);
+            /* Default mobile: 2 per view */
+            max-width: calc(50% - 20px);
+            height: 140px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .category-circle:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
+        }
+
+        /* Circle Icon */
+        .circle-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .circle-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Category Name */
+        .category-name {
+            font-size: 1rem;
+            color: #222;
+            font-weight: 500;
+            text-align: center;
+            padding: 5px;
+            word-break: break-word;
+        }
+
+        /* Arrow Buttons */
+        .category-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background: #fff;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .left-arrow {
+            left: 10px;
+        }
+
+        .right-arrow {
+            right: 10px;
+        }
+
+        /* Responsive Breakpoints */
+        @media (min-width: 768px) {
+            .category-circle {
+                flex: 0 0 calc(25% - 20px);
+                /* 4 per view on tablets */
+                max-width: calc(25% - 20px);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .category-circle {
+                flex: 0 0 calc(14.2857% - 20px);
+                /* 7 per view on large screen */
+                max-width: calc(14.2857% - 20px);
+            }
+        }
     </style>
     <livewire:styles />
 @endsection
@@ -1006,7 +1122,7 @@
 
 
     <!-- Main Slider Start -->
-    <div id="carouselExampleIndicators" class="carousel slide container my-2" data-bs-ride="carousel">
+    {{-- <div id="carouselExampleIndicators" class="carousel slide container my-2" data-bs-ride="carousel">
         <div class="carousel-indicators" style="justify-content: start;margin-left: 100px;margin-bottom:20px">
             @foreach ($sliders as $key => $slider)
                 <button type="button" style="width: 15px;
@@ -1029,7 +1145,7 @@
 
         </div>
 
-    </div>
+    </div> --}}
 
 
     <!-- Main Slider End -->
@@ -1046,53 +1162,29 @@
                 </div>
             </div>
 
-            <div class="category-slider-container">
-                <div class="category-slider-wrapper">
-                    <div class="category-slider" id="categorySlider">
-                        @foreach ($prodcats as $prodcat)
-                            <div class="category-slide">
-                                <div class="category-card">
-                                    <div class="category-card-inner">
-                                        <div class="category-image-wrapper">
-                                            <div class="category-image">
-                                                <img src="{{ Storage::url($prodcat->logo) }}" alt="{{ $prodcat->name }}"
-                                                    class="category-img">
-                                                <div class="category-overlay">
-                                                    <div class="category-icon">
-                                                        <i class="fas fa-shopping-bag"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="category-content">
-                                            <div class="category-header">
-                                                <h5 class="category-title">{{ $prodcat->name }}</h5>
-                                            </div>
-                                            <div class="category-meta">
-                                                <span class="product-count">
-                                                    <i class="fas fa-box me-1"></i>
-                                                    {{ $prodcat->Products->count() ?? 0 }} products
-                                                </span>
-                                            </div>
-                                            <a href="{{ route('shops', ['category' => $prodcat->slug]) }}"
-                                                class="category-link">
-                                                <span>Explore Category</span>
-                                                <div class="link-icon">
-                                                    <i class="fas fa-arrow-right"></i>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+            <div class="category-carousel-container position-relative py-5">
+                <button class="category-arrow left-arrow" onclick="scrollCategories(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="category-carousel" id="categoryCarousel">
+                    @foreach ($categories as $category)
+                        <div class="category-circle text-center">
+                            <div class="circle-icon mx-auto mb-2">
+                                <img src="{{ Storage::url($category->logo) }}" alt="Category">
                             </div>
-                        @endforeach
-                    </div>
-
-
-
-
+                            <div class="category-name">
+                                {{ Str::limit($category->name, 18) }}
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
+
+                <button class="category-arrow right-arrow" onclick="scrollCategories(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
+
         </div>
     </section>
     <!--category Section End -->
@@ -1119,11 +1211,9 @@
 
                                         <div class="ec-spe-products">
                                             @foreach ($latest_products->chunk(6) as $products)
-                                                {{-- @dd($products) --}}
                                                 <div class="ec-fs-product">
                                                     <div class="ec-fs-pro-inner">
-
-                                                        <div class="row">
+                                                        <div class="row mt-4">
                                                             @foreach ($products as $product)
                                                                 {{-- @dd($product) --}}
                                                                 <x-products.product-1 :product="$product" />
@@ -1172,14 +1262,10 @@
                                                     <div class="ec-fs-product">
                                                         <div class="ec-fs-pro-inner">
 
-                                                            <div class="row">
+                                                            <div class="row mt-4">
                                                                 @foreach ($products as $product)
                                                                     <x-products.product-1 :product="$product" />
                                                                 @endforeach
-
-
-
-
                                                             </div>
 
                                                         </div>
@@ -1189,19 +1275,15 @@
                                                 @foreach ($bestsaleproducts->chunk(6) as $products)
                                                     <div class="ec-fs-product">
                                                         <div class="ec-fs-pro-inner">
-
-                                                            <div class="row">
+                                                            <div class="row mt-4">
                                                                 @foreach ($products as $product)
                                                                     <x-products.product-1 :product="$product" />
                                                                 @endforeach
-
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 @endforeach
                                             @endif
-
                                         </div>
                                     </div>
                                 </div>
@@ -1224,17 +1306,13 @@
 
                             <h2 class="related-product-sec-title"> Trending Shops</h2>
                         </div>
-                        <div class="ec-spe-section  data-animation=" slideInLeft">
-
-
+                        <div class="ec-spe-section  data-animation="slideInLeft">
                             <div class="ec-spe-products">
                                 @foreach ($latest_shops->chunk(4) as $shops)
                                     <div class="ec-fs-product">
                                         <div class="ec-fs-pro-inner">
 
-                                            <div class="row">
-
-
+                                            <div class="row mt-4">
                                                 @foreach ($shops as $shop)
                                                     <x-shops-card.card-3 :shop="$shop" />
                                                 @endforeach
@@ -1268,10 +1346,10 @@
                         <!-- Product tab area start -->
                         <div class="row space-t-50">
                             <!-- <div class="col-md-12">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="section-title">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <h2 class="ec-title">New Products</h2>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="section-title">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <h2 class="ec-title">New Products</h2>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div> -->
                             <h2 class="related-product-sec-title my-5"> Recommended For You</h2>
                         </div>
 
@@ -1280,14 +1358,13 @@
                             <div>
                                 @foreach ($latest_shops as $shop)
                                     @if ($shop->products->count())
-                                        <div class="row mb-4">
+                                        <div class="row mb-4 mt-4">
                                             <div class="col-md-3">
                                                 <x-shops-card.card-1 :shop="$shop" />
                                             </div>
                                             <div class="col-md-9 mt-4">
                                                 <div class="ec-spe-products">
                                                     @foreach ($shop->products->whereNull('parent_id')->chunk(3) as $products)
-                                                        {{-- @dd($products) --}}
                                                         {{-- @dd($products) --}}
                                                         <div class="ec-fs-product">
                                                             <div class="ec-fs-pro-inner">
@@ -1318,7 +1395,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @else
                                     @endif
                                 @endforeach
                                 {{-- <livewire:shops /> --}}
@@ -1453,7 +1529,27 @@
             // Initialize slider
             updateSlider();
         });
+
+        // function scrollCategories(direction) {
+        //     const carousel = document.getElementById('categoryCarousel');
+        //     const scrollAmount = 300; // Adjust as needed
+        //     carousel.scrollBy({
+        //         left: direction * scrollAmount,
+        //         behavior: 'smooth'
+        //     });
+        // }
     </script>
+    <script>
+        function scrollCategories(direction) {
+            const carousel = document.getElementById('categoryCarousel');
+            const scrollAmount = 300;
+            carousel.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

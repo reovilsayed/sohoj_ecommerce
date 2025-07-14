@@ -49,7 +49,6 @@ class PageController extends Controller
                 ->with(['shop:id,name,status'])
                 ->get();
         });
-
         $recommand = session()->get('recommand', []);
         $recommandProducts = \Cache::remember('recommandProducts:' . md5(json_encode($recommand)), 3600, function () use ($recommand) {
             return Product::query()
@@ -65,7 +64,7 @@ class PageController extends Controller
                 ->whereHas('products', fn($q) => $q->whereNull('parent_id'))
                 ->latest()
                 ->limit(8)
-                ->with(['products:id,shop_id,slug,images,image,sale_price,price,post_code,status'])
+                ->with(['products:id,name,shop_id,slug,images,views,image,sale_price,price,post_code,status'])
                 ->get();
         });
 
