@@ -1196,7 +1196,7 @@
                                         <i class="fas fa-box-open"></i>
                                     @endif
                                 </div>
-                                <div class="category-name">
+                                <div class="category-name px-1">
                                     {{ Str::limit($category->name, 22) }}
                                 </div>
                             </div>
