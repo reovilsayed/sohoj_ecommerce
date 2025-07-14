@@ -6,8 +6,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>@yield('title')</title>
-    <meta name="description" content="This is a demo e-commerce website built with Laravel and Voyager.">
+    <title>@yield('title', 'Sohoj E-commerce')</title>
+    <meta name="description" content="@yield('meta_description', 'This is a demo e-commerce website built with Laravel and Voyager.')">
+    <meta name="keywords" content="@yield('meta_keywords', 'ecommerce, online shop, sohoj, buy, sell, products')">
+    <!-- Open Graph & Twitter Card Placeholders -->
+    @yield('meta_og')
+    @yield('meta_twitter')
     <meta name="author" content="sayed khan">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -108,7 +112,9 @@
         </div>
     </div> -->
     <!-- Header start  -->
-    @yield('content')
+    <main id="main-content" tabindex="-1">
+        @yield('content')
+    </main>
 
     <!-- Footer Start -->
     <footer class="footer-modern py-5 text-light" id="footer" style="background: #1a2238;">

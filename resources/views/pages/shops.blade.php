@@ -2,6 +2,23 @@
     $route = route('shops');
 @endphp
 
+@section('title', 'All Shops | Sohoj E-commerce')
+@section('meta_description', 'Browse all shops on Sohoj E-commerce. Find top-rated vendors, trending stores, and the best deals in one place.')
+@section('meta_keywords', 'shops, vendors, ecommerce, online stores, sohoj')
+@section('meta_og')
+    <meta property="og:title" content="All Shops | Sohoj E-commerce">
+    <meta property="og:description" content="Browse all shops on Sohoj E-commerce. Find top-rated vendors, trending stores, and the best deals in one place.">
+    <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+@endsection
+@section('meta_twitter')
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="All Shops | Sohoj E-commerce">
+    <meta name="twitter:description" content="Browse all shops on Sohoj E-commerce. Find top-rated vendors, trending stores, and the best deals in one place.">
+    <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
+@endsection
+
 @extends('layouts.app')
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />
@@ -388,9 +405,9 @@
     </style>
 @endsection
 @section('content')
+<main>
     <x-app.header />
-    
-    <div class="modern-shops-container">
+    <section class="modern-shops-container">
         <div class="container">
             <div class="row">
                 <!-- Modern Filter Sidebar -->
@@ -512,7 +529,8 @@
                     </div>
                 </aside>
                 <!-- Main Content Area -->
-                <div class="col-md-9">
+                <section class="col-md-9 col-sm-12">
+                    <h1 class="shop-section-title">All Shops</h1>
                     <div class="modern-content-area">
                         <!-- Content Header -->
                         <div class="content-header">
@@ -541,10 +559,11 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
-    </div>
+    </section>
+</main>
 @endsection
 @section('js')
 

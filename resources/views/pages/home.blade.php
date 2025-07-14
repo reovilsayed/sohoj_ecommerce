@@ -1,4 +1,20 @@
 @extends('layouts.app')
+@section('title', 'Sohoj E-commerce | Home')
+@section('meta_description', 'Discover trending products, top shops, and exclusive deals on Sohoj E-commerce. Shop by category and enjoy a seamless online shopping experience.')
+@section('meta_keywords', 'ecommerce, online shopping, trending products, best shops, sohoj')
+@section('meta_og')
+    <meta property="og:title" content="Sohoj E-commerce | Home">
+    <meta property="og:description" content="Discover trending products, top shops, and exclusive deals on Sohoj E-commerce. Shop by category and enjoy a seamless online shopping experience.">
+    <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+@endsection
+@section('meta_twitter')
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sohoj E-commerce | Home">
+    <meta name="twitter:description" content="Discover trending products, top shops, and exclusive deals on Sohoj E-commerce. Shop by category and enjoy a seamless online shopping experience.">
+    <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
+@endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/responsive.css') }}" />
@@ -1081,7 +1097,7 @@
     @endphp
     <x-app.header />
     <!-- hero section start -->
-    <div class="hero">
+    <section class="hero">
         <div class="container">
             <div class="row mt-4">
                 <div class="col-lg-3 ps-md-0 d-none d-md-block">
@@ -1187,8 +1203,7 @@
             </div>
 
         </div>
-    </div>
-
+    </section>
     <!-- hero section end -->
 
 
@@ -1227,7 +1242,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="mb-5">
-                        <h2 class="related-product-sec-title mb-3">Browse Shops by Categories</h2>
+                        <h1 class="related-product-sec-title mb-3">Browse Shops by Categories</h1>
                         <p class="text-muted fs-6">Discover amazing shops organized by categories</p>
                     </div>
                 </div>
@@ -1499,6 +1514,7 @@
 
 
     <!-- Product tab area end -->
+</main>
 @endsection
 @section('js')
     {{-- <livewire:scripts /> --}}

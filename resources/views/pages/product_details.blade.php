@@ -306,7 +306,24 @@
         }
     </style>
 @endsection
+@section('title', $product->name . ' | Sohoj E-commerce')
+@section('meta_description', Str::limit(strip_tags($product->short_description ?? $product->description), 150))
+@section('meta_keywords', $product->name . ', ' . ($product->prodcats->pluck('name')->implode(', ') ?? 'product'))
+@section('meta_og')
+    <meta property="og:title" content="{{ $product->name }} | Sohoj E-commerce">
+    <meta property="og:description" content="{{ Str::limit(strip_tags($product->short_description ?? $product->description), 150) }}">
+    <meta property="og:image" content="{{ Storage::url($product->image) }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="product">
+@endsection
+@section('meta_twitter')
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $product->name }} | Sohoj E-commerce">
+    <meta name="twitter:description" content="{{ Str::limit(strip_tags($product->short_description ?? $product->description), 150) }}">
+    <meta name="twitter:image" content="{{ Storage::url($product->image) }}">
+@endsection
 @section('content')
+<main>
     <x-app.header />
     @php
         if (is_string($product->images)) {
@@ -344,7 +361,7 @@
                                                     style="object-fit: contain;
                                                 width: 100%;
                                                 height: 100%;"
-                                                    src="{{ Storage::url($product->image) }}" alt="">
+                                                    src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}">
                                             </div>
                                             @if ($images)
                                                 @foreach ($images as $key => $image)
@@ -353,7 +370,7 @@
                                                             style="object-fit: cover;
                                                 width: 100%;
                                                 height: 100%;"
-                                                            src="{{ Storage::url($image) }}" alt="">
+                                                            src="{{ Storage::url($image) }}" alt="{{ $product->name }} image {{ $loop->iteration }}">
                                                     </div>
                                                 @endforeach
                                             @endif
@@ -363,13 +380,13 @@
                                         <div class="single-nav-thumb">
                                             <div class="single-slide" style="">
                                                 <img class="img-responsive" style="object-fit: cover; height:100px"
-                                                    src="{{ Storage::url($product->image) }}" alt="">
+                                                    src="{{ Storage::url($product->image) }}" alt="{{ $product->name }} thumbnail">
                                             </div>
                                             @if ($images)
                                                 @foreach ($images as $key => $image)
                                                     <div class="single-slide">
                                                         <img class="img-responsive" style="height:100px"
-                                                            src="{{ Storage::url($image) }}" alt="">
+                                                            src="{{ Storage::url($image) }}" alt="{{ $product->name }} thumbnail {{ $loop->iteration }}">
                                                     </div>
                                                 @endforeach
                                             @endif
@@ -382,10 +399,10 @@
                                         style="height
                                     :100%">
                                         <div>
-                                            <h5 class="ec-single-title mb-2 "
+                                            <h1 class="ec-single-title mb-2 "
                                                 style="font-family: 'Inter', sans-serif; font-weight: 500">
                                                 {{ $product->name }}
-                                            </h5>
+                                            </h1>
                                             <span>Shop:
 
                                                 <a href="{{ route('store_front', $product->shop->slug) }}">
@@ -817,9 +834,7 @@
             </div>
         </div>
     </section>
-
-
-
+</main>
 
 @endsection
 @section('js')
