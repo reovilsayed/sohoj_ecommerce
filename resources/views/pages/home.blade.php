@@ -137,7 +137,7 @@
 
         /* Header */
         .hero__categories__all {
-            background: linear-gradient(135deg, #3bb77e 0%, #2d9d6b 100%) !important;
+            background: #01949a !important;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
@@ -905,12 +905,13 @@
         .category-circle-link {
             text-decoration: none;
         }
+
         .category-circle {
             width: 130px;
             height: 130px;
             border-radius: 50%;
             background: #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -920,12 +921,14 @@
             border: 2px solid transparent;
             position: relative;
         }
+
         .category-circle:hover {
-            box-shadow: 0 8px 24px rgba(59,183,126,0.18);
+            box-shadow: 0 8px 24px rgba(59, 183, 126, 0.18);
             border: 2px solid #01949a;
             transform: translateY(-4px) scale(1.04);
             background: #f8fefb;
         }
+
         /* Circle Icon */
         .circle-icon {
             width: 54px;
@@ -962,7 +965,7 @@
             z-index: 2;
             background: #fff;
             border: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
             border-radius: 50%;
             width: 48px;
             height: 48px;
@@ -973,38 +976,89 @@
             font-size: 1.5rem;
             transition: background 0.2s;
         }
+
         .category-arrow:hover {
             background: #e8f5e8;
         }
-        .left-arrow { left: 10px; }
-        .right-arrow { right: 10px; }
+
+        .left-arrow {
+            left: 10px;
+        }
+
+        .right-arrow {
+            right: 10px;
+        }
+
         @media (max-width: 992px) {
             .category-carousel {
                 gap: 24px 12px;
                 padding: 0 20px;
             }
+
             .category-circle {
                 width: 110px;
                 height: 110px;
             }
         }
+
         @media (max-width: 576px) {
             .category-carousel {
                 gap: 16px 8px;
                 padding: 0 5px;
             }
+
             .category-circle {
                 width: 90px;
                 height: 90px;
             }
+
             .circle-icon {
                 width: 36px;
                 height: 36px;
                 font-size: 1.2rem;
             }
+
             .category-name {
                 font-size: 0.85rem;
             }
+        }
+
+
+        .custom-scroll {
+            display: block;
+            max-height: 333px;
+            overflow-y: auto;
+
+            /* Optional for style */
+            background-color: #f9f9f9;
+            padding-right: 8px;
+        }
+
+        /* Chrome, Edge, Safari */
+        .custom-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+
+        /* Firefox */
+        .custom-scroll {
+            scrollbar-width: none;
+            scrollbar-color: #888 #f0f0f0;
         }
     </style>
     <livewire:styles />
@@ -1041,7 +1095,7 @@
                                 </div>
                                 <div>
                                     <span class="fw-bold text-white fs-6">All Categories</span>
-                                    <div class="text-white-50 small">Browse by category</div>
+                                    <div class="text-white-50 small" style="    color: #ffffff !important;">Browse by category</div>
                                 </div>
                             </div>
                             <div class="category-toggle-icon">
@@ -1050,7 +1104,7 @@
                         </div>
 
                         <!-- Category List -->
-                        <div id="static-category-list" style="display: block; max-height: 333px; overflow-y: auto;">
+                        <div id="static-category-list" class="custom-scroll">
                             <div class="category-list-wrapper p-3">
                                 @foreach ($categories as $category)
                                     <div class="category-item mb-2">
@@ -1185,7 +1239,8 @@
                 </button>
                 <div class="category-carousel py-3" id="categoryCarousel">
                     @foreach ($categories as $category)
-                        <a href="{{ route('shops', ['category' => $category->slug]) }}" class="category-circle-link" style="border: 1px solid #d8caca63; border-radius: 50%;">
+                        <a href="{{ route('shops', ['category' => $category->slug]) }}" class="category-circle-link"
+                            style="border: 1px solid #d8caca63; border-radius: 50%;">
                             <div class="category-circle text-center">
                                 <div class="circle-icon mx-auto mb-2">
                                     @if (!empty($category->logo))
@@ -1215,8 +1270,6 @@
     <section class="section ec-product-tab section-space-p ">
         <div class="container">
             <div class="row">
-
-
 
                 <!-- Product area start -->
                 @if ($latest_products->count() > 0)
@@ -1367,10 +1420,10 @@
                         <!-- Product tab area start -->
                         <div class="row space-t-50">
                             <!-- <div class="col-md-12">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="section-title">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <h2 class="ec-title">New Products</h2>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="section-title">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <h2 class="ec-title">New Products</h2>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
                             <h2 class="related-product-sec-title my-5"> Recommended For You</h2>
                         </div>
 
@@ -1623,4 +1676,3 @@
         });
     </script>
 @endsection
-
