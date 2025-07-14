@@ -56,8 +56,16 @@
                 </div>
             </div>
 
+            @php
+                if (is_array($shop->tags)) {
+                    $tags = $shop->tags;
+                } elseif (is_string($shop->tags)) {
+                    $tags = explode(',', $shop->tags);
+                } else {
+                    $tags = [];
+                }
+            @endphp
             @if (!empty($shop->tags))
-                @php $tags = explode(',', $shop->tags); @endphp
                 <div class="shop-card-tags">
                     @foreach (array_slice($tags, 0, 3) as $tag)
                         <span class="shop-tag" title="{{ $tag }}">
