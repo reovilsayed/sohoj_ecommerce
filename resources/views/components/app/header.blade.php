@@ -77,42 +77,41 @@
     </form>
             <!-- Icons -->
             <div class="d-flex align-items-center gap-3">
-                <a href="{{ route('wishlist.index') }}" class="text-dark position-relative">
-                    <i class="far fa-heart fs-5"></i>
+                <a href="{{ route('wishlist.index') }}" class="header-icon-btn position-relative" title="Wishlist">
+                    <i class="far fa-heart"></i>
                 </a>
-                <a href="#" class="text-dark position-relative" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
-                    <i class="fas fa-shopping-cart fs-5"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                        style="font-size: 0.7rem;">
+                <a href="#" class="header-icon-btn position-relative" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" title="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="header-icon-badge">
                         {{ Cart::content()->count() }}
                     </span>
-                            </a>
-                            @auth
+                </a>
+                @auth
                     <div class="dropdown">
-                        <a class="dropdown-toggle text-dark" href="#" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle fs-5"></i>
-                            <span class="d-none d-lg-inline">{{ auth()->user()->name }}</span>
+                        <a class="header-icon-btn user-dropdown-toggle" href="#" data-bs-toggle="dropdown" title="Account">
+                            <i class="fas fa-user-circle"></i>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ route('user.dashboard') }}">Profile</a></li>
+                        <ul class="dropdown-menu user-dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ route('user.dashboard') }}"><i class="fas fa-user me-2"></i>Profile</a></li>
                             @if (Auth()->user()->role_id == 3)
-                                <li><a class="dropdown-item" href="{{ url('vendor') }}">Vendor Profile</a></li>
-                                        @endif
+                                <li><a class="dropdown-item" href="{{ url('vendor') }}"><i class="fas fa-store me-2"></i>Vendor Profile</a></li>
+                            @endif
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                                                </li>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf
-                            </form>
-                                    </ul>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+                            </li>
+                        </ul>
                     </div>
-                                    @else
+                @else
                     <div class="dropdown">
-                        <a class="dropdown-toggle text-dark" href="#" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle fs-5"></i>
-                            <span class="d-none d-lg-inline">Account</span>
+                        <a class="header-icon-btn user-dropdown-toggle" href="#" data-bs-toggle="dropdown" title="Account">
+                            <i class="fas fa-user-circle"></i>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu user-dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('login') }}"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
                             <li><a class="dropdown-item" href="{{ route('register') }}"><i class="fas fa-user-plus me-2"></i>Register</a></li>
                             <li><hr class="dropdown-divider"></li>
@@ -223,7 +222,7 @@
                         <span class="fw-bold text-success">${{ Cart::subtotal() }}</span>
     </div>
                     <div class="d-grid gap-2">
-                        <a href="{{ route('cart') }}" class="btn btn-outline-primary">View Cart</a>
+                        <a href="{{ route('cart') }}" class="btn" style="background: #04dfe7; color: #232946;">View Cart</a>
                         <a href="{{ route('checkout') }}" class="btn btn-success">Checkout</a>
                     </div>
                 </div>
@@ -242,30 +241,45 @@
             font-weight: 500;
             color: #232946;
             margin: 0 10px;
-            transition: color 0.2s;
+            transition: color 0.2s, border-bottom 0.2s;
+            border-bottom: 2px solid transparent;
         }
 
         .main-header .navbar-nav .nav-link:hover,
         .main-header .navbar-nav .nav-link.active {
-            color: #3bb77e;
+            color: #01949a;
+            border-bottom: 2px solid #01949a;
+            background: rgba(1, 153, 154, 0.07);
         }
 
         .main-header .header-main {
-            border-bottom: 1px solid #eee;
+            /* border-bottom: 2px solid #01949a; */
         }
 
         .main-header .header-top {
             font-size: 0.95rem;
+            background: #01949a !important;
+            color: #fff !important;
+        }
+        .main-header .header-top a,
+        .main-header .header-top i {
+            color: #fff !important;
+        }
+        .main-header .header-top a:hover {
+            color: #e0f7fa !important;
         }
 
-        /* .main-header .offcanvas {
-            width: 250px;
-        } */
+        .main-header .navbar-light .navbar-nav .nav-link {
+            color: #232946;
+        }
+        .main-header .navbar-light .navbar-nav .nav-link:hover,
+        .main-header .navbar-light .navbar-nav .nav-link.active {
+            color: #01949a;
+        }
 
-        /* Custom Select Styling */
         .main-header .form-select {
             background-color: #f8f9fa;
-            border: 2px solid #e9ecef;
+            border: 2px solid #01949a;
             border-radius: 8px;
             color: #495057;
             font-weight: 500;
@@ -274,20 +288,20 @@
 
         .main-header .form-select:focus {
             background-color: #ffffff;
-            border-color: #3bb77e;
-            box-shadow: 0 0 0 0.2rem rgba(59, 183, 126, 0.25);
+            border-color: #01949a;
+            box-shadow: 0 0 0 0.2rem rgba(1, 153, 154, 0.15);
             color: #232946;
         }
 
         .main-header .form-select:hover {
-            border-color: #3bb77e;
+            border-color: #01949a;
             background-color: #ffffff;
         }
 
         /* Optgroup Styling */
         .main-header .form-select optgroup {
             font-weight: 600;
-            color: #3bb77e;
+            color: #01949a;
             background-color: #f8f9fa;
         }
 
@@ -298,8 +312,115 @@
         }
 
         .main-header .form-select option:hover {
-            background-color: #3bb77e;
+            background-color: #01949a;
             color: #ffffff;
+        }
+
+        .main-header .btn-success,
+        .main-header .btn-primary {
+            background: #01949a !important;
+            border-color: #01949a !important;
+        }
+        .main-header .btn-success:hover,
+        .main-header .btn-primary:hover {
+            background: #017a7a !important;
+            border-color: #017a7a !important;
+        }
+        .main-header .btn-outline-primary {
+            color: #01949a;
+            border-color: #01949a;
+        }
+        .main-header .btn-outline-primary:hover {
+            background: #01949a;
+            color: #fff;
+        }
+        .main-header .dropdown-menu {
+            border-top: 2px solid #01949a;
+        }
+        .main-header .dropdown-item.active, .main-header .dropdown-item:active {
+            background-color: #01949a;
+            color: #fff;
+        }
+        .main-header .dropdown-item:hover {
+            background-color: #e0f7fa;
+            color: #01949a;
+        }
+        .main-header .badge.bg-danger {
+            background: #01949a !important;
+        }
+        .main-header .offcanvas-title {
+            color: #01949a;
+        }
+        .main-header .btn-close:focus {
+            box-shadow: 0 0 0 0.2rem rgba(1, 153, 154, 0.25);
+        }
+        .header-icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #f8f9fa;
+            color: #01949a;
+            font-size: 1.5rem;
+            position: relative;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(1,153,154,0.07);
+            text-decoration: none;
+        }
+        .header-icon-btn:hover, .header-icon-btn:focus {
+            /* background: #01949a; */
+            color: #017a7a !important;
+            box-shadow: 0 4px 16px rgba(1,153,154,0.18);    
+        }
+        .header-icon-badge {
+            position: absolute;
+            top: -4px;
+            right: 1px;
+            background: #FF0000 ;
+            color: #fff;
+            font-size: 0.75rem;
+            border-radius: 50%;
+            padding: 2px 6px;
+            min-width: 20px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(1,153,154,0.18);
+        }
+        .user-dropdown-toggle {
+            /* border: 2px solid #01949a; */
+            background: #fff;
+        }
+        .user-dropdown-toggle:hover, .user-dropdown-toggle:focus {
+            /* background: #01949a; */
+            color: #fff;
+        }
+        .user-dropdown-menu {
+            min-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(1,153,154,0.10);
+            border-top: 3px solid #01949a;
+            padding: 0.5rem 0;
+        }
+        .user-dropdown-menu .dropdown-item {
+            font-weight: 500;
+            color: #232946;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .user-dropdown-menu .dropdown-item i {
+            color: #01949a;
+            min-width: 18px;
+            text-align: center;
+        }
+        .user-dropdown-menu .dropdown-item:hover, .user-dropdown-menu .dropdown-item:focus {
+            background: #e0f7fa;
+            color: #01949a;
+        }
+        .user-dropdown-menu .dropdown-divider {
+            margin: 0.3rem 0;
         }
     </style>
 </header>

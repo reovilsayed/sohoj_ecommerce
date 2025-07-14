@@ -4,53 +4,43 @@
     $followerCount = rand(50, 500);
     $averageRating = Sohoj::average_rating($shop->ratings);
     $ratingCount = $shop->ratings->count();
-    $shopLocation = $shop->city . ' ' . $shop->state . ' ' . $shop->post_code . ' ' . $shop->country ?? 'Unknown Location';
-    $shopDescription = Str::limit($shop->short_description ?? 'A trusted shop offering quality products and excellent service.', 60, '...');
+    $shopLocation =
+        $shop->city . ' ' . $shop->state . ' ' . $shop->post_code . ' ' . $shop->country ?? 'Unknown Location';
+    $shopDescription = Str::limit(
+        $shop->short_description ?? 'A trusted shop offering quality products and excellent service.',
+        60,
+        '...',
+    );
     $isAuthenticated = auth()->check();
     $isFollowing = $isAuthenticated ? auth()->user()->follows($shop) : false;
 @endphp
 
-<div class="col-12 mb-6 mt-4">
+{{-- <div class="col-12 mb-6 mt-4"> --}}
     <div class="modern-shop-card">
-        {{-- Shop Image Section --}}
         <div class="shop-card-image-wrapper">
             <div class="shop-card-image">
-                <img src="{{ Storage::url($shop->logo) }}" 
-                     alt="{{ $shop->name }}" 
-                     class="shop-card-img"
-                     loading="lazy">
-                
-                {{-- Hover Overlay with Actions --}}
+                <img src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}" class="shop-card-img">
                 <div class="shop-card-overlay">
                     <div class="shop-card-actions">
-                        <a href="{{ route('store_front', $shop->slug) }}" 
-                           class="shop-action-btn" 
-                           title="Visit Shop"
-                           aria-label="Visit {{ $shop->name }}">
+                        <a href="{{ route('store_front', $shop->slug) }}" class="shop-action-btn" title="Visit Shop">
                             <i class="fas fa-external-link-alt text-light"></i>
                         </a>
-                        <button class="shop-action-btn" 
-                                title="Follow Shop"
-                                aria-label="Follow {{ $shop->name }}">
+                        <button class="shop-action-btn" title="Follow Shop">
                             <i class="fas fa-heart"></i>
                         </button>
-                        <button class="shop-action-btn" 
-                                title="Share Shop"
-                                aria-label="Share {{ $shop->name }}">
+                        <button class="shop-action-btn" title="Share Shop">
                             <i class="fas fa-share-alt"></i>
                         </button>
                     </div>
                 </div>
-
-                {{-- Badges --}}
                 @if ($shop->is_featured)
-                    <div class="shop-featured-badge" aria-label="Featured Shop">
+                    <div class="shop-featured-badge">
                         <i class="fas fa-star"></i>
                         <span>Featured</span>
                     </div>
                 @endif
                 @if ($shop->is_verified)
-                    <div class="shop-verified-badge" aria-label="Verified Shop">
+                    <div class="shop-verified-badge">
                         <i class="fas fa-check-circle"></i>
                         <span>Verified</span>
                     </div>
@@ -58,98 +48,96 @@
             </div>
         </div>
 
-        {{-- Shop Content Section --}}
         <div class="shop-card-content">
-            {{-- Header with Title and Rating --}}
             <div class="shop-card-header">
                 <h5 class="shop-card-title">
-                    <a href="{{ route('store_front', $shop->slug) }}" 
-                       aria-label="Visit {{ $shop->name }} shop">
-                        {{ $shop->name }}
-                    </a>
+                    <a href="{{ route('store_front', $shop->slug) }}">{{ $shop->name }}</a>
                 </h5>
-                <div class="shop-card-rating" aria-label="Shop rating: {{ $averageRating }} out of 5">
-                    <div class="shop-stars" role="img" aria-label="Rating: {{ $averageRating }} stars">
+                <div class="shop-card-rating">
+                    <div class="shop-stars">
                         @for ($i = 1; $i <= 5; $i++)
-                            <i class="fas fa-star {{ $i <= 4 ? 'filled' : '' }}" 
-                               aria-hidden="true"></i>
+                            <i class="fas fa-star {{ $i <= 4 ? 'filled' : '' }}"></i>
                         @endfor
                     </div>
-                    <span class="shop-rating-text">({{ $averageRating }})</span>
+                    <span class="shop-rating-text">({{ Sohoj::average_rating($shop->ratings) }})</span>
                 </div>
             </div>
 
-            {{-- Shop Meta Information --}}
             <div class="shop-card-meta">
                 <div class="shop-card-category">
                     <span>{{ $shop->company_name ?? 'General Store' }}</span>
                 </div>
                 <div class="shop-card-location">
-                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                    <span>{{ $shopLocation }}</span>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ $shop->city . ' ' . $shop->state . ' ' . $shop->post_code . ' ' . $shop->country ?? 'Unknown Location' }}</span>
                 </div>
             </div>
 
-            {{-- Shop Statistics --}}
+            @php
+                if (is_array($shop->tags)) {
+                    $tags = $shop->tags;
+                } elseif (is_string($shop->tags)) {
+                    $tags = explode(',', $shop->tags);
+                } else {
+                    $tags = [];
+                }
+            @endphp
+            @if (!empty($shop->tags))
+                <div class="shop-card-tags">
+                    @foreach (array_slice($tags, 0, 3) as $tag)
+                        <span class="shop-tag" title="{{ $tag }}">
+                            {{ Str::limit($tag, 8, '...') }}
+                        </span>
+                    @endforeach
+                </div>
+            @endif
+
             <div class="shop-card-stats">
-                <div class="shop-stat-item" aria-label="{{ $productCount }} products available">
-                    <i class="fas fa-box" aria-hidden="true"></i>
+                <div class="shop-stat-item">
+                    <i class="fas fa-box"></i>
                     <div>
-                        <span class="stat-number">{{ $productCount }}</span>
+                        <span class="stat-number">{{ $shop->products->count() }}</span>
                         <span>Products</span>
                     </div>
                 </div>
-                <div class="shop-stat-item" aria-label="{{ $followerCount }} followers">
-                    <i class="fas fa-users" aria-hidden="true"></i>
+                <div class="shop-stat-item">
+                    <i class="fas fa-users"></i>
                     <div>
-                        <span class="stat-number">{{ $followerCount }}</span>
+                        <span class="stat-number">{{ rand(50, 500) }}</span>
                         <span>Followers</span>
                     </div>
                 </div>
             </div>
 
-            {{-- Shop Description --}}
             <div class="shop-card-description">
-                <p>{{ $shopDescription }}</p>
+                <p>{{ Str::limit($shop->short_description ?? 'A trusted shop offering quality products and excellent service.', 60, '...') }}
+                </p>
             </div>
 
-            {{-- Action Buttons --}}
             <div class="shop-card-footer">
-                <a href="{{ route('store_front', $shop->slug) }}" 
-                   class="shop-visit-btn"
-                   aria-label="Visit {{ $shop->name }} shop">
+                <a href="{{ route('store_front', $shop->slug) }}" class="shop-visit-btn">
                     <span class="text-light">Visit Shop</span>
-                    <i class="fas fa-arrow-right text-light" aria-hidden="true"></i>
+                    <i class="fas fa-arrow-right text-light"></i>
                 </a>
-                
-                @if ($isAuthenticated)
-                    <form action="{{ route('follow', $shop) }}" 
-                          method="post" 
-                          style="display:inline"
-                          class="follow-form">
+                @auth
+                    <form action="{{ route('follow', $shop) }}" method="post" style="display:inline">
                         @csrf
-                        <button class="shop-follow-btn text-center d-block" 
-                                type="submit"
-                                aria-label="{{ $isFollowing ? 'Unfollow' : 'Follow' }} {{ $shop->name }}">
-                            <i class="fas fa-heart" aria-hidden="true"></i>
-                            {{ $isFollowing ? 'Unfollow' : 'Follow' }}
-                        </button>
+                        @php
+                            $follow = auth()->user()->follows($shop);
+                        @endphp
+                        <button class="shop-follow-btn text-center d-block" type="submit"><i class="fas fa-heart"></i>
+                            {{ $follow ? 'Unfollow' : 'Follow' }}</button>
                     </form>
                 @else
-                    <a class="shop-follow-btn text-center d-block" 
-                       href="{{ route('login') }}"
-                       aria-label="Login to follow {{ $shop->name }}">
-                        <i class="fas fa-heart" aria-hidden="true"></i>
-                        <span>Follow</span>
-                    </a>
-                @endif
+                    <a class="shop-follow-btn text-center d-block" href="{{ route('login') }}"><i class="fas fa-heart"></i>
+                        <span>Follow</span></a>
+                @endauth
             </div>
         </div>
     </div>
-</div>
+{{-- </div> --}}
 
 <style>
-    /* Optimized CSS with better organization and performance */
     .modern-shop-card {
         background: white;
         border-radius: 16px;
@@ -158,16 +146,14 @@
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         border: 1px solid rgba(0, 0, 0, 0.05);
         height: 100%;
-        will-change: transform;
     }
 
     .modern-shop-card:hover {
         transform: translateY(-8px);
         box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        border-color: #3bb77e;
+        border-color: #FF0000 !important;
     }
 
-    /* Image Section */
     .shop-card-image-wrapper {
         position: relative;
         overflow: hidden;
@@ -184,18 +170,19 @@
         height: 100%;
         object-fit: cover;
         transition: transform 0.3s ease;
-        will-change: transform;
     }
 
     .modern-shop-card:hover .shop-card-img {
         transform: scale(1.05);
     }
 
-    /* Overlay and Actions */
     .shop-card-overlay {
         position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(59, 183, 126, 0.9), rgba(45, 157, 107, 0.9));
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #c1bebe91 !important;
         opacity: 0;
         display: flex;
         align-items: center;
@@ -227,7 +214,6 @@
         backdrop-filter: blur(10px);
         text-decoration: none;
         font-size: 0.8rem;
-        will-change: transform;
     }
 
     .shop-action-btn:hover {
@@ -236,11 +222,12 @@
         color: white;
     }
 
-    /* Badges */
-    .shop-featured-badge,
-    .shop-verified-badge {
+    .shop-featured-badge {
         position: absolute;
         top: 10px;
+        left: 10px;
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #2c3e50;
         padding: 4px 8px;
         border-radius: 12px;
         font-size: 0.7rem;
@@ -251,19 +238,22 @@
         z-index: 2;
     }
 
-    .shop-featured-badge {
-        left: 10px;
-        background: linear-gradient(135deg, #ffd700, #ffed4e);
-        color: #2c3e50;
-    }
-
     .shop-verified-badge {
+        position: absolute;
+        top: 10px;
         right: 10px;
         background: linear-gradient(135deg, #28a745, #20c997);
         color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        z-index: 2;
     }
 
-    /* Content Section */
     .shop-card-content {
         padding: 16px;
     }
@@ -284,16 +274,11 @@
     }
 
     .shop-card-title a {
-        color: #2c3e50;
+        color: #2c3e50 !important;
         text-decoration: none;
         transition: color 0.3s ease;
     }
 
-    .shop-card-title a:hover {
-        color: #3bb77e;
-    }
-
-    /* Rating */
     .shop-card-rating {
         display: flex;
         align-items: center;
@@ -319,7 +304,6 @@
         color: #6c757d;
     }
 
-    /* Meta Information */
     .shop-card-meta {
         display: flex;
         flex-direction: column;
@@ -329,7 +313,7 @@
 
     .shop-card-category span {
         background: linear-gradient(135deg, #e8f5e8, #d4edda);
-        color: #2d9d6b;
+        color: #01949a !important;
         padding: 3px 8px;
         border-radius: 8px;
         font-size: 0.7rem;
@@ -345,11 +329,27 @@
     }
 
     .shop-card-location i {
-        color: #3bb77e;
+        color: #01949a !important;
         font-size: 0.7rem;
     }
 
-    /* Statistics */
+    .shop-card-tags {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+    }
+
+    .shop-tag {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        color: #6c757d;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-size: 0.65rem;
+        font-weight: 500;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
     .shop-card-stats {
         display: flex;
         gap: 8px;
@@ -374,7 +374,6 @@
         transition: all 0.3s ease;
         flex: 1;
         justify-content: center;
-        will-change: transform;
     }
 
     .shop-stat-item:hover {
@@ -384,7 +383,7 @@
     }
 
     .shop-stat-item i {
-        color: #3bb77e;
+        color: #01949a !important;
         font-size: 0.8rem;
         width: 12px;
         text-align: center;
@@ -396,12 +395,11 @@
     }
 
     .shop-stat-item .stat-number {
-        color: #3bb77e;
+        color: #01949a !important;
         font-weight: 800;
         font-size: 0.8rem;
     }
 
-    /* Description */
     .shop-card-description {
         margin-bottom: 16px;
     }
@@ -413,7 +411,6 @@
         margin: 0;
     }
 
-    /* Footer Actions */
     .shop-card-footer {
         display: flex;
         gap: 8px;
@@ -426,14 +423,13 @@
         justify-content: center;
         gap: 6px;
         padding: 8px 12px;
-        background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+        background: #FF0000 !important;
         color: white;
         text-decoration: none;
         border-radius: 8px;
         font-weight: 600;
         font-size: 0.8rem;
         transition: all 0.3s ease;
-        will-change: transform;
     }
 
     .shop-visit-btn:hover {
@@ -447,24 +443,24 @@
         align-items: center;
         gap: 6px;
         padding: 8px 12px;
-        background: white;
-        color: #3bb77e;
-        border: 1px solid #3bb77e;
+        color: #ffffff !important;
+        border: 1px solid #01949a !important;
+        background: #01949a !important;
         border-radius: 8px;
         font-weight: 600;
         font-size: 0.8rem;
         transition: all 0.3s ease;
         cursor: pointer;
-        will-change: transform;
     }
 
     .shop-follow-btn:hover {
-        background: #3bb77e;
+        background: #01949a !important;
         color: white !important;
         transform: translateY(-1px);
+        border-color: #01949a !important;
     }
 
-    /* Responsive Design */
+    /* Responsive adjustments */
     @media (max-width: 768px) {
         .shop-card-content {
             padding: 12px;
@@ -492,14 +488,6 @@
             flex-direction: column;
         }
     }
-
-    /* Focus states for accessibility */
-    .shop-action-btn:focus,
-    .shop-visit-btn:focus,
-    .shop-follow-btn:focus {
-        outline: 2px solid #3bb77e;
-        outline-offset: 2px;
-    }
 </style>
 
 <script>
@@ -516,7 +504,7 @@
         function handleFollowClick(button) {
             const shopId = button.dataset.shopId;
             const form = button.closest('form');
-            
+
             if (!shopId || !form) {
                 console.error('Missing shop ID or form');
                 return;
@@ -528,42 +516,43 @@
             button.disabled = true;
 
             fetch(`/follow/${shopId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const element = document.getElementById(`shop_heart_${shopId}`);
-                if (element) {
-                    if (element.classList.contains('far')) {
-                        element.classList.remove('far', 'fa-heart', 'text-white');
-                        element.classList.add('fas', 'fa-heart');
-                        button.style.color = 'rgba(252, 79, 79, 0.96)';
-                    } else {
-                        element.classList.remove('fas', 'fa-heart');
-                        element.classList.add('far', 'fa-heart', 'text-white');
-                        button.style.color = '';
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content')
                     }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // Show user-friendly error message
-                alert('Something went wrong. Please try again.');
-            })
-            .finally(() => {
-                // Restore button state
-                button.innerHTML = originalText;
-                button.disabled = false;
-            });
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const element = document.getElementById(`shop_heart_${shopId}`);
+                    if (element) {
+                        if (element.classList.contains('far')) {
+                            element.classList.remove('far', 'fa-heart', 'text-white');
+                            element.classList.add('fas', 'fa-heart');
+                            button.style.color = 'rgba(252, 79, 79, 0.96)';
+                        } else {
+                            element.classList.remove('fas', 'fa-heart');
+                            element.classList.add('far', 'fa-heart', 'text-white');
+                            button.style.color = '';
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Show user-friendly error message
+                    alert('Something went wrong. Please try again.');
+                })
+                .finally(() => {
+                    // Restore button state
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                });
         }
     });
 </script>

@@ -21,10 +21,13 @@
     <x-app.header />
     <div class="container">
         <div class="row">
+            {{-- @dd($shops) --}}
             @foreach ($shops as $shop)
-                <div class="col-md-3 col-12">
-                    <x-shops-card.card-1 :shop="$shop" />
-                </div>
+                @if ($shop->status == 1)
+                    <div class="col-md-3 col-12 my-5">
+                        <x-shops-card.card-1 :shop="$shop" />
+                    </div>
+                @endif
             @endforeach
         </div>
     </div>
