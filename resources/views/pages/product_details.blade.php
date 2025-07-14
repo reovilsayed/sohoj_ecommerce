@@ -700,7 +700,7 @@
 
                 <!-- Swiper Slider Container -->
                 <div class="swiper related-products-slider">
-                    <div class="swiper-wrapper">
+                    <div class="swiper-wrapper pt-4">
                         @foreach ($related_products as $product)
                             <div class="swiper-slide">
                                 <div class="product-card">
