@@ -32,9 +32,9 @@
     }
 
     .product-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        /* width: 100%; */
+        height: 100% !important;
+        /* object-fit: cover; */
         transition: transform 0.4s ease;
     }
 
