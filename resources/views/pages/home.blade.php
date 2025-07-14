@@ -1183,7 +1183,7 @@
                 <button class="category-arrow left-arrow" onclick="scrollCategories(-1)">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                <div class="category-carousel" id="categoryCarousel">
+                <div class="category-carousel py-3" id="categoryCarousel">
                     @foreach ($categories as $category)
                         <a href="{{ route('shops', ['category' => $category->slug]) }}" class="category-circle-link">
                             <div class="category-circle text-center">
