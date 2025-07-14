@@ -270,11 +270,6 @@
             <div class="product-image">
                 <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="product-img">
 
-                <!-- Wishlist Button -->
-                {{-- <button class="action-btn wishlist-btn" title="Add to Wishlist" aria-label="Add to Wishlist">
-                    <i class="fa-regular fa-heart"></i>
-                </button> --}}
-
                 <!-- Product Actions Overlay -->
                 <div class="product-overlay">
                     <div class="product-actions">

@@ -52,7 +52,7 @@
         }
 
         .clear-filters-btn {
-            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            background: #2c3e50;
             color: white;
             border: none;
             padding: 0.5rem 1rem;
@@ -66,7 +66,7 @@
         .clear-filters-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(59, 183, 126, 0.3);
-            color: white;
+            color: white !important;
         }
 
         .filter-section {
@@ -150,7 +150,7 @@
         }
 
         .category-badge {
-            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            background: #2c3e50;
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: 15px;
@@ -183,7 +183,7 @@
         .rating-checkmark {
             display: inline-block;
             width: 22px; height: 22px;
-            border: 2px solid #3bb77e;
+            border: 2px solid #2c3e50;
             border-radius: 6px;
             background: #fff;
             margin-right: 1rem;
@@ -192,8 +192,8 @@
             vertical-align: middle;
         }
         .rating-option input[type="checkbox"]:checked ~ .rating-checkmark {
-            background: linear-gradient(135deg, #3bb77e 60%, #2d9d6b 100%);
-            border-color: #2d9d6b;
+            background: #2c3e50;
+            border-color: #2c3e50;
         }
         .rating-checkmark:after {
             content: '';

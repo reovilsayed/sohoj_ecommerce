@@ -1,4 +1,19 @@
+@php
+    // Pre-calculate values for better performance
+    $averageRating = Sohoj::average_rating($product->ratings);
+    $ratingCount = $product->ratings->count();
+    $currentPrice = $product->sale_price ?? $product->price;
+    $originalPrice = $product->price;
+    $hasDiscount = $product->sale_price && $product->sale_price < $product->price;
+    $discountPercentage = $hasDiscount ? round((($originalPrice - $currentPrice) / $originalPrice) * 100) : 0;
+    $fullStars = floor($averageRating);
+    $hasHalfStar = $averageRating - $fullStars >= 0.5;
+@endphp
+
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+
+    /* Optimized CSS with better organization and performance */
     .product-card {
         background: white;
         border-radius: 20px;
@@ -8,14 +23,17 @@
         position: relative;
         height: 100%;
         border: 1px solid rgba(0, 0, 0, 0.05);
+        will-change: transform;
+        font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
     }
 
     .product-card:hover {
         transform: translateY(-8px);
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-        border-color: #3bb77e;
+        border-color: #FF0000;
     }
 
+    /* Image Section */
     .product-image-wrapper {
         position: relative;
         overflow: hidden;
@@ -36,19 +54,18 @@
         height: 100%;
         object-fit: cover;
         transition: transform 0.4s ease;
+        will-change: transform;
     }
 
     .product-card:hover .product-img {
         transform: scale(1.1);
     }
 
+    /* Overlay and Actions */
     .product-overlay {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(59, 183, 126, 0.9), rgba(45, 157, 107, 0.9));
+        inset: 0;
+        background: #c1bebe91;
         opacity: 0;
         display: flex;
         align-items: center;
@@ -79,6 +96,7 @@
         transition: all 0.3s ease;
         backdrop-filter: blur(10px);
         font-size: 14px;
+        will-change: transform;
     }
 
     .action-btn:hover {
@@ -86,23 +104,13 @@
         transform: scale(1.1);
     }
 
-    .wishlist-btn {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        z-index: 3;
-        background: rgba(255, 255, 255, 0.95);
-        color: #6c757d;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(0, 0, 0, 0.1);
+    /* Cart Form */
+    .cart-form {
+        margin: 0;
+        display: inline;
     }
 
-    .wishlist-btn:hover {
-        background: #ff6b6b;
-        color: white;
-        transform: scale(1.1);
-    }
-
+    /* Badges */
     .discount-badge {
         position: absolute;
         top: 15px;
@@ -114,8 +122,10 @@
         font-size: 0.75rem;
         font-weight: 600;
         z-index: 2;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
+    /* Content Section */
     .product-content {
         padding: 20px;
         display: flex;
@@ -129,7 +139,7 @@
 
     .product-category span {
         background: linear-gradient(135deg, #e8f5e8, #d4edda);
-        color: #2d9d6b;
+        color: #01949a;
         padding: 4px 10px;
         border-radius: 12px;
         font-size: 0.7rem;
@@ -142,18 +152,17 @@
         margin-bottom: 8px;
         line-height: 1.3;
         flex-grow: 1;
+        font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+        color: #000 !important;
     }
 
     .product-title a {
-        color: #2c3e50;
+        color: #000 !important;
         text-decoration: none;
         transition: color 0.3s ease;
     }
 
-    .product-title a:hover {
-        color: #3bb77e;
-    }
-
+    /* Rating */
     .product-rating {
         display: flex;
         align-items: center;
@@ -180,6 +189,7 @@
         color: #6c757d;
     }
 
+    /* Price */
     .product-price {
         display: flex;
         align-items: center;
@@ -194,16 +204,21 @@
     }
 
     .current-price {
-        color: #3bb77e;
+        color: #000;
         font-size: 1.2rem;
         font-weight: 700;
     }
 
+    /* Add to Cart Button */
+    .add-to-cart-form {
+        margin: 0;
+    }
+
     .add-to-cart-btn {
-        background: linear-gradient(135deg, #3bb77e, #2d9d6b);
-        color: white;
+        background: #FF0000 !important;
+        color: #fff;
         border: none;
-        padding: 12px 20px;
+        padding: 7px 12px;
         border-radius: 12px;
         font-weight: 600;
         font-size: 0.9rem;
@@ -211,37 +226,47 @@
         cursor: pointer;
         width: 100%;
         margin-top: auto;
+        will-change: transform;
+        box-shadow: 0 2px 8px rgba(58, 112, 151, 0.10);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .add-to-cart-btn:hover {
-        background: linear-gradient(135deg, #2d9d6b, #1a7a4a);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(59, 183, 126, 0.3);
+    .add-to-cart-btn .spinner {
+        display: none;
+        margin-right: 8px;
+        font-size: 1rem;
+        animation: spin 1s linear infinite;
     }
 
-    .add-to-cart-btn:active {
-        transform: translateY(0);
+    .add-to-cart-btn.loading .spinner {
+        display: inline-block;
     }
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .product-image {
-            height: 200px;
-        }
+    .add-to-cart-btn.loading .btn-text {
+        opacity: 0.6;
+    }
 
-        .product-content {
-            padding: 15px;
-        }
+    .add-to-cart-btn.loading {
+        pointer-events: none;
+        opacity: 0.7;
+    }
 
-        .product-title {
-            font-size: 0.9rem;
-        }
+    /* @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    } */
 
-        .action-btn {
-            width: 35px;
-            height: 35px;
-            font-size: 12px;
-        }
+    .product-title {
+        font-size: 0.9rem;
+    }
+
+    .action-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 12px;
     }
 
     @media (max-width: 576px) {
@@ -262,101 +287,122 @@
             font-size: 0.8rem;
         }
     }
+
+    /* Focus states for accessibility */
+    .action-btn:focus,
+    .add-to-cart-btn:focus,
+    .product-title a:focus {
+        outline: 2px solid #01949a;
+        outline-offset: 2px;
+    }
+
+    /* Loading states */
+    .add-to-cart-btn.loading {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+
+    .add-to-cart-btn.loading i {
+        animation: spin 1s linear infinite;
+    }
 </style>
 
 <div class=" col-md-3 col-sm-6 col-6 mb-4">
     <div class="product-card">
+        {{-- Product Image Section --}}
         <div class="product-image-wrapper">
             <div class="product-image">
-                <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="product-img">
+                <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="product-img"
+                    loading="lazy">
 
-                <!-- Wishlist Button -->
-                {{-- <button class="action-btn wishlist-btn" title="Add to Wishlist" aria-label="Add to Wishlist">
-                    <i class="fa-regular fa-heart"></i>
-                </button> --}}
-
-                <!-- Product Actions Overlay -->
+                {{-- Product Actions Overlay --}}
                 <div class="product-overlay">
                     <div class="product-actions">
-                        <a href="{{ route('product_details', $product->slug) }}" class="action-btn" title="Quick View">
+                        <a href="{{ route('product_details', $product->slug) }}" class="action-btn" title="Quick View"
+                            aria-label="View {{ $product->name }} details">
                             <i class="fas fa-eye text-light"></i>
                         </a>
-                        <form action="{{ route('cart.store') }}" method="post">
+
+                        <form action="{{ route('cart.store') }}" method="post" class="cart-form">
                             @csrf
                             <input type="hidden" name="quantity" value="1">
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <button class="action-btn" title="Add to Cart" type="submit">
+                            <button class="action-btn" title="Add to Cart" type="submit"
+                                aria-label="Add {{ $product->name }} to cart">
                                 <i class="fas fa-shopping-cart"></i>
                             </button>
                         </form>
-                        <button class="action-btn" title="Compare">
+
+                        <button class="action-btn compare-btn" title="Compare"
+                            aria-label="Compare {{ $product->name }}">
                             <i class="fas fa-exchange-alt"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Discount Badge -->
-                @if ($product->sale_price && $product->sale_price < $product->price)
-                    <div class="discount-badge">
-                        <span>-{{ round((($product->price - $product->sale_price) / $product->price) * 100) }}%</span>
+                {{-- Discount Badge --}}
+                @if ($hasDiscount)
+                    <div class="discount-badge" aria-label="{{ $discountPercentage }}% discount">
+                        <span>-{{ $discountPercentage }}%</span>
                     </div>
                 @endif
             </div>
         </div>
 
+        {{-- Product Content Section --}}
         <div class="product-content">
-            <!-- Product Category -->
+            {{-- Product Category --}}
             <div class="product-category">
-                <span>{{ $product->category->name ?? 'General' }}</span>
+                @foreach ($product->prodcats as $categoryName)
+                    <span class="my-3">{{ $categoryName->name }}</span>
+                @endforeach
             </div>
 
-            <!-- Product Title -->
+            {{-- Product Title --}}
             <h3 class="product-title">
-                <a href="{{ route('product_details', $product->slug) }}">
+                <a href="{{ route('product_details', $product->slug) }}"
+                    aria-label="View {{ $product->name }} details">
                     {{ Str::limit($product->name, 35) }}
                 </a>
             </h3>
 
-            <!-- Product Rating -->
-            <div class="product-rating">
-                <div class="stars">
-                    @php
-                        $rating = Sohoj::average_rating($product->ratings);
-                        $fullStars = floor($rating);
-                        $hasHalfStar = $rating - $fullStars >= 0.5;
-                    @endphp
-
+            {{-- Product Rating --}}
+            <div class="product-rating" aria-label="Rating: {{ $averageRating }} out of 5 stars">
+                <div class="stars" role="img" aria-label="Rating: {{ $averageRating }} stars">
                     @for ($i = 1; $i <= 5; $i++)
                         @if ($i <= $fullStars)
-                            <i class="fas fa-star filled"></i>
+                            <i class="fas fa-star filled" aria-hidden="true"></i>
                         @elseif($i == $fullStars + 1 && $hasHalfStar)
-                            <i class="fas fa-star-half-alt filled"></i>
+                            <i class="fas fa-star-half-alt filled" aria-hidden="true"></i>
                         @else
-                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
                         @endif
                     @endfor
                 </div>
-                <span class="rating-count">({{ $product->ratings->count() }})</span>
+                <span class="rating-count">({{ $ratingCount }})</span>
             </div>
 
-            <!-- Product Price -->
+            {{-- Product Price --}}
             <div class="product-price">
-                @if ($product->sale_price && $product->sale_price < $product->price)
-                    <span class="original-price">{{ Sohoj::price($product->price) }}</span>
+                @if ($hasDiscount)
+                    <span class="original-price" aria-label="Original price">{{ Sohoj::price($originalPrice) }}</span>
                 @endif
-                <span class="current-price">{{ Sohoj::price($product->sale_price ?? $product->price) }}</span>
+                <span class="current-price" aria-label="Current price">{{ Sohoj::price($currentPrice) }}</span>
             </div>
 
-            <!-- Add to Cart Button -->
-            <form action="{{ route('cart.store') }}" method="post">
+            {{-- Add to Cart Button --}}
+            <form action="{{ route('cart.store') }}" method="POST" class="add-to-cart-form">
                 @csrf
                 <input type="hidden" name="quantity" value="1">
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <button class="add-to-cart-btn" type="submit">
-                    <i class="fas fa-shopping-cart me-2"></i>
-                    Add to Cart
+                <button class="add-to-cart-btn" type="submit" aria-label="Add {{ $product->name }} to cart">
+                    <span class="spinner" style="display:none;margin-right:8px;"><i
+                            class="fas fa-spinner fa-spin"></i></span>
+                    <i class="fas fa-shopping-cart me-2" aria-hidden="true"></i>
+                    <span class="btn-text">Add to Cart</span>
                 </button>
             </form>
+
         </div>
     </div>
 </div>
