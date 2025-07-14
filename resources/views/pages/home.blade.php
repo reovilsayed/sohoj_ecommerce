@@ -877,6 +877,8 @@
         /* Category Carousel Section */
         /* Container */
         .category-carousel-container {
+            display: flex;
+            align-items: center;
             position: relative;
             overflow: hidden;
             padding: 20px 0;
@@ -885,10 +887,12 @@
         /* Carousel */
         .category-carousel {
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
+            gap: 32px 24px;
+            justify-content: center;
+            width: 100%;
             overflow-x: auto;
             scroll-behavior: smooth;
-            gap: 20px;
             padding: 0 60px;
             scrollbar-width: none;
         }
@@ -898,41 +902,47 @@
         }
 
         /* Category Item */
+        .category-circle-link {
+            text-decoration: none;
+        }
         .category-circle {
-            flex: 0 0 calc(50% - 20px);
-            /* Default mobile: 2 per view */
-            max-width: calc(50% - 20px);
-            height: 140px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             background: #fff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: box-shadow 0.2s;
+            transition: box-shadow 0.2s, transform 0.2s, border 0.2s;
             cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
         }
-
         .category-circle:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
+            box-shadow: 0 8px 24px rgba(59,183,126,0.18);
+            border: 2px solid #01949a;
+            transform: translateY(-4px) scale(1.04);
+            background: #f8fefb;
         }
-
         /* Circle Icon */
         .circle-icon {
-            width: 48px;
-            height: 48px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             background: #f8f8f8;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
             overflow: hidden;
         }
 
         .circle-icon img {
-            width: 100%;
-            height: 100%;
+            width: 70%;
+            height: 70%;
             object-fit: contain;
         }
 
@@ -940,10 +950,10 @@
         .category-name {
             font-size: 1rem;
             color: #222;
-            font-weight: 500;
-            text-align: center;
-            padding: 5px;
+            font-weight: 600;
             word-break: break-word;
+            line-height: 1.2;
+            margin-top: 2px;
         }
 
         /* Arrow Buttons */
@@ -951,42 +961,51 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            z-index: 10;
+            z-index: 2;
             background: #fff;
             border: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.13);
             border-radius: 50%;
             width: 48px;
             height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
             cursor: pointer;
+            font-size: 1.5rem;
+            transition: background 0.2s;
         }
-
-        .left-arrow {
-            left: 10px;
+        .category-arrow:hover {
+            background: #e8f5e8;
         }
-
-        .right-arrow {
-            right: 10px;
-        }
-
-        /* Responsive Breakpoints */
-        @media (min-width: 768px) {
+        .left-arrow { left: 10px; }
+        .right-arrow { right: 10px; }
+        @media (max-width: 992px) {
+            .category-carousel {
+                gap: 24px 12px;
+                padding: 0 20px;
+            }
             .category-circle {
-                flex: 0 0 calc(25% - 20px);
-                /* 4 per view on tablets */
-                max-width: calc(25% - 20px);
+                width: 110px;
+                height: 110px;
             }
         }
-
-        @media (min-width: 1200px) {
+        @media (max-width: 576px) {
+            .category-carousel {
+                gap: 16px 8px;
+                padding: 0 5px;
+            }
             .category-circle {
-                flex: 0 0 calc(14.2857% - 20px);
-                /* 7 per view on large screen */
-                max-width: calc(14.2857% - 20px);
+                width: 90px;
+                height: 90px;
+            }
+            .circle-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1.2rem;
+            }
+            .category-name {
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -1166,20 +1185,24 @@
                 <button class="category-arrow left-arrow" onclick="scrollCategories(-1)">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-
                 <div class="category-carousel" id="categoryCarousel">
                     @foreach ($categories as $category)
-                        <div class="category-circle text-center">
-                            <div class="circle-icon mx-auto mb-2">
-                                <img src="{{ Storage::url($category->logo) }}" alt="Category">
+                        <a href="{{ route('shops', ['category' => $category->slug]) }}" class="category-circle-link">
+                            <div class="category-circle text-center">
+                                <div class="circle-icon mx-auto mb-2">
+                                    @if (!empty($category->logo))
+                                        <img src="{{ Storage::url($category->logo) }}" alt="{{ $category->name }}">
+                                    @else
+                                        <i class="fas fa-box-open"></i>
+                                    @endif
+                                </div>
+                                <div class="category-name">
+                                    {{ Str::limit($category->name, 22) }}
+                                </div>
                             </div>
-                            <div class="category-name">
-                                {{ Str::limit($category->name, 18) }}
-                            </div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
-
                 <button class="category-arrow right-arrow" onclick="scrollCategories(1)">
                     <i class="fas fa-chevron-right"></i>
                 </button>
@@ -1602,3 +1625,4 @@
         });
     </script>
 @endsection
+
