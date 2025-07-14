@@ -948,11 +948,9 @@
 
         /* Category Name */
         .category-name {
-            font-size: 1rem;
+            font-size: 14px;
             color: #222;
-            font-weight: 600;
             word-break: break-word;
-            line-height: 1.2;
             margin-top: 2px;
         }
 
