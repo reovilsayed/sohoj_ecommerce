@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Resources\DashboardResource\Widgets\DashboardChart;
 use App\Filament\Resources\PolarChartDashboardResource\Widgets\DashboardChart as WidgetsDashboardChart;
 use App\Filament\Resources\StatsOverViewResource\Widgets\StatsOverview as WidgetsStatsOverview;
+use App\Filament\Widgets\ListLatestShops;
 use App\Filament\Widgets\RecentOrders;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -103,9 +104,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->widgets([
                 WidgetsStatsOverview::class,
-                RecentOrders::class,
-                // DashboardChart::class,
-                // WidgetsDashboardChart::class,
+                DashboardChart::class,
+                WidgetsDashboardChart::class,
+                ListLatestShops::class,
+                // RecentOrders::class,
             ]);
     }
 }

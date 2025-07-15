@@ -21,6 +21,7 @@ class VerificationResource extends Resource
     protected static ?string $model = Verification::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-check-circle';
+    protected static ?string $navigationGroup = 'Business';
 
     public static function form(Form $form): Form
     {

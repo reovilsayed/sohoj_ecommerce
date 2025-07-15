@@ -270,6 +270,7 @@ class ProductResource extends Resource
                     ->label('SKU')
                     ->searchable()
                     ->icon('heroicon-o-hashtag')
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->toggleable(),
                 TextColumn::make('type')
                     ->label('Type')
@@ -317,6 +318,7 @@ class ProductResource extends Resource
                     ->sortable(),
                 TextColumn::make('total_sale')
                     ->label('Sales')
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->badge()
                     ->color('info')
                     ->sortable()
@@ -326,13 +328,13 @@ class ProductResource extends Resource
                     ->dateTime('F j, Y')
                     ->icon('heroicon-o-calendar-days')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('updated_at')
                     ->label('Updated At')
                     ->dateTime('F j, Y')
                     ->icon('heroicon-o-arrow-path')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->filters([
                 SelectFilter::make('type')

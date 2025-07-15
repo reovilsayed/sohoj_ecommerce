@@ -25,6 +25,7 @@ use Illuminate\Container\Attributes\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use Illuminate\Support\HtmlString;
 
 class ShopResource extends Resource
 {
@@ -174,29 +175,18 @@ class ShopResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('logo')
-                    ->label('Logo')
-                    ->circular()
-                    ->size(48)
-                    ->toggleable(),
-                ImageColumn::make('banner')
-                    ->label('Banner')
-                    ->size(64)
-                    ->toggleable(),
                 TextColumn::make('name')
-                    ->label('Shop Name')
-                    ->searchable()
+                    ->label('Store Name')
                     ->sortable()
+                    ->searchable()
+                    ->icon('heroicon-o-shopping-bag')
                     ->badge()
-                    ->color('primary')
-                    ->toggleable(),
+                    ->color('primary'),
                 TextColumn::make('user.name')
                     ->label('Owner')
                     ->icon('heroicon-o-user')
                     ->toggleable(),
-                TextColumn::make('slug')
-                    ->label('Slug')
-                    ->toggleable(),
+               
                 TextColumn::make('email')
                     ->label('Email')
                     ->icon('heroicon-o-envelope')
@@ -205,29 +195,7 @@ class ShopResource extends Resource
                     ->label('Phone')
                     ->icon('heroicon-o-phone')
                     ->toggleable(),
-                TextColumn::make('company_name')
-                    ->label('Company Name')
-                    ->toggleable(),
-                TextColumn::make('company_registration')
-                    ->label('Registration No.')
-                    ->toggleable(),
-                TextColumn::make('city')
-                    ->label('City')
-                    ->toggleable(),
-                TextColumn::make('state')
-                    ->label('State')
-                    ->toggleable(),
-                TextColumn::make('post_code')
-                    ->label('Post Code')
-                    ->toggleable(),
-                TextColumn::make('country')
-                    ->label('Country')
-                    ->badge()
-                    ->color('success')
-                    ->toggleable(),
-                TagsColumn::make('tags')
-                    ->label('Tags')
-                    ->toggleable(),
+                
                 BooleanColumn::make('status')
                     ->label('Active')
                     ->icon('heroicon-o-check-circle')
@@ -259,9 +227,14 @@ class ShopResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make()
-                        ->label('Edit')
-                        ->icon('heroicon-o-pencil-square'),
+                    Tables\Actions\Action::make('details')
+                        ->label('Details')
+                        ->icon('heroicon-o-eye')
+                        ->modalHeading(fn ($record) => "Shop Details - {$record->name}")
+                        ->modalDescription(fn ($record) => new HtmlString(view('filament.modals.shop-details', ['shop' => $record])->render()))
+                        ->modalSubmitActionLabel('Close')
+                        ->color('info')
+                        ->action(fn () => null),
                     Tables\Actions\DeleteAction::make()
                         ->label('Delete')
                         ->icon('heroicon-o-trash'),

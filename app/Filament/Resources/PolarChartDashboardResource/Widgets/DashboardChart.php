@@ -7,20 +7,20 @@ use Filament\Widgets\ChartWidget;
 
 class DashboardChart extends ChartWidget
 {
-    protected static ?string $heading = 'Chart';
+    protected static ?string $heading = 'Order Status Distribution';
     protected static ?string $icon = 'heroicon-o-chart-pie';
     protected static ?string $title = 'Polar Area Chart';
-    protected static ?int $minHeight = 200;
+    protected static ?string $maxHeight = '280px';
 
     protected function getData(): array
     {
         // Status labels and corresponding colors
         $statusLabels = [
-            0 => 'Red',       // Pending
-            1 => 'Green',     // Paid
-            2 => 'Yellow',    // On Its Way
-            3 => 'Grey',      // Cancelled
-            4 => 'Blue',      // Delivered
+            0 => 'Pending',
+            1 => 'Paid',
+            2 => 'On Its Way',
+            3 => 'Cancelled',
+            4 => 'Delivered',
         ];
 
         $statusColors = [
@@ -40,6 +40,7 @@ class DashboardChart extends ChartWidget
         $data = [];
         $colors = [];
         $labels = [];
+        $total = array_sum($orders);
 
         foreach ($statusLabels as $status => $label) {
             $labels[] = $label;
@@ -54,6 +55,26 @@ class DashboardChart extends ChartWidget
                     'label' => 'Orders by Status',
                     'data' => $data,
                     'backgroundColor' => $colors,
+                ],
+            ],
+            // Custom options for tooltips and legend
+            'options' => [
+                'plugins' => [
+                    'legend' => [
+                        'display' => true,
+                        'position' => 'bottom',
+                    ],
+                    'tooltip' => [
+                        'callbacks' => [
+                            'label' => \Illuminate\Support\Js::from("function(context) {
+                                let label = context.label || '';
+                                let value = context.parsed || 0;
+                                let total = " . ($total ?: 1) . ";
+                                let percent = total ? ((value / total) * 100).toFixed(1) : 0;
+                                return label + ': ' + value + ' (' + percent + '%)';
+                            }"),
+                        ],
+                    ],
                 ],
             ],
         ];
