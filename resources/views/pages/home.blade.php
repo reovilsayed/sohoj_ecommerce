@@ -958,7 +958,7 @@
             justify-content: center;
             transition: box-shadow 0.2s, transform 0.2s, border 0.2s;
             cursor: pointer;
-            border: 2px solid transparent;
+            border: 2px solid #0000004f;
             position: relative;
         }
 

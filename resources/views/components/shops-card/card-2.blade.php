@@ -56,8 +56,16 @@
                     </div>
                 </div>
 
-                {{-- @if (!empty($shop->tags))
-                    @php $tags = explode(',', $shop->tags); @endphp
+                @php
+                    if (is_array($shop->tags)) {
+                        $tags = $shop->tags;
+                    } elseif (is_string($shop->tags)) {
+                        $tags = explode(',', $shop->tags);
+                    } else {
+                        $tags = [];
+                    }
+                @endphp
+                @if (!empty($shop->tags))
                     <div class="shop-card-tags">
                         @foreach (array_slice($tags, 0, 3) as $tag)
                             <span class="shop-tag" title="{{ $tag }}">
@@ -65,7 +73,7 @@
                             </span>
                         @endforeach
                     </div>
-                @endif --}}
+                @endif
 
                 <div class="shop-card-stats">
                     <div class="shop-stat-item">
@@ -127,7 +135,7 @@
         .modern-shop-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-            border-color: #3bb77e;
+            border-color: #FF0000 !important;
         }
 
         .shop-card-image-wrapper {
@@ -158,7 +166,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(59, 183, 126, 0.9), rgba(45, 157, 107, 0.9));
+            background: #c1bebe91 !important;
             opacity: 0;
             display: flex;
             align-items: center;
@@ -250,13 +258,9 @@
         }
 
         .shop-card-title a {
-            color: #2c3e50;
+            color: #2c3e50 !important;
             text-decoration: none;
             transition: color 0.3s ease;
-        }
-
-        .shop-card-title a:hover {
-            color: #3bb77e;
         }
 
         .shop-card-rating {
@@ -293,7 +297,7 @@
 
         .shop-card-category span {
             background: linear-gradient(135deg, #e8f5e8, #d4edda);
-            color: #2d9d6b;
+            color: #01949a !important;
             padding: 3px 8px;
             border-radius: 8px;
             font-size: 0.7rem;
@@ -309,7 +313,7 @@
         }
 
         .shop-card-location i {
-            color: #3bb77e;
+            color: #01949a !important;
             font-size: 0.7rem;
         }
 
@@ -363,7 +367,7 @@
         }
 
         .shop-stat-item i {
-            color: #3bb77e;
+            color: #01949a !important;
             font-size: 0.8rem;
             width: 12px;
             text-align: center;
@@ -375,7 +379,7 @@
         }
 
         .shop-stat-item .stat-number {
-            color: #3bb77e;
+            color: #01949a !important;
             font-weight: 800;
             font-size: 0.8rem;
         }
@@ -403,7 +407,7 @@
             justify-content: center;
             gap: 6px;
             padding: 8px 12px;
-            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            background: #FF0000 !important;
             color: white;
             text-decoration: none;
             border-radius: 8px;
@@ -423,9 +427,9 @@
             align-items: center;
             gap: 6px;
             padding: 8px 12px;
-            background: white;
-            color: #3bb77e;
-            border: 1px solid #3bb77e;
+            color: #ffffff !important;
+            border: 1px solid #01949a !important;
+            background: #01949a !important;
             border-radius: 8px;
             font-weight: 600;
             font-size: 0.8rem;
@@ -434,9 +438,10 @@
         }
 
         .shop-follow-btn:hover {
-            background: #3bb77e;
+            background: #01949a !important;
             color: white !important;
             transform: translateY(-1px);
+            border-color: #01949a !important;
         }
 
         /* Responsive adjustments */
