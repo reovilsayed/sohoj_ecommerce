@@ -23,7 +23,6 @@
 </div>
 @endif
 <div class="container">
-
     @if($products->count() > 0)
 
     <div class="row">

@@ -35,10 +35,15 @@
                             </button>
                         </form>
 
-                        <button class="action-btn compare-btn" title="Compare"
-                            aria-label="Compare {{ $product->name }}">
-                            <i class="fas fa-exchange-alt"></i>
-                        </button>
+                        @if (!in_array($product->id, session()->get('wishlist', [])))
+                            <a href="{{ route('wishlist.add', ['productId' => $product->id]) }}"
+                                class="action-btn compare-btn" title="Wishlist"
+                                aria-label="Compare {{ $product->name }}"><i class="far fa-heart"></i></a>
+                        @else
+                            <a href="{{ route('wishlist.remove', ['productId' => $product->id]) }}"
+                                class="action-btn compare-btn" title="Remove Wishlist"
+                                aria-label="Compare {{ $product->name }}"><i class="fas fa-heart text-success"></i></a>
+                        @endif
                     </div>
                 </div>
 
@@ -98,7 +103,8 @@
                 <input type="hidden" name="quantity" value="1">
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <button class="add-to-cart-btn" type="submit" aria-label="Add {{ $product->name }} to cart">
-                    <span class="spinner" style="display:none;margin-right:8px;"><i class="fas fa-spinner fa-spin"></i></span>
+                    <span class="spinner" style="display:none;margin-right:8px;"><i
+                            class="fas fa-spinner fa-spin"></i></span>
                     <i class="fas fa-shopping-cart me-2" aria-hidden="true"></i>
                     <span class="btn-text">Add to Cart</span>
                 </button>
@@ -451,5 +457,3 @@
         }
     });
 </script> --}}
-
-

@@ -284,9 +284,15 @@
                                 <i class="fas fa-shopping-cart"></i>
                             </button>
                         </form>
-                        <button class="action-btn" title="Compare">
-                            <i class="fas fa-exchange-alt"></i>
-                        </button>
+                        @if (!in_array($product->id, session()->get('wishlist', [])))
+                            <a href="{{ route('wishlist.add', ['productId' => $product->id]) }}"
+                                class="action-btn compare-btn" title="Wishlist"
+                                aria-label="Compare {{ $product->name }}"><i class="far fa-heart"></i></a>
+                        @else
+                            <a href="{{ route('wishlist.remove', ['productId' => $product->id]) }}"
+                                class="action-btn compare-btn" title="Remove Wishlist"
+                                aria-label="Compare {{ $product->name }}"><i class="fas fa-heart text-success"></i></a>
+                        @endif
                     </div>
                 </div>
 
