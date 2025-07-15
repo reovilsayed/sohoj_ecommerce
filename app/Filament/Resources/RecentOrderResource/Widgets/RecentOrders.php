@@ -15,7 +15,7 @@ class RecentOrders extends BaseWidget
 
     protected function getTableQuery(): Builder
     {
-        return Order::latest()->limit(10);
+        return Order::where('created_at', '>=', now()->subDays(7))->latest();
     }
 
     protected function getTableColumns(): array
