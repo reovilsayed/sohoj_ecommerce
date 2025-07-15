@@ -1017,7 +1017,7 @@
             transition: background 0.2s;
         }
 
-        
+
 
         .category-arrow:hover {
             background: #e8f5e8;
@@ -1070,10 +1070,9 @@
             display: block;
             max-height: 333px;
             overflow-y: auto;
-
-            /* Optional for style */
             background-color: #f9f9f9;
             padding-right: 8px;
+            margin-bottom: 10px;
         }
 
         /* Chrome, Edge, Safari */
@@ -1148,7 +1147,7 @@
 
                         <!-- Category List -->
                         <div id="static-category-list" class="custom-scroll">
-                            <div class="category-list-wrapper p-3">
+                            <div class="category-list-wrapper ps-2 pt-3">
                                 @foreach ($categories as $category)
                                     <div class="category-item mb-2">
                                         <a href="{{ route('shops', ['category' => $category->slug]) }}"
@@ -1264,18 +1263,18 @@
     <!-- Main Slider End -->
 
     <!--  category Section Start -->
-    <section class="section ec-category-section py-5">
+    <section class="section ec-category-section">
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="mb-5">
+                    <div class="mb-5 mt-5">
                         <h1 class="related-product-sec-title mb-3">Browse Shops by Categories</h1>
                         <p class="text-muted fs-6">Discover amazing shops organized by categories</p>
                     </div>
                 </div>
             </div>
 
-            <div class="swiper category-swiper py-5">
+            <div class="swiper category-swiper pb-5 pt-3">
                 <div class="swiper-wrapper">
                     @foreach ($categories as $category)
                         <div class="swiper-slide">
@@ -1309,7 +1308,7 @@
 
     <!-- Product tab Area Start -->
 
-    <section class="section ec-product-tab section-space-p ">
+    <section class="section ec-product-tab">
         <div class="container">
             <div class="row">
 
@@ -1462,10 +1461,10 @@
                         <!-- Product tab area start -->
                         <div class="row space-t-50">
                             <!-- <div class="col-md-12">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="section-title">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <h2 class="ec-title">New Products</h2>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div class="section-title">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <h2 class="ec-title">New Products</h2>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div> -->
                             <h2 class="related-product-sec-title my-5"> Recommended For You</h2>
                         </div>
 
