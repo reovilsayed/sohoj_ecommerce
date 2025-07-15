@@ -1,10 +1,13 @@
 @extends('layouts.app')
 @section('title', 'Sohoj E-commerce | Home')
-@section('meta_description', 'Discover trending products, top shops, and exclusive deals on Sohoj E-commerce. Shop by category and enjoy a seamless online shopping experience.')
+@section('meta_description',
+    'Discover trending products, top shops, and exclusive deals on Sohoj E-commerce. Shop by
+    category and enjoy a seamless online shopping experience.')
 @section('meta_keywords', 'ecommerce, online shopping, trending products, best shops, sohoj')
 @section('meta_og')
     <meta property="og:title" content="Sohoj E-commerce | Home">
-    <meta property="og:description" content="Discover trending products, top shops, and exclusive deals on Sohoj E-commerce. Shop by category and enjoy a seamless online shopping experience.">
+    <meta property="og:description"
+        content="Discover trending products, top shops, and exclusive deals on Sohoj E-commerce. Shop by category and enjoy a seamless online shopping experience.">
     <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
@@ -12,7 +15,8 @@
 @section('meta_twitter')
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Sohoj E-commerce | Home">
-    <meta name="twitter:description" content="Discover trending products, top shops, and exclusive deals on Sohoj E-commerce. Shop by category and enjoy a seamless online shopping experience.">
+    <meta name="twitter:description"
+        content="Discover trending products, top shops, and exclusive deals on Sohoj E-commerce. Shop by category and enjoy a seamless online shopping experience.">
     <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
 @endsection
 @section('canonical_url', route('homepage'))
@@ -39,6 +43,8 @@
     {{-- <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/demo2.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('assets/css/shops.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/demo3.css') }}" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <style>
         @media screen and (max-width:768px) {
 
@@ -994,7 +1000,7 @@
         /* Arrow Buttons */
         .category-arrow {
             position: absolute;
-            top: 50%;
+            top: 60%;
             transform: translateY(-50%);
             z-index: 2;
             background: #fff;
@@ -1010,6 +1016,8 @@
             font-size: 1.5rem;
             transition: background 0.2s;
         }
+
+        
 
         .category-arrow:hover {
             background: #e8f5e8;
@@ -1129,7 +1137,8 @@
                                 </div>
                                 <div>
                                     <span class="fw-bold text-white fs-6">All Categories</span>
-                                    <div class="text-white-50 small" style="    color: #ffffff !important;">Browse by category</div>
+                                    <div class="text-white-50 small" style="    color: #ffffff !important;">Browse by
+                                        category</div>
                                 </div>
                             </div>
                             <div class="category-toggle-icon">
@@ -1266,33 +1275,33 @@
                 </div>
             </div>
 
-            <div class="category-carousel-container position-relative py-5">
-                <button class="category-arrow left-arrow" onclick="scrollCategories(-1)">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <div class="category-carousel py-3" id="categoryCarousel">
+            <div class="swiper category-swiper py-5">
+                <div class="swiper-wrapper">
                     @foreach ($categories as $category)
-                        <a href="{{ route('shops', ['category' => $category->slug]) }}" class="category-circle-link"
-                            style="border: 1px solid #d8caca63; border-radius: 50%;">
-                            <div class="category-circle text-center">
-                                <div class="circle-icon mx-auto mb-2">
-                                    @if (!empty($category->logo))
-                                        <img src="{{ Storage::url($category->logo) }}" alt="{{ $category->name }}">
-                                    @else
-                                        <i class="fas fa-box-open"></i>
-                                    @endif
+                        <div class="swiper-slide">
+                            <a href="{{ route('shops', ['category' => $category->slug]) }}" class="category-circle-link">
+                                <div class="category-circle text-center">
+                                    <div class="circle-icon mx-auto mb-2">
+                                        @if (!empty($category->logo))
+                                            <img src="{{ Storage::url($category->logo) }}" alt="{{ $category->name }}">
+                                        @else
+                                            <i class="fas fa-box-open"></i>
+                                        @endif
+                                    </div>
+                                    <div class="category-name px-1">
+                                        {{ Str::limit($category->name, 22) }}
+                                    </div>
                                 </div>
-                                <div class="category-name px-1">
-                                    {{ Str::limit($category->name, 22) }}
-                                </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     @endforeach
                 </div>
-                <button class="category-arrow right-arrow" onclick="scrollCategories(1)">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+
+                <!-- Swiper Arrows -->
+                {{-- <div class="swiper-button-prev category-arrow"></div>
+                <div class="swiper-button-next category-arrow"></div> --}}
             </div>
+
 
         </div>
     </section>
@@ -1453,10 +1462,10 @@
                         <!-- Product tab area start -->
                         <div class="row space-t-50">
                             <!-- <div class="col-md-12">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="section-title">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <h2 class="ec-title">New Products</h2>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="section-title">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <h2 class="ec-title">New Products</h2>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
                             <h2 class="related-product-sec-title my-5"> Recommended For You</h2>
                         </div>
 
@@ -1532,9 +1541,10 @@
 
 
     <!-- Product tab area end -->
-</main>
+    </main>
 @endsection
 @section('js')
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     {{-- <livewire:scripts /> --}}
     <script src="{{ asset('assets/frontend-assets/js/demo-8.js') }}"></script>
     <script src="{{ asset('assets/frontend-assets/js/demo-3.js') }}"></script>
@@ -1709,4 +1719,32 @@
             updateSlider();
         });
     </script>
+
+
+    <script>
+        const swiper = new Swiper('.category-swiper', {
+            slidesPerView: 4,
+            spaceBetween: 24,
+            loop: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                0: {
+                    slidesPerView: 2,
+                },
+                576: {
+                    slidesPerView: 3,
+                },
+                768: {
+                    slidesPerView: 5,
+                },
+                1200: {
+                    slidesPerView: 7,
+                }
+            },
+        });
+    </script>
+
 @endsection
