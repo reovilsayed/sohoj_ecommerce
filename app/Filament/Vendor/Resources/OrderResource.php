@@ -26,8 +26,10 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
+    
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-right-circle';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Orders';
 
     public static function getEloquentQuery(): Builder
     {

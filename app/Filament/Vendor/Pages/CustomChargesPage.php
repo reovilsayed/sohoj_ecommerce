@@ -24,7 +24,7 @@ class CustomChargesPage extends Page
             NavigationItem::make('Charges')
                 ->url(fn() => route('filament.vendor.pages.custom-charges-page'))
                 ->icon('heroicon-o-currency-dollar')
-                // ->group('Marketing')
+                ->group('Inventory')
                 ->sort(5),
         ];
     }

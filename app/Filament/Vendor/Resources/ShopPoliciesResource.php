@@ -21,6 +21,8 @@ class ShopPoliciesResource extends Resource
     protected static ?string $model = ShopPolicy::class;
     public static ?string $label = "Shop Policy";
     public static ?string $title = "Shop Policy";
+
+    public static ?string $navigationGroup = 'Profile';
     public static ?string $description = "Manage your shop policies here.";
 
 

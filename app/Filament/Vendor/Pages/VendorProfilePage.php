@@ -40,6 +40,7 @@ class VendorProfilePage extends Page
             NavigationItem::make('Profile')
                 ->url(fn() => route('filament.vendor.pages.vendor-profile-page'))
                 ->icon('heroicon-o-user-circle')
+                ->group('Profile')
                 ->sort(1),
         ];
     }

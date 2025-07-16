@@ -16,6 +16,7 @@ class OfferBannerPage extends Page
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static string $view = 'filament.vendor.pages.offer-banner-page';
+    // protected static ?string $navigationGroup = 'Marketing';
     protected static ?string $title = '';
 
     // Declare your data array (public so Livewire sees it)
@@ -28,7 +29,8 @@ class OfferBannerPage extends Page
                 ->url(fn() => route('filament.vendor.pages.offer-banner-page'))
                 ->badge(fn() => 'New')
                 ->icon('heroicon-o-photo')
-                ->sort(5),
+                ->sort(5)
+                ->group('Marketing'),
         ];
     }
 

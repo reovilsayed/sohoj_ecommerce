@@ -35,9 +35,30 @@ class VendorPanelProvider extends PanelProvider
             ])
             ->login()
             ->brandName('Vendor Dashboard')
+            // ->databaseNotifications()
+            ->renderHook(
+                'panels::head.start',
+                fn() => <<<HTML
+        <style>
+            /* Hide scrollbar visually but keep scrolling functional */
+            .fi-sidebar-nav {
+                overflow-y: auto !important;
+                scrollbar-width: none !important; /* Firefox */
+                -ms-overflow-style: none !important; /* IE/Edge */
+            }
+
+            .fi-sidebar-nav::-webkit-scrollbar {
+                display: none !important; /* Chrome/Safari */
+            }
+        </style>
+    HTML
+            )
 
             ->discoverResources(in: app_path('Filament/Vendor/Resources'), for: 'App\\Filament\\Vendor\\Resources')
             ->discoverPages(in: app_path('Filament/Vendor/Pages'), for: 'App\\Filament\\Vendor\\Pages')
+
+            ->sidebarCollapsibleOnDesktop(true)
+            ->sidebarWidth('14rem')
             ->pages([
                 Pages\Dashboard::class,
             ])
@@ -68,6 +89,7 @@ class VendorPanelProvider extends PanelProvider
             ->pages([
                 ViewInvoice::class,
                 VendorProfilePage::class,
-            ]);
+            ])
+        ;
     }
 }

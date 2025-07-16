@@ -32,7 +32,13 @@ use Illuminate\Support\Str;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
+    protected static ?string $navigationGroup = 'Inventory';
     protected static ?string $navigationIcon = 'heroicon-o-cube';
+    public static function canCreate(): bool
+    {
+        $shop = auth()->user()->shop;
+        return $shop && $shop->status == 1;
+    }
 
     public static function getEloquentQuery(): Builder
     {
@@ -160,11 +166,11 @@ class ProductResource extends Resource
                     ->color('primary')
                     ->weight(FontWeight::Medium)
                     ->limit(30),
-                TextColumn::make('sku')
-                    ->label('SKU')
-                    ->searchable()
-                    ->icon('heroicon-o-hashtag')
-                    ->toggleable(),
+                // TextColumn::make('sku')
+                //     ->label('SKU')
+                //     ->searchable()
+                //     ->icon('heroicon-o-hashtag')
+                //     ->toggleable(),
                 TextColumn::make('type')
                     ->label('Type')
                     ->badge()
@@ -206,7 +212,7 @@ class ProductResource extends Resource
                     ->label('SKU')
                     ->searchable()
                     ->icon('heroicon-o-hashtag')
-                    ->toggleable(),
+                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('type')
                     ->label('Type')
                     ->badge()
@@ -228,7 +234,7 @@ class ProductResource extends Resource
                     ->badge()
                     ->color('info')
                     ->sortable()
-                    ->toggleable(),
+                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label('Created At')
                     ->dateTime('F j, Y')

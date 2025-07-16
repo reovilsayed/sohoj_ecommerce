@@ -23,6 +23,8 @@ class OfferRequestResource extends Resource
     public static ?string $title = "Offer Requests";
     public static ?string $label = "Offer Requests";
 
+    protected static ?string $navigationGroup = 'Orders';
+
     public static function getEloquentQuery(): Builder
     {
         $shop = auth()->user()->shop;
