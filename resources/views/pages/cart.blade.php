@@ -39,6 +39,18 @@
             --medium-gray: #e5e7eb;
             --dark-gray: #6b7280;
             --white: #ffffff;
+            --primary: #01949a;
+            --primary-hover: #a1887f;
+            --bg: #d7ccc8;
+            --card-bg: #ffffff;
+            --border-radius: 18px;
+            --shadow: 0 8px 32px rgba(141, 110, 99, 0.10);
+            --text: #4e342e;
+            --muted: #a1887f;
+            --danger: #e53935;
+            --success: #43a047;
+            --accent: #efebe9;
+            --step-gradient: linear-gradient(90deg, #8d6e63 0%, #a1887f 100%);
         }
 
         body,
@@ -279,6 +291,38 @@
             font-weight: 700;
             margin: 1.5rem 0 1.2rem 0;
         }
+
+        .checkout-hero {
+            background: #01949a;
+            color: #fff;
+            /* border-radius: var(--border-radius); */
+            box-shadow: var(--shadow);
+            padding: 2rem 2.5rem 1.5rem 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checkout-hero::after {
+            content: '';
+            position: absolute;
+            right: -60px;
+            top: -40px;
+            width: 180px;
+            height: 180px;
+            background: var(--accent);
+            opacity: 0.12;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .checkout-hero h2,
+        .checkout-hero p,
+        .checkout-hero-steps {
+            position: relative;
+            z-index: 1;
+        }
     </style>
 @endsection
 @section('content')
@@ -293,10 +337,20 @@
         @endphp
         <section class="cart-section">
             <div class="container mb-5">
-                <div class="cart-header">
+                {{-- <div class="cart-header">
                     <div class="breadcrumb">Home &gt; Shopping Cart</div>
                     <h1 class="cart-title">Shopping Cart</h1>
                     <span class="item-count">{{ Cart::count() }} Items</span>
+                </div> --}}
+
+                <div class="checkout-hero mb-4 position-relative">
+                    <h2 class="fw-bold mb-1 text-light">Shopping Cart</h2>
+                    <p class="mb-0">Complete your order and enjoy fast, secure delivery.</p>
+                    <div
+                        class="checkout-hero-steps d-none d-md-flex position-absolute end-0 top-0 h-100 align-items-center pe-4">
+                        <a href="{{route('homepage')}}"><span class="badge bg-light text-primary me-2">Home</span></a>
+                        <span class="badge bg-light text-primary me-2">Cart</span>
+                    </div>
                 </div>
                 <div class="cart-container mt-4">
                     <div class="cart-items">
@@ -364,7 +418,7 @@
                             <span class="summary-label">Subtotal</span>
                             <span class="summary-value">${{ Cart::subtotal() }}</span>
                         </div>
-                        
+
                         <div class="summary-row">
                             <span class="summary-label">Shipping</span>
                             <span class="summary-value">
@@ -394,7 +448,7 @@
                                 {{ Sohoj::price(Sohoj::discount()) }}</ @else 0 @endif
                             </span>
                         </div>
-                        
+
                         <div class="summary-total">
                             <span>Total:</span>
                             <span>{{ Sohoj::price(Sohoj::newSubtotal()) }}</span>

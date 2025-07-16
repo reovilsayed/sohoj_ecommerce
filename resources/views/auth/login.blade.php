@@ -3,8 +3,8 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />
     <style>
         :root {
-            --primary-green: #198754;
-            --primary-hover: #146c43;
+            --primary-green: #01949a;
+            --primary-hover: #01787a;
             --secondary-color: #F4F9FF;
             --text-dark: #2D3748;
             --text-medium: #4A5568;
@@ -78,7 +78,7 @@
         }
         .form-control:focus {
             border-color: var(--primary-green);
-            box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.1);
+            box-shadow: 0 0 0 3px rgba(1, 153, 154, 0.1);
             outline: none;
         }
         .forgot-password {

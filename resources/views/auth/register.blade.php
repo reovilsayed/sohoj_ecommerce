@@ -5,44 +5,107 @@
     <link rel="stylesheet" id="bg-switcher-css" href="{{ asset('assets/frontend-assetss/css/backgrounds/bg-4.css') }}">
     <style>
         :root {
-            --primary-green: #198754;
+            --primary-green: #01949a;
+            --primary-hover: #01787a;
+            --input-bg: #f8f9fa;
+            --input-border: #b6e2ce;
+            --input-focus-shadow: 0 0 0 0.2rem rgba(1, 153, 154, 0.15);
         }
         .register-header {
-            background: var(--primary-green) !important;
-            border-radius: 0.5rem 0.5rem 0 0;
+            background: linear-gradient(90deg, #01949a 60%, #01787a 100%) !important;
+            border-radius: 1rem 1rem 0 0;
+            box-shadow: 0 4px 24px rgba(1, 153, 154, 0.08);
+            padding: 2.5rem 1rem 2rem 1rem;
         }
         .register-header h1, .register-header p {
             color: #fff !important;
+            letter-spacing: 0.5px;
         }
         .input-group-text, .form-check-input:checked {
-            background-color: #e6f4ec !important;
+            background-color: var(--input-bg) !important;
             color: var(--primary-green) !important;
-            border-color: #b6e2ce !important;
+            border-color: var(--input-border) !important;
+            font-weight: 600;
+            font-size: 1.1rem;
         }
         .form-label, .form-check-label {
             color: var(--primary-green) !important;
+            font-weight: 600;
+            letter-spacing: 0.2px;
         }
         .btn-green, .btn-green:active, .btn-green:focus {
-            background: var(--primary-green) !important;
+            background: linear-gradient(90deg, #01949a 60%, #01787a 100%) !important;
             color: #fff !important;
             border: none !important;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(1, 153, 154, 0.10);
+            transition: background 0.2s, box-shadow 0.2s;
         }
         .btn-green:hover {
-            background: #146c43 !important;
+            background: #01787a !important;
             color: #fff !important;
+            box-shadow: 0 4px 16px rgba(1, 153, 154, 0.13);
+            /* transform: translateY(-2px) scale(1.03); */
+        }
+        .form-control {
+            background: var(--input-bg);
+            border-radius: 10px;
+            border: 1px solid var(--input-border) !important;
+            font-size: 1rem;
+            padding: 0.8rem 1.1rem;
+            transition: 0.2s;
         }
         .form-control:focus {
             border-color: var(--primary-green) !important;
-            box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15) !important;
+            box-shadow: var(--input-focus-shadow) !important;
         }
         .alert {
             border-left: 4px solid var(--primary-green) !important;
+            background: #e6f4ec !important;
+            color: var(--primary-green) !important;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(1, 153, 154, 0.07);
         }
         a {
             color: var(--primary-green);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
         }
         a:hover {
-            color: #146c43;
+            color: #01787a;
+            text-decoration: underline;
+        }
+        .card {
+            border-radius: 1.2rem;
+            box-shadow: 0 8px 32px rgba(1, 153, 154, 0.10);
+            border: none;
+        }
+        .toggle-password {
+            background: transparent !important;
+            color: var(--primary-green) !important;
+            border: none !important;
+            font-size: 1.2rem;
+            height: 50px;
+            /* transition: color 0.2s; */
+        }
+        .toggle-password:hover {
+            color: #ffffff !important;
+        }
+        .form-text {
+            color: #718096;
+            font-size: 0.95rem;
+            margin-top: 0.25rem;
+        }
+        @media (max-width: 768px) {
+            .register-header {
+                padding: 1.5rem 0.5rem 1rem 0.5rem;
+                border-radius: 0.7rem 0.7rem 0 0;
+            }
+            .card {
+                border-radius: 0.7rem;
+            }
         }
     </style>
 @endsection
