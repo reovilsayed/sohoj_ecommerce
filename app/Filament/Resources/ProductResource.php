@@ -272,18 +272,18 @@ class ProductResource extends Resource
                 //     ->icon('heroicon-o-hashtag')
                 //     ->toggleable(isToggledHiddenByDefault: false)
                 //     ->toggleable(),
-                TextColumn::make('type')
-                    ->label('Type')
-                    ->badge()
-                    ->icon('heroicon-o-cube')
-                    ->color(fn(string $state): string => match ($state) {
-                        'simple' => 'success',
-                        'variable' => 'warning',
-                        'grouped' => 'info',
-                        'external' => 'danger',
-                        'digital' => 'primary',
-                        default => 'gray',
-                    }),
+                // TextColumn::make('type')
+                //     ->label('Type')
+                //     ->badge()
+                //     ->icon('heroicon-o-cube')
+                //     ->color(fn(string $state): string => match ($state) {
+                //         'simple' => 'success',
+                //         'variable' => 'warning',
+                //         'grouped' => 'info',
+                //         'external' => 'danger',
+                //         'digital' => 'primary',
+                //         default => 'gray',
+                //     }),
                 TextColumn::make('prodcats.name')
                     ->label('Categories')
                     ->badge()

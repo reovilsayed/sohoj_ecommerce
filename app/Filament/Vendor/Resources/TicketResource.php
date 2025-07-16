@@ -55,8 +55,8 @@ class TicketResource extends Resource
                 ImageColumn::make('image')->disk('public')->label('Image')->circular()->toggleable(),
                 TextColumn::make('user.name')->label('User')->searchable()->toggleable(),
                 TextColumn::make('shop.name')->label('Shop')->searchable()->toggleable(),
-                TextColumn::make('subject')->limit(30)->searchable()->toggleable(),
-                TextColumn::make('massage')->limit(30)->searchable()->toggleable(),
+                TextColumn::make('subject')->limit(30)->searchable()->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('massage')->limit(30)->searchable()->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('status')
                     ->label('Status')
                     ->formatStateUsing(fn($state) => match ($state) {
@@ -84,7 +84,7 @@ class TicketResource extends Resource
                         default => 'Unknown',
                     })
                     ->toggleable(),
-                TextColumn::make('created_at')->label('Created')->dateTime()->toggleable(),
+                TextColumn::make('created_at')->label('Created')->dateTime()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

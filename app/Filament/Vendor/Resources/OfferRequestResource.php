@@ -64,7 +64,7 @@ class OfferRequestResource extends Resource
                 TextColumn::make('product.name')->label('Product Name')->sortable()->searchable()->toggleable(true),
                 TextColumn::make('shop.name')->label('Shop Name')->sortable()->searchable()->toggleable(true),
                 TextColumn::make('price')->label('Price')->sortable()->toggleable(true),
-                TextColumn::make('massage')->label('Message')->limit(50)->toggleable(true),
+                TextColumn::make('massage')->label('Message')->limit(50)->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('status')
                     ->label('Status')
                     ->formatStateUsing(fn($state) => match ($state) {
@@ -79,7 +79,7 @@ class OfferRequestResource extends Resource
                         default => 'warning',
                     }),
 
-                TextColumn::make('created_at')->label('Created At')->dateTime()->sortable()->toggleable(true),
+                TextColumn::make('created_at')->label('Created At')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
