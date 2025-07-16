@@ -17,7 +17,7 @@
                             <div class="welcome-stats">
                                 <div class="stat-item">
                                     <i class="fas fa-shopping-bag"></i>
-                                    <span>5 Orders</span>
+                                    <span>{{Auth()->user()->orders->count()}}</span>
                                 </div>
                                 <div class="stat-item">
                                     <i class="fas fa-map-marker-alt"></i>

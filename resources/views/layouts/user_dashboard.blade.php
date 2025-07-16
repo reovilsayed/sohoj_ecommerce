@@ -12,7 +12,7 @@
 @section('content')
 
 <x-app.header />
-<x-app.breadcrumb />
+{{-- <x-app.breadcrumb /> --}}
 
 
 <!-- Vendor dashboard section -->
