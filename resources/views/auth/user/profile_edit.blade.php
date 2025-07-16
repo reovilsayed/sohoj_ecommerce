@@ -62,8 +62,8 @@
                                     src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('public/assets/img/account/user.jpg') }}"
                                     alt="Profile Avatar" class="avatar-image">
                                 <div class="avatar-overlay">
-                                    <i class="fas fa-camera"></i>
-                                    <span>Change Photo</span>
+                                    {{-- <i class="fas fa-camera"></i>
+                                    <span>Change Photo</span> --}}
                                 </div>
                             </div>
                             <div class="avatar-info">
@@ -164,8 +164,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-primary btn-lg" style="padding: 0; border-radius: 0;">
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-edit-profile">
                                 <i class="fas fa-save me-2"></i>
                                 Update Password
                             </button>
@@ -177,9 +177,26 @@
     </div>
 
     <style>
+        :root {
+            --primary-color: #01949a;
+            --primary-dark: #01949a;
+            --primary-light: #e8f5e8;
+            --secondary-color: #2c3e50;
+            --accent-color: #f39c12;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #6c757d;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --border-radius: 12px;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
         /* Header Section */
         .profile-header-section {
-            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            background: #01949a;
             padding: 2rem;
             border-radius: 20px;
             color: white;
@@ -222,6 +239,24 @@
         .profile-stats {
             display: flex;
             gap: 1rem;
+        }
+        .btn-edit-profile {
+            background: rgba(1, 153, 154, 0.1);
+            color: var(--primary-color);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.85rem;
+        }
+
+        .btn-edit-profile:hover {
+            background: var(--primary-color);
+            color: white;
         }
 
         .stat-card {
@@ -275,18 +310,6 @@
             border: 1px solid rgba(0, 0, 0, 0.05);
             position: relative;
             overflow: hidden;
-        }
-
-        .form-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #3bb77e, #2d9d6b, #3bb77e);
-            background-size: 200% 100%;
-            animation: gradient-shift 3s ease-in-out infinite;
         }
 
         @keyframes gradient-shift {
@@ -364,12 +387,12 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(59, 183, 126, 0.8);
+            background: rgba(1, 153, 154, 0.1) !important;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--primary-color);
             opacity: 0;
             transition: all 0.3s ease;
         }
@@ -419,8 +442,8 @@
             display: inline-flex;
             align-items: center;
             padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
-            color: white;
+            background: rgba(1, 153, 154, 0.1);
+            color: var(--primary-color);
             border-radius: 25px;
             font-weight: 600;
             cursor: pointer;
@@ -429,8 +452,8 @@
         }
 
         .file-label:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(59, 183, 126, 0.3);
+            background: var(--primary-color);
+            color: white;
         }
 
         /* Form Sections */

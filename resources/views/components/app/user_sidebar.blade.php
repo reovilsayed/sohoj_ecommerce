@@ -4,8 +4,9 @@
         <div class="user-profile-section">
             <div class="profile-card">
                 <div class="profile-avatar">
-                    @if(auth()->user()->avatar)
-                        <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('public/assets/img/account/user.jpg') }}" alt="Profile Avatar" class="avatar-image">
+                    @if (auth()->user()->avatar)
+                        <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('public/assets/img/account/user.jpg') }}"
+                            alt="Profile Avatar" class="avatar-image">
                     @else
                         <div class="avatar-placeholder">
                             <i class="fas fa-user"></i>
@@ -16,7 +17,8 @@
                     </div>
                 </div>
                 <div class="profile-info">
-                    <h4 class="user-name" style="color: #ffffff">{{ auth()->user()->name }} {{ auth()->user()->l_name }}</h4>
+                    <h4 class="user-name" style="color: #ffffff">{{ auth()->user()->name }} {{ auth()->user()->l_name }}
+                    </h4>
                     <p class="user-role">Customer</p>
                 </div>
             </div>
@@ -31,7 +33,8 @@
                 </h6>
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="{{ route('user.dashboard') }}" class="nav-link {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('user.dashboard') }}"
+                            class="nav-link {{ request()->routeIs('user.dashboard') ? 'active' : '' }}">
                             <div class="nav-icon">
                                 <i class="fas fa-home"></i>
                             </div>
@@ -39,9 +42,10 @@
                             <div class="nav-indicator"></div>
                         </a>
                     </li>
-                    
+
                     <li class="nav-item">
-                        <a href="{{ route('user.ordersIndex') }}" class="nav-link {{ request()->routeIs('user.ordersIndex') ? 'active' : '' }}">
+                        <a href="{{ route('user.ordersIndex') }}"
+                            class="nav-link {{ request()->routeIs('user.ordersIndex') ? 'active' : '' }}">
                             <div class="nav-icon">
                                 <i class="fas fa-shopping-bag"></i>
                             </div>
@@ -49,9 +53,10 @@
                             <div class="nav-indicator"></div>
                         </a>
                     </li>
-                    
+
                     <li class="nav-item">
-                        <a href="{{ route('user.update_profile') }}" class="nav-link {{ request()->routeIs('user.update_profile') ? 'active' : '' }}">
+                        <a href="{{ route('user.update_profile') }}"
+                            class="nav-link {{ request()->routeIs('user.update_profile') ? 'active' : '' }}">
                             <div class="nav-icon">
                                 <i class="fas fa-user-edit"></i>
                             </div>
@@ -69,7 +74,8 @@
                 </h6>
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="{{ route('user.offers') }}" class="nav-link {{ request()->routeIs('user.offers') ? 'active' : '' }}">
+                        <a href="{{ route('user.offers') }}"
+                            class="nav-link {{ request()->routeIs('user.offers') ? 'active' : '' }}">
                             <div class="nav-icon">
                                 <i class="fas fa-gift"></i>
                             </div>
@@ -77,9 +83,10 @@
                             <div class="nav-indicator"></div>
                         </a>
                     </li>
-                    
+
                     <li class="nav-item">
-                        <a href="{{ route('massage.create') }}" class="nav-link {{ request()->routeIs('massage.create') ? 'active' : '' }}">
+                        <a href="{{ route('massage.create') }}"
+                            class="nav-link {{ request()->routeIs('massage.create') ? 'active' : '' }}">
                             <div class="nav-icon">
                                 <i class="fas fa-comments"></i>
                             </div>
@@ -97,7 +104,8 @@
                 </h6>
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="{{ route('user.change_password') }}" class="nav-link {{ request()->routeIs('user.change_password') ? 'active' : '' }}">
+                        <a href="{{ route('user.change_password') }}"
+                            class="nav-link {{ request()->routeIs('user.change_password') ? 'active' : '' }}">
                             <div class="nav-icon">
                                 <i class="fas fa-lock"></i>
                             </div>
@@ -140,7 +148,7 @@
 
         /* User Profile Section */
         .user-profile-section {
-            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            background: #01949a;
             padding: 2rem 1.5rem;
             color: white;
             text-align: center;
@@ -263,14 +271,14 @@
         }
 
         .nav-link:hover {
-            background: rgba(59, 183, 126, 0.1);
-            color: #3bb77e;
+            background: rgba(1, 153, 154, 0.1);
+            color: #01949a;
             text-decoration: none;
             transform: translateX(5px);
         }
 
         .nav-link.active {
-            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            background: #01949a;
             color: white;
             box-shadow: 0 5px 15px rgba(59, 183, 126, 0.3);
         }
@@ -328,11 +336,12 @@
 
         .action-btn {
             display: flex;
+            background: rgba(1, 153, 154, 0.1) !important; 
             align-items: center;
             justify-content: center;
             padding: 0.75rem 1rem;
             background: white;
-            color: #6c757d;
+            color: #01949a;
             text-decoration: none;
             border-radius: 10px;
             font-size: 0.9rem;
@@ -342,7 +351,7 @@
         }
 
         .action-btn:hover {
-            background: #3bb77e;
+            background: #01949a !important;
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(59, 183, 126, 0.3);
@@ -357,8 +366,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
-            opacity: 0;
+            /* background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            opacity: 0; */
             transition: opacity 0.3s ease;
             z-index: -1;
         }
@@ -373,6 +382,7 @@
                 opacity: 0;
                 transform: translateX(-30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -387,11 +397,25 @@
             animation: slideInLeft 0.6s ease-out;
         }
 
-        .nav-item:nth-child(1) { animation-delay: 0.1s; }
-        .nav-item:nth-child(2) { animation-delay: 0.2s; }
-        .nav-item:nth-child(3) { animation-delay: 0.3s; }
-        .nav-item:nth-child(4) { animation-delay: 0.4s; }
-        .nav-item:nth-child(5) { animation-delay: 0.5s; }
+        .nav-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .nav-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .nav-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .nav-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .nav-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -445,7 +469,7 @@
         }
 
         /* Scrollbar Styling */
-        .sidebar-container::-webkit-scrollbar {
+        /* .sidebar-container::-webkit-scrollbar {
             width: 4px;
         }
 
@@ -461,7 +485,7 @@
 
         .sidebar-container::-webkit-scrollbar-thumb:hover {
             background: #2d9d6b;
-        }
+        } */
     </style>
 
     <script>
@@ -488,10 +512,10 @@
             $('.action-btn').click(function() {
                 const btn = $(this);
                 const originalText = btn.html();
-                
+
                 btn.html('<i class="fas fa-spinner fa-spin me-1"></i>Loading...');
                 btn.prop('disabled', true);
-                
+
                 setTimeout(() => {
                     btn.html(originalText);
                     btn.prop('disabled', false);

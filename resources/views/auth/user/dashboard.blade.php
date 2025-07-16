@@ -12,7 +12,7 @@
                             <i class="fas fa-user-circle"></i>
                         </div>
                         <div class="welcome-text">
-                            <h1>Welcome back, {{ Auth::user()->name }}!</h1>
+                            <h1 class="text-light">Welcome back, {{ Auth::user()->name }}!</h1>
                             <p>Here's your personalized dashboard to manage your account</p>
                             <div class="welcome-stats">
                                 <div class="stat-item">
@@ -310,7 +310,7 @@
                     <div class="card-header">
                         <h2><i class="fas fa-map-marker-alt"></i> My Addresses</h2>
                         <div class="header-actions">
-                            <button class="btn-add-address" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <button class="btn-edit-profile" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <i class="fas fa-plus"></i>
                                 Add Address
                             </button>
@@ -417,7 +417,7 @@
                                         </div>
 
                                         <div class="form-actions">
-                                            <button class="btn-add-card" type="button" id="card-button"
+                                            <button class="btn-edit-profile" type="button" id="card-button"
                                                 data-secret="{{ $intent->client_secret }}">
                                                 <i class="fas fa-plus"></i>
                                                 Add Card
@@ -631,8 +631,8 @@
     <style>
         /* Modern Dashboard Styles */
         :root {
-            --primary-color: #3bb77e;
-            --primary-dark: #2d9d6b;
+            --primary-color: #01949a;
+            --primary-dark: #01949a;
             --primary-light: #e8f5e8;
             --secondary-color: #2c3e50;
             --accent-color: #f39c12;
@@ -648,7 +648,6 @@
         }
 
         .modern-dashboard-container {
-            background: var(--light-gray);
             min-height: 100vh;
             padding-bottom: 2rem;
         }
@@ -892,7 +891,7 @@
         }
 
         .btn-edit-profile {
-            background: rgba(59, 183, 126, 0.1);
+            background: rgba(1, 153, 154, 0.1);
             color: var(--primary-color);
             border: none;
             padding: 0.5rem 1rem;
@@ -938,7 +937,7 @@
         .action-icon {
             width: 40px;
             height: 40px;
-            background: rgba(59, 183, 126, 0.1);
+            background: rgba(1, 153, 154, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -969,7 +968,7 @@
             padding: 2rem;
             background: linear-gradient(135deg, #e8f5e8, #d4edda);
             border-radius: var(--border-radius);
-            border: 1px solid rgba(59, 183, 126, 0.2);
+            border: 1px solid rgba(1, 153, 154, 0.2);
         }
 
         .promo-icon {
@@ -1029,10 +1028,10 @@
         }
 
         .btn-become-seller:hover {
-            background: linear-gradient(135deg, var(--primary-dark), #1a7a4a);
+            background: linear-gradient(135deg, var(--primary-dark), #01787a);
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 183, 126, 0.3);
+            box-shadow: 0 8px 25px rgba(1, 153, 154, 0.3);
         }
 
         .shop-status {
@@ -1101,27 +1100,6 @@
             margin: 0;
         }
 
-        /* Addresses Section */
-        .btn-add-address {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.85rem;
-        }
-
-        .btn-add-address:hover {
-            background: linear-gradient(135deg, var(--primary-dark), #1a7a4a);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(59, 183, 126, 0.2);
-        }
-
         .addresses-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1144,7 +1122,7 @@
 
         .address-card.default-address {
             border: 2px solid var(--primary-color);
-            background: rgba(59, 183, 126, 0.03);
+            background: rgba(1, 153, 154, 0.03);
         }
 
         .address-header {
@@ -1169,7 +1147,7 @@
         }
 
         .default-badge {
-            background: rgba(59, 183, 126, 0.1);
+            background: rgba(1, 153, 154, 0.1);
             color: var(--primary-color);
             font-size: 0.7rem;
             padding: 0.2rem 0.5rem;
@@ -1354,27 +1332,6 @@
         #card-element:focus {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(59, 183, 126, 0.1);
-        }
-
-        .btn-add-card {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-
-        .btn-add-card:hover {
-            background: linear-gradient(135deg, var(--primary-dark), #1a7a4a);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 183, 126, 0.3);
         }
 
         .existing-cards h3 {
