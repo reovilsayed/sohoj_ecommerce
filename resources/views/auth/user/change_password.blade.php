@@ -125,8 +125,8 @@
                         </div>
                     </div>
 
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-primary btn-lg" style="padding: 0; border-radius: 0;">
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-edit-profile d-block btn-lg" style="padding: 0; border-radius: 0;">
                             <i class="fas fa-save me-2"></i>
                             Update Password
                         </button>
@@ -160,13 +160,29 @@
     </div>
 
     <style>
+        :root {
+            --primary-color: #01949a;
+            --primary-dark: #01949a;
+            --primary-light: #e8f5e8;
+            --secondary-color: #2c3e50;
+            --accent-color: #f39c12;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #6c757d;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --border-radius: 12px;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
         /* Header Section */
         .password-header-section {
-            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            background: linear-gradient(135deg, #01949a, #01949a);
             padding: 2rem;
             border-radius: 20px;
             color: white;
-            box-shadow: 0 10px 30px rgba(59, 183, 126, 0.3);
+            box-shadow: 0 10px 30px rgba(1, 153, 154, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -260,18 +276,6 @@
             overflow: hidden;
         }
 
-        .form-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #3bb77e, #2d9d6b, #3bb77e);
-            background-size: 200% 100%;
-            animation: gradient-shift 3s ease-in-out infinite;
-        }
-
         @keyframes gradient-shift {
 
             0%,
@@ -355,8 +359,8 @@
         }
 
         .form-control:focus {
-            border-color: #3bb77e;
-            box-shadow: 0 0 0 0.2rem rgba(59, 183, 126, 0.25);
+            border-color: #01949a;
+            box-shadow: 0 0 0 0.2rem rgba(1, 153, 154, 0.25);
             outline: none;
         }
 
@@ -370,7 +374,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #3bb77e, #2d9d6b);
+            background: linear-gradient(90deg, #01949a, #01949a);
             transition: width 0.3s ease;
         }
 
@@ -393,8 +397,8 @@
         }
 
         .password-toggle:hover {
-            color: #3bb77e;
-            background: rgba(59, 183, 126, 0.1);
+            color: #01949a;
+            background: rgba(1, 153, 154, 0.1);
         }
 
         .error-message {
@@ -659,7 +663,7 @@
 
         .tip-item i {
             margin-right: 0.75rem;
-            color: #3bb77e;
+            color: #01949a;
             font-size: 1rem;
         }
 
@@ -695,6 +699,25 @@
             background: #6c757d;
             color: white;
             transform: translateY(-2px);
+        }
+
+        .btn-edit-profile {
+            background: rgba(1, 153, 154, 0.1);
+            color: var(--primary-color);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.85rem;
+        }
+
+        .btn-edit-profile:hover {
+            background: var(--primary-color);
+            color: white;
         }
 
         /* Responsive Design */

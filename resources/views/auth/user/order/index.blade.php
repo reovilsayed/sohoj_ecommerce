@@ -1,13 +1,25 @@
 @extends('layouts.user_dashboard')
 @section('dashboard-content')
     <style>
-        :root {
-            --primary-green: #198754;
-            --primary-hover: #146c43;
+       :root {
+            --primary-color: #01949a;
+            --primary-dark: #01949a;
+            --primary-light: #e8f5e8;
+            --secondary-color: #2c3e50;
+            --accent-color: #f39c12;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #6c757d;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --border-radius: 12px;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
         }
 
         .order-header {
-            background: var(--primary-green);
+            background: var(--primary-color);
             color: #fff;
             border-radius: 1rem 1rem 0 0;
             padding: 1rem 2rem;
@@ -15,8 +27,8 @@
         }
 
         .order-status-badge {
-            background: var(--primary-green);
-            color: #fff;
+            background: rgba(1, 153, 154, 0.1);
+            color: var(--primary-color);
             border-radius: 0.5rem;
             padding: 0.25rem 0.75rem;
             font-size: 0.95rem;
@@ -45,13 +57,13 @@
         .btn-green,
         .btn-green:active,
         .btn-green:focus {
-            background: var(--primary-green) !important;
+            background: #01949a !important;
             color: #fff !important;
             border: none !important;
         }
 
         .btn-green:hover {
-            background: var(--primary-hover) !important;
+            background: #01787a !important;
             color: #fff !important;
         }
 
@@ -61,7 +73,7 @@
         }
 
         .order-meta-value {
-            color: var(--primary-green);
+            color: #01949a;
             font-weight: 600;
         }
 
@@ -79,6 +91,25 @@
             color: #fff !important;
             background-color: #dc3545 !important;
             border-color: #dc3545;
+        }
+
+        .btn-edit-profile {
+            background: rgb(1 153 154 / 19%);   
+            color: var(--primary-color);
+            border: none;
+            padding: 0.5rem 1rem;
+            /* border-radius: 8px; */
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.85rem;
+        }
+
+        .btn-edit-profile:hover {
+            background: var(--primary-color);
+            color: white;
         }
     </style>
     <div class="ec-shop-rightside col-lg-9 col-md-12 mt-2">
@@ -193,7 +224,7 @@
                                             order</a>
                                     @endif
                                 @endif
-                                <a href="{{ route('user.invoice', $order) }}" class="btn btn-success w-100 mb-2">View
+                                <a href="{{ route('user.invoice', $order) }}" class="btn btn-edit-profile d-flex justify-content-center w-100 mb-2">View
                                     Invoice</a>
                                 @if ($order->status == 4)
                                     <form action="{{ route('user.order.accept', $order) }}" method="post">
