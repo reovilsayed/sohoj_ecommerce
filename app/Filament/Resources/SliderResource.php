@@ -22,6 +22,7 @@ class SliderResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-photo'; // Use a valid icon name
 
     protected static ?string $navigationLabel = 'Sliders'; // Added navigation label
+    protected static ?string $navigationGroup = 'Content';
 
     protected static ?int $navigationSort = 2; // Optional: Set navigation order
 

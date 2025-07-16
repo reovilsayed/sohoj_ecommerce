@@ -134,22 +134,22 @@ class VerificationResource extends Resource
                     ->searchable()
                     ->icon('heroicon-o-envelope')
                     ->toggleable(),
-                TextColumn::make('dob')
-                    ->label('Date of Birth')
-                    ->sortable()
-                    ->searchable()
-                    ->icon('heroicon-o-calendar-days')
-                    ->toggleable(),
+                // TextColumn::make('dob')
+                //     ->label('Date of Birth')
+                //     ->sortable()
+                //     ->searchable()
+                //     ->icon('heroicon-o-calendar-days')
+                //     ->toggleable(),
                 TextColumn::make('tax_no')
                     ->label('Tax Number')
                     ->sortable()
                     ->searchable()
                     ->toggleable(),
-                TextColumn::make('card_no')
-                    ->label('Card Number')
-                    ->sortable()
-                    ->searchable()
-                    ->toggleable(),
+                // TextColumn::make('card_no')
+                //     ->label('Card Number')
+                //     ->sortable()
+                //     ->searchable()
+                //     ->toggleable(),
                 ImageColumn::make('govt_id_front')
                     ->label('Govt. ID Front')
                     ->size(48)
@@ -158,33 +158,33 @@ class VerificationResource extends Resource
                     ->label('Govt. ID Back')
                     ->size(48)
                     ->toggleable(),
-                TextColumn::make('bank_ac')
-                    ->label('Bank Account')
-                    ->sortable()
-                    ->searchable()
-                    ->toggleable(),
-                TextColumn::make('ac_holder_name')
-                    ->label('Account Holder Name')
-                    ->sortable()
-                    ->searchable()
-                    ->toggleable(),
-                TextColumn::make('address')
-                    ->label('Address')
-                    ->sortable()
-                    ->searchable()
-                    ->limit(30)
-                    ->tooltip(fn($record) => $record->address)
-                    ->toggleable(),
-                TextColumn::make('rtn')
-                    ->label('Routing Number')
-                    ->sortable()
-                    ->searchable()
-                    ->toggleable(),
-                BooleanColumn::make('ismonthly_charge')
-                    ->label('Monthly Charge Enabled')
-                    ->icon('heroicon-o-currency-dollar')
-                    ->sortable()
-                    ->toggleable(),
+                // TextColumn::make('bank_ac')
+                //     ->label('Bank Account')
+                //     ->sortable()
+                //     ->searchable()
+                //     ->toggleable(),
+                // TextColumn::make('ac_holder_name')
+                //     ->label('Account Holder Name')
+                //     ->sortable()
+                //     ->searchable()
+                //     ->toggleable(),
+                // TextColumn::make('address')
+                //     ->label('Address')
+                //     ->sortable()
+                //     ->searchable()
+                //     ->limit(30)
+                //     ->tooltip(fn($record) => $record->address)
+                //     ->toggleable(),
+                // TextColumn::make('rtn')
+                //     ->label('Routing Number')
+                //     ->sortable()
+                //     ->searchable()
+                //     ->toggleable(),
+                // BooleanColumn::make('ismonthly_charge')
+                //     ->label('Monthly Charge Enabled')
+                //     ->icon('heroicon-o-currency-dollar')
+                //     ->sortable()
+                //     ->toggleable(),
             ])
 
             ->filters([

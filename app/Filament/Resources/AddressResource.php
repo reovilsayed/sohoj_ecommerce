@@ -120,29 +120,29 @@ class AddressResource extends Resource
                     ->label('Company')
                     ->sortable()
                     ->toggleable(),
-                Tables\Columns\TextColumn::make('address_1')
-                    ->label('Address Line 1')
-                    ->limit(30)
-                    ->tooltip(fn($record) => $record->address_1)
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('city')
-                    ->label('City')
-                    ->sortable()
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('state')
-                    ->label('State')
-                    ->sortable()
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('post_code')
-                    ->label('Postal Code')
-                    ->sortable()
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('country')
-                    ->label('Country')
-                    ->sortable()
-                    ->badge()
-                    ->color('success')
-                    ->toggleable(),
+                // Tables\Columns\TextColumn::make('address_1')
+                //     ->label('Address Line 1')
+                //     ->limit(30)
+                //     ->tooltip(fn($record) => $record->address_1)
+                //     ->toggleable(),
+                // Tables\Columns\TextColumn::make('city')
+                //     ->label('City')
+                //     ->sortable()
+                //     ->toggleable(),
+                // Tables\Columns\TextColumn::make('state')
+                //     ->label('State')
+                //     ->sortable()
+                //     ->toggleable(),
+                // Tables\Columns\TextColumn::make('post_code')
+                //     ->label('Postal Code')
+                //     ->sortable()
+                //     ->toggleable(),
+                // Tables\Columns\TextColumn::make('country')
+                //     ->label('Country')
+                //     ->sortable()
+                //     ->badge()
+                //     ->color('success')
+                //     ->toggleable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label('Email')
                     ->searchable()

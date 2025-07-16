@@ -21,6 +21,7 @@ class TicketResource extends Resource
     protected static ?string $model = Ticket::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+    protected static ?string $navigationGroup = 'Business';
 
     public static function getEloquentQuery(): Builder
     {
@@ -117,11 +118,11 @@ class TicketResource extends Resource
                     ->icon('heroicon-o-building-storefront')
                     ->searchable()
                     ->toggleable(),
-                TextColumn::make('subject')
-                    ->label('Subject')
-                    ->limit(30)
-                    ->searchable()
-                    ->toggleable(),
+                // TextColumn::make('subject')
+                //     ->label('Subject')
+                //     ->limit(30)
+                //     ->searchable()
+                //     ->toggleable(),
                 BooleanColumn::make('status')
                     ->label('Resolved')
                     ->icon('heroicon-o-check-circle')

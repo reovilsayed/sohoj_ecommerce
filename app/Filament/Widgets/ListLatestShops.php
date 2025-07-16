@@ -22,7 +22,6 @@ class ListLatestShops extends BaseWidget
         // return Shop::query()->latest()->limit(10);
         return Shop::query()
             ->where('status', 0)
-            ->where('created_at', '>=', now()->subDays(7))
             ->latest();
     }
 
@@ -89,14 +88,11 @@ class ListLatestShops extends BaseWidget
     {
         return [
             Tables\Actions\ActionGroup::make([
-                Tables\Actions\Action::make('details')
-                    ->label('Details')
-                    ->icon('heroicon-o-eye')
-                    ->modalHeading(fn($record) => "Shop Details - {$record->name}")
-                    ->modalDescription(fn($record) => new HtmlString(view('filament.modals.shop-details', ['shop' => $record])->render()))
-                    ->modalSubmitActionLabel('Close')
-                    ->color('info')
-                    ->action(fn() => null),
+                Tables\Actions\ViewAction::make()
+                ->url(fn($record) => route('filament.admin.resources.shops.view', ['record' => $record]))
+                ->openUrlInNewTab(),
+            
+
                 Tables\Actions\DeleteAction::make()
                     ->label('Delete')
                     ->icon('heroicon-o-trash'),

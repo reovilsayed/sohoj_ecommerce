@@ -106,18 +106,20 @@ class CouponResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('expired')
                     ->label('Expired Coupons')
-                    ->query(fn (Builder $query): Builder => $query->where('expire_at', '<', now())),
+                    ->query(fn(Builder $query): Builder => $query->where('expire_at', '<', now())),
                 Tables\Filters\Filter::make('active')
                     ->label('Active Coupons')
-                    ->query(fn (Builder $query): Builder => $query->where('expire_at', '>=', now())),
+                    ->query(fn(Builder $query): Builder => $query->where('expire_at', '>=', now())),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->label('Edit')
-                    ->icon('heroicon-o-pencil-square'),
-                Tables\Actions\DeleteAction::make()
-                    ->label('Delete')
-                    ->icon('heroicon-o-trash'),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit')
+                        ->icon('heroicon-o-pencil-square'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Delete')
+                        ->icon('heroicon-o-trash'),
+                ])->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -141,7 +143,7 @@ class CouponResource extends Resource
             'edit' => Pages\EditCoupon::route('/{record}/edit'),
         ];
     }
-    
+
     public static function getNavigationBadge(): ?string
     {
         return static::$model::count();

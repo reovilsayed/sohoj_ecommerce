@@ -149,11 +149,11 @@ public static function form(Form $form): Form
 
                 Tables\Columns\ImageColumn::make('image'),
 
-                Tables\Columns\TextColumn::make('excerpt')
-                    ->formatStateUsing(fn ($state) => Str::words($state, 7)),
+                // Tables\Columns\TextColumn::make('excerpt')
+                //     ->formatStateUsing(fn ($state) => Str::words($state, 7)),
 
-                Tables\Columns\TextColumn::make('meta_description')
-                    ->formatStateUsing(fn ($state) => Str::words($state, 7)),
+                // Tables\Columns\TextColumn::make('meta_description')
+                //     ->formatStateUsing(fn ($state) => Str::words($state, 7)),
 
                 Tables\Columns\TextColumn::make('status'),
 

@@ -24,6 +24,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use App\Filament\Widgets\StatsOverview;
 use Illuminate\Database\Eloquent\Model;
 use App\Filament\Pages\DynamicSettingsPage;
+use Filament\Navigation\NavigationGroup;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
@@ -108,6 +109,14 @@ class AdminPanelProvider extends PanelProvider
                 WidgetsDashboardChart::class,
                 ListLatestShops::class,
                 // RecentOrders::class,
+            ])
+            ->navigationGroups([
+                'Inventory',
+                'Orders',
+                'Business',
+                'User Management',
+                'Blog',
             ]);
+            
     }
 }

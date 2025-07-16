@@ -266,12 +266,12 @@ class ProductResource extends Resource
                     ->color('primary')
                     ->weight(FontWeight::Medium)
                     ->limit(30),
-                TextColumn::make('sku')
-                    ->label('SKU')
-                    ->searchable()
-                    ->icon('heroicon-o-hashtag')
-                    ->toggleable(isToggledHiddenByDefault: false)
-                    ->toggleable(),
+                // TextColumn::make('sku')
+                //     ->label('SKU')
+                //     ->searchable()
+                //     ->icon('heroicon-o-hashtag')
+                //     ->toggleable(isToggledHiddenByDefault: false)
+                //     ->toggleable(),
                 TextColumn::make('type')
                     ->label('Type')
                     ->badge()
@@ -316,25 +316,25 @@ class ProductResource extends Resource
                     ->label('Featured')
                     ->icon('heroicon-o-star')
                     ->sortable(),
-                TextColumn::make('total_sale')
-                    ->label('Sales')
-                    ->toggleable(isToggledHiddenByDefault: false)
-                    ->badge()
-                    ->color('info')
-                    ->sortable()
-                    ->toggleable(),
-                TextColumn::make('created_at')
-                    ->label('Created At')
-                    ->dateTime('F j, Y')
-                    ->icon('heroicon-o-calendar-days')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('updated_at')
-                    ->label('Updated At')
-                    ->dateTime('F j, Y')
-                    ->icon('heroicon-o-arrow-path')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                // TextColumn::make('total_sale')
+                //     ->label('Sales')
+                //     ->toggleable(isToggledHiddenByDefault: false)
+                //     ->badge()
+                //     ->color('info')
+                //     ->sortable()
+                //     ->toggleable(),
+                // TextColumn::make('created_at')
+                //     ->label('Created At')
+                //     ->dateTime('F j, Y')
+                //     ->icon('heroicon-o-calendar-days')
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: false),
+                // TextColumn::make('updated_at')
+                //     ->label('Updated At')
+                //     ->dateTime('F j, Y')
+                //     ->icon('heroicon-o-arrow-path')
+                //     ->sortable()
+                //     ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->filters([
                 SelectFilter::make('type')

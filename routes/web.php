@@ -177,3 +177,5 @@ Route::get('hello/{order}', function (Order $order) {
 Route::post('/admin/shops/{shop}/toggle-status', [AdminController::class, 'toggleShopStatus'])
     ->name('filament.admin.resources.shops.toggle-status')
     ->middleware(['auth', 'role:admin']);
+
+    Route::post('/status-update/{shop}', [PageController::class,'shop_status_update'])->name('shop_status_update');

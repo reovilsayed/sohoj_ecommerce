@@ -98,14 +98,16 @@ class RoleResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->icon('heroicon-o-pencil-square')
-                    ->label('Edit')
-                    ->color('primary'),
-                Tables\Actions\DeleteAction::make()
-                    ->icon('heroicon-o-trash')
-                    ->label('Delete')
-                    ->color('danger'),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()
+                        ->icon('heroicon-o-pencil-square')
+                        ->label('Edit')
+                        ->color('primary'),
+                    Tables\Actions\DeleteAction::make()
+                        ->icon('heroicon-o-trash')
+                        ->label('Delete')
+                        ->color('danger'),
+                ])->iconButton(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

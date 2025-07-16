@@ -227,14 +227,15 @@ class ShopResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\Action::make('details')
-                        ->label('Details')
-                        ->icon('heroicon-o-eye')
-                        ->modalHeading(fn ($record) => "Shop Details - {$record->name}")
-                        ->modalDescription(fn ($record) => new HtmlString(view('filament.modals.shop-details', ['shop' => $record])->render()))
-                        ->modalSubmitActionLabel('Close')
-                        ->color('info')
-                        ->action(fn () => null),
+                    // Tables\Actions\Action::make('details')
+                    //     ->label('Details')
+                    //     ->icon('heroicon-o-eye')
+                    //     ->modalHeading(fn ($record) => "Shop Details - {$record->name}")
+                    //     ->modalDescription(fn ($record) => new HtmlString(view('filament.modals.shop-details', ['shop' => $record])->render()))
+                    //     ->modalSubmitActionLabel('Close')
+                    //     ->color('info')
+                    //     ->action(fn () => null),
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\DeleteAction::make()
                         ->label('Delete')
                         ->icon('heroicon-o-trash'),
@@ -269,6 +270,7 @@ class ShopResource extends Resource
             'index' => Pages\ListShops::route('/'),
             'create' => Pages\CreateShop::route('/create'),
             'edit' => Pages\EditShop::route('/{record}/edit'),
+            'view' => Pages\ViewShop::route('/{record}'),
         ];
     }
 

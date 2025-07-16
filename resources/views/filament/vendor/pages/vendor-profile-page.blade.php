@@ -156,12 +156,6 @@
         $completedFields = $userCompleted + $shopCompleted;
         $profileCompletion = round(($completedFields / $totalFields) * 100);
 
-        // Calculate shop performance metrics
-        // $totalProducts = $shop->products->count();
-        // $totalOrders = $shop->orders->count();
-        // $totalRevenue = $shop->orders->sum('total') / 100;
-        // $avgOrderValue = $totalOrders > 0 ? $totalRevenue / $totalOrders : 0;
-
     @endphp
 
     <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">

@@ -24,7 +24,7 @@ class PageController extends Controller
 
         $latest_products = \Cache::remember('latest_products:' . md5(json_encode($locationPostcodes)), 3600, function () use ($locationPostcodes) {
             return Product::query()
-                ->select(['id','slug', 'name', 'shop_id', 'views', 'post_code', 'status', 'parent_id','images','image','price','sale_price'])
+                ->select(['id', 'slug', 'name', 'shop_id', 'views', 'post_code', 'status', 'parent_id', 'images', 'image', 'price', 'sale_price'])
                 ->where('status', 1)
                 ->whereNull('parent_id')
                 ->whereHas('shop', fn($q) => $q->where('status', 1))
@@ -38,7 +38,7 @@ class PageController extends Controller
 
         $bestsaleproducts = \Cache::remember('bestsaleproducts:' . md5(json_encode($locationPostcodes)), 3600, function () use ($locationPostcodes) {
             return Product::query()
-                ->select(['id','slug', 'name', 'shop_id', 'total_sale', 'post_code', 'status', 'parent_id','image', 'images','price','sale_price'])
+                ->select(['id', 'slug', 'name', 'shop_id', 'total_sale', 'post_code', 'status', 'parent_id', 'image', 'images', 'price', 'sale_price'])
                 ->where('status', 1)
                 ->whereNull('parent_id')
                 ->whereHas('shop', fn($q) => $q->where('status', 1))
@@ -52,7 +52,7 @@ class PageController extends Controller
         $recommand = session()->get('recommand', []);
         $recommandProducts = \Cache::remember('recommandProducts:' . md5(json_encode($recommand)), 3600, function () use ($recommand) {
             return Product::query()
-                ->select(['id', 'slug','name', 'shop_id', 'parent_id' ,'views', 'post_code', 'status','images','image','price','sale_price'])
+                ->select(['id', 'slug', 'name', 'shop_id', 'parent_id', 'views', 'post_code', 'status', 'images', 'image', 'price', 'sale_price'])
                 ->whereNull('parent_id')
                 ->whereIn('id', $recommand)
                 ->with(['shop:id,name'])
@@ -86,8 +86,8 @@ class PageController extends Controller
     public function shops()
     {
         $productsQuery = Product::where("status", 1)->whereNull('parent_id')->whereHas('shop', function ($q) {
-                $q->where('status', 1);
-            })->filter()->simplePaginate(12);
+            $q->where('status', 1);
+        })->filter()->simplePaginate(12);
         $products = $productsQuery->groupBy(function ($item) {
             return  $item->shop_id;
         });
@@ -312,4 +312,13 @@ class PageController extends Controller
         // dd($shops);
         return response()->json($shops);
     }
+
+    public function shop_status_update(Request $request, Shop $shop)
+    {
+        $status = $request->input('status') === 'activate' ? 1 : 0;
+        $shop->update(['status' => $status]);
+    
+        return redirect()->back()->with('success', 'Shop status updated successfully.');
+    }
+    
 }
