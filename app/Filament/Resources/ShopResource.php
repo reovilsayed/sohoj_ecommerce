@@ -171,6 +171,11 @@ class ShopResource extends Resource
         ])->columns(1);
     }
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function table(Table $table): Table
     {
         return $table
