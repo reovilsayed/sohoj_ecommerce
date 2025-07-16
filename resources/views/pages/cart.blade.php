@@ -1,10 +1,13 @@
 @section('title', 'Shopping Cart | Sohoj E-commerce')
-@section('meta_description', 'Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy quantity updates, and instant price calculations.')
+@section('meta_description',
+    'Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy
+    quantity updates, and instant price calculations.')
 @section('meta_keywords', 'shopping cart, cart, checkout, ecommerce, online shopping, sohoj')
 @section('canonical_url', route('cart'))
 @section('meta_og')
     <meta property="og:title" content="Shopping Cart | Sohoj E-commerce">
-    <meta property="og:description" content="Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy quantity updates, and instant price calculations.">
+    <meta property="og:description"
+        content="Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy quantity updates, and instant price calculations.">
     <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
@@ -12,7 +15,8 @@
 @section('meta_twitter')
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Shopping Cart | Sohoj E-commerce">
-    <meta name="twitter:description" content="Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy quantity updates, and instant price calculations.">
+    <meta name="twitter:description"
+        content="Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy quantity updates, and instant price calculations.">
     <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
 @endsection
 
@@ -26,8 +30,10 @@
 
     <style>
         :root {
-            --primary-color: #2a81c9;
-            --secondary-color: #2a81c9;
+            --primary-color: #FF0000;
+            /* Button color */
+            --secondary-color: #01949a;
+            /* Accent color */
             --text-color: #1f2937;
             --light-gray: #f3f4f6;
             --medium-gray: #e5e7eb;
@@ -35,29 +41,30 @@
             --white: #ffffff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            /* box-sizing: border-box; */
+        body,
+        #body {
+            background: #f7f8fa;
+            color: var(--text-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        #body {
-            background-color: var(--light-gray);
-            color: var(--text-color);
-            line-height: 1.6;
+        .cart-section {
+            padding: 40px 0 60px 0;
         }
 
         .cart-container {
             display: flex;
-            gap: 2rem;
+            gap: 2.5rem;
             flex-direction: column;
-            margin-top: 77px;
+            background: none;
+            box-shadow: none;
+            padding: 0;
         }
 
         @media (min-width: 992px) {
             .cart-container {
                 flex-direction: row;
+                align-items: flex-start;
             }
 
             .cart-items {
@@ -70,89 +77,116 @@
         }
 
         .cart-header {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(1, 148, 154, 0.06);
+            padding: 32px 32px 0 32px;
+            margin-bottom: 0;
+            border: none;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--medium-gray);
+            flex-direction: column;
+            align-items: flex-start;
         }
 
         .cart-title {
-            font-size: 1.75rem;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb {
+            font-size: 0.95rem;
+            color: var(--dark-gray);
+            margin-bottom: 1.5rem;
         }
 
         .item-count {
             font-size: 1rem;
-            color: var(--dark-gray);
+            color: var(--secondary-color);
+            background: #eaf7f7;
+            padding: 0.2rem 0.8rem;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cart-table-card {
+            background: var(--white);
+            box-shadow: 0 2px 8px rgba(1, 148, 154, 0.06);
+            /* padding: 0 32px 32px 32px; */
+            margin-bottom: 1.5rem;
         }
 
         .cart-table {
             width: 100%;
-            border-collapse: collapse;
-            background-color: var(--white);
-            border-radius: 0.5rem;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-collapse: separate;
+            border-spacing: 0;
+            background: none;
+            box-shadow: none;
         }
 
         .cart-table thead {
-            background-color: var(--light-gray);
+            background: none;
         }
 
         .cart-table th {
-            padding: 1rem;
-            text-align: left;
+            padding: 18px 8px 18px 0;
             font-weight: 600;
-            color: var(--text-color);
-            text-transform: uppercase;
-            font-size: 0.875rem;
-            letter-spacing: 0.05em;
+            color: var(--dark-gray);
+            font-size: 1rem;
+            border-bottom: 1px solid var(--medium-gray);
+            background: none;
         }
 
         .cart-table td {
-            padding: 1.5rem 1rem;
-            vertical-align: top;
+            padding: 18px 8px 18px 0;
+            vertical-align: middle;
             border-bottom: 1px solid var(--medium-gray);
+            background: none;
         }
 
         .product-info {
             display: flex;
-            gap: 1rem;
+            align-items: center;
+            gap: 1.25rem;
         }
 
         .product-image {
-            width: 80px;
-            height: 80px;
+            width: 64px;
+            height: 64px;
             object-fit: cover;
-            border-radius: 0.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--medium-gray);
         }
 
         .product-details h3 {
-            font-size: 1.125rem;
-            margin-bottom: 0.25rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.2rem;
         }
 
         .product-details p {
             color: var(--dark-gray);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
+            font-size: 0.92rem;
+            margin-bottom: 0.2rem;
         }
 
         .remove-btn {
-            color: var(--primary-color);
-            background: none;
+            color: var(--dark-gray);
             border: none;
-            font-size: 0.875rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
+            margin-right: 0.5rem;
+            transition: color 0.2s;
+
+            background: #eaf7f7;
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
         }
 
         .remove-btn:hover {
-            text-decoration: underline;
+            color: var(--primary-color);
         }
 
         .quantity-control {
@@ -162,49 +196,71 @@
         }
 
         .quantity-btn {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border: 1px solid var(--medium-gray);
-            background: none;
-            border-radius: 0.25rem;
+            background: var(--white);
+            color: var(--text-color);
+            border-radius: 6px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background: var(--secondary-color);
+            color: var(--white);
         }
 
         .quantity-input {
-            width: 50px;
-            height: 30px;
+            width: 48px;
+            height: 32px;
             text-align: center;
             border: 1px solid var(--medium-gray);
-            border-radius: 0.25rem;
+            border-radius: 6px;
+            background: #f9f9f9;
+            font-size: 1rem;
         }
 
         .price {
             font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .cart-table tfoot td {
+            border: none;
+            padding-top: 18px;
+        }
+
+        .cart-actions-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .coupon-input {
+            flex: 1;
+            border: 1px solid var(--medium-gray);
+            font-size: 1rem;
+            background: #f9f9f9;
         }
 
         .order-summary {
-            background-color: var(--white);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            height: fit-content;
-        }
-
-        .summary-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--medium-gray);
+            background: var(--white);
+            box-shadow: 0 2px 8px rgba(1, 148, 154, 0.06);
+            padding: 32px 32px 24px 32px;
+            min-width: 320px;
+            max-width: 370px;
+            margin: 0 auto;
         }
 
         .summary-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 1rem;
+            margin-bottom: 1.1rem;
+            font-size: 1rem;
         }
 
         .summary-label {
@@ -213,277 +269,189 @@
 
         .summary-value {
             font-weight: 600;
+            color: var(--text-color);
         }
 
-        .promo-code {
-            margin: 1.5rem 0;
-            padding: 1rem 0;
-            border-top: 1px dashed var(--medium-gray);
-            border-bottom: 1px dashed var(--medium-gray);
-        }
-
-        .promo-input {
+        .summary-total {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .promo-input input {
-            flex: 1;
-            padding: 0.5rem 0.75rem;
-            border: 1px solid var(--medium-gray);
-            border-radius: 0.25rem;
-        }
-
-        .apply-btn {
-            background-color: var(--primary-color);
-            color: var(--white);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.25rem;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .apply-btn:hover {
-            background-color: var(--secondary-color);
-        }
-
-        .total-row {
-            margin: 1.5rem 0;
-            padding-top: 1rem;
-            border-top: 1px solid var(--medium-gray);
-            font-size: 1.125rem;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            padding: 1rem;
-            background-color: var(--primary-color);
-            color: var(--white);
-            border: none;
-            border-radius: 0.25rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-bottom: 1.5rem;
-        }
-
-        .checkout-btn:hover {
-            background-color: var(--secondary-color);
-            color: #ffffff;
-        }
-
-        .continue-shopping {
-            display: inline-block;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            margin-top: 1rem;
-        }
-
-        .continue-shopping:hover {
-            text-decoration: underline;
+            justify-content: space-between;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 1.5rem 0 1.2rem 0;
         }
     </style>
 @endsection
 @section('content')
-<main>
-    <x-app.header />
-    @php
-        $items = Cart::Content();
+    <main>
+        <x-app.header />
+        @php
+            $items = Cart::Content();
 
-        $groupedItems = $items->groupBy(function ($item) {
-            return $item->model->shop_id;
-        });
-    @endphp
-    <section class="cart-section">
-        <div class="container mb-5">
-            <header class="cart-header">
-                <h1 class="cart-title">Shopping Cart</h1>
-                <span class="item-count">{{ Cart::count() }} Items</span>
-            </header>
-            
-            <div class="cart-container">
-                <div class="cart-items">
-                @if (Cart::count() > 0)
-                    <table class="cart-table">
-                        <thead>
-                            <tr>
-                                <th>Product Details</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Shipping cost</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($items as $item)
-                                <tr>
-                                    <td>
-                                        <div class="product-info">
-                                            <img src="{{ Storage::url($item->model->image) }}" alt="File 19"
-                                                class="product-image">
-                                            <div class="product-details">
-                                                <h3>{{ $item->name }}</h3>
-                                                <p>{{ Str::limit(strip_tags($item->model->short_description), $limit = 50, $end = '...') }}
-                                                </p>
-                                                <p>
-                                                    @if ($item->model->quantity)
-                                                        <span class="text-success">In Stok</span>
-                                                    @else
-                                                        <span class="text-danger">Out of
-                                                            stock</span>
-                                                    @endif
-                                                </p>
-                                                <a href="{{ route('cart.destroy', $item->rowId) }}" class="remove-btn"><i
-                                                        class="fas fa-trash-alt"></i> Remove</a>
+            $groupedItems = $items->groupBy(function ($item) {
+                return $item->model->shop_id;
+            });
+        @endphp
+        <section class="cart-section">
+            <div class="container mb-5">
+                <div class="cart-header">
+                    <div class="breadcrumb">Home &gt; Shopping Cart</div>
+                    <h1 class="cart-title">Shopping Cart</h1>
+                    <span class="item-count">{{ Cart::count() }} Items</span>
+                </div>
+                <div class="cart-container mt-4">
+                    <div class="cart-items">
+                        <div class="cart-table-card">
+                            @if (Cart::count() > 0)
+                                <table class="cart-table">
+                                    <thead style="background: #01949a;">
+                                        <tr>
+                                            <th class="ps-4 text-light" >Products</th>
+                                            <th class="text-light">Price</th>
+                                            <th class="text-light">Quantity</th>
+                                            <th class="text-light">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($items as $item)
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="product-info">
+                                                        <button class="remove-btn" title="Remove"
+                                                            onclick="window.location='{{ route('cart.destroy', $item->rowId) }}'"><i
+                                                                class="fas fa-trash"></i></button>
+                                                        <img src="{{ Storage::url($item->model->image) }}"
+                                                            alt="{{ $item->name }}" class="product-image">
+                                                        <div class="product-details">
+                                                            <h3>{{ $item->name }}</h3>
+                                                            <p>{{ Str::limit(strip_tags($item->model->short_description), 40, '...') }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="price">{{ Sohoj::price($item->price) }}</td>
+                                                <td>
+                                                    <form action="{{ route('cart.update') }}" method="POST"
+                                                        style="display:inline-flex;align-items:center;gap:0.5rem;">
+                                                        @csrf
+                                                        <input type="hidden" name="rowId" value="{{ $item->rowId }}" />
+                                                        <button type="submit" name="action" value="decrease"
+                                                            class="quantity-btn">-</button>
+                                                        <input type="number" name="qty" value="{{ $item->qty }}"
+                                                            min="1" class="quantity-input p-0" readonly>
+                                                        <button type="submit" name="action" value="increase"
+                                                            class="quantity-btn">+</button>
+                                                    </form>
+                                                </td>
+                                                <td class="price">{{ Sohoj::price($item->price * $item->qty) }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <div class="cart-actions-row px-4 pb-4">
+                                    <form class="d-flex w-100" method="POST" action="{{ route('coupon') }}">
+                                        @csrf
+                                        <input class="coupon-input me-2" style="height: 45px;" type="text" required
+                                            placeholder="Coupon Code" name="coupon_code" value="">
+                                        <button class="btn Whoops" style="background: #FF0000; color: #ffffff;"
+                                            type="submit">Apply Coupon Code</button>
+                                    </form>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="order-summary">
+                        <div class="summary-row">
+                            <span class="summary-label">Subtotal</span>
+                            <span class="summary-value">${{ Cart::subtotal() }}</span>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span class="summary-label">Shipping</span>
+                            <span class="summary-value">
+                                @if (Sohoj::shipping() == 0)
+                                    Free
+                                @else
+                                    {{ Sohoj::price(Sohoj::shipping()) }}
+                                @endif
+                            </span>
+                        </div>
 
-                                                </button>
+                        <div class="summary-row">
+                            <span class="summary-label">Tax</span>
+                            <span class="summary-value">
+                                @if (Sohoj::price(Sohoj::tax()) == 0)
+                                    Free
+                                @else
+                                    {{ Sohoj::price(Sohoj::tax()) }}
+                                @endif
+                            </span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Discount</span>
+                            <span class="summary-value">
+                                @if (session()->has('discount'))
+                                {{ Sohoj::price(Sohoj::discount()) }}</ @else 0 @endif
+                            </span>
+                        </div>
+
+                        <div class="summary-total">
+                            <span>Total:</span>
+                            <span>{{ Sohoj::price(Sohoj::newSubtotal()) }}</span>
+                        </div>
+                        <a href="{{ route('checkout') }}" class="btn Whoops w-100"
+                            style="background: #FF0000; color: #ffffff;">Proceed To Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Ec cart page -->
+
+
+        <!-- New Product Start -->
+        <section class="section ec-new-product">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-left">
+                        <div class="section-title">
+
+                            <h2 class="related-product-sec-title"> Explore Similer Shops</h2>
+                        </div>
+                        <div class="ec-spe-section  data-animation=" slideInLeft">
+
+
+                            <div class="ec-spe-products">
+                                @foreach ($latest_shops->chunk(4) as $shop)
+                                    <div class="ec-fs-product">
+                                        <div class="ec-fs-pro-inner">
+
+                                            <div class="row">
+
+                                                @foreach ($shop as $shop)
+                                                    <x-shops-card.card-2 :shop="$shop" />
+                                                @endforeach
 
                                             </div>
+
                                         </div>
-                                    </td>
-
-                                    <td>
-                                        <form action="{{ route('cart.update') }}" method="POST">
-                                            @csrf
-                                            @if ($item->options['offer'] == 'no_offer')
-                                                <div class="quantity-control">
-                                                    <input type="hidden" name="rowId" value="{{ $item->rowId }}" />
-                                                    <button type="submit" name="action" value="decrease"
-                                                        class="quantity-btn">-</button>
-                                                    <input type="number" name="qty" value="{{ $item->qty }}"
-                                                        min="1" class="quantity-input p-0" readonly>
-                                                    <button type="submit" name="action" value="increase"
-                                                        class="quantity-btn">+</button>
-                                                </div>
-                                            @endif
-                                        </form>
-                                    </td>
-                                    @php
-                                        $shippingCost = $item->model->shipping_cost ?? 0;
-                                        $totalPrice = $item->price * $item->qty + $shippingCost;
-                                    @endphp
-                                    <td class="price">{{ Sohoj::price($item->price) }}</td>
-                                    <td class="price">{{ Sohoj::price($item->model->shipping_cost) }}</td>
-                                    <td class="price">{{ Sohoj::price($totalPrice) }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @endif
-            </div>
-
-            <div class="order-summary">
-
-                <div class="ec-sidebar-block mt-3 side-bar-box ">
-                    <div class="ec-sb-block-content">
-                        <div class="ec-cart-summary-bottom">
-                            <div class="ec-cart-summary">
-                                <div>
-                                    <span class="text-left">Total ({{ Cart::content()->count() }}
-                                        items)</span>
-                                    <span class="text-right">${{ Cart::subtotal() }}</span>
-                                </div>
-                                @if (!session()->has('discount'))
-                                    <div>
-                                        <span class="text-left">Coupan Discount</span>
-                                        <span class="text-right"><a class="ec-cart-coupan">Apply
-                                                Coupan</a></span>
                                     </div>
-
-                                    <div class="ec-cart-coupan-content">
-                                        <form class="ec-cart-coupan-form" name="ec-cart-coupan-form" method="POST"
-                                            action="{{ route('coupon') }}">
-                                            @csrf
-
-                                            <input class="ec-coupan bg-white" type="text" required=""
-                                                placeholder="Enter Your Coupan Code" name="coupon_code" value="">
-                                            <button class="ec-coupan-btn button btn-dark" type="submit" name="subscribe"
-                                                value="">Apply</button>
-                                        </form>
-                                    </div>
-                                @endif
-                                @if (session()->has('discount'))
-                                    <div class="ec-cart-summary-total">
-                                        <span class="text-left">Discount <a href="{{ route('coupon.destroy') }}"
-                                                class="text-danger" style="text-decoration: underline">Delete</a></span>
-                                        <span class="text-right">{{ Sohoj::price(Sohoj::discount()) }}</span>
-                                    </div>
-                                @endif
-                                <div class="ec-cart-summary-total">
-                                    <span class="text-left">Total Shipping</span>
-                                    <span class="text-right">{{ Sohoj::price(Sohoj::shipping()) }}</span>
-                                </div>
-                                <div class="ec-cart-summary-total">
-                                    <span class="text-left">Tax</span>
-                                    <span class="text-right">{{ Sohoj::price(Sohoj::tax()) }}</span>
-                                </div>
-                                <div class="ec-cart-summary-total">
-                                    <span class="text-left">Total Amount</span>
-                                    <span class="text-right">{{ Sohoj::price(Sohoj::newSubtotal()) }}</span>
-                                </div>
-                                <a href="{{ route('checkout') }}" class="checkout-btn mt-4">Proceed to
-                                    Checkout</a>
+                                @endforeach
                             </div>
-
-
                         </div>
 
-                    </div>
 
+
+                    </div>
                 </div>
+                <!-- New Product Content -->
+
             </div>
-        </div>
-    </div>
-    <!-- Ec cart page -->
+        </section>
+        <!-- New Product end -->
+    @endsection
+    @section('js')
+        <script src="{{ asset('assets/frontend-assets/js/vendor/jquery.magnific-popup.min.js') }}"></script>
+        <script src="{{ asset('assets/frontend-assets/js/plugins/jquery.sticky-sidebar.js') }}"></script>
 
-
-    <!-- New Product Start -->
-    <section class="section ec-new-product">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-left">
-                    <div class="section-title">
-
-                        <h2 class="related-product-sec-title"> Explore Similer Shops</h2>
-                    </div>
-                    <div class="ec-spe-section  data-animation=" slideInLeft">
-
-
-                        <div class="ec-spe-products">
-                            @foreach ($latest_shops->chunk(4) as $shop)
-                                <div class="ec-fs-product">
-                                    <div class="ec-fs-pro-inner">
-
-                                        <div class="row">
-
-                                            @foreach ($shop as $shop)
-                                                <x-shops-card.card-2 :shop="$shop" />
-                                            @endforeach
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-
-
-                </div>
-            </div>
-            <!-- New Product Content -->
-
-        </div>
-    </section>
-    <!-- New Product end -->
-@endsection
-@section('js')
-    <script src="{{ asset('assets/frontend-assets/js/vendor/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('assets/frontend-assets/js/plugins/jquery.sticky-sidebar.js') }}"></script>
-
-    <script src="{{ asset('assets/frontend-assets/js/main.js') }}"></script>
-@endsection
+        <script src="{{ asset('assets/frontend-assets/js/main.js') }}"></script>
+    @endsection

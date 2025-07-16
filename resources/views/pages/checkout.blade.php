@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend-assetss/responsive.css') }}" />
     <style>
         :root {
-            --primary: #8d6e63;
+            --primary: #01949a;
             --primary-hover: #a1887f;
             --bg: #d7ccc8;
             --card-bg: #ffffff;
@@ -37,9 +37,9 @@
 
 
         .checkout-hero {
-            background: var(--step-gradient);
+            background: #01949a;
             color: #fff;
-            border-radius: var(--border-radius);
+            /* border-radius: var(--border-radius); */
             box-shadow: var(--shadow);
             padding: 2rem 2.5rem 1.5rem 2.5rem;
             margin-bottom: 2rem;
@@ -94,10 +94,10 @@
 
         .checkout-table .table thead th {
             padding: 1rem 1.5rem;
-            background: #efebe9;
-            border: none;
+            /* background: #efebe9; */
+            border: none !important;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--primary) !important;
             font-size: 1rem;
         }
 
@@ -143,7 +143,7 @@
 
         .checkout-summary {
             background: var(--card-bg);
-            border-radius: var(--border-radius);
+            /* border-radius: var(--border-radius); */
             box-shadow: 0 2px 8px rgba(141, 110, 99, 0.06);
             padding: 1.5rem 1.5rem 1rem 1.5rem;
             border: 1px solid #d7ccc8;
@@ -322,7 +322,7 @@
                             <div class="checkout-progress mb-2">
                                 <div class="progress" style="height: 5px; background: #eaf0ff;">
                                     <div id="checkoutProgressBar" class="progress-bar bg-primary" role="progressbar"
-                                        style="width: 25%; transition: width 0.4s; background-color: #00695c !important;"
+                                        style="width: 25%; transition: width 0.4s; background-color: #01949a  !important;"
                                         aria-valuenow="1" aria-valuemin="1" aria-valuemax="4"></div>
                                 </div>
                             </div>
@@ -362,14 +362,14 @@
                                         <h4 class="fw-semibold mb-3">Order Items</h4>
                                         <div class="table-responsive">
                                             <table class="table align-middle">
-                                                <thead>
+                                                <thead style="background: #dce1e2">
                                                     <tr>
-                                                        <th>Product</th>
-                                                        <th>Qty</th>
-                                                        <th>Price</th>
-                                                        <th>Shipping</th>
-                                                        <th>Total</th>
-                                                        <th class="text-center">Remove</th>
+                                                        <th class="py-3">Product</th>
+                                                        <th class="py-3">Qty</th>
+                                                        <th class="py-3">Price</th>
+                                                        <th class="py-3">Shipping</th>
+                                                        <th class="py-3">Total</th>
+                                                        <th class="text-center py-3">Remove</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -830,7 +830,7 @@
         .step-indicator .nav-link.active,
         .step-indicator .nav-link:focus {
             color: #fff;
-            background: var(--primary);
+            background: #01949a ;
             border-radius: 8px 8px 0 0;
             box-shadow: 0 2px 8px rgba(30, 136, 229, 0.10);
         }
@@ -853,8 +853,8 @@
 
         .step-indicator .nav-link.active .step-circle {
             background: #fff;
-            color: var(--primary);
-            border: 2px solid var(--primary);
+            color: #01949a ;
+            border: 2px solid #00695c;
         }
 
         .step-indicator .step-circle.completed {
