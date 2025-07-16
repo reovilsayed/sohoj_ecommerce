@@ -1,10 +1,12 @@
 @section('title', 'Checkout | Sohoj E-commerce')
-@section('meta_description', 'Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple payment options and order tracking.')
+@section('meta_description', 'Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple
+    payment options and order tracking.')
 @section('meta_keywords', 'checkout, payment, order, purchase, ecommerce, online shopping, sohoj')
 @section('canonical_url', route('checkout'))
 @section('meta_og')
     <meta property="og:title" content="Checkout | Sohoj E-commerce">
-    <meta property="og:description" content="Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
+    <meta property="og:description"
+        content="Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
     <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
@@ -12,7 +14,8 @@
 @section('meta_twitter')
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Checkout | Sohoj E-commerce">
-    <meta name="twitter:description" content="Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
+    <meta name="twitter:description"
+        content="Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
     <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
 @endsection
 @extends('layouts.app')
@@ -93,12 +96,14 @@
         }
 
         .checkout-table .table thead th {
-            padding: 1rem 1.5rem;
-            /* background: #efebe9; */
+            padding: 1.1rem 1.5rem;
+            background: #f5f7fa;
             border: none !important;
             font-weight: 700;
-            color: var(--primary) !important;
-            font-size: 1rem;
+            color: #01949a !important;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            border-bottom: none !important;
         }
 
         .checkout-table .table tbody td {
@@ -123,16 +128,12 @@
         }
 
         .remove-item {
-            color: var(--muted);
+            color: #01949a;
             transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
             border-radius: 50%;
-            background: var(--bg);
+            background: #e3eafc;
             border: 1px solid #e0e0e0;
+            padding: 8px;
         }
 
         .remove-item:hover {
@@ -173,7 +174,7 @@
         }
 
         .checkout-btn {
-            background: linear-gradient(90deg, var(--primary-hover) 0%, var(--primary) 100%) !important;
+            background: #FF0000 !important;
             color: #fff !important;
             font-weight: 600;
             border-radius: 8px;
@@ -183,7 +184,7 @@
         }
 
         .checkout-btn:hover {
-            background: linear-gradient(90deg, var(--primary-hover) 0%, var(--primary) 100%) !important;
+            background: #FF0000 !important;
             color: #fff !important;
             box-shadow: 0 4px 16px rgba(30, 136, 229, 0.13);
         }
@@ -364,12 +365,12 @@
                                             <table class="table align-middle">
                                                 <thead style="background: #dce1e2">
                                                     <tr>
-                                                        <th class="py-3">Product</th>
-                                                        <th class="py-3">Qty</th>
-                                                        <th class="py-3">Price</th>
-                                                        <th class="py-3">Shipping</th>
-                                                        <th class="py-3">Total</th>
-                                                        <th class="text-center py-3">Remove</th>
+                                                        <th class="py-3" style="color: #01949a">Product</th>
+                                                        <th class="py-3" style="color: #01949a">Qty</th>
+                                                        <th class="py-3" style="color: #01949a">Price</th>
+                                                        <th class="py-3" style="color: #01949a">Shipping</th>
+                                                        <th class="py-3" style="color: #01949a">Total</th>
+                                                        <th class="text-center py-3" style="color: #01949a">Remove</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -465,8 +466,8 @@
                                                     <label for="address_1" class="form-label">Address</label>
                                                     <input type="text"
                                                         class="form-control @error('address_1') is-invalid @enderror"
-                                                        id="address_1" name="address_1" value="{{ old('address_1') }}" placeholder="Address Line 1"
-                                                        autocomplete="off">
+                                                        id="address_1" name="address_1" value="{{ old('address_1') }}"
+                                                        placeholder="Address Line 1" autocomplete="off">
 
                                                     @error('address_1')
                                                         <span class="text-danger small position-absolute"
@@ -495,7 +496,9 @@
                                                 <div class="col-md-6 mt-2">
                                                     <label for="post_code" class="form-label">Post Code</label>
                                                     <input type="text" class="form-control" id="post_code"
-                                                        name="post_code" value="{{ old('post_code', Auth()->user() ? Auth()->user()->post_code : '') }}" placeholder="Post Code">
+                                                        name="post_code"
+                                                        value="{{ old('post_code', Auth()->user() ? Auth()->user()->post_code : '') }}"
+                                                        placeholder="Post Code">
                                                     @error('post_code')
                                                         <span class="text-danger small position-absolute"
                                                             style="top:100%;left:0;">{{ $message }}</span>
@@ -505,7 +508,9 @@
                                                 <div class="col-md-6 mt-2">
                                                     <label for="state" class="form-label">State</label>
                                                     <input type="text" class="form-control" id="state"
-                                                        name="state" value="{{ old('state', Auth()->user() ? Auth()->user()->state : '') }}" placeholder="State">
+                                                        name="state"
+                                                        value="{{ old('state', Auth()->user() ? Auth()->user()->state : '') }}"
+                                                        placeholder="State">
                                                     @error('state')
                                                         <span class="text-danger small position-absolute"
                                                             style="top:100%;left:0;">{{ $message }}</span>
@@ -515,7 +520,9 @@
                                                 <div class="col-md-6 mt-2">
                                                     <label for="city" class="form-label">City</label>
                                                     <input type="text" class="form-control" id="city"
-                                                        name="city" value="{{ old('city', Auth()->user() ? Auth()->user()->city : '') }}" placeholder="City">
+                                                        name="city"
+                                                        value="{{ old('city', Auth()->user() ? Auth()->user()->city : '') }}"
+                                                        placeholder="City">
                                                     @error('city')
                                                         <span class="text-danger small position-absolute"
                                                             style="top:100%;left:0;">{{ $message }}</span>
@@ -569,8 +576,9 @@
                                             </div>
                                         </div> --}}
                                         <div class="d-flex justify-content-between mt-4">
-                                            <button type="button" class="btn btn-secondary px-4" id="backToStep1"><i
-                                                    class="fa fa-arrow-left me-2"></i>Back</button>
+                                            <button type="button" class="btn px-4"
+                                                style="background: #01949a; color: #ffffff !important;"
+                                                id="backToStep1"><i class="fa fa-arrow-left me-2"></i>Back</button>
                                             <button type="button" class="btn checkout-btn px-4" id="toStep3">Next:
                                                 Payment <i class="fa fa-arrow-right ms-2"></i></button>
                                         </div>
@@ -644,7 +652,7 @@
                                                                 MasterCard, Amex via Stripe.</span>
                                                         </label>
                                                         <div class="mt-3 w-100 stripe-fields">
-                                                             <div id="card-element"></div>
+                                                            <div id="card-element"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -698,8 +706,9 @@
                                             </script>
                                         </div>
                                         <div class="d-flex justify-content-between mt-4">
-                                            <button type="button" class="btn btn-secondary px-4" id="backToStep2"><i
-                                                    class="fa fa-arrow-left me-2"></i>Back</button>
+                                            <button type="button" class="btn px-4"
+                                                style="background: #01949a; color: #ffffff !important;"
+                                                id="backToStep2"><i class="fa fa-arrow-left me-2"></i>Back</button>
                                             <button type="button" class="btn checkout-btn px-4" id="toStep4">Next:
                                                 Review <i class="fa fa-arrow-right ms-2"></i></button>
                                         </div>
@@ -830,7 +839,7 @@
         .step-indicator .nav-link.active,
         .step-indicator .nav-link:focus {
             color: #fff;
-            background: #01949a ;
+            background: #01949a;
             border-radius: 8px 8px 0 0;
             box-shadow: 0 2px 8px rgba(30, 136, 229, 0.10);
         }
@@ -853,14 +862,14 @@
 
         .step-indicator .nav-link.active .step-circle {
             background: #fff;
-            color: #01949a ;
+            color: #01949a;
             border: 2px solid #00695c;
         }
 
         .step-indicator .step-circle.completed {
-            background: var(--success);
+            background: #01949a;
             color: #fff;
-            border: 2px solid var(--success);
+            border: 2px solid #00695c;
         }
 
         .step-indicator .step-circle.completed::after {
@@ -966,7 +975,8 @@
                         <input type="hidden" name="payment_method" id="paymentmethod">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn" style="background: #01949a; color: #ffffff !important;"
+                            data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="card-button"
                             data-secret="{{ $intent->client_secret }}">
                             Save changes
@@ -999,7 +1009,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn" style="background: #01949a; color: #ffffff !important;"
+                            data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" id="card-button"
                             data-secret="{{ $intent->client_secret }}">Save changes</button>
                     </div>

@@ -113,7 +113,7 @@
         .cart-table-card {
             background: var(--white);
             box-shadow: 0 2px 8px rgba(1, 148, 154, 0.06);
-            /* padding: 0 32px 32px 32px; */
+            padding: 0 32px 32px 32px;
             margin-bottom: 1.5rem;
         }
 
@@ -303,18 +303,18 @@
                         <div class="cart-table-card">
                             @if (Cart::count() > 0)
                                 <table class="cart-table">
-                                    <thead style="background: #01949a;">
+                                    <thead>
                                         <tr>
-                                            <th class="ps-4 text-light" >Products</th>
-                                            <th class="text-light">Price</th>
-                                            <th class="text-light">Quantity</th>
-                                            <th class="text-light">Subtotal</th>
+                                            <th>Products</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Subtotal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($items as $item)
                                             <tr>
-                                                <td class="ps-4">
+                                                <td>
                                                     <div class="product-info">
                                                         <button class="remove-btn" title="Remove"
                                                             onclick="window.location='{{ route('cart.destroy', $item->rowId) }}'"><i
@@ -347,7 +347,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <div class="cart-actions-row px-4 pb-4">
+                                <div class="cart-actions-row">
                                     <form class="d-flex w-100" method="POST" action="{{ route('coupon') }}">
                                         @csrf
                                         <input class="coupon-input me-2" style="height: 45px;" type="text" required
@@ -394,7 +394,7 @@
                                 {{ Sohoj::price(Sohoj::discount()) }}</ @else 0 @endif
                             </span>
                         </div>
-
+                        
                         <div class="summary-total">
                             <span>Total:</span>
                             <span>{{ Sohoj::price(Sohoj::newSubtotal()) }}</span>
