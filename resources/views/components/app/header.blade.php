@@ -226,7 +226,7 @@
                                 <p class="mb-0 fw-bold">${{ $product->price }}</p>
                             </div>
                             <a href="{{ route('cart.destroy', $product->rowId) }}"
-                                onclick="return confirm('Remove this item?');" class="btn btn-sm btn-outline-danger">
+                                onclick="return confirm('Remove this item?');" class="btn-sm removeBtn rounded-circle">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>
@@ -244,8 +244,8 @@
                     </div>
                     <div class="d-grid gap-2">
                         <a href="{{ route('cart') }}" class="btn"
-                            style="background: #04dfe7; color: #232946;">View Cart</a>
-                        <a href="{{ route('checkout') }}" class="btn btn-success">Checkout</a>
+                            style="background: #e72104; color: #ffffff !important;">View Cart</a>
+                        <a href="{{ route('checkout') }}" class="btn btn-success" style="color:#ffffff !important">Checkout</a>
                     </div>
                 </div>
             @else
@@ -469,6 +469,20 @@
 
         .user-dropdown-menu .dropdown-divider {
             margin: 0.3rem 0;
+        }
+        .removeBtn{
+            background: #a2a1a05d;
+            color: #017a7a !important;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s;
+        }
+        .removeBtn:hover {
+            color: #FF0000 !important;
         }
     </style>
 </header>
