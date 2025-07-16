@@ -18,12 +18,83 @@
             --transition: all 0.3s ease;
         }
 
+        /* Redesigned order-header */
         .order-header {
-            background: var(--primary-color);
+            background: linear-gradient(90deg, var(--primary-color) 60%, #00b6b6 100%);
             color: #fff;
-            border-radius: 1rem 1rem 0 0;
-            padding: 1rem 2rem;
-            margin-bottom: 1.5rem;
+            border-radius: 1.5rem;
+            padding: 2rem 2.5rem 2rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 24px rgba(1, 153, 154, 0.13);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        .order-header .order-header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .order-header .order-header-icon {
+            font-size: 2.5rem;
+            background: rgba(255,255,255,0.13);
+            border-radius: 50%;
+            padding: 0.7rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(1, 153, 154, 0.10);
+        }
+        .order-header .order-header-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #fff;
+        }
+        .order-header .order-header-filter {
+            display: flex;
+            align-items: center;
+        }
+        .order-header .btn-group .btn {
+            background: #fff;
+            color: var(--primary-color);
+            font-weight: 600;
+            border-radius: 2rem;
+            padding: 0.6rem 1.5rem;
+            font-size: 1.05rem;
+            box-shadow: 0 2px 8px rgba(1, 153, 154, 0.08);
+            border: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .order-header .btn-group .btn:hover,
+        .order-header .btn-group .btn:focus {
+            background: var(--primary-dark);
+            color: #fff;
+        }
+        .order-header .dropdown-menu {
+            min-width: 180px;
+            border-radius: 1rem;
+            box-shadow: 0 2px 12px rgba(1, 153, 154, 0.13);
+        }
+        @media (max-width: 768px) {
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1.2rem 1rem;
+            }
+            .order-header .order-header-title {
+                font-size: 1.3rem;
+            }
+            .order-header .order-header-icon {
+                font-size: 1.5rem;
+                padding: 0.4rem 0.7rem;
+            }
+            .order-header .btn-group .btn {
+                font-size: 0.95rem;
+                padding: 0.5rem 1.1rem;
+            }
         }
 
         .order-status-badge {
@@ -113,34 +184,36 @@
         }
     </style>
     <div class="ec-shop-rightside col-lg-9 col-md-12 mt-2">
-        <div class="order-header d-flex align-items-center justify-content-between">
-            <div>
-                <i class="fas fa-shopping-bag me-2"></i>
-                <span style="font-size:1.3rem; font-weight:600;">My Orders</span>
+        <div class="order-header">
+            <div class="order-header-left">
+                <span class="order-header-icon"><i class="fas fa-shopping-bag"></i></span>
+                <span class="order-header-title">My Orders</span>
             </div>
-            <div class="btn-group">
-                <button class="btn btn-green btn-sm dropdown-toggle d-flex align-items-center rounded" type="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    @if (request()->status === '0')
-                        Pending order
-                    @elseif (request()->status === '1')
-                        Paid
-                    @elseif(request()->status === '2')
-                        On the way
-                    @elseif(request()->status === '3')
-                        Canceled
-                    @else
-                        All
-                    @endif
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{ route('user.ordersIndex') }}">All</a></li>
-                    <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 1]) }}">Paid</a></li>
-                    <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 0]) }}">Pending order</a>
-                    </li>
-                    <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 2]) }}">On the way</a></li>
-                    <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 3]) }}">Canceled</a></li>
-                </ul>
+            <div class="order-header-filter">
+                <div class="btn-group">
+                    <button class="btn btn-green btn-sm dropdown-toggle d-flex align-items-center rounded-pill" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        @if (request()->status === '0')
+                            Pending order
+                        @elseif (request()->status === '1')
+                            Paid
+                        @elseif(request()->status === '2')
+                            On the way
+                        @elseif(request()->status === '3')
+                            Canceled
+                        @else
+                            All
+                        @endif
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('user.ordersIndex') }}">All</a></li>
+                        <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 1]) }}">Paid</a></li>
+                        <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 0]) }}">Pending order</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 2]) }}">On the way</a></li>
+                        <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 3]) }}">Canceled</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="container">
