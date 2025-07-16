@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/checkout.css') }}">
     <style>
         :root {
-            --primary-green: #198754;
+            --primary-green: #01949a;
         }
         .register-header {
             background: var(--primary-green) !important;
@@ -29,7 +29,7 @@
             border: none !important;
         }
         .btn-green:hover {
-            background: #146c43 !important;
+            background: #01787a !important;
             color: #fff !important;
         }
         .alert {
@@ -41,13 +41,13 @@
         }
         .form-control:focus {
             border-color: var(--primary-green) !important;
-            box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15) !important;
+            box-shadow: 0 0 0 0.2rem rgba(1, 153, 154, 0.15) !important;
         }
         a {
             color: var(--primary-green);
         }
         a:hover {
-            color: #146c43;
+            color: #01787a;
         }
     </style>
 @endsection
