@@ -1068,7 +1068,7 @@
 
         .custom-scroll {
             display: block;
-            max-height: 333px;
+            max-height: 324px;
             overflow-y: auto;
             background-color: #f9f9f9;
             padding-right: 8px;
@@ -1121,7 +1121,7 @@
         });
     @endphp
     <x-app.header />
-    <!-- hero section start -->
+    {{-- @dd(Settings::setting('site.title')) --}}
     <section class="hero">
         <div class="container">
             <div class="row mt-4">

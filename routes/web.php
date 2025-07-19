@@ -178,4 +178,9 @@ Route::post('/admin/shops/{shop}/toggle-status', [AdminController::class, 'toggl
     ->name('filament.admin.resources.shops.toggle-status')
     ->middleware(['auth', 'role:admin']);
 
-    Route::post('/status-update/{shop}', [PageController::class,'shop_status_update'])->name('shop_status_update');
+Route::post('/status-update/{shop}', [PageController::class, 'shop_status_update'])->name('shop_status_update');
+
+
+    // Route::get('test',function(){
+    //     dd(settings::setting('site.description'));
+    // });

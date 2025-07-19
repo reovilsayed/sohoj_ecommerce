@@ -131,6 +131,9 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         'Sohoj' => Sohoj::class,
         'Sohoj' => SohojFacade::class,
+
+        'Settings' => App\Setting\Settings::class,
+        'settings' => App\Setting\SettingsFacade::class,
     ])->toArray(),
 
 ];

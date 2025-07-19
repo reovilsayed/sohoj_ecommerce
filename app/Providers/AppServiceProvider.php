@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 use App\Facade\Sohoj;
-
+use App\Setting\Settings;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +14,9 @@ class AppServiceProvider extends ServiceProvider
     {
          $this->app->bind('sohoj', function () {
             return new Sohoj();
+        });
+         $this->app->bind('settings', function () {
+            return new Settings();
         });
     }
 
