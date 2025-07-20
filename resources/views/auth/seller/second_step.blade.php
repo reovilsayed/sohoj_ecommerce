@@ -1,287 +1,207 @@
 @extends('layouts.app')
 @section('content')
     <x-app.header />
-    <section class="ec-page-content section-space-p">
+    <section class="ec-page-content section-space-p" style="background: #f4fbfd; min-height: 100vh; padding: 48px 0;">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="section-title">
-                        {{-- <h2 class="ec-bg-title">Log In</h2> --}}
-
-                        <h2 class="ec-title">2nd Step Verification <span class="text-success">Sohoj E-commerce</span> </h2>
-                        <p class="sub-title mb-3">{{ __('Register as vendor') }}</p>
-                    </div>
-                </div>
-
-                <div class="ec-login-wrapper" style="max-width: 730px;">
-                    <div class="d-flex justify-content-center text-center mb-4">
-                        <div class="card col-md-11 bg-danger text-white">
-                            <div class="card-body">
-
-                                <span>Shop membership fee-$24.95/month <br>
-                                Start selling for free with our 30 days trial period
-                                </span>
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-9">
+                    <!-- Step Indicator -->
+                    <div class="d-flex flex-column align-items-center mb-4">
+                        <div class="d-flex align-items-center justify-content-center mb-2" style="gap: 32px;">
+                            <!-- Step 1 -->
+                            <div class="d-flex flex-column align-items-center">
+                                <div style="width: 38px; height: 38px; background: #43b581; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem; box-shadow:0 2px 8px #43b58122;">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <span class="mt-2 small text-secondary">Step 1</span>
+                            </div>
+                            <!-- Progress Bar -->
+                            <div style="height: 4px; width: 60px; background: linear-gradient(90deg, #43b581 60%, #01949a 100%); border-radius: 2px;"></div>
+                            <!-- Step 2 -->
+                            <div class="d-flex flex-column align-items-center">
+                                <div style="width: 38px; height: 38px; background: #01949a; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.3rem; box-shadow:0 2px 8px #01949a22;">
+                                    2
+                                </div>
+                                <span class="mt-2 small fw-bold" style="color:#01949a;">Step 2</span>
                             </div>
                         </div>
-                   
-
-
+                        <div class="mt-2 text-center">
+                            <span class="fw-bold text-dark" style="font-size: 1.1rem;">Vendor Verification</span>
+                        </div>
                     </div>
-                    <div class="ec-login-container" style="border: none">
-                        <div class="ec-login-form">
-                            <form method="POST" action="{{ route('vendor.second.step.store') }}"
-                                enctype="multipart/form-data">
+                    <div class="card shadow-lg border-0" style="border-left: 8px solid #01949a; border-radius: 2rem;">
+                        <div class="card-body p-4 p-md-5">
+                            <div class="mb-4">
+                                <div class="alert text-white text-center mb-0" style="background: #01949a; border-radius: 1rem;">
+                                    <span>Shop membership fee-$24.95/month <br>Start selling for free with our 30 days trial period</span>
+                                </div>
+                            </div>
+                            <form method="POST" action="{{ route('vendor.second.step.store') }}" enctype="multipart/form-data">
                                 @csrf
-                                <label for="">Personal Info</label>
-                                <fieldset class="border p-3">
-                                    <div class="row">
-
-                                        <span class="ec-login-wrap col-md-6">
-                                            <label for="phone">Phone<span class="text-danger">*</span></label>
-                                            <input id="phone" type="text" placeholder="Phone"
-                                                class="form-control bg-light @error('phone') is-invalid @enderror"
-                                                name="phone" value="{{ old('phone') ?? '' }}" required
-                                                autocomplete="phone" autofocus>
-
-                                            @error('phone')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </span>
-                                        <span class="ec-login-wrap col-md-6">
-                                            <label for="birth_date">Date Of Birth<span class="text-danger">*</span></label>
-                                            <input id="birth_date" type="date" id="dob"  max="2003-05-29" placeholder="Date Of Birth"
-                                                class="form-control bg-light @error('dob') is-invalid @enderror"
-                                                name="dob" value="{{ old('dob') ?? '' }}" required
-                                                autocomplete="birth_date" autofocus>
-
-                                            @error('dob')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </span>
+                                <h4 class="fw-bold text-dark mb-2 d-flex align-items-center" style="letter-spacing: 1px;">
+                                    <i class="fas fa-user me-2" style="color:#01949a;"></i> Personal Info
+                                </h4>
+                                <div style="width: 60px; height: 4px; background: #01949a; border-radius: 2px; margin-bottom: 0.5rem;"></div>
+                                <div class="mb-3 text-secondary small" style="margin-bottom: 1.5rem !important;">
+                                    <i class="fas fa-info-circle me-1"></i> Please provide your personal details for verification.
+                                </div>
+                                <div class="shadow-sm mb-4" style="background:#fafdff; border-left:4px solid #01949a; padding:32px 24px 24px 24px; border-radius: 0;">
+                                    <div class="row g-4">
+                                        <div class="col-md-6">
+                                            <label for="phone" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">Phone<span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-1" style="border-radius:0;"><i class="fas fa-user" style="color:#01949a;"></i></span>
+                                                <input id="phone" type="text" placeholder="Enter your phone number" class="form-control bg-white border-1 px-4 py-2 @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') ?? '' }}" required autocomplete="phone" autofocus style="box-shadow:none; border-radius:0;">
+                                            </div>
+                                            @error('phone')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="birth_date" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">Date Of Birth<span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-1" style="border-radius:0;"><i class="fas fa-calendar-alt" style="color:#01949a;"></i></span>
+                                                <input id="birth_date" type="date" max="2003-05-29" placeholder="Date Of Birth" class="form-control bg-white border-1 px-4 py-2 @error('dob') is-invalid @enderror" name="dob" value="{{ old('dob') ?? '' }}" required autocomplete="birth_date" autofocus style="box-shadow:none; border-radius:0;">
+                                            </div>
+                                            @error('dob')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <label for="tax_no" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">Employer identification number (EIN) <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-1" style="border-radius:0;"><i class="fas fa-id-card" style="color:#01949a;"></i></span>
+                                                <input id="tax_no" type="text" placeholder="Enter your EIN or leave blank if you don't have one" class="form-control bg-white border-1 px-4 py-2 @error('tax_no') is-invalid @enderror" name="tax_no" value="{{ old('tax_no') ?? '' }}" autocomplete="tax_no" autofocus style="box-shadow:none; border-radius:0;">
+                                            </div>
+                                            @error('tax_no')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <label for="govt_id_front" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">ID Front side <span class="text-danger">*</span></label>
+                                            <label for="govt_id_front" class="w-100 d-flex flex-column align-items-center justify-content-center mb-2" style="border:2px dashed #01949a; border-radius:0; padding:28px 0; cursor:pointer; background:#fafdff; transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 0 0 2px #01949a22'" onmouseout="this.style.boxShadow='none'">
+                                                <i class="fas fa-id-badge mb-2" style="font-size:2rem;color:#01949a;"></i>
+                                                <span class="fw-bold text-secondary">Click or drag file to upload</span>
+                                                <input id="govt_id_front" type="file" class="d-none @error('govt_id_front') is-invalid @enderror" name="govt_id_front" onchange="document.getElementById('govt_id_front_name').textContent = this.files[0]?.name || 'No file chosen'">
+                                            </label>
+                                            <span id="govt_id_front_name" class="ms-2 align-self-center text-secondary small">No file chosen</span>
+                                            @error('govt_id_front')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                        </div>
+                                        <div class="col-md-6 mt-2">
+                                            <label for="govt_id_back" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">ID Back side <span class="text-danger">*</span></label>
+                                            <label for="govt_id_back" class="w-100 d-flex flex-column align-items-center justify-content-center mb-2" style="border:2px dashed #01949a; border-radius:0; padding:28px 0; cursor:pointer; background:#fafdff; transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 0 0 2px #01949a22'" onmouseout="this.style.boxShadow='none'">
+                                                <i class="fas fa-id-badge mb-2" style="font-size:2rem;color:#01949a;"></i>
+                                                <span class="fw-bold text-secondary">Click or drag file to upload</span>
+                                                <input id="govt_id_back" type="file" class="d-none @error('govt_id_back') is-invalid @enderror" name="govt_id_back" onchange="document.getElementById('govt_id_back_name').textContent = this.files[0]?.name || 'No file chosen'">
+                                            </label>
+                                            <span id="govt_id_back_name" class="ms-2 align-self-center text-secondary small">No file chosen</span>
+                                            @error('govt_id_back')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                        </div>
                                     </div>
-                                    <div class="row">
-
-                                        <span class="ec-login-wrap col-md-12">
-                                            <label for="tax_no">Employer identification number (EIN) <span
-                                                    class="text-danger">*</span></label>
-                                            <input id="tax_no" type="text"
-                                                placeholder="Leave blank if you don't have an EIN number."
-                                                class="form-control bg-light @error('tax_no') is-invalid @enderror"
-                                                name="tax_no" value="{{ old('tax_no') ?? '' }}" autocomplete="phone"
-                                                autofocus>
-
-                                            @error('tax_no')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </span>
+                                </div>
+                                <h4 class="fw-bold text-dark mb-2 d-flex align-items-center" style="letter-spacing: 1px;">
+                                    <i class="fas fa-university me-2" style="color:#01949a;"></i> Bank Info
+                                </h4>
+                                <div style="width: 60px; height: 4px; background: #01949a; border-radius: 2px; margin-bottom: 0.5rem;"></div>
+                                <div class="mb-3 text-secondary small" style="margin-bottom: 1.5rem !important;">
+                                    <i class="fas fa-info-circle me-1"></i> This information is used to send your sales earnings securely.
+                                </div>
+                                <div class="shadow-sm mb-4" style="background:#fafdff; border-left:4px solid #01949a; padding:32px 24px 24px 24px; border-radius: 0;">
+                                    <div class="row g-4">
+                                        <div class="col-md-12">
+                                            <label for="paypal_email" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">Paypal Email<span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-1" style="border-radius:0;"><i class="fas fa-envelope" style="color:#01949a;"></i></span>
+                                                <input id="paypal_email" type="text" placeholder="Enter your Paypal email address" class="form-control bg-white border-1 px-4 py-2 @error('paypal_email') is-invalid @enderror" name="paypal_email" value="{{ old('paypal_email') ?? '' }}" required autocomplete="paypal_email" autofocus style="box-shadow:none; border-radius:0;">
+                                            </div>
+                                            @error('paypal_email')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label for="paypal_email_confirmation" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">Confirm Paypal Email<span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-1" style="border-radius:0;"><i class="fas fa-envelope-open" style="color:#01949a;"></i></span>
+                                                <input id="paypal_email_confirmation" type="text" placeholder="Re-enter your Paypal email address" class="form-control bg-white border-1 px-4 py-2 @error('paypal_email_confirmation') is-invalid @enderror" name="paypal_email_confirmation" value="{{ old('paypal_email_confirmation') ?? '' }}" required autocomplete="paypal_email_confirmation" autofocus style="box-shadow:none; border-radius:0;">
+                                            </div>
+                                            @error('paypal_email_confirmation')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                        </div>
                                     </div>
-
-
-
-
-                                    <div class="row mt-3">
-                                        <p>Please provide a valid government ID for identify verification</p>
-                                        <span class="ec-login-wrap col-md-6">
-                                            <label for="govt_id_front">ID Front side <span
-                                                    class="text-danger">*</span></label>
-                                            <input id="govt_id_front" type="file"
-                                                class="form-control bg-light @error('govt_id_front') is-invalid @enderror"
-                                                name="govt_id_front" value="{{ old('govt_id_front') ?? '' }}" 
-                                                autofocus>
-
-                                            @error('govt_id_front')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </span>
-                                        <span class="ec-login-wrap col-md-6">
-                                            <label for="govt_id_back">ID Back side <span
-                                                    class="text-danger">*</span></label>
-                                            <input id="govt_id_back" type="file" multiple
-                                                placeholder="One Government ID for verification"
-                                                class="form-control bg-light @error('govt_id_back') is-invalid @enderror"
-                                                name="govt_id_back" value="{{ old('govt_id_back') ?? '' }}" 
-                                                autofocus>
-
-                                            @error('govt_id_back')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </span>
-                                    </div>
-                                </fieldset>
-                                <label for="" class="mt-3">Bank Info</label>
-                                <fieldset class="border p-3 mt-2">
-                                <legend class="text-primary" style="font-size: 15px; font-weight:600;">This info will be used to send sales earnings</legend>
-                                    <div class="row">
-                                      
-                                        <span class="ec-login-wrap col-md-12">
-                                            <label for="paypal_email">Paypal Email<span class="text-danger">*</span></label>
-                                            <input id="paypal_email" type="text" placeholder="Paypal Email"
-                                                class="form-control bg-light @error('paypal_email') is-invalid @enderror"
-                                                name="paypal_email" value="{{ old('paypal_email') ?? '' }}" required
-                                                autocomplete="paypal_email" autofocus>
-
-                                            @error('paypal_email')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </span>
-                           
-
-                             
-
-
-                                        <span class="ec-login-wrap col-md-12 ">
-                                            <label for="paypal_email_confirmation">Confirm paypal email<span class="text-danger">*</span></label>
-                                            <input id="paypal_email_confirmation" type="text"
-                                                placeholder="Confirm Email"
-                                                class="form-control bg-light @error('paypal_email_confirmation') is-invalid @enderror"
-                                                name="paypal_email_confirmation" value="{{ old('paypal_email_confirmation') ?? '' }}"
-                                                required autocomplete="paypal_email_confirmation" autofocus>
-
-                                            @error('paypal_email_confirmation')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-
-                                        </span>
-                         
-
-
-                               
-                                  
-                                    </div>
-                                </fieldset>
-                                <label class="mt-3" for="">Shop address</label>
-                                <fieldset class="border p-3 my-2">
-                                    <div class="row">
-                                        <span class="ec-login-wrap col-md-6">
-                                            <label for="inputCity">Country<span class="text-danger">*</span></label>
+                                </div>
+                                <h4 class="fw-bold text-dark mb-2 d-flex align-items-center" style="letter-spacing: 1px;">
+                                    <i class="fas fa-store-alt me-2" style="color:#01949a;"></i> Shop Address
+                                </h4>
+                                <div style="width: 60px; height: 4px; background: #01949a; border-radius: 2px; margin-bottom: 0.5rem;"></div>
+                                <div class="mb-3 text-secondary small" style="margin-bottom: 1.5rem !important;">
+                                    <i class="fas fa-info-circle me-1"></i> Please provide your shop’s address for verification and payments.
+                                </div>
+                                <div class="shadow-sm mb-4" style="background:#fafdff; border-left:4px solid #01949a; padding:32px 24px 24px 24px; border-radius: 0;">
+                                    <div class="row g-4">
+                                        <div class="col-md-6">
+                                            <label for="inputCity" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">Country<span class="text-danger">*</span></label>
                                             <x-country />
-                                        </span>
-
-                                        <span class="ec-login-wrap col-md-6">
-                                            <label for="inputState" class="form-label">State<span
-                                                    class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="inputState" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">State<span class="text-danger">*</span></label>
                                             <x-state />
-                                            @error('state')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </span>
-                                        <span class="ec-login-wrap col-md-6">
-                                            <label for="inputCity" class="form-label mt-2">City<span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text"
-                                                class="form-control @error('city') is-invalid @enderror bg-light"
-                                                value="{{ auth()->user()->shop ? auth()->user()->shop->city : ' ' }}"
-                                                name="city" id="city" required>
-                                            @error('city')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </span>
-                                        <span class="ec-login-wrap col-md-6">
-                                            <label for="inputZip" class="form-label">Zip</label>
-                                            <input type="text" placeholder="post code"
-                                                class="form-control bg-light p-2  @error('post_code') is-invalid @enderror"
-                                                value="{{ auth()->user()->shop ? auth()->user()->shop->post_code : ' ' }}"
-                                                name="post_code" id="post_code" required>
-                                            @error('post_code')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </span>
-                                        <span class="ec-login-wrap col-md-12">
-
-                                            <label class="mt-2" for="address">Street address<span
-                                                    class="text-danger">*</span></label>
-                                            <textarea id="address" placeholder="Address"
-                                                class="form-control mb-3 bg-light @error('address') is-invalid @enderror" name="address" required>{{ old('address') ?? '' }}</textarea>
-
-                                            @error('address')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </span>
-
-
-
+                                            @error('state')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="city" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">City<span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-1" style="border-radius:0;"><i class="fas fa-map-marker-alt" style="color:#01949a;"></i></span>
+                                                <input type="text" class="form-control bg-white border-1 px-4 py-2 @error('city') is-invalid @enderror" value="{{ auth()->user()->shop ? auth()->user()->shop->city : ' ' }}" name="city" id="city" required style="box-shadow:none; border-radius:0;" placeholder="Enter your city">
+                                            </div>
+                                            @error('city')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="post_code" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">Zip</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-1" style="border-radius:0;"><i class="fas fa-map-pin" style="color:#01949a;"></i></span>
+                                                <input type="text" placeholder="Enter your postal/zip code" class="form-control bg-white border-1 px-4 py-2 @error('post_code') is-invalid @enderror" value="{{ auth()->user()->shop ? auth()->user()->shop->post_code : ' ' }}" name="post_code" id="post_code" required style="box-shadow:none; border-radius:0;">
+                                            </div>
+                                            @error('post_code')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label for="address" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">Street address<span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-1" style="border-radius:0;"><i class="fas fa-home" style="color:#01949a;"></i></span>
+                                                <textarea id="address" placeholder="Enter your shop's street address" class="form-control bg-white border-1 px-4 py-2 @error('address') is-invalid @enderror" name="address" required style="box-shadow:none; border-radius:0; min-height: 48px;">{{ old('address') ?? '' }}</textarea>
+                                            </div>
+                                            @error('address')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                        </div>
                                     </div>
-                                </fieldset>
-                                <label class="mt-3" for="">Credit/Debit card</label>
-                                <fieldset class="border p-3 my-2">
-                                <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
-                                <input name="payment_method" id="card-payment-method" type="hidden">
-
-
-
-                                <!-- Stripe Elements Placeholder -->
-                                <div class="form-group">
-                                    <label for="card_info">Provide a valid Credit or Debit card to pay for monthly subscription.
-<span class="text-danger">*</span></label>
-                                    <div id="card-element" class="form-control bg-light"></div>
                                 </div>
-                                <p class="mb-2">This card will be take monthly payment every month</p>
-                                <p class="text-primary">Each and every merchant must consent to having autopay enabled. At any moment, you are free to deactivate your shop or cancel your membership.</p>
-                                <div class="d-flex" style="height: 40px;">
-
-                                <input type="checkbox" required class="@error('ismonthly_charge') is-invalid @enderror"id="ismonthly_charge" style="width: 25px;" value="1" name="ismonthly_charge"><a
-                                    href="#" style="" class="mt-3 ms-3">Auto pay</span>
-                                    @error('ismonthly_charge')
-                                    <span class="invalid-feedback " role="alert">
-                                    <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                    </div>  
-                            
-                                <button id="card-button" type="button" class="mt-2 px-3"
-                                    style="padding:10px;background-color:red;color:white"
-                                    data-secret="{{ $intent->client_secret }}">
-                                    Verify
-                                </button>
-                                
-                                </fieldset>
-
-
-
-                                <div class="d-flex">
-
-                                    <input type="checkbox" required class="@error('terms') is-invalid @enderror"
-                                        id="terms" style="width: 25px;" value="1" name="terms"><a
-                                        href="#" style="" class="mt-4 ms-3 ">I have
-                                        read and agree to the <span>Terms &amp; Conditions</span></a><span
-                                        class="checked"></span>
-                                    @error('terms')
-                                        <span class="invalid-feedback " role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                <h4 class="fw-bold text-dark mb-2 d-flex align-items-center" style="letter-spacing: 1px;">
+                                    <i class="fas fa-credit-card me-2" style="color:#01949a;"></i> Credit/Debit Card
+                                </h4>
+                                <div style="width: 60px; height: 4px; background: #01949a; border-radius: 2px; margin-bottom: 0.5rem;"></div>
+                                <div class="mb-3 text-secondary small" style="margin-bottom: 1.5rem !important;">
+                                    <i class="fas fa-info-circle me-1"></i> Provide a valid card for your monthly subscription. Your payment is secure.
                                 </div>
-
-                                <span class="ec-login-wrap ec-login-btn">
-                                    <div class="col-md-12 ">
-                                        <button type="submit" id="submit" disabled
-                                            class="btn btn-dark rounded rounded-4">
-                                            Submit
-                                        </button>
-
-                                </span>
+                                <div class="shadow-sm mb-4" style="background:#fafdff; border-left:4px solid #01949a; padding:32px 24px 24px 24px; border-radius: 0;">
+                                    <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
+                                    <input name="payment_method" id="card-payment-method" type="hidden">
+                                    <div class="form-group mb-3">
+                                        <label for="card_info" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">Card Details<span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white border-1" style="border-radius:0;"><i class="fas fa-credit-card" style="color:#01949a;"></i></span>
+                                            <div id="card-element" class="form-control bg-white border-1 px-4 py-2" style="box-shadow:none; border-radius:0;"></div>
+                                        </div>
+                                    </div>
+                                    <p class="mb-2">This card will be used for your monthly payment every month.</p>
+                                    <p class="text-primary">Each and every merchant must consent to having autopay enabled. At any moment, you are free to deactivate your shop or cancel your membership.</p>
+                                    <div class="d-flex align-items-center mb-3" style="height: 40px;">
+                                        <input type="checkbox" required class="form-check-input me-2 @error('ismonthly_charge') is-invalid @enderror" id="ismonthly_charge" style="width: 25px;" value="1" name="ismonthly_charge">
+                                        <label for="ismonthly_charge" class="form-label mb-0 fw-bold" style="color:#01949a;">Auto pay</label>
+                                        @error('ismonthly_charge')<span class="invalid-feedback ms-2" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                    </div>
+                                    <button id="card-button" type="button" class="btn mb-2 fw-bold shadow" style="background-color:#FF0000;color:white; transition:transform 0.2s; font-size:1.1rem;" onmouseover="this.style.transform='translateY(-2px) scale(1.03)'" onmouseout="this.style.transform='scale(1)'" data-secret="{{ $intent->client_secret }}">
+                                        <i class="fas fa-lock me-2"></i> Verify
+                                    </button>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <input type="checkbox" required class="form-check-input me-2 @error('terms') is-invalid @enderror" id="terms" style="width: 25px;" value="1" name="terms">
+                                    <label for="terms" class="form-label mb-0 text-uppercase fw-bold" style="font-size: 0.85rem; color: #01949a;">I have read and agree to the <span class="text-primary">Terms &amp; Conditions</span></label>
+                                    @error('terms')<span class="invalid-feedback ms-2" role="alert"><strong>{{ $message }}</strong></span>@enderror
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" id="submit" disabled class="btn fw-bold shadow" style="background-color:#FF0000;color:white; transition:transform 0.2s; font-size:1.1rem;" onmouseover="this.style.transform='translateY(-2px) scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                                        Submit
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -295,6 +215,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://kit.fontawesome.com/4ad8d6e5b7.js" crossorigin="anonymous"></script>
 
     <script>
         var verified = false;
