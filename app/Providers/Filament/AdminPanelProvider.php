@@ -125,7 +125,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 NavigationGroup::make()
                     ->label('Inventory')
-                    ->icon('heroicon-o-archive-box')
+                    ->icon('heroicon-o-cube')
                     ->collapsible(),
                 NavigationGroup::make()
                     ->label('Orders')

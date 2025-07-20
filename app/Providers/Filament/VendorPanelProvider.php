@@ -21,6 +21,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Filament\Navigation\NavigationGroup;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class VendorPanelProvider extends PanelProvider
@@ -90,6 +91,25 @@ class VendorPanelProvider extends PanelProvider
                 ViewInvoice::class,
                 VendorProfilePage::class,
             ])
+
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Inventory')
+                    ->icon('heroicon-o-cube')
+                    ->collapsible(),
+                NavigationGroup::make()
+                    ->label('Orders')
+                    ->icon('heroicon-o-shopping-bag'),
+                NavigationGroup::make()
+                    ->label('Profile')
+                    ->icon('heroicon-o-user-circle'),
+                NavigationGroup::make()
+                    ->label('Support')
+                    ->icon('heroicon-o-lifebuoy'),
+                NavigationGroup::make()
+                    ->label('Marketing')
+                    ->icon('heroicon-o-megaphone'),
+            ]);
         ;
     }
 }
