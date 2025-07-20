@@ -1185,43 +1185,19 @@
                 <div class="col-lg-9 pe-md-0">
                     <div class="hero-slider-wrapper">
                         <div class="hero-slider" role="region" aria-label="Product carousel">
-                            <!-- Slide 1 -->
-                            <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/Pokecut_.jpg') }}');"
-                                aria-hidden="false">
-                                {{-- <div class="hero__text">
-                                    <span>FRUIT FRESH</span>
-                                    <h2>Vegetable <br>100% Organic</h2>
-                                    <p>Free Pickup and Delivery Available</p>
-                                    <a href="#" class="primary-btn">SHOP NOW</a>
-                                </div> --}}
-                            </div>
-                            <!-- Slide 2 -->
-                            <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/pexels.jpg') }}');"
-                                aria-hidden="true">
-                            </div>
-                            <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/pexels-gustavo.jpg') }}');"
-                                aria-hidden="true">
-                            </div>
-                            <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/freestocks.jpg') }}');"
-                                aria-hidden="true">
-                            </div>
-                            <div class="hero__item set-bg"
-                                style="background-image: url('{{ asset('assets/slider/wmremove-1.jpeg') }}');"
-                                aria-hidden="true">
-                            </div>
+                            @foreach($sliders as $index => $slider)
+                                <div class="hero__item set-bg"
+                                    style="background-image: url('{{ Storage::url($slider->image) }}');"
+                                    aria-hidden="{{ $index !== 0 ? 'true' : 'false' }}">
+                                </div>
+                            @endforeach
                         </div>
 
                         <!-- Navigation Dots -->
                         <div class="slider-dots">
-                            <button class="dot active" aria-label="Slide 1"></button>
-                            <button class="dot" aria-label="Slide 2"></button>
-                            <button class="dot" aria-label="Slide 3"></button>
-                            <button class="dot" aria-label="Slide 4"></button>
-                            <button class="dot" aria-label="Slide 5"></button>
+                            @foreach($sliders as $index => $slider)
+                                <button class="dot{{ $index === 0 ? ' active' : '' }}" aria-label="Slide {{ $index + 1 }}"></button>
+                            @endforeach
                         </div>
                     </div>
                 </div>
