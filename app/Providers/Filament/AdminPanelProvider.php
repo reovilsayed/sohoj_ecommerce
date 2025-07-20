@@ -55,6 +55,18 @@ class AdminPanelProvider extends PanelProvider
             .fi-sidebar-nav::-webkit-scrollbar {
                 display: none !important; /* Chrome/Safari */
             }
+            .fi-sidebar-nav-group {
+                font-weight: bold;
+                color: #4F46E5; /* Example: Indigo */
+                background: #F3F4F6;
+                border-radius: 6px;
+                margin-bottom: 8px;
+                padding: 4px 8px;
+            }
+            .fi-sidebar-nav-group-label {
+                font-size: 1.1em;
+                letter-spacing: 0.5px;
+            }
         </style>
     HTML
             )
@@ -111,11 +123,28 @@ class AdminPanelProvider extends PanelProvider
                 // RecentOrders::class,
             ])
             ->navigationGroups([
-                'Inventory',
-                'Orders',
-                'Business',
-                'User Management',
-                'Blog',
+                NavigationGroup::make()
+                    ->label('Inventory')
+                    ->icon('heroicon-o-archive-box')
+                    ->collapsible(),
+                NavigationGroup::make()
+                    ->label('Orders')
+                    ->icon('heroicon-o-receipt-refund'),
+                NavigationGroup::make()
+                    ->label('Business')
+                    ->icon('heroicon-o-building-office'),
+                NavigationGroup::make()
+                    ->label('User Management')
+                    ->icon('heroicon-o-user-group'),
+                NavigationGroup::make()
+                    ->label('Blog')
+                    ->icon('heroicon-o-document-text'),
+                NavigationGroup::make()
+                    ->label('Settings')
+                    ->icon('heroicon-o-cog-6-tooth'),
+                NavigationGroup::make()
+                    ->label('Content')
+                    ->icon('heroicon-o-rectangle-group'),
             ]);
             
     }
