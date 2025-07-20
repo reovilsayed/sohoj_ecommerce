@@ -10,7 +10,7 @@ use App\Models\Product;
 use App\Models\Rating;
 use App\Models\Shop;
 use App\Models\User;
-use App\Slider;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use TCG\Voyager\Models\Page;

@@ -43,14 +43,14 @@ class Settings extends Page
                     default => Forms\Components\TextInput::class,
                 };
                 $fields[] = $fieldType::make('data.' . $setting->key)
-                    ->label(ucwords(str_replace('_', ' ', $setting->key)))
+                    ->label(ucwords(str_replace('_', ' ', $setting->display_name)))
                     ->default($setting->value);
             }
             $tabs[] = Forms\Components\Tabs\Tab::make($group ?: 'General')->schema($fields);
         }
         return [
             Forms\Components\Tabs::make('Settings Tabs')
-                ->tabs($tabs)
+            ->tabs($tabs)
         ];
     }
 }
