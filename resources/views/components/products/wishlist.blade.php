@@ -9,7 +9,7 @@
     $fullStars = floor($averageRating);
     $hasHalfStar = $averageRating - $fullStars >= 0.5;
 @endphp
-<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 mb-6  pro-gl-content">
+<div class="pro-gl-content">
     <div class="product-card">
         {{-- Product Image Section --}}
         <div class="product-image-wrapper">
