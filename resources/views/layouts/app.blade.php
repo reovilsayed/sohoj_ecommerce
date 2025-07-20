@@ -192,17 +192,17 @@
         }
 
         .footer-modern .btn-outline-light {
-            border: 1px solid #009e4a;
+            border: 1px solid #01949a;
         }
 
         .footer-modern .btn-outline-light:hover {
-            background: #009e4a;
+            background: #01949a;
             color: #ffffff !important;
         }
 
         .footer-modern .btn-pink,
         .btn-pink {
-            background: #009e4a !important;
+            background: #01949a !important;
             color: #fcfcfc !important;
             border: none !important;
         }
