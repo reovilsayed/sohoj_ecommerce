@@ -264,7 +264,7 @@
     }
 </style>
 
-<div class="col-md-2 col-sm-6 col-6 mb-4">
+<div class="mb-4">
     <div class="product-card">
         <div class="product-image-wrapper">
             <div class="product-image">

@@ -942,7 +942,7 @@
                     slidesPerView: 3,
                 },
                 992: {
-                    slidesPerView: 6,
+                    slidesPerView: 5,
                 },
             },
         });

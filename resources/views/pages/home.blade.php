@@ -1322,13 +1322,12 @@
 
                                         <h2 id="trending" class="related-product-sec-title"> Trending Products</h2>
                                     </div>
-                                    <div class="ec-spe-section data-animation=" slideInLeft">
-
+                                    <div class="ec-spe-section" data-animation="slideInLeft">
                                         <div class="ec-spe-products">
-                                            @foreach ($latest_products->chunk(6) as $products)
+                                            @foreach ($latest_products->chunk(5) as $products)
                                                 <div class="ec-fs-product">
                                                     <div class="ec-fs-pro-inner">
-                                                        <div class="row mt-4">
+                                                        <div class="row row-cols-lg-5 cols-2 mt-4">
                                                             @foreach ($products as $product)
                                                                 {{-- @dd($product) --}}
                                                                 <x-products.product-1 :product="$product" />
@@ -1373,24 +1372,22 @@
 
                                         <div class="ec-spe-products">
                                             @if ($recommandProducts->count() > 0)
-                                                @foreach ($recommandProducts->chunk(6) as $products)
+                                                @foreach ($recommandProducts->chunk(5) as $products)
                                                     <div class="ec-fs-product">
                                                         <div class="ec-fs-pro-inner">
-
-                                                            <div class="row mt-4">
+                                                            <div class="row row-cols-lg-5 cols-2 mt-4">
                                                                 @foreach ($products as $product)
                                                                     <x-products.product-1 :product="$product" />
                                                                 @endforeach
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 @endforeach
                                             @else
-                                                @foreach ($bestsaleproducts->chunk(6) as $products)
+                                                @foreach ($bestsaleproducts->chunk(5) as $products)
                                                     <div class="ec-fs-product">
                                                         <div class="ec-fs-pro-inner">
-                                                            <div class="row mt-4">
+                                                            <div class="row row-cols-lg-5 cols-2 mt-4">
                                                                 @foreach ($products as $product)
                                                                     <x-products.product-1 :product="$product" />
                                                                 @endforeach
@@ -1479,7 +1476,7 @@
                                             </div>
                                             <div class="col-md-9 mt-4">
                                                 <div class="ec-spe-products">
-                                                    @foreach ($shop->products->whereNull('parent_id')->chunk(3) as $products)
+                                                    @foreach ($shop->products->whereNull('parent_id')->chunk(4) as $products)
                                                         {{-- @dd($products) --}}
                                                         <div class="ec-fs-product">
                                                             <div class="ec-fs-pro-inner">
