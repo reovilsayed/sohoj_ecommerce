@@ -24,6 +24,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use App\Filament\Widgets\StatsOverview;
 use Illuminate\Database\Eloquent\Model;
 use App\Filament\Pages\DynamicSettingsPage;
+use App\Filament\Pages\Settings\Settings;
 use Filament\Navigation\NavigationGroup;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -145,6 +146,12 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Content')
                     ->icon('heroicon-o-rectangle-group'),
+            ])
+            ->plugins([
+                FilamentSettingsPlugin::make()
+                    ->pages([
+                        Settings::class,
+                    ])
             ])
             ->globalSearch(true)
             ->globalSearchDebounce('500ms')

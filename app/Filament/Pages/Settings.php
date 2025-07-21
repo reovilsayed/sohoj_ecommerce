@@ -1,56 +1,35 @@
 <?php
-
-namespace App\Filament\Pages;
-
-use App\Models\Setting;
-use Filament\Forms;
-use Filament\Pages\Page;
-use Illuminate\Support\Arr;
-
-class Settings extends Page
+namespace App\Filament\Pages\Settings;
+ 
+use Closure;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\TextInput;
+use Outerweb\FilamentSettings\Filament\Pages\Settings as BaseSettings;
+ 
+class Settings extends BaseSettings
 {
-    protected static ?string $navigationIcon = 'heroicon-o-cog';
-    protected static ?string $navigationGroup = 'Settings';
-    protected static ?string $title = 'Settings';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
     protected static string $view = 'filament.pages.settings';
 
-    public $data = [];
-
-    public function mount(): void
+    public function schema(): array|Closure
     {
-        $this->data = Setting::all()->pluck('value', 'key')->toArray();
-    }
-
-    public function save()
-    {
-        foreach ($this->data as $key => $value) {
-            Setting::where('key', $key)->update(['value' => $value]);
-        }
-        session()->flash('success', 'Settings updated successfully!');
-    }
-
-    protected function getFormSchema(): array
-    {
-        $groups = Setting::all()->groupBy('group');
-        $tabs = [];
-        foreach ($groups as $group => $settings) {
-            $fields = [];
-            foreach ($settings as $setting) {
-                $fieldType = match($setting->type) {
-                    'text' => Forms\Components\TextInput::class,
-                    'textarea' => Forms\Components\Textarea::class,
-                    'image' => Forms\Components\FileUpload::class,
-                    default => Forms\Components\TextInput::class,
-                };
-                $fields[] = $fieldType::make('data.' . $setting->key)
-                    ->label(ucwords(str_replace('_', ' ', $setting->display_name)))
-                    ->default($setting->value);
-            }
-            $tabs[] = Forms\Components\Tabs\Tab::make($group ?: 'General')->schema($fields);
-        }
         return [
-            Forms\Components\Tabs::make('Settings Tabs')
-            ->tabs($tabs)
+            Tabs::make('Settings')
+                ->schema([
+                    Tabs\Tab::make('General')
+                        ->schema([
+                            TextInput::make('general.brand_name')
+                                ->required(),
+                        ]),
+                    Tabs\Tab::make('Seo')
+                        ->schema([
+                            TextInput::make('seo.title')
+                                ->required(),
+                            TextInput::make('seo.description')
+                                ->required(),
+                        ]),
+                ]),
         ];
     }
 }

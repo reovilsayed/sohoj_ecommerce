@@ -9,10 +9,12 @@ use Illuminate\Notifications\Notifiable;
 
 use App\Models\Traits\HasMeta;
 use Carbon\Carbon;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable, HasMeta, Billable;
 
@@ -64,6 +66,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->role->name === 'admin';
+    }
 
     public function role()
     {
