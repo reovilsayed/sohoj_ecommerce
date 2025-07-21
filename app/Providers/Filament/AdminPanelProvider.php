@@ -145,7 +145,10 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Content')
                     ->icon('heroicon-o-rectangle-group'),
-            ]);
+            ])
+            ->globalSearch(true)
+            ->globalSearchDebounce('500ms')
+            ->globalSearchFieldKeyBindingSuffix();
             
     }
 }

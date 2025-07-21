@@ -35,6 +35,8 @@ class OrderResource extends Resource
 
     protected static ?string $navigationLabel = 'Orders List';
 
+    protected static ?string $recordTitleAttribute = 'id';
+
     public static function getNavigationBadge(): ?string
     {
         return static::$model::count();
