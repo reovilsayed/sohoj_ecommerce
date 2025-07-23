@@ -17,10 +17,10 @@ class ListOrders extends ListRecords
         ];
     }
 
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            \App\Filament\Resources\OrderResource\Pages\OrderStatusSummary::class,
-        ];
-    }
+    // protected function getHeaderWidgets(): array
+    // {
+    //     return [
+    //         \App\Filament\Resources\OrderResource\Pages\OrderStatusSummary::class,
+    //     ];
+    // }
 }

@@ -13,7 +13,7 @@ class MenuResource extends Resource
 {
     protected static ?string $model = Menu::class;
     protected static ?string $navigationIcon = 'heroicon-o-bars-3';
-    protected static ?string $navigationGroup = 'Content';
+     protected static ?string $navigationGroup = 'Settings';
     protected static ?string $label = 'Menu';
     protected static ?string $pluralLabel = 'Menus';
 
