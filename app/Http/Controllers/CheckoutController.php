@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\PaymentService;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Error;
 use Exception;
@@ -83,9 +84,8 @@ class CheckoutController extends Controller
             'total' => floatval(str_replace(',', '', \Sohoj::round_num($total))),
             'quantity' => null,
             'vendor_total' => null,
-            'payment_method' => $request->payment_method[0],
+            'payment_method' => $request->payment_method,
         ]);
-
         foreach (Cart::Content() as $item) {
             OrderProduct::create([
                 'quantity' => $item->qty,
@@ -112,7 +112,7 @@ class CheckoutController extends Controller
                 'total' => floatval(str_replace(',', '', \Sohoj::round_num(($item->price * $item->qty) + $item->model->shipping_cost))),
                 'quantity' => $item->qty,
                 'vendor_total' => $item->model->vendor_price * $item->qty,
-                'payment_method' => $request->payment_method[0],
+                'payment_method' => $request->payment_method,
                 'product_price' => $item->price,
             ]);
 
@@ -127,7 +127,9 @@ class CheckoutController extends Controller
             ]);
         }
         Cart::destroy();
-        return redirect('/thankyou')->with('thank', 'Order Created successfully!');
+        $paymentService = new PaymentService($order);
+        $url = $paymentService->getPaymentRedirectUrl();
+        return redirect($url);
 
 
         // $payment = auth()->user()->charge(($order->total * 100), $request->payment_method[0]);

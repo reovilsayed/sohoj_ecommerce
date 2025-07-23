@@ -180,6 +180,8 @@ Route::post('/admin/shops/{shop}/toggle-status', [AdminController::class, 'toggl
 
 Route::post('/status-update/{shop}', [PageController::class, 'shop_status_update'])->name('shop_status_update');
 
+Route::post('settings/update', [PageController::class, 'settingsUpdate'])->name('settings.update');
+
 
     // Route::get('test',function(){
     //     dd(settings::setting('site.description'));

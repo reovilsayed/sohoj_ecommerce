@@ -1,5 +1,6 @@
 @section('title', 'Checkout | Sohoj E-commerce')
-@section('meta_description', 'Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple
+@section('meta_description',
+    'Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple
     payment options and order tracking.')
 @section('meta_keywords', 'checkout, payment, order, purchase, ecommerce, online shopping, sohoj')
 @section('canonical_url', route('checkout'))
@@ -253,6 +254,154 @@
                 padding: 0.7rem 0.5rem;
                 font-size: 0.95rem;
             }
+        }
+
+        .payment-card-option {
+            position: relative;
+            display: flex;
+            align-items: center;
+            border: 2px solid #e3eafc;
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s, transform 0.15s;
+            background: #f8fbff;
+            margin-bottom: 0.5rem;
+            gap: 1rem;
+            box-shadow: 0 2px 8px rgba(30, 136, 229, 0.03);
+        }
+
+        .payment-card-option input[type="radio"] {
+            opacity: 0;
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 22px;
+            height: 22px;
+            margin: 0;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .custom-radio-indicator {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #b0bec5;
+            border-radius: 50%;
+            background: #fff;
+            display: inline-block;
+            margin-right: 1rem;
+            position: relative;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            flex-shrink: 0;
+        }
+
+        .payment-card-option input[type="radio"]:checked + .custom-radio-indicator {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px #e0f7fa;
+        }
+
+        .payment-card-option input[type="radio"]:checked + .custom-radio-indicator::after {
+            content: '';
+            display: block;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+        }
+
+        .payment-card-option input[type="radio"]:checked ~ .payment-card-content {
+            /* Highlight the card background and border */
+            background: #e3f8fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 18px rgba(1, 148, 154, 0.10);
+            /* Optional: scale up a bit */
+            transform: scale(1.02);
+        }
+
+        .payment-card-option input[type="radio"]:checked ~ .payment-card-content .payment-title {
+            color: var(--primary);
+        }
+
+        /* Optional: checkmark in the top-right corner of the selected card */
+        .payment-card-option input[type="radio"]:checked ~ .payment-card-content::after {
+            content: '✔';
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 1.3rem;
+            color: var(--primary);
+            background: #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(1, 148, 154, 0.10);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .payment-card-option:hover,
+        .payment-card-option input[type="radio"]:focus+.custom-radio-indicator {
+            border-color: var(--primary);
+            box-shadow: 0 4px 16px rgba(30, 136, 229, 0.10);
+        }
+
+        .payment-card-content {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .payment-img-wrap {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(30, 136, 229, 0.06);
+        }
+
+        .pay-img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            margin: 0;
+            display: block;
+        }
+
+        .payment-text-wrap {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .payment-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #222;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .payment-desc {
+            font-size: 0.97rem;
+            color: #6c757d;
+            margin-top: 2px;
+            font-weight: 400;
+            line-height: 1.3;
         }
     </style>
 @endsection
@@ -528,53 +677,9 @@
                                                             style="top:100%;left:0;">{{ $message }}</span>
                                                     @enderror
                                                 </div>
-
-                                                {{-- <div class="col-md-12 mt-2">
-                                                    <label for="address_2" class="form-label">Address Line 2</label>
-                                                    <input type="text" class="form-control" id="address_2" name="address_2" placeholder="Address Line 2 (optional)">
-                                                    @error('address_2')
-                                                        <span class="text-danger small position-absolute" style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
-                                                </div> --}}
                                             </div>
                                         </div>
-                                        {{-- <div class="mb-4">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <h5 class="fw-semibold mb-0 me-2"><i class="fa fa-map-marker-alt me-2 text-primary"></i>Choose Shipping Address</h5>
-                                                <a href="{{ route('user.address.store') }}" class="btn btn-outline-primary btn-sm ms-auto rounded-pill"><i class="fa fa-plus me-1"></i> Add New Address</a>
-                                            </div>
-                                            <div class="row g-3">
-                                                @if (Auth()->user()->addresses->count() > 0)
-                                                    @foreach (Auth()->user()->addresses as $address)
-                                                        <div class="col-md-6">
-                                                            <div class="card address-card h-100 p-3 border-0 shadow-sm position-relative">
-                                                                <div class="form-check d-flex align-items-center mb-2">
-                                                                    <input class="form-check-input me-2" value="{{ $address->id }}" name="prevoius_address" type="radio" id="address-{{ $address->id }}">
-                                                                    <label class="form-check-label address-label fw-semibold" for="address-{{ $address->id }}">
-                                                                        <i class="fa fa-home me-1 text-muted"></i>
-                                                                        {{ $address->post_code }}, {{ $address->state }}, {{ $address->city }}<br>
-                                                                        <span class="text-muted small">{{ $address->address_1 }} {{ $address->address_2 }}</span>
-                                                                    </label>
-                                                                </div>
-                                                                <div class="d-flex justify-content-end align-items-center mt-2 gap-2">
-                                                                    <a href="{{ route('user.address-edit', $address->id) }}" class="text-success me-2" title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                                    <a href="{{ route('user.address.destroy', $address) }}" onclick="return confirm('Are you sure you want to delete this Address?');" class="remove-item" title="Delete">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                                                        </svg>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                @else
-                                                    <div class="col-12">
-                                                        <div class="alert alert-info mb-0">No saved addresses. Please <a href='{{ route('user.address-add') }}' class='text-primary'>add a new address</a>.</div>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div> --}}
+
                                         <div class="d-flex justify-content-between mt-4">
                                             <button type="button" class="btn px-4"
                                                 style="background: #01949a; color: #ffffff !important;"
@@ -634,76 +739,58 @@
                                         <div class="checkout-card mb-4 p-4 shadow-sm border-0 rounded-4"
                                             style="background: var(--card-bg); border: 1px solid #d7ccc8;">
                                             <div class="row g-4 align-items-stretch">
-                                                <div class="col-md-6 d-flex flex-column justify-content-between">
-                                                    <div class="form-check payment-option mb-3 p-3 h-100 border rounded-3 bg-white shadow-sm position-relative"
-                                                        style="transition: box-shadow 0.2s, border-color 0.2s;">
-                                                        <input class="form-check-input position-absolute top-0 end-0 m-3"
-                                                            type="radio" name="payment_method" id="stripe"
-                                                            value="stripe" checked>
-                                                        <label
-                                                            class="form-check-label d-flex flex-column align-items-start"
-                                                            for="stripe">
-                                                            <span class="d-flex align-items-center mb-2">
-                                                                <img src='https://img.icons8.com/color/48/000000/bank-card-back-side.png'
-                                                                    alt="Stripe" class="pay-img me-2" />
-                                                                <span class="fw-semibold">Credit/Debit Card (Stripe)</span>
+                                                <div class="col-md-12 d-flex flex-column gap-3">
+                                                    <label class="payment-card-option">
+                                                        <input type="radio" name="payment_method" id="cash"
+                                                            value="cash" class="form-check-input" required>
+                                                        <span class="custom-radio-indicator"></span>
+                                                        <span class="payment-card-content">
+                                                            <span class="payment-img-wrap">
+                                                                <img src="https://img.icons8.com/color/64/000000/us-dollar-circled--v1.png"
+                                                                    alt="Dollar" class="pay-img" />
                                                             </span>
-                                                            <span class="text-muted small">Pay securely with Visa,
-                                                                MasterCard, Amex via Stripe.</span>
-                                                        </label>
-                                                        <div class="mt-3 w-100 stripe-fields">
-                                                            <div id="card-element"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 d-flex flex-column justify-content-between">
-                                                    <div class="form-check payment-option mb-3 p-3 h-100 border rounded-3 bg-white shadow-sm position-relative"
-                                                        style="transition: box-shadow 0.2s, border-color 0.2s;">
-                                                        <input class="form-check-input position-absolute top-0 end-0 m-3"
-                                                            type="radio" name="payment_method" id="paypal"
-                                                            value="paypal">
-                                                        <label
-                                                            class="form-check-label d-flex flex-column align-items-start"
-                                                            for="paypal">
-                                                            <span class="d-flex align-items-center mb-2">
-                                                                <img src='https://img.icons8.com/color/48/000000/paypal.png'
-                                                                    alt="PayPal" class="pay-img me-2" />
-                                                                <span class="fw-semibold">PayPal</span>
+                                                            <span class="payment-text-wrap">
+                                                                <span class="payment-title">Cash</span>
+                                                                <span class="payment-desc">Pay with cash upon
+                                                                    delivery.</span>
                                                             </span>
-                                                            <span class="text-muted small">Checkout with your PayPal
-                                                                account.</span>
-                                                        </label>
-                                                        <div class="mt-3 w-100 paypal-fields d-none">
-                                                            <div class="alert alert-info mb-0"><i
-                                                                    class="fa fa-info-circle me-2"></i>After clicking Next,
-                                                                you will be redirected to PayPal to complete your payment
-                                                                securely.</div>
-                                                        </div>
-                                                    </div>
+                                                        </span>
+                                                    </label>
+                                                    <label class="payment-card-option">
+                                                        <input type="radio" name="payment_method" id="paypal"
+                                                            value="paypal" class="form-check-input" required>
+                                                        <span class="custom-radio-indicator"></span>
+                                                        <span class="payment-card-content">
+                                                            <span class="payment-img-wrap">
+                                                                <img src="https://img.icons8.com/color/64/000000/paypal.png"
+                                                                    alt="PayPal" class="pay-img" />
+                                                            </span>
+                                                            <span class="payment-text-wrap">
+                                                                <span class="payment-title">PayPal</span>
+                                                                <span class="payment-desc">Pay securely using your PayPal
+                                                                    account.</span>
+                                                            </span>
+                                                        </span>
+                                                    </label>
+                                                    <label class="payment-card-option">
+                                                        <input type="radio" name="payment_method" id="stripe"
+                                                            value="stripe" class="form-check-input" required>
+                                                        <span class="custom-radio-indicator"></span>
+                                                        <span class="payment-card-content">
+                                                            <span class="payment-img-wrap">
+                                                                <img src="https://img.icons8.com/color/64/000000/bank-card-back-side.png"
+                                                                    alt="Stripe" class="pay-img" />
+                                                            </span>
+                                                            <span class="payment-text-wrap">
+                                                                <span class="payment-title">Stripe</span>
+                                                                <span class="payment-desc">Pay with any major credit or
+                                                                    debit card.</span>
+                                                            </span>
+                                                        </span>
+                                                    </label>
+
                                                 </div>
                                             </div>
-                                            <script>
-                                                // Show/hide payment fields based on selected method
-                                                document.addEventListener('DOMContentLoaded', function() {
-                                                    const stripeRadio = document.getElementById('stripe');
-                                                    const paypalRadio = document.getElementById('paypal');
-                                                    const stripeFields = document.querySelector('.stripe-fields');
-                                                    const paypalFields = document.querySelector('.paypal-fields');
-
-                                                    function toggleFields() {
-                                                        if (stripeRadio.checked) {
-                                                            stripeFields.classList.remove('d-none');
-                                                            paypalFields.classList.add('d-none');
-                                                        } else if (paypalRadio.checked) {
-                                                            stripeFields.classList.add('d-none');
-                                                            paypalFields.classList.remove('d-none');
-                                                        }
-                                                    }
-                                                    stripeRadio.addEventListener('change', toggleFields);
-                                                    paypalRadio.addEventListener('change', toggleFields);
-                                                    toggleFields();
-                                                });
-                                            </script>
                                         </div>
                                         <div class="d-flex justify-content-between mt-4">
                                             <button type="button" class="btn px-4"
@@ -719,10 +806,9 @@
                                             }
 
                                             .pay-img {
-                                                width: 38px;
-                                                height: 24px;
+                                                width: 100%;
+                                                height: 100%;
                                                 object-fit: contain;
-                                                margin-right: 10px;
                                             }
 
                                             .form-floating>label>i {
@@ -888,66 +974,6 @@
     </style>
     </div>
 
-    <!-- checkout content Start -->
-    {{-- <div class="">
-
-        <div class="shipping_add" style="margin-top: 48px">
-            <h3 style="font-size: 25px;">Enter a payment info</h3>
-        </div>
-        <div class="shipping_add_old" style="margin-top: 20px">
-            <p style="font-size: 16px;">Select from a previous card</p>
-
-        </div>
-
-
-        <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button h5 text-dark" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Add a new card ?
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
-
-                        <!-- Stripe Elements Placeholder -->
-                        <div id="card-element"></div>
-                        <div class="">
-
-
-                            <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
-
-                            <!-- Stripe Elements Placeholder -->
-                            <div id="card-element"></div>
-                            <div class="row">
-                                <div class="col-12 " style="margin-top: 12px">
-                                    <div class="form-check d-flex align-items-center">
-                                        <input class="form-check-input " style="margin-right: 11px" type="checkbox"
-                                            id="gridCheck">
-                                        <label class="form-check-label address-label" for="gridCheck">
-                                            Make this my default card
-
-                                        </label>
-
-                                    </div>
-                                </div>
-                                <div class="col-md-6" style="margin-top: 15px; ">
-                                    <button class="btn  btn-dark btn-lg rounded shadow" style="border-radius: 10px"
-                                        type="button" id="card-button" data-secret="{{ $intent->client_secret }}">Use
-                                        this
-                                        Card</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
     <!-- Modal -->
     <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -1027,7 +1053,7 @@
     <script src="{{ asset('assets/frontend-assets/js/main.js') }}"></script>
     <script src="https://js.stripe.com/v3/"></script>
 
-    <script>
+    {{-- <script>
         const stripe = Stripe("{{ env('STRIPE_KEY') }}");
         const elements = stripe.elements();
         const cardElement = elements.create('card');
@@ -1067,7 +1093,7 @@
             toastr.success('Card added');
             document.getElementById('payment-form').submit();
         });
-    </script>
+    </script> --}}
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

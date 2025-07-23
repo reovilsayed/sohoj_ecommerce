@@ -320,5 +320,182 @@ class PageController extends Controller
     
         return redirect()->back()->with('success', 'Shop status updated successfully.');
     }
-    
+
+    public function settingsUpdate(Request $request)
+    {
+        try {
+            // Get all form data except the CSRF token and method
+            $settings = $request->except(['_token', '_method']);
+            
+            foreach ($settings as $key => $value) {
+                // Handle file uploads
+                if ($request->hasFile($key)) {
+                    $file = $request->file($key);
+                    
+                    // Store file and get path
+                    $filePath = $file->store('settings', 'public');
+                    $value = $filePath;
+                    
+                    // Delete old file if exists
+                    $existingSetting = \App\Models\Setting::where('key', $key)->first();
+                    if ($existingSetting && $existingSetting->value && \Storage::disk('public')->exists($existingSetting->value)) {
+                        \Storage::disk('public')->delete($existingSetting->value);
+                    }
+                }
+                
+                // Handle array values (convert to JSON)
+                if (is_array($value)) {
+                    $value = json_encode($value);
+                }
+                
+                // Use updateOrCreate to handle both updates and new entries
+                \App\Models\Setting::updateOrCreate(
+                    ['key' => $key], // Search condition
+                    [
+                        'value' => $value,
+                        'display_name' => ucwords(str_replace('_', ' ', $key)),
+                        'type' => $this->determineSettingType($key, $value),
+                        'group' => $this->determineSettingGroup($key),
+                    ]
+                );
+            }
+            
+            // Clear settings cache if you're using caching
+            if (function_exists('settings')) {
+                \Cache::forget('settings');
+            }
+            
+            return redirect()->back()->with('success_msg', 'Settings updated successfully!');
+            
+        } catch (\Exception $e) {
+            \Log::error('Settings update failed: ' . $e->getMessage());
+            return redirect()->back()->with('error_msg', 'Failed to update settings. Please try again.');
+        }
+    }
+
+    /**
+     * Determine the setting type based on key and value
+     */
+    private function determineSettingType($key, $value)
+    {
+        // File types
+        if (str_contains($key, 'logo') || str_contains($key, 'image') || str_contains($key, 'icon') || str_contains($key, 'banner')) {
+            return 'file';
+        }
+        
+        // Email types
+        if (str_contains($key, 'email')) {
+            return 'email';
+        }
+        
+        // URL types
+        if (str_contains($key, 'url') || str_contains($key, 'link')) {
+            return 'url';
+        }
+        
+        // Phone types
+        if (str_contains($key, 'phone')) {
+            return 'tel';
+        }
+        
+        // Date types
+        if (str_contains($key, 'date') || str_contains($key, 'valid_until')) {
+            return 'date';
+        }
+        
+        // Number types
+        if (is_numeric($value)) {
+            return 'number';
+        }
+        
+        // Textarea for longer content
+        if (str_contains($key, 'description') || str_contains($key, 'info') || str_contains($key, 'address')) {
+            return 'textarea';
+        }
+        
+        // Default to text
+        return 'text';
+    }
+
+    /**
+     * Determine the setting group based on key
+     */
+    private function determineSettingGroup($key)
+    {
+        if (str_starts_with($key, 'site_')) {
+            return 'site';
+        }
+        
+        if (str_starts_with($key, 'admin_')) {
+            return 'admin';
+        }
+        
+        if (str_contains($key, 'social') || str_contains($key, 'facebook') || str_contains($key, 'twitter') || str_contains($key, 'instagram') || str_contains($key, 'linkedin')) {
+            return 'social';
+        }
+        
+        if (str_contains($key, 'offer') || str_contains($key, 'promotion')) {
+            return 'offer';
+        }
+        
+        // Default group
+        return 'general';
+    }
+
+    /**
+     * Alternative method using Setting model directly (if you prefer this approach)
+     */
+    public function settingsUpdateAlternative(Request $request)
+    {
+        try {
+            $settings = $request->except(['_token', '_method']);
+            
+            foreach ($settings as $key => $value) {
+                // Handle file uploads
+                if ($request->hasFile($key)) {
+                    $value = $this->handleFileUpload($request->file($key), $key);
+                }
+                
+                // Handle array values
+                if (is_array($value)) {
+                    $value = json_encode($value);
+                }
+                
+                // Update or create setting
+                $setting = \App\Models\Setting::firstOrNew(['key' => $key]);
+                $setting->value = $value;
+                
+                // Set other attributes only if it's a new record
+                if (!$setting->exists) {
+                    $setting->display_name = ucwords(str_replace('_', ' ', $key));
+                    $setting->type = $this->determineSettingType($key, $value);
+                    $setting->group = $this->determineSettingGroup($key);
+                    $setting->order = \App\Models\Setting::max('order') + 1;
+                }
+                
+                $setting->save();
+            }
+            
+            return redirect()->back()->with('success_msg', 'Settings updated successfully!');
+            
+        } catch (\Exception $e) {
+            \Log::error('Settings update failed: ' . $e->getMessage());
+            return redirect()->back()->with('error_msg', 'Failed to update settings. Please try again.');
+        }
+    }
+
+    /**
+     * Handle file upload for settings
+     */
+    private function handleFileUpload($file, $key)
+    {
+        // Delete old file if exists
+        $existingSetting = \App\Models\Setting::where('key', $key)->first();
+        if ($existingSetting && $existingSetting->value && \Storage::disk('public')->exists($existingSetting->value)) {
+            \Storage::disk('public')->delete($existingSetting->value);
+        }
+        
+        // Store new file
+        return $file->store('settings/' . date('Y/m'), 'public');
+    }
 }
