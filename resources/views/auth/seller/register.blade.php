@@ -60,7 +60,7 @@
                     <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
                         <!-- Green Header -->
                         <div class="py-4 text-center register-header">
-                            <h2 class="mb-1">Start Selling on <strong>SohjojEcommerce</strong></h2>
+                            <h2 class="mb-1">Start Selling on <strong>Afrikartt Ecommerce</strong></h2>
                             <p class="mb-0">Join our marketplace and grow your business</p>
                         </div>
                         <div class="card-body p-5">
@@ -69,7 +69,7 @@
                                 <div class="d-flex align-items-center">
                                     <i class="fas fa-gift fs-4 me-3" style="color: var(--primary-green);"></i>
                                     <div>
-                                        <strong style="color: var(--primary-green);">Try SohjojEcommerce Pro for Free!</strong>
+                                        <strong style="color: var(--primary-green);">Try Afrikartt Ecommerce Pro for Free!</strong>
                                         <div class="small text-muted">Start selling with zero setup fees</div>
                                     </div>
                                 </div>

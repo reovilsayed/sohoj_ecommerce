@@ -13,10 +13,10 @@
                 <p> Order No: {{ $order->id }}</p>
             </div>
             <div class="customer-info col-md-6">
-                <h5>Sohoj E-commerce</h5>
+                <h5>Afrikartt E-commerce</h5>
 
                 <p>New York, USA</p>
-                <p> Info@sohojware.com</p>
+                <p> Info@afrikartt.com</p>
 
             </div>
         </div>
@@ -119,7 +119,7 @@
 
 
                             </div>
-                            <span class="ms-1">Thank You! -Sohoj E-commerce</span>
+                            <span class="ms-1">Thank You! -Afrikartt E-commerce</span>
                         </td>
                         <td class="text-end " style="text-transform:uppercase">usd</td>
                     </tr>
@@ -140,7 +140,7 @@
     <div class="invoice-container">
         <div class="invoice-header">
             <div class="logo">
-                Sohoj E-commerce
+                Afrikartt E-commerce
             </div>
             <div class="invoice-title">
                 <h2>INVOICE</h2>
@@ -249,7 +249,7 @@
         </div>
 
         <div class="footer">
-            <p>Sohoj E-commerce | New York, USA | Info@sohojware.com</p>
+            <p>Afrikartt E-commerce | New York, USA | Info@afrikartt.com</p>
             <p>This is a computer generated invoice. No signature required.</p>
         </div>
     </div>

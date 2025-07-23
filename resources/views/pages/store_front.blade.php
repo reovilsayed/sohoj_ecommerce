@@ -1,18 +1,18 @@
-@section('title', $shop->name . ' | Shop on Sohoj E-commerce')
-@section('meta_description', Str::limit($shop->description ?? $shop->short_description ?? 'Shop ' . $shop->name . ' on Sohoj E-commerce. Quality products, great deals, and excellent customer service.', 160))
-@section('meta_keywords', $shop->name . ', shop, store, ecommerce, online shopping, sohoj, ' . $shop->city . ', ' . $shop->state)
+@section('title', $shop->name . ' | Shop on Afrikartt E-commerce')
+@section('meta_description', Str::limit($shop->description ?? $shop->short_description ?? 'Shop ' . $shop->name . ' on Afrikartt E-commerce. Quality products, great deals, and excellent customer service.', 160))
+@section('meta_keywords', $shop->name . ', shop, store, ecommerce, online shopping, Afrikartt, ' . $shop->city . ', ' . $shop->state)
 @section('canonical_url', route('store_front', $shop->slug))
 @section('meta_og')
-    <meta property="og:title" content="{{ $shop->name }} | Shop on Sohoj E-commerce">
-    <meta property="og:description" content="{{ Str::limit($shop->description ?? $shop->short_description ?? 'Shop ' . $shop->name . ' on Sohoj E-commerce. Quality products, great deals, and excellent customer service.', 160) }}">
+    <meta property="og:title" content="{{ $shop->name }} | Shop on Afrikartt E-commerce">
+    <meta property="og:description" content="{{ Str::limit($shop->description ?? $shop->short_description ?? 'Shop ' . $shop->name . ' on Afrikartt E-commerce. Quality products, great deals, and excellent customer service.', 160) }}">
     <meta property="og:image" content="{{ Storage::url($shop->logo) }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
 @endsection
 @section('meta_twitter')
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $shop->name }} | Shop on Sohoj E-commerce">
-    <meta name="twitter:description" content="{{ Str::limit($shop->description ?? $shop->short_description ?? 'Shop ' . $shop->name . ' on Sohoj E-commerce. Quality products, great deals, and excellent customer service.', 160) }}">
+    <meta name="twitter:title" content="{{ $shop->name }} | Shop on Afrikartt E-commerce">
+    <meta name="twitter:description" content="{{ Str::limit($shop->description ?? $shop->short_description ?? 'Shop ' . $shop->name . ' on Afrikartt E-commerce. Quality products, great deals, and excellent customer service.', 160) }}">
     <meta name="twitter:image" content="{{ Storage::url($shop->logo) }}">
 @endsection
 @extends('layouts.app')

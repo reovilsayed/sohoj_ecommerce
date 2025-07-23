@@ -2,45 +2,29 @@
     $route = route('shops');
 @endphp
 
-@section('title', 'All Shops | Sohoj E-commerce')
+@section('title', 'All Shops | Afrikartt E-commerce')
 @section('meta_description',
-    'Browse all shops on Sohoj E-commerce. Find top-rated vendors, trending stores, and the
+    'Browse all shops on Afrikartt E-commerce. Find top-rated vendors, trending stores, and the
     best deals in one place.')
-@section('meta_keywords', 'shops, vendors, ecommerce, online stores, sohoj')
+@section('meta_keywords', 'shops, vendors, ecommerce, online stores, Afrikartt')
 @section('meta_og')
-    <meta property="og:title" content="All Shops | Sohoj E-commerce">
+    <meta property="og:title" content="All Shops | Afrikartt E-commerce">
     <meta property="og:description"
-        content="Browse all shops on Sohoj E-commerce. Find top-rated vendors, trending stores, and the best deals in one place.">
+        content="Browse all shops on Afrikartt E-commerce. Find top-rated vendors, trending stores, and the best deals in one place.">
     <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
 @endsection
 @section('meta_twitter')
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="All Shops | Sohoj E-commerce">
+    <meta name="twitter:title" content="All Shops | Afrikartt E-commerce">
     <meta name="twitter:description"
-        content="Browse all shops on Sohoj E-commerce. Find top-rated vendors, trending stores, and the best deals in one place.">
+        content="Browse all shops on Afrikartt E-commerce. Find top-rated vendors, trending stores, and the best deals in one place.">
     <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
 @endsection
 @section('canonical_url', route('shops'))
 
-{{-- @section('jsonld')
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Sohoj E-commerce",
-  "url": "https://shop.sohojware.com/",
-  "logo": "https://shop.sohojware.com/assets/logo/logo007.png",
-  "contactPoint": [{
-    "@type": "ContactPoint",
-    "telephone": "+123 5678 890",
-    "contactType": "customer service",
-    "email": "support@sohoj.com"
-  }]
-}
-</script>
-@endsection --}}
+
 
 @extends('layouts.app')
 @section('css')

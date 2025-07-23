@@ -1,22 +1,22 @@
-@section('title', 'Checkout | Sohoj E-commerce')
+@section('title', 'Checkout | Afrikartt E-commerce')
 @section('meta_description',
-    'Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple
+    'Complete your purchase securely on Afrikartt E-commerce. Fast, safe checkout with multiple
     payment options and order tracking.')
-@section('meta_keywords', 'checkout, payment, order, purchase, ecommerce, online shopping, sohoj')
+@section('meta_keywords', 'checkout, payment, order, purchase, ecommerce, online shopping, Afrikartt')
 @section('canonical_url', route('checkout'))
 @section('meta_og')
-    <meta property="og:title" content="Checkout | Sohoj E-commerce">
+    <meta property="og:title" content="Checkout | Afrikartt E-commerce">
     <meta property="og:description"
-        content="Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
+        content="Complete your purchase securely on Afrikartt E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
     <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
 @endsection
 @section('meta_twitter')
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Checkout | Sohoj E-commerce">
+    <meta name="twitter:title" content="Checkout | Afrikartt E-commerce">
     <meta name="twitter:description"
-        content="Complete your purchase securely on Sohoj E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
+        content="Complete your purchase securely on Afrikartt E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
     <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
 @endsection
 @extends('layouts.app')
@@ -869,7 +869,7 @@
                                                 id="terms" value="1" name="terms">
                                             <label class="form-check-label ms-2" for="terms">
                                                 I have read and agree to the <a href="{{ url('page/policies') }}"
-                                                    target="_blank" class="text-primary">Terms & Conditions</a> of Sohoj
+                                                    target="_blank" class="text-primary">Terms & Conditions</a> of Afrikartt
                                                 E-commerce
                                             </label>
                                             @error('terms')

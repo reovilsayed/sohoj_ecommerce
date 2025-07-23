@@ -2,25 +2,25 @@
     $route = route('shops');
 @endphp
 
-@section('title', 'All Vendors & Shops | Sohoj E-commerce')
+@section('title', 'All Vendors & Shops | Afrikartt E-commerce')
 @section('meta_description',
-    'Browse all verified vendors and shops on Sohoj E-commerce. Find trusted sellers, quality
+    'Browse all verified vendors and shops on Afrikartt E-commerce. Find trusted sellers, quality
     products, and great deals from our curated list of vendors.')
-@section('meta_keywords', 'vendors, shops, sellers, ecommerce, online stores, sohoj, verified vendors')
+@section('meta_keywords', 'vendors, shops, sellers, ecommerce, online stores, Afrikartt, verified vendors')
 @section('canonical_url', route('vendors'))
 @section('meta_og')
-    <meta property="og:title" content="All Vendors & Shops | Sohoj E-commerce">
+    <meta property="og:title" content="All Vendors & Shops | Afrikartt E-commerce">
     <meta property="og:description"
-        content="Browse all verified vendors and shops on Sohoj E-commerce. Find trusted sellers, quality products, and great deals from our curated list of vendors.">
+        content="Browse all verified vendors and shops on Afrikartt E-commerce. Find trusted sellers, quality products, and great deals from our curated list of vendors.">
     <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
 @endsection
 @section('meta_twitter')
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="All Vendors & Shops | Sohoj E-commerce">
+    <meta name="twitter:title" content="All Vendors & Shops | Afrikartt E-commerce">
     <meta name="twitter:description"
-        content="Browse all verified vendors and shops on Sohoj E-commerce. Find trusted sellers, quality products, and great deals from our curated list of vendors.">
+        content="Browse all verified vendors and shops on Afrikartt E-commerce. Find trusted sellers, quality products, and great deals from our curated list of vendors.">
     <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
 @endsection
 

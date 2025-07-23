@@ -1,22 +1,22 @@
-@section('title', 'Shopping Cart | Sohoj E-commerce')
+@section('title', 'Shopping Cart | Afrikartt E-commerce')
 @section('meta_description',
-    'Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy
+    'Review and manage your shopping cart items on Afrikartt E-commerce. Secure checkout, easy
     quantity updates, and instant price calculations.')
-@section('meta_keywords', 'shopping cart, cart, checkout, ecommerce, online shopping, sohoj')
+@section('meta_keywords', 'shopping cart, cart, checkout, ecommerce, online shopping, afrikartt')
 @section('canonical_url', route('cart'))
 @section('meta_og')
-    <meta property="og:title" content="Shopping Cart | Sohoj E-commerce">
+    <meta property="og:title" content="Shopping Cart | Afrikartt E-commerce">
     <meta property="og:description"
-        content="Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy quantity updates, and instant price calculations.">
+        content="Review and manage your shopping cart items on Afrikartt E-commerce. Secure checkout, easy quantity updates, and instant price calculations.">
     <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
 @endsection
 @section('meta_twitter')
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Shopping Cart | Sohoj E-commerce">
+    <meta name="twitter:title" content="Shopping Cart | Afrikartt E-commerce">
     <meta name="twitter:description"
-        content="Review and manage your shopping cart items on Sohoj E-commerce. Secure checkout, easy quantity updates, and instant price calculations.">
+        content="Review and manage your shopping cart items on Afrikartt E-commerce. Secure checkout, easy quantity updates, and instant price calculations.">
     <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
 @endsection
 

@@ -13,7 +13,7 @@
             <i class="fas fa-paper-plane me-2"></i> Resend email
         </a>
         <div class="text-center text-secondary small mt-2">
-            Need help? <a href="mailto:support@sohoj.com" style="color:#01949a;text-decoration:underline;">Contact support</a>
+            Need help? <a href="mailto:support@afrikartt.com" style="color:#01949a;text-decoration:underline;">Contact support</a>
         </div>
     </div>
 </div>

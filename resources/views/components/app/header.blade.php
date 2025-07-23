@@ -5,7 +5,7 @@
             <div>
                 <i class="fas fa-phone-alt me-2"></i> <span>+123 5678 890</span>
                 <span class="mx-3">|</span>
-                <i class="fas fa-envelope me-2"></i> <span>support@sohoj.com</span>
+                <i class="fas fa-envelope me-2"></i> <span>support@afrikartt.com</span>
             </div>
             <div class="d-flex align-items-center gap-2">
                 <a href="#" class="text-light me-2"><i class="fab fa-facebook-f"></i></a>
@@ -37,7 +37,7 @@
             <!-- Logo -->
             <a href="{{ route('homepage') }}" class="navbar-brand d-flex align-items-center">
                 <img src="{{ asset('assets/logo/logo007.png') }}" alt="Logo" style="height: 48px;">
-                <span class="ms-2 fw-bold text-dark fs-4">Sohoj</span>
+                <span class="ms-2 fw-bold text-dark fs-4">Afrikartt</span>
             </a>
             <!-- Search Bar -->
             @php

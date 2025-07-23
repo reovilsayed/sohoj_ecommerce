@@ -534,7 +534,7 @@
                                                                                             data-choice="active">
                                                                                             <option value="10892"
                                                                                                 data-custom-properties="[object Object]">
-                                                                                                Sohoj</option>
+                                                                                                Afrikartt</option>
                                                                                         </select>
                                                                                         <div
                                                                                             class="choices__list choices__list--single">
@@ -545,7 +545,7 @@
                                                                                                 data-custom-properties="[object Object]"
                                                                                                 aria-selected="true"
                                                                                                 data-deletable="">
-                                                                                                Sohoj<button
+                                                                                                Afrikartt<button
                                                                                                     type="button"
                                                                                                     class="choices__button"
                                                                                                     aria-label="Remove item: '10892'"
@@ -577,7 +577,7 @@
                                                                                                 data-select-text=""
                                                                                                 data-choice-selectable=""
                                                                                                 aria-selected="true">
-                                                                                                Sohoj</div>
+                                                                                                Afrikartt</div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>

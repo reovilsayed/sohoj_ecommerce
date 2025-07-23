@@ -174,7 +174,7 @@
                                     </li>
 
 
-                                    <p class="py-4" style="font-size: 13px">Follow our social media for Sohoj E-commerce
+                                    <p class="py-4" style="font-size: 13px">Follow our social media for Afrikartt E-commerce
                                         news and updates. </p>
                                 </ul>
                                 <div class="ec-footer-links">
@@ -254,7 +254,7 @@
                             <div class="footer-bottom-copy d-flex justify-content-start ">
                                 <div class="ec-copy text-dark text-left" style="color:#000000 !important;opacity:1;">
                                     Copyright © 2023 <a class="site-name text-upper"
-                                        href="#">Sohoj E-commerce<span>.</span></a>. All Rights Reserved</div>
+                                        href="#">Afrikartt E-commerce<span>.</span></a>. All Rights Reserved</div>
                                 <div class="img">
                                 </div>
                             </div>

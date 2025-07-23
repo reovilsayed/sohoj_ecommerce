@@ -127,9 +127,11 @@ class CheckoutController extends Controller
             ]);
         }
         Cart::destroy();
-        $paymentService = new PaymentService($order);
-        $url = $paymentService->getPaymentRedirectUrl();
-        return redirect($url);
+
+        return redirect('/thankyou')->with('thank', 'Order Created successfully!');
+        // $paymentService = new PaymentService($order);
+        // $url = $paymentService->getPaymentRedirectUrl();
+        // return redirect($url);
 
 
         // $payment = auth()->user()->charge(($order->total * 100), $request->payment_method[0]);

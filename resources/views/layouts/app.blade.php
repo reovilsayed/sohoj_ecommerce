@@ -6,9 +6,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>@yield('title', 'Sohoj E-commerce')</title>
+    <title>@yield('title', 'Afrikartt E-commerce')</title>
     <meta name="description" content="@yield('meta_description', 'This is a demo e-commerce website built with Laravel and Voyager.')">
-    <meta name="keywords" content="@yield('meta_keywords', 'ecommerce, online shop, sohoj, buy, sell, products')">
+    <meta name="keywords" content="@yield('meta_keywords', 'ecommerce, online shop, afrikartt, buy, sell, products')">
     <!-- Open Graph & Twitter Card Placeholders -->
     @yield('meta_og')
     @yield('meta_twitter')
@@ -169,7 +169,7 @@
             <div class="row align-items-center">
                 <div class="col-md-6 text-center text-md-start small" style="color:#b0b8c1;">
                     &copy; {{ date('Y') }} <a href="{{ route('homepage') }}"
-                        class="fw-bold text-light text-decoration-none">Sohoj E-commerce</a>. All rights reserved.
+                        class="fw-bold text-light text-decoration-none">Afrikartt E-commerce</a>. All rights reserved.
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <img src="{{ asset('assets/img/cards.png') }}" alt="Payment Methods" style="height: 32px;">
