@@ -25,16 +25,6 @@ class CreateProduct extends CreateRecord
             ->body('The product has been created successfully.');
     }
 
-    protected function afterCreate(): void
-    {
-        // Clear cache to prevent query recursion after product creation
-        \Illuminate\Support\Facades\Cache::flush();
-        
-        // Clear Artisan caches as well
-        \Illuminate\Support\Facades\Artisan::call('cache:clear');
-        \Illuminate\Support\Facades\Artisan::call('view:clear');
-    }
-
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         // Ensure shop_id is set
