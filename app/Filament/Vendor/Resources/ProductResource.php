@@ -231,7 +231,13 @@ class ProductResource extends Resource
                     ->separator(',')
                     ->icon('heroicon-o-tag')
                     ->limit(20)
-                    ->toggleable(),
+                    ->toggleable()
+                    ->formatStateUsing(function ($state) {
+                        if (is_array($state)) {
+                            return collect($state)->take(3)->implode(', ');
+                        }
+                        return $state;
+                    }),
                 TextColumn::make('price')
                     ->label('Regular Price')
                     ->money('USD')
