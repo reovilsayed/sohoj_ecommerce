@@ -286,14 +286,14 @@ class ProductResource extends Resource
                         $state = $column->getState();
                         return strlen($state) > 30 ? $state : null;
                     }),
-                TextColumn::make('prodcats.name')
-                    ->label('Categories')
-                    ->badge()
-                    ->separator(',')
-                    ->limit(20)
-                    ->icon('heroicon-o-tag')
-                    ->toggleable()
-                    ->listLimit(3),
+                // TextColumn::make('prodcats.name')
+                //     ->label('Categories')
+                //     ->badge()
+                //     ->separator(',')
+                //     ->limit(20)
+                //     ->icon('heroicon-o-tag')
+                //     ->toggleable()
+                //     ->listLimit(3),
                 TextColumn::make('price')
                     ->label('Regular Price')
                     ->money('USD')
