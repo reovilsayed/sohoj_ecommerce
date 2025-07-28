@@ -11,10 +11,11 @@ class Settings
     {
         $setting = Setting::where('key', $key)->first();
         
+    
         if($setting && $setting->type == 'file'){
-           return Storage::url($setting->data);
+           return Storage::url($setting->value);
         }else{
-            return $setting->data ?? '';
+            return $setting->value ?? '';
         }
     }
 

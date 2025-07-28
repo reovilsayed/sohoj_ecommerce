@@ -1105,7 +1105,6 @@
         });
     @endphp
     <x-app.header />
-    {{-- @dd(Settings::setting('site.title')) --}}
     <section class="hero">
         <div class="container">
             <div class="row mt-4">
