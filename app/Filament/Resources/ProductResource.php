@@ -90,22 +90,25 @@ class ProductResource extends Resource
                                                     ->label('Parent Product')
                                                     ->relationship('parentproduct', 'name')
                                                     ->searchable()
-                                                    ->preload()
-                                                    ->nullable(),
+                                                    ->nullable()
+                                                    ->getSearchResultsUsing(fn (string $search): array => Product::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
+                                                    ->getOptionLabelUsing(fn ($value): ?string => Product::find($value)?->name),
 
                                                 Select::make('prodcats')
                                                     ->label('Categories')
                                                     ->relationship('prodcats', 'name')
                                                     ->multiple()
                                                     ->searchable()
-                                                    ->preload(),
+                                                    ->getSearchResultsUsing(fn (string $search): array => \App\Models\Prodcat::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
+                                                    ->getOptionLabelsUsing(fn (array $values): array => \App\Models\Prodcat::whereIn('id', $values)->pluck('name', 'id')->toArray()),
 
                                                 Select::make('shop_id')
                                                     ->label('Shop')
                                                     ->relationship('shop', 'name')
                                                     ->required()
                                                     ->searchable()
-                                                    ->preload(),
+                                                    ->getSearchResultsUsing(fn (string $search): array => Shop::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
+                                                    ->getOptionLabelUsing(fn ($value): ?string => Shop::find($value)?->name),
                                             ]),
                                         Grid::make(1)
                                             ->schema([
@@ -140,14 +143,23 @@ class ProductResource extends Resource
                                             ->label('Regular Price')
                                             ->numeric()
                                             ->prefix('$')
-                                            ->maxValue(999999.99),
+                                            ->maxValue(999999.99)
+                                            ->required(),
 
                                         TextInput::make('sale_price')
                                             ->label('Sale Price')
                                             ->numeric()
                                             ->prefix('$')
                                             ->maxValue(999999.99)
-                                            ->lte('price'),
+                                            ->nullable()
+                                            ->rules([
+                                                fn (callable $get) => function (string $attribute, $value, callable $fail) use ($get) {
+                                                    $price = $get('price');
+                                                    if ($value && $price && floatval($value) > floatval($price)) {
+                                                        $fail('Sale price must be less than or equal to regular price.');
+                                                    }
+                                                },
+                                            ]),
                                     ])
                                     ->columns(2),
 
@@ -268,31 +280,16 @@ class ProductResource extends Resource
                     ->color('primary')
                     ->weight(FontWeight::Medium)
                     ->limit(30),
-                // TextColumn::make('sku')
-                //     ->label('SKU')
-                //     ->searchable()
-                //     ->icon('heroicon-o-hashtag')
-                //     ->toggleable(isToggledHiddenByDefault: false)
-                //     ->toggleable(),
-                // TextColumn::make('type')
-                //     ->label('Type')
-                //     ->badge()
-                //     ->icon('heroicon-o-cube')
-                //     ->color(fn(string $state): string => match ($state) {
-                //         'simple' => 'success',
-                //         'variable' => 'warning',
-                //         'grouped' => 'info',
-                //         'external' => 'danger',
-                //         'digital' => 'primary',
-                //         default => 'gray',
-                //     }),
                 TextColumn::make('prodcats.name')
                     ->label('Categories')
                     ->badge()
                     ->separator(',')
                     ->limit(20)
                     ->icon('heroicon-o-tag')
-                    ->toggleable(),
+                    ->toggleable()
+                    ->formatStateUsing(function ($record) {
+                        return $record->prodcats()->limit(3)->pluck('name')->join(', ');
+                    }),
                 TextColumn::make('price')
                     ->label('Regular Price')
                     ->money('USD')
@@ -318,25 +315,6 @@ class ProductResource extends Resource
                     ->label('Featured')
                     ->icon('heroicon-o-star')
                     ->sortable(),
-                // TextColumn::make('total_sale')
-                //     ->label('Sales')
-                //     ->toggleable(isToggledHiddenByDefault: false)
-                //     ->badge()
-                //     ->color('info')
-                //     ->sortable()
-                //     ->toggleable(),
-                // TextColumn::make('created_at')
-                //     ->label('Created At')
-                //     ->dateTime('F j, Y')
-                //     ->icon('heroicon-o-calendar-days')
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: false),
-                // TextColumn::make('updated_at')
-                //     ->label('Updated At')
-                //     ->dateTime('F j, Y')
-                //     ->icon('heroicon-o-arrow-path')
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->filters([
                 SelectFilter::make('type')
@@ -392,7 +370,16 @@ class ProductResource extends Resource
                         ->color('danger'),
                 ]),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort('created_at', 'desc')
+            ->defaultPaginationPageOption(25)
+            ->paginationPageOptions([10, 25, 50, 100]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with(['prodcats' => function($query) {
+            $query->select('id', 'name');
+        }]);
     }
 
     public static function getRelations(): array
@@ -414,11 +401,21 @@ class ProductResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        try {
+            $count = static::getModel()::count();
+            return $count > 0 ? (string) $count : null;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public static function getNavigationBadgeColor(): string|array|null
     {
-        return static::getModel()::where('quantity', '<=', 10)->count() > 0 ? 'warning' : 'primary';
+        try {
+            $lowStockCount = static::getModel()::where('quantity', '<=', 10)->count();
+            return $lowStockCount > 0 ? 'warning' : 'primary';
+        } catch (\Exception $e) {
+            return 'primary';
+        }
     }
 }

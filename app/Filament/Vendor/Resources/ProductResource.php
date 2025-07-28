@@ -8,6 +8,7 @@ use App\Models\Product;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -27,6 +28,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ProductResource extends Resource
@@ -36,14 +38,23 @@ class ProductResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-cube';
     public static function canCreate(): bool
     {
-        $shop = auth()->user()->shop;
-        return $shop && $shop->status == 1;
+        $user = Auth::user();
+        if (!$user || !$user->shop) {
+            return false;
+        }
+        return $user->shop->status == 1;
     }
 
     public static function getEloquentQuery(): Builder
     {
+        $user = Auth::user();
+        if (!$user || !$user->shop) {
+            return parent::getEloquentQuery()->whereRaw('1 = 0'); // Return empty query
+        }
+        
         return parent::getEloquentQuery()
-            ->where('shop_id', Auth()->user()->shop->id)->whereNull('parent_id');
+            ->where('shop_id', $user->shop->id)
+            ->whereNull('parent_id');
     }
 
 
@@ -57,7 +68,7 @@ class ProductResource extends Resource
                     ->schema([
                         Forms\Components\Hidden::make('shop_id')
                             ->default(function () {
-                                $user = \Illuminate\Support\Facades\Auth::user();
+                                $user = Auth::user();
                                 return $user && $user->shop ? $user->shop->id : null;
                             }),
                         Forms\Components\Grid::make(2)
@@ -76,17 +87,27 @@ class ProductResource extends Resource
                                     ->unique(Product::class, 'slug', ignoreRecord: true)
                                     ->rules(['alpha_dash'])
                                     ->placeholder('Auto-generated from name'),
-                                Select::make('prodcats')
-                                    ->label('Categories')
-                                    ->relationship('prodcats', 'name')
-                                    ->multiple()
-                                    ->searchable()
-                                    ->preload(),
-                                TextInput::make('price')
-                                    ->label('Regular Price')
-                                    ->numeric()
-                                    ->prefix('$')
-                                    ->maxValue(999999.99),
+                                Grid::make(3)
+                                    ->schema([
+                                        Select::make('prodcats')
+                                            ->label('Categories')
+                                            ->relationship('prodcats', 'name')
+                                            ->multiple()
+                                            ->searchable()
+                                            ->preload(),
+                                        TextInput::make('price')
+                                            ->label('Regular Price')
+                                            ->numeric()
+                                            ->prefix('$')
+                                            ->maxValue(999999.99),
+
+                                        TextInput::make('sale_price')
+                                            ->label('Sale Price')
+                                            ->numeric()
+                                            ->prefix('$')
+                                            ->maxValue(999999.99)
+                                            ->lte('price'),
+                                    ]),
                                 Toggle::make('manage_stock')
                                     ->label('Manage Stock')
                                     ->live(),
@@ -127,12 +148,12 @@ class ProductResource extends Resource
                             ->schema([
                                 RichEditor::make('short_description')
                                     ->label('Short Description')
-                                    ->columnSpanFull('full')
+                                    ->columnSpanFull()
                                     ->maxLength(500)
                                     ->placeholder('A short summary for listings'),
                                 RichEditor::make('description')
                                     ->label('Full Description')
-                                    ->columnSpanFull('full')
+                                    ->columnSpanFull()
                                     ->placeholder('Detailed product description'),
                             ]),
                         Forms\Components\Grid::make(2)
@@ -145,6 +166,14 @@ class ProductResource extends Resource
                                     ->label('Offer')
                                     ->default(false)
                                     ->helperText('Enable this if the product has a special offer'),
+
+                                Toggle::make('status')
+                                    ->label('Active')
+                                    ->default(true),
+
+                                Toggle::make('featured')
+                                    ->label('Featured Product')
+                                    ->default(false),
                             ]),
                     ]),
             ]);
@@ -212,7 +241,7 @@ class ProductResource extends Resource
                     ->label('SKU')
                     ->searchable()
                     ->icon('heroicon-o-hashtag')
-                     ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('type')
                     ->label('Type')
                     ->badge()
@@ -234,7 +263,7 @@ class ProductResource extends Resource
                     ->badge()
                     ->color('info')
                     ->sortable()
-                     ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label('Created At')
                     ->dateTime('F j, Y')
@@ -316,17 +345,37 @@ class ProductResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getEloquentQuery()->count();
+        try {
+            $user = Auth::user();
+            if (!$user || !$user->shop) {
+                return null;
+            }
+            
+            $count = static::getEloquentQuery()->count();
+            return $count > 0 ? (string) $count : null;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public static function shouldRegisterNavigation(): bool
     {
-        $shop = auth()->user()->shop;
-        return $shop && $shop->status == 1;
+        $user = Auth::user();
+        if (!$user || !$user->shop) {
+            return false;
+        }
+        return $user->shop->status == 1;
     }
 
     public static function getNavigationBadgeColor(): string|array|null
     {
-        return static::getModel()::where('quantity', '<=', 10)->count() > 0 ? 'warning' : 'primary';
+        $user = Auth::user();
+        if (!$user || !$user->shop) {
+            return 'primary';
+        }
+        
+        return static::getModel()::where('shop_id', $user->shop->id)
+            ->where('quantity', '<=', 10)
+            ->count() > 0 ? 'warning' : 'primary';
     }
 }
