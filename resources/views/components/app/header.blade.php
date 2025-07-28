@@ -103,8 +103,13 @@
                             <i class="fas fa-user-circle"></i>
                         </a>
                         <ul class="dropdown-menu user-dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ route('user.dashboard') }}"><i
-                                        class="fas fa-user me-2"></i>Profile</a></li>
+                            @if (Auth()->user()->role_id == 1)
+                                <li><a class="dropdown-item" href="{{ url('admin') }}"><i
+                                            class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</a></li>
+                            @elseif (Auth()->user()->role_id == 2)
+                                <li><a class="dropdown-item" href="{{ route('user.dashboard') }}"><i
+                                            class="fas fa-user me-2"></i>Profile</a></li>  
+                            @endif
                             @if (Auth()->user()->role_id == 3)
                                 <li><a class="dropdown-item" href="{{ url('vendor') }}"><i
                                             class="fas fa-store me-2"></i>Vendor Profile</a></li>

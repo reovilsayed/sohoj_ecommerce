@@ -67,9 +67,9 @@ class User extends Authenticatable implements FilamentUser
         'email_verified_at' => 'datetime',
     ];
 
-    public function canAccessPanel(Panel $panel): bool
+public function canAccessPanel(Panel $panel): bool
     {
-        return $this->role->name === 'admin';
+        return $this->role->name === 'admin' || $this->role->name === 'vendor';
     }
 
     public function role()

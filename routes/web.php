@@ -116,9 +116,9 @@ Route::get('/seller', [SellerPagesController::class, 'dashboard'])->middleware('
 Auth::routes();
 
 // Redirect /vendor to /vendor/dashboard
-Route::get('/vendor', function () {
-    return redirect('/vendor/dashboard');
-})->middleware('auth', 'role:vendor');
+// Route::get('/vendor', function () {
+//     return redirect('/vendor');
+// })->middleware('auth', 'role:vendor');
 
 Route::get('admin/payout/{order}', [PayoutsController::class, 'payouts'])->name('payout')->middleware('auth', 'role:admin');
 
