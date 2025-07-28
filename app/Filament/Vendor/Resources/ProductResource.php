@@ -231,8 +231,7 @@ class ProductResource extends Resource
                     ->separator(',')
                     ->icon('heroicon-o-tag')
                     ->limit(20)
-                    ->toggleable()
-                    ->listLimit(3),
+                    ->toggleable(),
                 TextColumn::make('price')
                     ->label('Regular Price')
                     ->money('USD')
