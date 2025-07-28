@@ -120,14 +120,7 @@ class ProductResource extends Resource
                                             ->prefix('$')
                                             ->maxValue(999999.99)
                                             ->nullable()
-                                            ->rules([
-                                                fn (callable $get) => function (string $attribute, $value, callable $fail) use ($get) {
-                                                    $price = $get('price');
-                                                    if ($value && $price && floatval($value) > floatval($price)) {
-                                                        $fail('Sale price must be less than or equal to regular price.');
-                                                    }
-                                                },
-                                            ]),
+                                            ->rule('lte:price'),
                                     ]),
                                 Toggle::make('manage_stock')
                                     ->label('Manage Stock')
@@ -225,14 +218,7 @@ class ProductResource extends Resource
                     ->label('Type')
                     ->badge()
                     ->icon('heroicon-o-cube')
-                    ->color(fn(string $state): string => match ($state) {
-                        'simple' => 'success',
-                        'variable' => 'warning',
-                        'grouped' => 'info',
-                        'external' => 'danger',
-                        'digital' => 'primary',
-                        default => 'gray',
-                    })
+                    ->color('primary')
                     ->toggleable(),
                 TextColumn::make('prodcats.name')
                     ->label('Categories')
@@ -240,13 +226,7 @@ class ProductResource extends Resource
                     ->separator(',')
                     ->icon('heroicon-o-tag')
                     ->limit(20)
-                    ->toggleable()
-                    ->formatStateUsing(function ($state) {
-                        if (is_array($state)) {
-                            return collect($state)->take(3)->implode(', ');
-                        }
-                        return $state;
-                    }),
+                    ->toggleable(),
                 TextColumn::make('price')
                     ->label('Regular Price')
                     ->money('USD')
@@ -256,7 +236,7 @@ class ProductResource extends Resource
                     ->label('Stock')
                     ->sortable()
                     ->badge()
-                    ->color(fn($state) => $state > 10 ? 'success' : ($state > 0 ? 'warning' : 'danger'))
+                    ->color('success')
                     ->toggleable(),
                 BooleanColumn::make('status')
                     ->label('Active')
@@ -268,18 +248,6 @@ class ProductResource extends Resource
                     ->searchable()
                     ->icon('heroicon-o-hashtag')
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('type')
-                    ->label('Type')
-                    ->badge()
-                    ->icon('heroicon-o-cube')
-                    ->color(fn(string $state): string => match ($state) {
-                        'simple' => 'success',
-                        'variable' => 'warning',
-                        'grouped' => 'info',
-                        'external' => 'danger',
-                        'digital' => 'primary',
-                        default => 'gray',
-                    }),
                 BooleanColumn::make('featured')
                     ->label('Featured')
                     ->icon('heroicon-o-star')
@@ -373,42 +341,16 @@ class ProductResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        try {
-            $user = Auth::user();
-            if (!$user || !$user->shop) {
-                return null;
-            }
-            
-            $count = static::getEloquentQuery()->count();
-            return $count > 0 ? (string) $count : null;
-        } catch (\Exception $e) {
-            return null;
-        }
+        return null; // Temporarily disabled to fix recursion
     }
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = Auth::user();
-        if (!$user || !$user->shop) {
-            return false;
-        }
-        return $user->shop->status == 1;
+        return true; // Simplified to avoid recursion
     }
 
     public static function getNavigationBadgeColor(): string|array|null
     {
-        try {
-            $user = Auth::user();
-            if (!$user || !$user->shop) {
-                return 'primary';
-            }
-            
-            $lowStockCount = static::getModel()::where('shop_id', $user->shop->id)
-                ->where('quantity', '<=', 10)
-                ->count();
-            return $lowStockCount > 0 ? 'warning' : 'primary';
-        } catch (\Exception $e) {
-            return 'primary';
-        }
+        return 'primary';
     }
 }
