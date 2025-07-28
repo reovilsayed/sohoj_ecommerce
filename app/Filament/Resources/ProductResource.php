@@ -267,11 +267,13 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->recordUrl(null) // Disable record URLs to prevent issues
             ->columns([
                 ImageColumn::make('image')
                     ->label('Image')
                     ->circular()
-                    ->size(60),
+                    ->size(60)
+                    ->defaultImageUrl(url('/assets/images/default-product.png')),
                 TextColumn::make('name')
                     ->label('Product Name')
                     ->searchable()
@@ -279,7 +281,11 @@ class ProductResource extends Resource
                     ->badge()
                     ->color('primary')
                     ->weight(FontWeight::Medium)
-                    ->limit(30),
+                    ->limit(30)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        return strlen($state) > 30 ? $state : null;
+                    }),
                 TextColumn::make('prodcats.name')
                     ->label('Categories')
                     ->badge()
@@ -287,9 +293,7 @@ class ProductResource extends Resource
                     ->limit(20)
                     ->icon('heroicon-o-tag')
                     ->toggleable()
-                    ->formatStateUsing(function ($record) {
-                        return $record->prodcats()->limit(3)->pluck('name')->join(', ');
-                    }),
+                    ->listLimit(3),
                 TextColumn::make('price')
                     ->label('Regular Price')
                     ->money('USD')
@@ -300,7 +304,8 @@ class ProductResource extends Resource
                     ->money('USD')
                     ->color('danger')
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable()
+                    ->placeholder('N/A'),
                 TextColumn::make('quantity')
                     ->label('Stock')
                     ->sortable()
@@ -377,9 +382,9 @@ class ProductResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->with(['prodcats' => function($query) {
-            $query->select('id', 'name');
-        }]);
+        return parent::getEloquentQuery()
+            ->with(['prodcats:id,name'])
+            ->select(['id', 'name', 'image', 'price', 'sale_price', 'quantity', 'status', 'featured', 'created_at']);
     }
 
     public static function getRelations(): array
