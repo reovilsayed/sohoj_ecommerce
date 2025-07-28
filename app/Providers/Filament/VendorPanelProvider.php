@@ -2,8 +2,10 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Vendor\Resources\OrderResource;
+use App\Filament\Vendor\Resources\OrderResource\Widgets\VendorOrdersChart;
+use App\Filament\Vendor\Resources\VendorResource\Widgets\VendorStats;
 use App\Filament\Vendor\Resources\ProductResource;
+use App\Filament\Vendor\Resources\OrderResource;
 use App\Filament\Vendor\Resources\TicketResource;
 use App\Http\Middleware\RoleMiddleware;
 use Filament\Http\Middleware\Authenticate;
@@ -14,11 +16,15 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use App\Filament\Vendor\Pages\ViewInvoice;
+use App\Filament\Vendor\Pages\VendorProfilePage;
+use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Filament\Navigation\NavigationGroup;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class VendorPanelProvider extends PanelProvider
@@ -33,6 +39,44 @@ class VendorPanelProvider extends PanelProvider
             ])
             ->login()
             ->brandName('Vendor Dashboard')
+            // ->databaseNotifications()
+            ->renderHook(
+                'panels::head.start',
+                fn() => <<<HTML
+        <style>
+            /* Hide scrollbar visually but keep scrolling functional */
+            .fi-sidebar-nav {
+                overflow-y: auto !important;
+                scrollbar-width: none !important; /* Firefox */
+                -ms-overflow-style: none !important; /* IE/Edge */
+            }
+
+            .fi-sidebar-nav::-webkit-scrollbar {
+                display: none !important; /* Chrome/Safari */
+            }
+        </style>
+    HTML
+            )
+
+            ->discoverResources(in: app_path('Filament/Vendor/Resources'), for: 'App\\Filament\\Vendor\\Resources')
+            ->discoverPages(in: app_path('Filament/Vendor/Pages'), for: 'App\\Filament\\Vendor\\Pages')
+
+            ->sidebarCollapsibleOnDesktop(true)
+            ->sidebarWidth('14rem')
+            ->pages([
+                Pages\Dashboard::class,
+            ])
+            ->resources([
+                ProductResource::class,
+                OrderResource::class,
+                TicketResource::class,
+            ])
+            ->widgets([
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
+                // VendorStats::class,  // Temporarily disabled
+                // VendorOrdersChart::class,  // Temporarily disabled
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -48,13 +92,34 @@ class VendorPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->resources([
-                ProductResource::class,
-                OrderResource::class,
-                TicketResource::class,
-            ])
+            // Temporarily disabled custom widgets to fix stack overflow
+            // ->widgets([
+            //     VendorStats::class, // Custom widget for vendor stats
+            //     VendorOrdersChart::class,
+            // ])
             ->pages([
-                Pages\Dashboard::class,
+                ViewInvoice::class,
+                VendorProfilePage::class,
+            ])
+
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Inventory')
+                    ->icon('heroicon-o-cube')
+                    ->collapsible(),
+                NavigationGroup::make()
+                    ->label('Orders')
+                    ->icon('heroicon-o-shopping-bag'),
+                NavigationGroup::make()
+                    ->label('Profile')
+                    ->icon('heroicon-o-user-circle'),
+                NavigationGroup::make()
+                    ->label('Support')
+                    ->icon('heroicon-o-lifebuoy'),
+                NavigationGroup::make()
+                    ->label('Marketing')
+                    ->icon('heroicon-o-megaphone'),
             ]);
+        ;
     }
 }
