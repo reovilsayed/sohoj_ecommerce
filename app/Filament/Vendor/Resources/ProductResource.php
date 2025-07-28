@@ -96,17 +96,8 @@ class ProductResource extends Resource
                             ->relationship('prodcats', 'name')
                             ->multiple()
                             ->searchable()
-                            ->getSearchResultsUsing(function (string $search): array {
-                                return \App\Models\Prodcat::where('name', 'like', "%{$search}%")
-                                    ->limit(50)
-                                    ->pluck('name', 'id')
-                                    ->toArray();
-                            })
-                            ->getOptionLabelsUsing(function (array $values): array {
-                                return \App\Models\Prodcat::whereIn('id', $values)
-                                    ->pluck('name', 'id')
-                                    ->toArray();
-                            }),
+                            ->getSearchResultsUsing(fn (string $search): array => \App\Models\Prodcat::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
+                            ->getOptionLabelsUsing(fn (array $values): array => \App\Models\Prodcat::whereIn('id', $values)->pluck('name', 'id')->toArray()),
                                         TextInput::make('price')
                                             ->label('Regular Price')
                                             ->numeric()

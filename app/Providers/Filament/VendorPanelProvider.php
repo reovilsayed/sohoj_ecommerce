@@ -4,9 +4,6 @@ namespace App\Providers\Filament;
 
 use App\Filament\Vendor\Resources\OrderResource\Widgets\VendorOrdersChart;
 use App\Filament\Vendor\Resources\VendorResource\Widgets\VendorStats;
-use App\Filament\Vendor\Resources\ProductResource;
-use App\Filament\Vendor\Resources\OrderResource;
-use App\Filament\Vendor\Resources\TicketResource;
 use App\Http\Middleware\RoleMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -66,16 +63,10 @@ class VendorPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->resources([
-                ProductResource::class,
-                OrderResource::class,
-                TicketResource::class,
-            ])
+            ->discoverWidgets(in: app_path('Filament/Vendor/Widgets'), for: 'App\\Filament\\Vendor\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
-                // VendorStats::class,  // Temporarily disabled
-                // VendorOrdersChart::class,  // Temporarily disabled
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -92,11 +83,10 @@ class VendorPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            // Temporarily disabled custom widgets to fix stack overflow
-            // ->widgets([
-            //     VendorStats::class, // Custom widget for vendor stats
-            //     VendorOrdersChart::class,
-            // ])
+            ->widgets([
+                VendorStats::class, // Custom widget for vendor stats
+                VendorOrdersChart::class,
+            ])
             ->pages([
                 ViewInvoice::class,
                 VendorProfilePage::class,
