@@ -38,25 +38,30 @@ class ProductResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-cube';
     public static function canCreate(): bool
     {
-        $user = Auth::user();
-        if (!$user || !$user->shop) {
+        try {
+            $user = Auth::user();
+            if (!$user || !$user->shop) {
+                return false;
+            }
+            return $user->shop->status == 1;
+        } catch (\Exception $e) {
             return false;
         }
-        return $user->shop->status == 1;
     }
 
     public static function getEloquentQuery(): Builder
     {
         $user = Auth::user();
-        if (!$user || !$user->shop) {
-            return parent::getEloquentQuery()->whereRaw('1 = 0'); // Return empty query
+        
+        if (!$user) {
+            return parent::getEloquentQuery()->whereRaw('1 = 0');
         }
         
         return parent::getEloquentQuery()
-            ->where('shop_id', $user->shop->id)
-            ->whereNull('parent_id')
-            ->with(['prodcats:id,name'])
-            ->select(['products.id', 'products.name', 'products.image', 'products.price', 'products.sale_price', 'products.quantity', 'products.status', 'products.featured', 'products.sku', 'products.type', 'products.total_sale', 'products.created_at', 'products.updated_at', 'products.shop_id']);
+            ->whereHas('shop', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->whereNull('parent_id');
     }
 
 
@@ -379,11 +384,12 @@ class ProductResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $user = Auth::user();
-        if (!$user || !$user->shop) {
+        try {
+            $user = Auth::user();
+            return $user && $user->shop && $user->shop->status == 1;
+        } catch (\Exception $e) {
             return false;
         }
-        return $user->shop->status == 1;
     }
 
     public static function getNavigationBadgeColor(): string|array|null

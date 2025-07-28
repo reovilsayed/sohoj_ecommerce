@@ -19,6 +19,13 @@ class EditProduct extends EditRecord
         ];
     }
 
+    protected function afterSave(): void
+    {
+        // Clear cache to prevent query recursion after product update
+        \Illuminate\Support\Facades\Cache::flush();
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
