@@ -54,7 +54,9 @@ class ProductResource extends Resource
         
         return parent::getEloquentQuery()
             ->where('shop_id', $user->shop->id)
-            ->whereNull('parent_id');
+            ->whereNull('parent_id')
+            ->with(['prodcats:id,name'])
+            ->select(['products.id', 'products.name', 'products.image', 'products.price', 'products.sale_price', 'products.quantity', 'products.status', 'products.featured', 'products.sku', 'products.type', 'products.total_sale', 'products.created_at', 'products.updated_at', 'products.shop_id']);
     }
 
 
@@ -90,23 +92,33 @@ class ProductResource extends Resource
                                 Grid::make(3)
                                     ->schema([
                                         Select::make('prodcats')
-                                            ->label('Categories')
-                                            ->relationship('prodcats', 'name')
-                                            ->multiple()
-                                            ->searchable()
-                                            ->preload(),
+                            ->label('Categories')
+                            ->relationship('prodcats', 'name')
+                            ->multiple()
+                            ->searchable()
+                            ->getSearchResultsUsing(fn (string $search): array => \App\Models\Prodcat::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
+                            ->getOptionLabelsUsing(fn (array $values): array => \App\Models\Prodcat::whereIn('id', $values)->pluck('name', 'id')->toArray()),
                                         TextInput::make('price')
                                             ->label('Regular Price')
                                             ->numeric()
                                             ->prefix('$')
-                                            ->maxValue(999999.99),
+                                            ->maxValue(999999.99)
+                                            ->required(),
 
                                         TextInput::make('sale_price')
                                             ->label('Sale Price')
                                             ->numeric()
                                             ->prefix('$')
                                             ->maxValue(999999.99)
-                                            ->lte('price'),
+                                            ->nullable()
+                                            ->rules([
+                                                fn (callable $get) => function (string $attribute, $value, callable $fail) use ($get) {
+                                                    $price = $get('price');
+                                                    if ($value && $price && floatval($value) > floatval($price)) {
+                                                        $fail('Sale price must be less than or equal to regular price.');
+                                                    }
+                                                },
+                                            ]),
                                     ]),
                                 Toggle::make('manage_stock')
                                     ->label('Manage Stock')
@@ -213,14 +225,14 @@ class ProductResource extends Resource
                         default => 'gray',
                     })
                     ->toggleable(),
-                TextColumn::make('prodcats')
+                TextColumn::make('prodcats.name')
                     ->label('Categories')
                     ->badge()
                     ->separator(',')
                     ->icon('heroicon-o-tag')
-                    ->formatStateUsing(fn($state, $record) => $record->prodcats->pluck('name')->implode(', '))
                     ->limit(20)
-                    ->toggleable(),
+                    ->toggleable()
+                    ->listLimit(3),
                 TextColumn::make('price')
                     ->label('Regular Price')
                     ->money('USD')
@@ -324,7 +336,9 @@ class ProductResource extends Resource
                         ->color('danger'),
                 ]),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort('created_at', 'desc')
+            ->defaultPaginationPageOption(25)
+            ->paginationPageOptions([10, 25, 50, 100]);
     }
 
     public static function getRelations(): array
@@ -369,13 +383,18 @@ class ProductResource extends Resource
 
     public static function getNavigationBadgeColor(): string|array|null
     {
-        $user = Auth::user();
-        if (!$user || !$user->shop) {
+        try {
+            $user = Auth::user();
+            if (!$user || !$user->shop) {
+                return 'primary';
+            }
+            
+            $lowStockCount = static::getModel()::where('shop_id', $user->shop->id)
+                ->where('quantity', '<=', 10)
+                ->count();
+            return $lowStockCount > 0 ? 'warning' : 'primary';
+        } catch (\Exception $e) {
             return 'primary';
         }
-        
-        return static::getModel()::where('shop_id', $user->shop->id)
-            ->where('quantity', '<=', 10)
-            ->count() > 0 ? 'warning' : 'primary';
     }
 }
