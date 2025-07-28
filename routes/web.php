@@ -115,6 +115,8 @@ Route::get('/seller', [SellerPagesController::class, 'dashboard'])->middleware('
 // });
 Auth::routes();
 
+
+
 Route::get('admin/payout/{order}', [PayoutsController::class, 'payouts'])->name('payout')->middleware('auth', 'role:admin');
 
 Route::get('admin/order/canceled', [PayoutsController::class, 'cancel_order'])->name('cancel.order')->middleware('auth', 'role:admin');
