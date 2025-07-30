@@ -387,9 +387,8 @@ class ProductResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->with(['prodcats:id,name'])
-            ->select(['id', 'name', 'image', 'price', 'sale_price', 'quantity', 'status', 'featured', 'created_at']);
+        // SIMPLIFIED QUERY - Remove complex with() and select() to prevent memory exhaustion
+        return parent::getEloquentQuery();
     }
 
     public static function getRelations(): array

@@ -384,7 +384,8 @@ class ProductResource extends Resource
                 return 'primary';
             }
             
-            $lowStockCount = static::getModel()::where('shop_id', $user->shop->id)
+            // SIMPLIFIED: Use direct query instead of static::getModel()
+            $lowStockCount = Product::where('shop_id', $user->shop->id)
                 ->where('quantity', '<=', 10)
                 ->count();
             return $lowStockCount > 0 ? 'warning' : 'primary';
