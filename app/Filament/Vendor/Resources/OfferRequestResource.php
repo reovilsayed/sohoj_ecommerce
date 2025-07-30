@@ -145,6 +145,9 @@ class OfferRequestResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
+        // TEMPORARILY DISABLED FOR DEBUGGING
+        return null;
+        
         try {
             $user = Auth::user();
             if (!$user || !$user->shop) {
@@ -152,7 +155,7 @@ class OfferRequestResource extends Resource
             }
             
             // DIRECT QUERY - DON'T USE getEloquentQuery()
-            $count = OfferRequest::where('shop_id', $user->shop->id)->count();
+            $count = Offer::where('shop_id', $user->shop->id)->count();
             return $count > 0 ? (string) $count : null;
         } catch (\Exception $e) {
             return null;

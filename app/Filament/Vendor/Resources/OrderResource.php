@@ -190,6 +190,9 @@ class OrderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
+        // TEMPORARILY DISABLED FOR DEBUGGING
+        return null;
+        
         try {
             $user = Auth::user();
             if (!$user || !$user->shop) {

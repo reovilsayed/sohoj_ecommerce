@@ -21,6 +21,9 @@ class AddressResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
+        // TEMPORARILY DISABLED FOR DEBUGGING
+        return null;
+        
         return (string) static::$model::count();
     }
     // Add a toggle column for "is_active" status

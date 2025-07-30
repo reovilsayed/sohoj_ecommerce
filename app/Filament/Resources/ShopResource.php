@@ -283,6 +283,9 @@ class ShopResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
+        // TEMPORARILY DISABLED FOR DEBUGGING
+        return null;
+        
         return static::$model::count();
     }
 }

@@ -70,7 +70,6 @@ class VendorPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
-                QueryLoggerMiddleware::class,
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
@@ -81,13 +80,16 @@ class VendorPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 RoleMiddleware::class . ':vendor',
+                // TEMPORARILY DISABLED FOR DEBUGGING
+                // QueryLoggerMiddleware::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
             ->widgets([
-                VendorStats::class, // Custom widget for vendor stats
-                VendorOrdersChart::class,
+                // TEMPORARILY DISABLED FOR DEBUGGING
+                // VendorStats::class, // Custom widget for vendor stats
+                // VendorOrdersChart::class,
             ])
             ->pages([
                 ViewInvoice::class,
