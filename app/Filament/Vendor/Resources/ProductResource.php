@@ -6,6 +6,7 @@ use App\Filament\Vendor\Resources\ProductResource\Pages;
 use App\Filament\Vendor\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Tables\Filters\Filter;
+use Illuminate\Support\Facades\Log;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
@@ -52,11 +53,10 @@ class ProductResource extends Resource
             return parent::getEloquentQuery()->whereRaw('1 = 0'); // Return empty query
         }
         
+        // SIMPLIFIED QUERY - Remove complex with() and select() to prevent memory exhaustion
         return parent::getEloquentQuery()
             ->where('shop_id', $user->shop->id)
-            ->whereNull('parent_id')
-            ->with(['prodcats:id,name'])
-            ->select(['products.id', 'products.name', 'products.image', 'products.price', 'products.sale_price', 'products.quantity', 'products.status', 'products.featured', 'products.sku', 'products.type', 'products.total_sale', 'products.created_at', 'products.updated_at', 'products.shop_id']);
+            ->whereNull('parent_id');
     }
 
 
@@ -259,18 +259,6 @@ class ProductResource extends Resource
                     ->searchable()
                     ->icon('heroicon-o-hashtag')
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('type')
-                    ->label('Type')
-                    ->badge()
-                    ->icon('heroicon-o-cube')
-                    ->color(fn(string $state): string => match ($state) {
-                        'simple' => 'success',
-                        'variable' => 'warning',
-                        'grouped' => 'info',
-                        'external' => 'danger',
-                        'digital' => 'primary',
-                        default => 'gray',
-                    }),
                 BooleanColumn::make('featured')
                     ->label('Featured')
                     ->icon('heroicon-o-star')
@@ -370,9 +358,11 @@ class ProductResource extends Resource
                 return null;
             }
             
-            $count = static::getEloquentQuery()->count();
+            // DIRECT QUERY - DON'T USE getEloquentQuery()
+            $count = Product::where('shop_id', $user->shop->id)->count();
             return $count > 0 ? (string) $count : null;
         } catch (\Exception $e) {
+            Log::error('Navigation badge error: ' . $e->getMessage());
             return null;
         }
     }
