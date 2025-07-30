@@ -5,6 +5,7 @@ use App\Http\Middleware\NeedPaymentMethod;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\SecondStepVerifications;
 use App\Http\Middleware\Verified;
+use App\Http\Middleware\ClearNotificationsMiddleware;
 use Filament\Http\Middleware\AuthenticateSession;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Foundation\Application;
@@ -21,6 +22,11 @@ configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Add notification clearing middleware to web group
+        $middleware->web(append: [
+            ClearNotificationsMiddleware::class,
+        ]);
+        
         $middleware->alias([
             'auth' => \App\Http\Middleware\Authenticate::class,
             'auth.basic' =>AuthenticateWithBasicAuth::class,
@@ -36,7 +42,8 @@ configure(basePath: dirname(__DIR__))
             'verifiedShop' => Verified::class,
             'verifiedEmail' => EmailVerified::class,
             'second' => SecondStepVerifications::class,
-            'needPaymentMethod' => NeedPaymentMethod::class
+            'needPaymentMethod' => NeedPaymentMethod::class,
+            'clear.notifications' => ClearNotificationsMiddleware::class,
 
         ])->validateCsrfTokens(except: [
             '/file/post'
