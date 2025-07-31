@@ -88,7 +88,7 @@
                                 <div class="ec-fs-pro-inner">
                                     <div class="row row-cols-lg-5 cols-2 mt-4">
                                         @foreach ($products as $product)
-                                            <x-products.product-3 :product="$product" />
+                                            <x-products.product :product="$product" :variant="'red'" :showMultipleCategories="true" />
                                         @endforeach
                                     </div>
                                 </div>
