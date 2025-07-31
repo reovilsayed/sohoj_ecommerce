@@ -434,11 +434,13 @@
                         <div class="checkout-summary-title">Order Summary</div>
                         <div class="checkout-summary-list">
                             @php
-                                $prices = (float) Cart::SubTotal();
+                         
+                                $prices = Cart::subtotal();
+                                // dd($prices);
                                 $shipping = (float) Sohoj::shipping();
                                 $flatCharge = (float) Sohoj::flatCommision($prices);
                                 $discount = (float) Sohoj::discount();
-                                $total = $prices + $shipping + $flatCharge - $discount;
+                                // $total = $prices + $shipping + $flatCharge - $discount;
                             @endphp
                             <div>
                                 <span>Items({{ Cart::count() }}):</span>
@@ -461,7 +463,7 @@
                         </div>
                         <div class="checkout-summary-total d-flex justify-content-between align-items-center">
                             <span class="fw-bold">Order Total:</span>
-                            <span class="fw-bold">{{ Sohoj::price($total) }}</span>
+                            <span class="fw-bold">{{ Sohoj::price(Sohoj::newSubtotal()) }}</span>
                         </div>
                     </div>
                 </aside>
