@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ClearNotificationsMiddleware;
 use App\Http\Middleware\EmailVerified;
 use App\Http\Middleware\NeedPaymentMethod;
 use App\Http\Middleware\RoleMiddleware;
@@ -40,6 +41,11 @@ configure(basePath: dirname(__DIR__))
 
         ])->validateCsrfTokens(except: [
             '/file/post'
+        ]);
+        
+        // Append ClearNotificationsMiddleware to web group to prevent memory accumulation
+        $middleware->web(append: [
+            ClearNotificationsMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
