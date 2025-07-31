@@ -3,19 +3,14 @@
 namespace App\Filament\Vendor\Resources;
 
 use App\Filament\Vendor\Resources\OfferRequestResource\Pages;
-use App\Filament\Vendor\Resources\OfferRequestResource\RelationManagers;
 use App\Models\Offer;
-use App\Models\OfferRequest;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 
 class OfferRequestResource extends Resource
 {
@@ -28,7 +23,7 @@ class OfferRequestResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $shop = Auth::user()->shop;
+        $shop = auth()->user()->shop;
 
         return parent::getEloquentQuery()
             ->where('shop_id', $shop->id)
@@ -37,7 +32,7 @@ class OfferRequestResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $shop = Auth::user()->shop;
+        $shop = auth()->user()->shop;
         return $shop && $shop->status == 1;
     }
 
@@ -145,17 +140,6 @@ class OfferRequestResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        try {
-            $user = Auth::user();
-            if (!$user || !$user->shop) {
-                return null;
-            }
-            
-            // DIRECT QUERY - DON'T USE getEloquentQuery()
-            $count = OfferRequest::where('shop_id', $user->shop->id)->count();
-            return $count > 0 ? (string) $count : null;
-        } catch (\Exception $e) {
-            return null;
-        }
+        return static::getEloquentQuery()->count();
     }
 }
