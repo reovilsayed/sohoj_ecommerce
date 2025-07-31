@@ -653,7 +653,7 @@
                                     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
                                         @foreach ($products as $shopId => $items)
                                             @foreach ($items as $product)
-                                                <x-products.product-2 :product="$product" />
+                                                <x-products.product :product="$product" :variant="'red'" :showMultipleCategories="true" />
                                             @endforeach
                                         @endforeach
                                     </div>

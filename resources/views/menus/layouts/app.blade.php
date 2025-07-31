@@ -206,7 +206,7 @@
 
                                 </div>
                                 <div class="ec-footer-links  col-sm-12  ">
-                                    {!! menu('leftside', 'menus.bootstrap') !!}
+                                    {!! menu('leftside', 'menus.bootstrap-safe') !!}
                                 </div>
                             </div>
                         </div>
@@ -219,7 +219,7 @@
 
                                 </div>
                                 <div class="ec-footer-links  col-sm-12  ">
-                                    {!! menu('middle', 'menus.bootstrap') !!}
+                                    {!! menu('middle', 'menus.bootstrap-safe') !!}
                                 </div>
                             </div>
                         </div>
@@ -234,7 +234,7 @@
                                 <div class="ec-footer-links">
 
 
-                                    {!! menu('main', 'menus.bootstrap') !!}
+                                    {!! menu('main', 'menus.bootstrap-safe') !!}
 
 
                                 </div>

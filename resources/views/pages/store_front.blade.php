@@ -140,7 +140,7 @@
             @if (count($shop->products) == !0)
             @foreach ($shop->products as $product)
                 <div class="col-md-3 col-lg-2 cols-12">
-                    <x-products.product-2 :product="$product" />
+                    <x-products.product :product="$product" :variant="'red'" :showMultipleCategories="true" />
                 </div>
             @endforeach
             @endif

@@ -387,9 +387,8 @@ class ProductResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->with(['prodcats:id,name'])
-            ->select(['id', 'name', 'image', 'price', 'sale_price', 'quantity', 'status', 'featured', 'created_at']);
+        // SIMPLIFIED QUERY - Remove complex with() and select() to prevent memory exhaustion
+        return parent::getEloquentQuery();
     }
 
     public static function getRelations(): array
@@ -411,6 +410,9 @@ class ProductResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
+        // TEMPORARILY DISABLED FOR DEBUGGING
+        return null;
+        
         try {
             $count = static::getModel()::count();
             return $count > 0 ? (string) $count : null;

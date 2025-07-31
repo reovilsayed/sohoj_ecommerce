@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OfferRequestResource extends Resource
@@ -27,7 +28,7 @@ class OfferRequestResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $shop = auth()->user()->shop;
+        $shop = Auth::user()->shop;
 
         return parent::getEloquentQuery()
             ->where('shop_id', $shop->id)
@@ -36,7 +37,7 @@ class OfferRequestResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $shop = auth()->user()->shop;
+        $shop = Auth::user()->shop;
         return $shop && $shop->status == 1;
     }
 
@@ -144,6 +145,20 @@ class OfferRequestResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getEloquentQuery()->count();
+        // TEMPORARILY DISABLED FOR DEBUGGING
+        return null;
+        
+        try {
+            $user = Auth::user();
+            if (!$user || !$user->shop) {
+                return null;
+            }
+            
+            // DIRECT QUERY - DON'T USE getEloquentQuery()
+            $count = Offer::where('shop_id', $user->shop->id)->count();
+            return $count > 0 ? (string) $count : null;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

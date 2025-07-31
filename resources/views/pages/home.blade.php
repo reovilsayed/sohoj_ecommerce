@@ -1289,7 +1289,7 @@
                                                         <div class="row row-cols-lg-5 cols-2 mt-4">
                                                             @foreach ($products as $product)
                                                                 {{-- @dd($product) --}}
-                                                                <x-products.product-1 :product="$product" />
+                                                                <x-products.product :product="$product" :variant="'green'" :showMultipleCategories="false" />
                                                             @endforeach
                                                         </div>
 
@@ -1336,7 +1336,7 @@
                                                         <div class="ec-fs-pro-inner">
                                                             <div class="row row-cols-lg-5 cols-2 mt-4">
                                                                 @foreach ($products as $product)
-                                                                    <x-products.product-1 :product="$product" />
+                                                                    <x-products.product :product="$product" :variant="'green'" :showMultipleCategories="false" />
                                                                 @endforeach
                                                             </div>
                                                         </div>
@@ -1348,7 +1348,7 @@
                                                         <div class="ec-fs-pro-inner">
                                                             <div class="row row-cols-lg-5 cols-2 mt-4">
                                                                 @foreach ($products as $product)
-                                                                    <x-products.product-1 :product="$product" />
+                                                                    <x-products.product :product="$product" :variant="'green'" :showMultipleCategories="false" />
                                                                 @endforeach
                                                             </div>
                                                         </div>
@@ -1446,7 +1446,7 @@
                                                                         $count = $shop->products->count();
                                                                     @endphp
                                                                     @foreach ($products as $product)
-                                                                        <x-products.product-4 :product="$product" />
+                                                                        <x-products.product :product="$product" :variant="'red'" :showMultipleCategories="true" />
                                                                     @endforeach
 
                                                                     @if ($last && $count >= 8)

@@ -28,6 +28,7 @@ use App\Filament\Pages\Settings\Settings;
 use Filament\Navigation\NavigationGroup;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Http\Middleware\QueryLoggerMiddleware;
 use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -96,6 +97,7 @@ class AdminPanelProvider extends PanelProvider
             //     Widgets\FilamentInfoWidget::class,
             // ])
             ->middleware([
+                QueryLoggerMiddleware::class,
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,

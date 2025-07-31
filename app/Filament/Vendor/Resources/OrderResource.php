@@ -13,6 +13,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Illuminate\Support\Facades\Auth;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
@@ -34,12 +35,12 @@ class OrderResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('shop_id', auth()->user()->shop->id);
+            ->where('shop_id', Auth::user()->shop->id);
     }
 
     public static function shouldRegisterNavigation(): bool
     {
-        $shop = auth()->user()->shop;
+        $shop = Auth::user()->shop;
         return $shop && $shop->status == 1;
     }
 
@@ -189,6 +190,20 @@ class OrderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getEloquentQuery()->count();
+        // TEMPORARILY DISABLED FOR DEBUGGING
+        return null;
+        
+        try {
+            $user = Auth::user();
+            if (!$user || !$user->shop) {
+                return null;
+            }
+            
+            // DIRECT QUERY - DON'T USE getEloquentQuery()
+            $count = \App\Models\Order::where('shop_id', $user->shop->id)->count();
+            return $count > 0 ? (string) $count : null;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }
