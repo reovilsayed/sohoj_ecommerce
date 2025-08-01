@@ -11,7 +11,11 @@ use App\Models\Rating;
 use App\Models\Shop;
 use App\Models\User;
 use App\Models\Slider;
+use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
+use App\Repository\ShopRepsitory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use TCG\Voyager\Models\Page;
 
@@ -19,65 +23,21 @@ class PageController extends Controller
 {
     public function home()
     {
-        $locationPostcodes = Session::get('location.postcode', []);
 
 
-        $latest_products = \Cache::remember('latest_products:' . md5(json_encode($locationPostcodes)), 3600, function () use ($locationPostcodes) {
-            return Product::query()
-                ->select(['id', 'slug', 'name', 'shop_id', 'views', 'post_code', 'status', 'parent_id', 'images', 'image', 'price', 'sale_price'])
-                ->where('status', 1)
-                ->whereNull('parent_id')
-                ->whereHas('shop', fn($q) => $q->where('status', 1))
-                ->when(!empty($locationPostcodes), fn($q) => $q->whereIn('post_code', $locationPostcodes))
-                ->orderByDesc('views')
-                ->latest()
-                ->limit(24)
-                ->with(relations: ['shop:id,name,status', 'ratings'])
-                ->get();
-        });
 
-        $bestsaleproducts = \Cache::remember('bestsaleproducts:' . md5(json_encode($locationPostcodes)), 3600, function () use ($locationPostcodes) {
-            return Product::query()
-                ->select(['id', 'slug', 'name', 'shop_id', 'total_sale', 'post_code', 'status', 'parent_id', 'image', 'images', 'price', 'sale_price'])
-                ->where('status', 1)
-                ->whereNull('parent_id')
-                ->whereHas('shop', fn($q) => $q->where('status', 1))
-                ->when(!empty($locationPostcodes), fn($q) => $q->whereIn('post_code', $locationPostcodes))
-                ->orderByDesc('total_sale')
-                ->latest()
-                ->limit(16)
-                ->with(['shop:id,name,status'])
-                ->get();
-        });
-        $recommand = session()->get('recommand', []);
-        $recommandProducts = \Cache::remember('recommandProducts:' . md5(json_encode($recommand)), 3600, function () use ($recommand) {
-            return Product::query()
-                ->select(['id', 'slug', 'name', 'shop_id', 'parent_id', 'views', 'post_code', 'status', 'images', 'image', 'price', 'sale_price'])
-                ->whereNull('parent_id')
-                ->whereIn('id', $recommand)
-                ->with(['shop:id,name'])
-                ->get();
-        });
-        $latest_shops = \Cache::remember('latest_shops', 3600, function () {
-            return Shop::query()
-                ->where('status', 1)
-                ->whereHas('products', fn($q) => $q->whereNull('parent_id'))
-                ->latest()
-                ->limit(8)
-                ->with(['products:id,name,shop_id,slug,images,views,image,sale_price,price,post_code,status'])
-                ->get();
-        });
+        $latest_products = ProductRepository::getLatestProducts();
 
-        $prodcats = \Cache::remember('prodcats', 3600, function () {
-            return Prodcat::with('childrens')
-                ->whereNull('parent_id')
-                ->whereHas('products')
-                ->orderBy('role', 'asc')
-                ->get();
-        });
-        // dd($prodcats);
+        $bestsaleproducts = ProductRepository::getBestsaleProducts();
 
-        $sliders = \Cache::remember('sliders', 3600, function () {
+
+        $recommandProducts = ProductRepository::getRecommandProducts();
+        $latest_shops = ShopRepsitory::getLatestShops();
+
+        $prodcats = CategoryRepository::getAllCategoriesWithProducts();
+
+
+        $sliders = Cache::remember('sliders', 3600, function () {
             return Slider::latest()->get();
         });
 
@@ -85,18 +45,11 @@ class PageController extends Controller
     }
     public function shops()
     {
-        $productsQuery = Product::where("status", 1)->whereNull('parent_id')->whereHas('shop', function ($q) {
-            $q->where('status', 1);
-        })->filter()->simplePaginate(12);
-        $products = $productsQuery->groupBy(function ($item) {
-            return  $item->shop_id;
-        });
+        $products = ProductRepository::getAllProducts();
 
-        $categories = Prodcat::has('products')->whereNull('parent_id')->latest()->get();
+        $categories = CategoryRepository::getAllParentCategories();
 
-        $latest_shops =  Shop::where("status", 1)->whereHas('products', function ($query) {
-            $query->whereNull('parent_id');
-        })->latest()->limit(8)->get();
+        $latest_shops =  ShopRepsitory::getLatestShops();
         return view('pages.shops', compact('products', 'categories', 'latest_shops'));
     }
     public function product_details($slug)
@@ -317,7 +270,7 @@ class PageController extends Controller
     {
         $status = $request->input('status') === 'activate' ? 1 : 0;
         $shop->update(['status' => $status]);
-    
+
         return redirect()->back()->with('success', 'Shop status updated successfully.');
     }
 
@@ -326,28 +279,28 @@ class PageController extends Controller
         try {
             // Get all form data except the CSRF token and method
             $settings = $request->except(['_token', '_method']);
-            
+
             foreach ($settings as $key => $value) {
                 // Handle file uploads
                 if ($request->hasFile($key)) {
                     $file = $request->file($key);
-                    
+
                     // Store file and get path
                     $filePath = $file->store('settings', 'public');
                     $value = $filePath;
-                    
+
                     // Delete old file if exists
                     $existingSetting = \App\Models\Setting::where('key', $key)->first();
                     if ($existingSetting && $existingSetting->value && \Storage::disk('public')->exists($existingSetting->value)) {
                         \Storage::disk('public')->delete($existingSetting->value);
                     }
                 }
-                
+
                 // Handle array values (convert to JSON)
                 if (is_array($value)) {
                     $value = json_encode($value);
                 }
-                
+
                 // Use updateOrCreate to handle both updates and new entries
                 \App\Models\Setting::updateOrCreate(
                     ['key' => $key], // Search condition
@@ -359,14 +312,13 @@ class PageController extends Controller
                     ]
                 );
             }
-            
+
             // Clear settings cache if you're using caching
             if (function_exists('settings')) {
                 \Cache::forget('settings');
             }
-            
+
             return redirect()->back()->with('success_msg', 'Settings updated successfully!');
-            
         } catch (\Exception $e) {
             \Log::error('Settings update failed: ' . $e->getMessage());
             return redirect()->back()->with('error_msg', 'Failed to update settings. Please try again.');
@@ -382,37 +334,37 @@ class PageController extends Controller
         if (str_contains($key, 'logo') || str_contains($key, 'image') || str_contains($key, 'icon') || str_contains($key, 'banner')) {
             return 'file';
         }
-        
+
         // Email types
         if (str_contains($key, 'email')) {
             return 'email';
         }
-        
+
         // URL types
         if (str_contains($key, 'url') || str_contains($key, 'link')) {
             return 'url';
         }
-        
+
         // Phone types
         if (str_contains($key, 'phone')) {
             return 'tel';
         }
-        
+
         // Date types
         if (str_contains($key, 'date') || str_contains($key, 'valid_until')) {
             return 'date';
         }
-        
+
         // Number types
         if (is_numeric($value)) {
             return 'number';
         }
-        
+
         // Textarea for longer content
         if (str_contains($key, 'description') || str_contains($key, 'info') || str_contains($key, 'address')) {
             return 'textarea';
         }
-        
+
         // Default to text
         return 'text';
     }
@@ -425,19 +377,19 @@ class PageController extends Controller
         if (str_starts_with($key, 'site_')) {
             return 'site';
         }
-        
+
         if (str_starts_with($key, 'admin_')) {
             return 'admin';
         }
-        
+
         if (str_contains($key, 'social') || str_contains($key, 'facebook') || str_contains($key, 'twitter') || str_contains($key, 'instagram') || str_contains($key, 'linkedin')) {
             return 'social';
         }
-        
+
         if (str_contains($key, 'offer') || str_contains($key, 'promotion')) {
             return 'offer';
         }
-        
+
         // Default group
         return 'general';
     }
@@ -449,22 +401,22 @@ class PageController extends Controller
     {
         try {
             $settings = $request->except(['_token', '_method']);
-            
+
             foreach ($settings as $key => $value) {
                 // Handle file uploads
                 if ($request->hasFile($key)) {
                     $value = $this->handleFileUpload($request->file($key), $key);
                 }
-                
+
                 // Handle array values
                 if (is_array($value)) {
                     $value = json_encode($value);
                 }
-                
+
                 // Update or create setting
                 $setting = \App\Models\Setting::firstOrNew(['key' => $key]);
                 $setting->value = $value;
-                
+
                 // Set other attributes only if it's a new record
                 if (!$setting->exists) {
                     $setting->display_name = ucwords(str_replace('_', ' ', $key));
@@ -472,12 +424,11 @@ class PageController extends Controller
                     $setting->group = $this->determineSettingGroup($key);
                     $setting->order = \App\Models\Setting::max('order') + 1;
                 }
-                
+
                 $setting->save();
             }
-            
+
             return redirect()->back()->with('success_msg', 'Settings updated successfully!');
-            
         } catch (\Exception $e) {
             \Log::error('Settings update failed: ' . $e->getMessage());
             return redirect()->back()->with('error_msg', 'Failed to update settings. Please try again.');
@@ -494,7 +445,7 @@ class PageController extends Controller
         if ($existingSetting && $existingSetting->value && \Storage::disk('public')->exists($existingSetting->value)) {
             \Storage::disk('public')->delete($existingSetting->value);
         }
-        
+
         // Store new file
         return $file->store('settings/' . date('Y/m'), 'public');
     }

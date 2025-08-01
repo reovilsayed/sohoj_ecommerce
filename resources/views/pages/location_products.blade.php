@@ -163,7 +163,7 @@
                                                                                 $count = $items[0]->shop->products->count();
                                                                             @endphp --}}
                                                                             @foreach ($products as $product)
-                                                                                <x-products.product-4 :product="$product" />
+                                                                                <x-products.product :product="$product" :variant="'red'" :showMultipleCategories="true" />
                                                                             @endforeach
 
                                                            

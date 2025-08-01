@@ -12,6 +12,7 @@ class Sohoj
     public function price($price)
     {
         return "$" . $this->round_num($price);
+        // dd($price);
     }
     public function tax()
     {
@@ -74,7 +75,7 @@ class Sohoj
     }
     public function round_num($price)
     {
-        return sprintf('%.2f', $price);
+        return sprintf(newSubtotal $price);
     }
     public function average_rating($ratings)
     {

@@ -60,8 +60,13 @@
             {{ $item->title }}
             {!! $caret !!}
         </a>
-        @if(!$originalItem->children->isEmpty())
-        @include('menus.bootstrap', ['items' => $originalItem->children, 'options' => $options, 'innerLoop' => true])
+        @if(!$originalItem->children->isEmpty() && (!isset($maxDepth) || $maxDepth > 0))
+        @include('menus.bootstrap', [
+            'items' => $originalItem->children, 
+            'options' => $options, 
+            'innerLoop' => true,
+            'maxDepth' => isset($maxDepth) ? $maxDepth - 1 : 5
+        ])
         @endif
     </li>
 @endforeach

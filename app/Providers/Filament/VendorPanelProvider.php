@@ -23,6 +23,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Filament\Navigation\NavigationGroup;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Http\Middleware\QueryLoggerMiddleware;
 
 class VendorPanelProvider extends PanelProvider
 {
@@ -79,13 +80,16 @@ class VendorPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 RoleMiddleware::class . ':vendor',
+                // TEMPORARILY DISABLED FOR DEBUGGING
+                // QueryLoggerMiddleware::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
             ->widgets([
-                VendorStats::class, // Custom widget for vendor stats
-                VendorOrdersChart::class,
+                // TEMPORARILY DISABLED FOR DEBUGGING
+                // VendorStats::class, // Custom widget for vendor stats
+                // VendorOrdersChart::class,
             ])
             ->pages([
                 ViewInvoice::class,
