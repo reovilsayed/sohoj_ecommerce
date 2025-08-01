@@ -3,15 +3,14 @@
     <div class="header-top py-3 mt-0 bg-dark text-light d-none d-md-block">
         <div class="container d-flex justify-content-between align-items-center">
             <div>
-                <i class="fas fa-phone-alt me-2"></i> <span>+123 5678 890</span>
-                <span class="mx-3">|</span>
-                <i class="fas fa-envelope me-2"></i> <span>support@afrikartt.com</span>
+                <a href="tel:{{ Settings::setting('site_phone') }}">{{ Settings::setting('site_phone') }}</a>
+                <span class="mx-3">|</span><a href="mailto:{{ Settings::setting('site_email') }}">{{ Settings::setting('site_email') }}</a>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <a href="#" class="text-light me-2"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="text-light me-2"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-light me-2"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-light me-2"><i class="fab fa-linkedin-in"></i></a>
+                <a href="{{ Settings::setting('social_fb_link') }}" class="text-light me-2"><i class="fab fa-facebook-f"></i></a>
+                <a href="{{ Settings::setting('social_inst_link') }}" class="text-light me-2"><i class="fab fa-instagram"></i></a>
+                <a href="{{ Settings::setting('social_twitter_link') }}" class="text-light me-2"><i class="fab fa-twitter"></i></a>
+                <a href="{{ Settings::setting('social_linkedin') }}" class="text-light me-2"><i class="fab fa-linkedin-in"></i></a>
                 <!-- Language/Currency Switcher -->
                 {{-- <div class="dropdown d-inline mx-2">
                     <a class="dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown">EN</a>
@@ -36,8 +35,7 @@
         <div class="container d-flex justify-content-between align-items-center">
             <!-- Logo -->
             <a href="{{ route('homepage') }}" class="navbar-brand d-flex align-items-center">
-                <img src="{{ asset('assets/logo/logo007.png') }}" alt="Logo" style="height: 48px;">
-                <span class="ms-2 fw-bold text-dark fs-4">Afrikartt</span>
+                <img src="{{ Settings::setting('site_logo') }}" alt="Afrikartt" style="height: 48px;">
             </a>
             <!-- Search Bar -->
             @php
