@@ -1,6 +1,14 @@
-@section('title', $shop->name . ' | Shop on Afrikartt E-commerce')
-@section('meta_description', Str::limit($shop->description ?? ($shop->short_description ?? 'Shop ' . $shop->name . ' on
-    Afrikartt E-commerce. Quality products, great deals, and excellent customer service.'), 160))
+.@section('title', $shop->name . ' | Shop on Afrikartt E-commerce')
+@section('meta_description',
+    Str::limit(
+    $shop->description ??
+    ($shop->short_description ??
+    'Shop ' .
+    $shop->name .
+    ' on
+    Afrikartt E-commerce. Quality products, great deals, and excellent customer service.'),
+    160,
+    ))
 @section('meta_keywords', $shop->name . ', shop, store, ecommerce, online shopping, Afrikartt, ' . $shop->city . ', ' .
     $shop->state)
 @section('canonical_url', route('store_front', $shop->slug))
@@ -21,72 +29,46 @@
 @endsection
 @extends('layouts.app')
 @section('css')
-    <link rel="stylesheet" href="{{ asset('assets/frontend-assetss/responsive.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('assets/frontend-assetss/responsive.css') }}" />
     <link rel="stylesheet" id="bg-switcher-css" href="{{ asset('assets/frontend-assetss/css/backgrounds/bg-4.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/shops.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/store_front.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/store_front.css') }}"> --}}
     <style>
-        .rating-stars {
-            width: 145px !important;
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda) !important;
+            color: #01949a !important;
         }
 
-        .footer-font {
-            font-size: 25px !important;
-        }
-
-        .shop-info-card .fa {
-            color: #6c757d;
-            font-size: 1.2em;
-        }
-
-        .shop-policy-card .fa {
-            opacity: 0.85;
-        }
-
-        /* Banner image loading styles */
-        .banner {
-            transition: opacity 0.3s ease-in-out;
-            opacity: 0.8;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            min-height: 200px;
-            object-fit: cover;
-        }
-
-        .banner.loaded {
-            opacity: 1;
-        }
-
-        .banner.error {
-            opacity: 0.9;
-            filter: grayscale(0.1);
-        }
-
-        .banner.placeholder {
-            opacity: 0.8;
-        }
-
-        /* Loading animation */
-        .banner:not(.loaded):not(.error) {
+        .checkout-hero {
+            background: #01949a;
+            color: #fff;
+            /* border-radius: var(--border-radius); */
+            box-shadow: var(--shadow);
+            padding: 2rem 2.5rem 1.5rem 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
             position: relative;
+            overflow: hidden;
         }
 
-        .banner:not(.loaded):not(.error)::after {
+        .checkout-hero::after {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #01949a;
+            right: -60px;
+            top: -40px;
+            width: 180px;
+            height: 180px;
+            background: var(--accent);
+            opacity: 0.12;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            z-index: 0;
         }
 
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        .checkout-hero h2,
+        .checkout-hero p,
+        .checkout-hero-steps {
+            position: relative;
+            z-index: 1;
         }
     </style>
 @endsection
