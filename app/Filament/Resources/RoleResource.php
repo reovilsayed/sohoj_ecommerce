@@ -23,6 +23,9 @@ class RoleResource extends Resource
     // Show the count of roles in the navigation badge
     public static function getNavigationBadge(): ?string
     {
+        // TEMPORARILY DISABLED FOR DEBUGGING
+        return null;
+        
         return (string) static::$model::count();
     }
 

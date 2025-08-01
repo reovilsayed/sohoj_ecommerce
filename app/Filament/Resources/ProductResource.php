@@ -410,6 +410,9 @@ class ProductResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
+        // TEMPORARILY DISABLED FOR DEBUGGING
+        return null;
+        
         try {
             $count = static::getModel()::count();
             return $count > 0 ? (string) $count : null;

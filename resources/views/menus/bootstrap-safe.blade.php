@@ -5,24 +5,28 @@
 @endif
 
 @php
-
     if (Voyager::translatable($items)) {
         $items = $items->load('translations');
     }
-
+    
+    // SAFETY: Limit recursion depth
+    $currentDepth = isset($currentDepth) ? $currentDepth + 1 : 1;
+    if ($currentDepth > 5) {
+        echo '<!-- MAX DEPTH REACHED -->';
+        echo '</ul>';
+        return;
+    }
 @endphp
 
 @foreach ($items as $item)
-
     @php
-
         $originalItem = $item;
         if (Voyager::translatable($item)) {
             $item = $item->translate($options->locale);
         }
 
         $listItemClass = null;
-        $linkAttributes =  null;
+        $linkAttributes = null;
         $styles = null;
         $icon = null;
         $caret = null;
@@ -37,7 +41,7 @@
 
         // With Children Attributes
         if(!$originalItem->children->isEmpty()) {
-            $linkAttributes ='dropdown-indicator';
+            $linkAttributes = 'dropdown-indicator';
             $caret = '<i class="fas fa-chevron-down"></i>';
 
             if(url($item->link()) == url()->current()){
@@ -51,22 +55,22 @@
         if(isset($options->icon) && $options->icon == true){
             $icon = '<i class="' . $item->icon_class . '"></i>';
         }
-
     @endphp
 
     <li class="{{ $listItemClass }} ec-footer-link">
-        <a href="{{ url($item->link()) }}" class="text-dark mt-3 {!! $linkAttributes ?? '' !!}"  style="{{ $styles }}">
+        <a href="{{ url($item->link()) }}" class="text-dark mt-3 {!! $linkAttributes ?? '' !!}" style="{{ $styles }}">
             {!! $icon !!}
             {{ $item->title }}
             {!! $caret !!}
         </a>
-        @if(!$originalItem->children->isEmpty() && (!isset($maxDepth) || $maxDepth > 0))
-        @include('menus.bootstrap', [
-            'items' => $originalItem->children, 
-            'options' => $options, 
-            'innerLoop' => true,
-            'maxDepth' => isset($maxDepth) ? $maxDepth - 1 : 5
-        ])
+        
+        @if(!$originalItem->children->isEmpty() && $currentDepth < 5)
+            @include('menus.bootstrap-safe', [
+                'items' => $originalItem->children, 
+                'options' => $options, 
+                'innerLoop' => true,
+                'currentDepth' => $currentDepth
+            ])
         @endif
     </li>
 @endforeach

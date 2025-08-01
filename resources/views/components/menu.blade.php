@@ -2,17 +2,39 @@
 
 @php
     use App\Models\Menu;
-    // If items are not passed, fetch the root items for the menu by name
+    use Illuminate\Support\Facades\Cache;
+    
+    // If items are not passed, fetch the root items for the menu by name with caching
     if (!$items) {
-        $menu = Menu::where('name', $name)
-            ->with([
-                'items' => function ($query) {
-                    $query->whereNull('parent_id')->orderBy('order');
-                },
-                'items.children',
-            ])
-            ->first();
-        $items = $menu ? $menu->items : collect();
+        $cacheKey = "menu_{$name}_items";
+        $cacheDuration = 3600; // 1 hour cache
+        
+        try {
+            $items = Cache::remember($cacheKey, $cacheDuration, function () use ($name) {
+                $menu = Menu::where('name', $name)
+                    ->with([
+                        'items' => function ($query) {
+                            $query->whereNull('parent_id')->orderBy('order');
+                        },
+                        'items.children',
+                    ])
+                    ->first();
+                
+                return $menu ? $menu->items : collect();
+            });
+        } catch (\Exception $e) {
+            // Fallback to direct database query if cache fails
+            $menu = Menu::where('name', $name)
+                ->with([
+                    'items' => function ($query) {
+                        $query->whereNull('parent_id')->orderBy('order');
+                    },
+                    'items.children',
+                ])
+                ->first();
+            
+            $items = $menu ? $menu->items : collect();
+        }
     }
 @endphp
 

@@ -225,6 +225,8 @@ class ProductResource extends Resource
                         default => 'gray',
                     })
                     ->toggleable(),
+                // TEMPORARILY DISABLED FOR DEBUGGING - POTENTIAL MEMORY ISSUE
+                /*
                 TextColumn::make('prodcats.name')
                     ->label('Categories')
                     ->badge()
@@ -238,6 +240,7 @@ class ProductResource extends Resource
                         }
                         return $state;
                     }),
+                */
                 TextColumn::make('price')
                     ->label('Regular Price')
                     ->money('USD')
@@ -352,6 +355,9 @@ class ProductResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
+        // TEMPORARILY DISABLED FOR DEBUGGING
+        return null;
+        
         try {
             $user = Auth::user();
             if (!$user || !$user->shop) {
