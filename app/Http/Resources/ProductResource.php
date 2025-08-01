@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class ProductResource extends JsonResource
 {
@@ -12,8 +13,10 @@ class ProductResource extends JsonResource
             'id'            => $this->id,
             'name'          => $this->name,
             'slug'          => $this->slug,
-            'image'         => $this->image,
-            'images'        => $this->images,
+            'image'         => Storage::url($this->image),
+            'images'        => array_map(function ($image) {
+                return Storage::url($image);
+            }, $this->images),
             'price'         => $this->price,
             'sale_price'    => $this->sale_price,
             'shop'          => $this->shop,
