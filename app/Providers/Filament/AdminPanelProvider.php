@@ -24,7 +24,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use App\Filament\Widgets\StatsOverview;
 use Illuminate\Database\Eloquent\Model;
 use App\Filament\Pages\DynamicSettingsPage;
-use App\Filament\Pages\Settings\Settings;
+// use App\Filament\Pages\Settings\Settings;
 use Filament\Navigation\NavigationGroup;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -73,7 +73,7 @@ class AdminPanelProvider extends PanelProvider
     HTML
             )
 
-            ->brandLogo(asset('assets/logo/Logo.png'))
+            ->brandLogo(asset('assets/logo/PHOTO.png'))
             ->favicon(asset('assets/images/favicon.ico'))
             ->colors([
                 'danger' => Color::Red,
@@ -151,9 +151,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentSettingsPlugin::make()
-                    ->pages([
-                        Settings::class,
-                    ])
+                    // ->pages([
+                    //     Settings::class,
+                    // ])
             ])
             ->globalSearch(true)
             ->globalSearchDebounce('500ms')
