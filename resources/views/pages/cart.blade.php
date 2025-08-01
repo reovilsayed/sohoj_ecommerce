@@ -29,34 +29,13 @@
     {{-- <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}"> --}}
 
     <style>
-        :root {
-            --primary-color: #FF0000;
-            /* Button color */
-            --secondary-color: #01949a;
-            /* Accent color */
-            --text-color: #1f2937;
-            --light-gray: #f3f4f6;
-            --medium-gray: #e5e7eb;
-            --dark-gray: #6b7280;
-            --white: #ffffff;
-            --primary: #01949a;
-            --primary-hover: #a1887f;
-            --bg: #d7ccc8;
-            --card-bg: #ffffff;
-            --border-radius: 18px;
-            --shadow: 0 8px 32px rgba(141, 110, 99, 0.10);
-            --text: #4e342e;
-            --muted: #a1887f;
-            --danger: #e53935;
-            --success: #43a047;
-            --accent: #efebe9;
-            --step-gradient: linear-gradient(90deg, #8d6e63 0%, #a1887f 100%);
-        }
+        /* Import centralized color system */
+        @import url('{{ asset("assets/css/colors.css") }}');
 
         body,
         #body {
-            background: #f7f8fa;
-            color: var(--text-color);
+            background: var(--bg-light);
+            color: var(--text-dark);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
@@ -89,9 +68,9 @@
         }
 
         .cart-header {
-            background: var(--white);
+            background: var(--bg-secondary);
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(1, 148, 154, 0.06);
+            box-shadow: 0 2px 8px var(--shadow-primary);
             padding: 32px 32px 0 32px;
             margin-bottom: 0;
             border: none;
@@ -103,28 +82,28 @@
         .cart-title {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--text-color);
+            color: var(--text-dark);
             margin-bottom: 0.5rem;
         }
 
         .breadcrumb {
             font-size: 0.95rem;
-            color: var(--dark-gray);
+            color: var(--text-secondary);
             margin-bottom: 1.5rem;
         }
 
         .item-count {
             font-size: 1rem;
-            color: var(--secondary-color);
-            background: #eaf7f7;
+            color: var(--accent-color);
+            background: var(--bg-light);
             padding: 0.2rem 0.8rem;
             border-radius: 1rem;
             margin-bottom: 1.5rem;
         }
 
         .cart-table-card {
-            background: var(--white);
-            box-shadow: 0 2px 8px rgba(1, 148, 154, 0.06);
+            background: var(--bg-secondary);
+            box-shadow: 0 2px 8px var(--shadow-primary);
             padding: 0 32px 32px 32px;
             margin-bottom: 1.5rem;
         }
@@ -144,16 +123,16 @@
         .cart-table th {
             padding: 18px 8px 18px 0;
             font-weight: 600;
-            color: var(--dark-gray);
+            color: var(--text-secondary);
             font-size: 1rem;
-            border-bottom: 1px solid var(--medium-gray);
+            border-bottom: 1px solid var(--border-light);
             background: none;
         }
 
         .cart-table td {
             padding: 18px 8px 18px 0;
             vertical-align: middle;
-            border-bottom: 1px solid var(--medium-gray);
+            border-bottom: 1px solid var(--border-light);
             background: none;
         }
 
@@ -174,31 +153,31 @@
         .product-details h3 {
             font-size: 1rem;
             font-weight: 600;
-            color: var(--text-color);
+            color: var(--text-dark);
             margin-bottom: 0.2rem;
         }
 
         .product-details p {
-            color: var(--dark-gray);
+            color: var(--text-secondary);
             font-size: 0.92rem;
             margin-bottom: 0.2rem;
         }
 
         .remove-btn {
-            color: var(--dark-gray);
+            color: var(--text-secondary);
             border: none;
             font-size: 1.1rem;
             cursor: pointer;
             margin-right: 0.5rem;
             transition: color 0.2s;
 
-            background: #eaf7f7;
+            background: var(--bg-light);
             padding: 0.2rem 0.6rem;
             border-radius: 1rem;
         }
 
         .remove-btn:hover {
-            color: var(--primary-color);
+            color: var(--accent-color);
         }
 
         .quantity-control {
@@ -210,9 +189,9 @@
         .quantity-btn {
             width: 32px;
             height: 32px;
-            border: 1px solid var(--medium-gray);
-            background: var(--white);
-            color: var(--text-color);
+            border: 1px solid var(--border-light);
+            background: var(--bg-secondary);
+            color: var(--text-dark);
             border-radius: 6px;
             cursor: pointer;
             font-size: 1.1rem;
@@ -221,23 +200,23 @@
         }
 
         .quantity-btn:hover {
-            background: var(--secondary-color);
-            color: var(--white);
+            background: var(--accent-color);
+            color: var(--text-light);
         }
 
         .quantity-input {
             width: 48px;
             height: 32px;
             text-align: center;
-            border: 1px solid var(--medium-gray);
+            border: 1px solid var(--border-light);
             border-radius: 6px;
-            background: #f9f9f9;
+            background: var(--bg-light);
             font-size: 1rem;
         }
 
         .price {
             font-weight: 600;
-            color: var(--text-color);
+            color: var(--text-dark);
         }
 
         .cart-table tfoot td {
@@ -254,14 +233,14 @@
 
         .coupon-input {
             flex: 1;
-            border: 1px solid var(--medium-gray);
+            border: 1px solid var(--border-light);
             font-size: 1rem;
-            background: #f9f9f9;
+            background: var(--bg-light);
         }
 
         .order-summary {
-            background: var(--white);
-            box-shadow: 0 2px 8px rgba(1, 148, 154, 0.06);
+            background: var(--bg-secondary);
+            box-shadow: 0 2px 8px var(--shadow-primary);
             padding: 32px 32px 24px 32px;
             min-width: 320px;
             max-width: 370px;
@@ -276,12 +255,12 @@
         }
 
         .summary-label {
-            color: var(--dark-gray);
+            color: var(--text-secondary);
         }
 
         .summary-value {
             font-weight: 600;
-            color: var(--text-color);
+            color: var(--text-dark);
         }
 
         .summary-total {
@@ -293,10 +272,10 @@
         }
 
         .checkout-hero {
-            background: #01949a;
-            color: #fff;
+            background: var(--accent-color);
+            color: var(--text-light);
             /* border-radius: var(--border-radius); */
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-medium);
             padding: 2rem 2.5rem 1.5rem 2.5rem;
             margin-bottom: 2rem;
             text-align: center;
@@ -311,7 +290,7 @@
             top: -40px;
             width: 180px;
             height: 180px;
-            background: var(--accent);
+            background: var(--bg-light);
             opacity: 0.12;
             border-radius: 50%;
             z-index: 0;
@@ -406,8 +385,8 @@
                                         @csrf
                                         <input class="coupon-input me-2" style="height: 45px;" type="text" required
                                             placeholder="Coupon Code" name="coupon_code" value="">
-                                        <button class="btn Whoops" style="background: #FF0000; color: #ffffff;"
-                                            type="submit">Apply Coupon Code</button>
+                                                                <button class="btn Whoops" style="background: var(--accent-color); color: var(--text-light);"
+                            type="submit">Apply Coupon Code</button>
                                     </form>
                                 </div>
                             @endif
@@ -454,7 +433,7 @@
                             <span>{{ Sohoj::price(Sohoj::newSubtotal()) }}</span>
                         </div>
                         <a href="{{ route('checkout') }}" class="btn Whoops w-100"
-                            style="background: #FF0000; color: #ffffff;">Proceed To Checkout</a>
+                            style="background: var(--accent-color); color: var(--text-light);">Proceed To Checkout</a>
                     </div>
                 </div>
             </div>

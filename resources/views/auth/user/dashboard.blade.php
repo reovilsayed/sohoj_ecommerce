@@ -3,7 +3,7 @@
 @section('dashboard-content')
     <div class="ec-shop-rightside col-lg-9 col-md-12">
         <!-- Modern User Dashboard -->
-        <div class="modern-dashboard-container">
+        <div class="user-dashboard-modern">
             <!-- Welcome Section -->
             <div class="welcome-section">
                 <div class="welcome-card">
@@ -630,22 +630,8 @@
 @section('css')
     <style>
         /* Modern Dashboard Styles */
-        :root {
-            --primary-color: #01949a;
-            --primary-dark: #01949a;
-            --primary-light: #e8f5e8;
-            --secondary-color: #2c3e50;
-            --accent-color: #f39c12;
-            --light-gray: #f8f9fa;
-            --medium-gray: #e9ecef;
-            --dark-gray: #6c757d;
-            --danger-color: #dc3545;
-            --success-color: #28a745;
-            --info-color: #17a2b8;
-            --border-radius: 12px;
-            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-        }
+        /* Import centralized color system */
+        @import url('{{ asset("assets/css/colors.css") }}');
 
         .modern-dashboard-container {
             min-height: 100vh;
@@ -658,11 +644,11 @@
         }
 
         .welcome-card {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            background: var(--accent-color);
             border-radius: var(--border-radius);
             padding: 3rem;
-            color: white;
-            box-shadow: var(--box-shadow);
+            color: var(--text-light);
+            box-shadow: var(--shadow-medium);
             position: relative;
             overflow: hidden;
             border: none;
@@ -689,8 +675,8 @@
 
         .welcome-icon {
             font-size: 3.5rem;
-            color: rgba(255, 255, 255, 0.9);
-            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-light);
+            background: var(--overlay-light);
             padding: 1.5rem;
             border-radius: 20px;
             backdrop-filter: blur(10px);
@@ -719,7 +705,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--overlay-light);
             padding: 0.5rem 1rem;
             border-radius: 50px;
             font-size: 0.9rem;
@@ -766,72 +752,72 @@
             transition: var(--transition);
         }
 
-        .info-card:hover,
-        .seller-card:hover,
-        .addresses-card:hover,
-        .payment-card:hover,
-        .quick-actions-card:hover {
+        .user-dashboard-modern .info-card:hover,
+        .user-dashboard-modern .seller-card:hover,
+        .user-dashboard-modern .addresses-card:hover,
+        .user-dashboard-modern .payment-card:hover,
+        .user-dashboard-modern .quick-actions-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px var(--shadow-medium);
         }
 
-        .card-header {
+        .user-dashboard-modern .card-header {
             padding: 1.5rem;
-            border-bottom: 1px solid var(--medium-gray);
+            border-bottom: 1px solid var(--border-light);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .card-header h2 {
+        .user-dashboard-modern .card-header h2 {
             font-size: 1.3rem;
             font-weight: 700;
-            color: var(--secondary-color);
+            color: var(--text-dark);
             margin: 0;
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
 
-        .card-header h2 i {
-            color: var(--primary-color);
+        .user-dashboard-modern .card-header h2 i {
+            color: var(--accent-color);
         }
 
-        .card-body {
+        .user-dashboard-modern .card-body {
             padding: 1.5rem;
         }
 
-        /* Info Grid */
-        .info-grid {
+        /* Info Grid - Scoped */
+        .user-dashboard-modern .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.2rem;
         }
 
-        .info-item {
-            background: var(--light-gray);
+        .user-dashboard-modern .info-item {
+            background: var(--bg-light);
             border-radius: 10px;
             padding: 1.2rem;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-light);
             transition: var(--transition);
             position: relative;
         }
 
-        .info-item:hover {
-            background: white;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        .user-dashboard-modern .info-item:hover {
+            background: var(--bg-secondary);
+            box-shadow: 0 8px 20px var(--shadow-light);
         }
 
-        .info-item.full-width {
+        .user-dashboard-modern .info-item.full-width {
             grid-column: 1 / -1;
         }
 
-        .info-label {
+        .user-dashboard-modern .info-label {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             margin-bottom: 0.5rem;
-            color: var(--dark-gray);
+            color: var(--text-secondary);
             font-weight: 600;
             font-size: 0.85rem;
         }
@@ -842,13 +828,13 @@
             text-align: center;
         }
 
-        .info-value {
+        .user-dashboard-modern .info-value {
             font-size: 1rem;
             font-weight: 600;
-            color: var(--secondary-color);
+            color: var(--text-dark);
         }
 
-        .verification-badge {
+        .user-dashboard-modern .verification-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
@@ -858,24 +844,24 @@
             margin-top: 0.3rem;
         }
 
-        .verification-badge.verified {
-            background: rgba(40, 167, 69, 0.1);
+        .user-dashboard-modern .verification-badge.verified {
+            background: var(--success-light);
             color: var(--success-color);
         }
 
-        .verification-badge i {
+        .user-dashboard-modern .verification-badge i {
             font-size: 0.8rem;
         }
 
-        .account-age {
+        .user-dashboard-modern .account-age {
             font-size: 0.85rem;
-            color: var(--dark-gray);
+            color: var(--text-secondary);
             font-weight: normal;
             margin-left: 0.5rem;
         }
 
-        .add-phone-link {
-            color: var(--primary-color);
+        .user-dashboard-modern .add-phone-link {
+            color: var(--accent-color);
             text-decoration: none;
             font-weight: 600;
             display: inline-flex;
@@ -885,14 +871,14 @@
             font-size: 0.95rem;
         }
 
-        .add-phone-link:hover {
+        .user-dashboard-modern .add-phone-link:hover {
             color: var(--primary-dark);
             transform: translateX(3px);
         }
 
-        .btn-edit-profile {
-            background: rgba(1, 153, 154, 0.1);
-            color: var(--primary-color);
+        .user-dashboard-modern .btn-edit-profile {
+            background: var(--accent-light);
+            color: var(--accent-color);
             border: none;
             padding: 0.5rem 1rem;
             border-radius: 8px;
@@ -904,40 +890,40 @@
             font-size: 0.85rem;
         }
 
-        .btn-edit-profile:hover {
-            background: var(--primary-color);
-            color: white;
+        .user-dashboard-modern .btn-edit-profile:hover {
+            background: var(--accent-color);
+            color: var(--text-light);
         }
 
-        /* Quick Actions Section */
-        .actions-grid {
+        /* Quick Actions Section - Scoped */
+        .user-dashboard-modern .actions-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
         }
 
-        .action-item {
-            background: white;
+        .user-dashboard-modern .action-item {
+            background: var(--bg-secondary);
             border-radius: 10px;
             padding: 1.2rem;
-            border: 1px solid var(--medium-gray);
+            border: 1px solid var(--border-light);
             transition: var(--transition);
             text-decoration: none;
             color: inherit;
             display: block;
         }
 
-        .action-item:hover {
-            background: var(--primary-light);
-            border-color: var(--primary-color);
+        .user-dashboard-modern .action-item:hover {
+            background: var(--bg-light);
+            border-color: var(--accent-color);
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(59, 183, 126, 0.1);
+            box-shadow: 0 5px 15px var(--shadow-primary);
         }
 
-        .action-icon {
+        .user-dashboard-modern .action-icon {
             width: 40px;
             height: 40px;
-            background: rgba(1, 153, 154, 0.1);
+            background: var(--accent-light);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -966,7 +952,7 @@
             align-items: center;
             gap: 2rem;
             padding: 2rem;
-            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            background: var(--bg-light);
             border-radius: var(--border-radius);
             border: 1px solid rgba(1, 153, 154, 0.2);
         }
@@ -1028,7 +1014,7 @@
         }
 
         .btn-become-seller:hover {
-            background: linear-gradient(135deg, var(--primary-dark), #01787a);
+            background: var(--accent-color);
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(1, 153, 154, 0.3);
@@ -1178,11 +1164,11 @@
 
         .btn-set-default {
             background: rgba(255, 193, 7, 0.1);
-            color: #ffc107;
+            color: var(--rating-color);
         }
 
         .btn-set-default:hover {
-            background: #ffc107;
+            background: var(--rating-color);
             color: white;
         }
 
@@ -1266,7 +1252,7 @@
         }
 
         .btn-add-first-address:hover {
-            background: linear-gradient(135deg, var(--primary-dark), #1a7a4a);
+            background: var(--accent-color);
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(59, 183, 126, 0.3);
         }
@@ -1387,19 +1373,19 @@
         }
 
         .fa-cc-visa {
-            color: #1a1f71;
+            color: var(--text-dark);
         }
 
         .fa-cc-mastercard {
-            color: #eb001b;
+            color: var(--error-color);
         }
 
         .fa-cc-amex {
-            color: #016fd0;
+            color: var(--accent-color);
         }
 
         .fa-cc-discover {
-            color: #ff6000;
+            color: var(--accent-color);
         }
 
         .card-actions {
@@ -1660,87 +1646,7 @@
     </style>
 @endsection
 
-{{-- @section('js')
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
 
-    <script>
-        const stripe = Stripe("{{ env('STRIPE_KEY') }}");
-
-        const elements = stripe.elements();
-        const cardElement = elements.create('card');
-
-        cardElement.mount('#card-element');
-
-        const cardHolderName = document.getElementById('card-holder-name');
-        const cardButton = document.getElementById('card-button');
-        const clientSecret = cardButton.dataset.secret;
-
-        cardButton.addEventListener('click', async (e) => {
-            const {
-                setupIntent,
-                error
-            } = await stripe.confirmCardSetup(
-                clientSecret, {
-                    payment_method: {
-                        card: cardElement,
-                        billing_details: {
-                            name: cardHolderName.value
-                        }
-                    }
-                }
-            );
-
-            if (error) {
-                if (error?.setupIntent) {
-                    document.getElementById('paymentmethod').value = error.setupIntent.payment_method
-                    toastr.success('Card added');
-                } else {
-                    toastr.error('Something went wrong. Try again letter');
-                }
-
-            } else {
-                document.getElementById('paymentmethod').value = setupIntent.payment_method
-                toastr.success('Card added');
-                $('#cardAddFrom').submit();
-            }
-        });
-
-        // Toastr notification settings
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-bottom-right",
-            "timeOut": "5000"
-        };
-
-        // Add animation to cards when they come into view
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll(
-                '.info-card, .seller-card, .addresses-card, .payment-card, .quick-actions-card');
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = 1;
-                        entry.target.style.transform = 'translateY(0)';
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-
-            cards.forEach(card => {
-                card.style.opacity = 0;
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                observer.observe(card);
-            });
-        });
-    </script>
-@endsection --}}
 
 @section('js')
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
