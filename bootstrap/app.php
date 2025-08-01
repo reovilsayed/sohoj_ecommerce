@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\ClearNotificationsMiddleware;
+use App\Http\Middleware\FilamentNotificationFixMiddleware;
 use App\Http\Middleware\EmailVerified;
 use App\Http\Middleware\NeedPaymentMethod;
 use App\Http\Middleware\RoleMiddleware;
@@ -43,9 +43,9 @@ configure(basePath: dirname(__DIR__))
             '/file/post'
         ]);
         
-        // Append ClearNotificationsMiddleware to web group to prevent memory accumulation
+        // Add FilamentNotificationFixMiddleware to prevent memory accumulation
         $middleware->web(append: [
-            ClearNotificationsMiddleware::class,
+            FilamentNotificationFixMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
