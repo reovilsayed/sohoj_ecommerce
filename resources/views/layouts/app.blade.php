@@ -16,9 +16,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- site Favicon -->
-    <link rel="icon" href="{{ asset('assets/logo/favicon.png') }}" sizes="32x32" />
-    <link rel="apple-touch-icon" href="{{ asset('assets/logo/favicon.png') }}" />
-    <meta name="msapplication-TileImage" content="{{ asset('assets/logo/favicon.png') }}" />
+    <link rel="icon" href="{{ Settings::setting('site_icon') ?? asset('assets/logo/favicon.png') }}" sizes="32x32" />
+    <link rel="apple-touch-icon" href="{{ Settings::setting('site_icon') ?? asset('assets/logo/favicon.png') }}" />
+    <meta name="msapplication-TileImage" content="{{ Settings::setting('site_icon') ?? asset('assets/logo/favicon.png') }}" />
 
 
     <!-- css Icon Font -->
@@ -127,15 +127,15 @@
             <div class="row gy-5 align-items-start">
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                     <h6 class="fw-bold mb-3 text-uppercase">Newsletter</h6>
-                    <p class="mb-2" style="color:var(--text-secondary); font-size: 0.97rem;">Subscribe to our newsletter and be the
+                    <p class="mb-2" style=" font-size: 0.97rem;">Subscribe to our newsletter and be the
                         first to know about new arrivals, exclusive deals, and special offers!</p>
                     <form class="d-flex" name="ec-newsletter-form" method="post" action="{{ route('subscribe') }}">
                         @csrf
-                        <input type="email" class="form-control form-control-sm bg-dark border-0 text-light me-2"
+                        <input type="email" class="form-control form-control-sm bg-dark border-0 text-light pe-0 rounded-0"
                             name="email" placeholder="Your email" required>
-                        <button class="btn btn-pink btn-sm px-3" type="submit">Subscribe</button>
+                        <button class="btn btn-pink btn-sm px-3 h-auto" type="submit">Subscribe</button>
                     </form>
-                    <small class="d-block mt-2" style="color:var(--text-secondary);">Get the latest updates and offers.</small>
+                    <small class="d-block mt-2" style="">Get the latest updates and offers.</small>
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
                     <h6 class="fw-bold mb-3 text-uppercase" style="color:var(--text-light);letter-spacing:1px;">Account</h6>
@@ -152,26 +152,35 @@
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
                     <h6 class="fw-bold mb-3 text-uppercase" style="color:var(--text-light);letter-spacing:1px;">Social links</h6>
-                    <p class="mt-3 small" style="color:var(--text-secondary);">Your trusted marketplace for quality products and
+                    <p class="mt-3 small">Your trusted marketplace for quality products and
                         great deals.</p>
                     <div class="d-flex gap-2 mt-3">
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
+                        <a href="{{ Settings::setting('social_fb_link') }}" class="btn btn-outline-light btn-sm rounded-circle"><i
                                 class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
+                        <a href="{{ Settings::setting('social_inst_link') }}" class="btn btn-outline-light btn-sm rounded-circle"><i
                                 class="fab fa-instagram"></i></a>
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
+                        <a href="{{ Settings::setting('social_twitter_link') }}" class="btn btn-outline-light btn-sm rounded-circle"><i
                                 class="fab fa-twitter"></i></a>
-                        <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
+                        <a href="{{ Settings::setting('social_linkedin') }}" class="btn btn-outline-light btn-sm rounded-circle"><i
                                 class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
 
             </div>
+            <style>
+                .Copy:hover{
+                    color: #ffffff !important;
+                }
+            </style>
             <hr class="my-4" style="border-color: var(--border-medium);">
             <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start small" style="color:var(--text-secondary);">
+                <div class="col-md-6 text-center text-md-start small">
                     &copy; {{ date('Y') }} <a href="{{ route('homepage') }}"
-                        class="fw-bold text-light text-decoration-none">Afrikartt E-commerce</a>. All rights reserved.
+                        class="fw-bold text-light text-decoration-none Copy">Afrikartt E-commerce</a>. All rights reserved.
+                    <span class="mx-2">|</span>
+                    <a href="{{ route('privacy.policy') }}" class="text-light text-decoration-none Copy">Privacy Policy</a>
+                    <span class="mx-2">|</span>
+                    <a href="{{ route('faqs') }}" class="text-light text-decoration-none Copy">FAQ</a>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
                     <img src="{{ asset('assets/img/cards.png') }}" alt="Payment Methods" style="height: 32px;">

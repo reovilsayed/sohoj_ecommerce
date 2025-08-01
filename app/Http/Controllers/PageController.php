@@ -449,4 +449,14 @@ class PageController extends Controller
         // Store new file
         return $file->store('settings/' . date('Y/m'), 'public');
     }
+
+    public function faqs()
+    {
+        return view('pages.faq');
+    }
+
+    public function privacyPolicy()
+    {
+        return view('pages.privacy-policy');
+    }
 }

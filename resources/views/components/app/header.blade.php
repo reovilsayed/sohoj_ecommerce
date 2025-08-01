@@ -183,6 +183,7 @@
                     <li class="nav-item"><a class="nav-link"
                             href="{{ route('shops', ['filter_products' => 'most-popular']) }}">Best Seller</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Vendors</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('faqs') }}">FAQ</a></li>
                     <li class="nav-item"><a class="nav-link" href="#footer">Help</a></li>
                 </ul>
             </div>
@@ -203,6 +204,7 @@
                 <li class="nav-item"><a class="nav-link"
                         href="{{ route('shops', ['filter_products' => 'most-popular']) }}">Best Seller</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Vendors</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('faqs') }}">FAQ</a></li>
                 <li class="nav-item"><a class="nav-link" href="#footer">Help</a></li>
                 {{-- <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login/Register</a></li> --}}
             </ul>
