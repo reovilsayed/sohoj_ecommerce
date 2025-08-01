@@ -1,5 +1,15 @@
 @php
     $route = route('shops');
+    
+    // Check if any filters are active
+    $hasActiveFilters = request('category') || request('ratings') || request('priceMin') || request('priceMax') || request('filter_products') || request('search');
+    
+    // Get current filter values
+    $currentCategory = request('category');
+    $currentRating = request('ratings');
+    $currentPriceMin = request('priceMin', 0);
+    $currentPriceMax = request('priceMax', 1000);
+    $currentFilterProducts = request('filter_products', 'most-sold');
 @endphp
 
 @section('title', 'All Shops | Afrikartt E-commerce')
@@ -109,6 +119,13 @@
             font-size: 0.9rem;
             transition: all 0.3s ease;
             text-decoration: none;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .clear-filters-btn.hidden {
+            opacity: 0;
+            visibility: hidden;
         }
 
         .clear-filters-btn:hover {
@@ -195,6 +212,12 @@
             border-color: #3bb77e;
             color: #2d9d6b;
             transform: translateX(5px);
+        }
+
+        .category-link.active {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            border-color: #3bb77e;
+            color: #2d9d6b;
         }
 
         .category-badge {
@@ -507,10 +530,12 @@
                                     <i class="fas fa-filter"></i>
                                     Filters
                                 </h2>
-                                <a href="{{ route('shops') }}" class="clear-filters-btn" style="color: #ffffff">
-                                    <i class="fas fa-times"></i>
-                                    Clear All
-                                </a>
+                                @if($hasActiveFilters)
+                                    <a href="{{ route('shops') }}" class="clear-filters-btn" style="color: #ffffff">
+                                        <i class="fas fa-times"></i>
+                                        Clear All
+                                    </a>
+                                @endif
                             </div>
                             <!-- Price Range Filter -->
                             <div class="filter-section">
@@ -522,8 +547,8 @@
                                     <div class="price-range-title">Set your budget</div>
                                     <div id="price-slider" class="price-slider"></div>
                                     <div id="price-display" class="price-display">
-                                        <span>Min: <span id="minPriceDisplay">$0</span></span>
-                                        <span>Max: <span id="maxPriceDisplay">$1000</span></span>
+                                        <span>Min: <span id="minPriceDisplay">${{ $currentPriceMin }}</span></span>
+                                        <span>Max: <span id="maxPriceDisplay">${{ $currentPriceMax }}</span></span>
                                     </div>
                                 </div>
                             </div>
@@ -536,8 +561,9 @@
                                 <ul class="category-list">
                                     @foreach ($categories as $category)
                                         <li class="category-item">
-                                            <a href="javascript::void(0)" class="category-link"
-                                                onclick='updateSearchParams("category","{{ $category->slug }}","{{ $route }}")'>
+                                            <a href="javascript:void(0)" 
+                                               class="category-link {{ $currentCategory == $category->slug ? 'active' : '' }}"
+                                               onclick='updateSearchParams("category","{{ $category->slug }}","{{ $route }}")'>
                                                 <span>{{ $category->name }}</span>
                                                 <span class="category-badge">{{ $category->products->count() }}</span>
                                             </a>
@@ -555,7 +581,7 @@
                                     <form class="rating" id="ratingForm">
                                         <div class="rating-option">
                                             <input type="checkbox" value="5"
-                                                {{ request('ratings') == 5 ? 'checked' : '' }}>
+                                                {{ $currentRating == 5 ? 'checked' : '' }}>
                                             <span class="rating-checkmark"></span>
                                             <div class="rating-stars">
                                                 <i class="fas fa-star"></i>
@@ -568,7 +594,7 @@
                                         </div>
                                         <div class="rating-option">
                                             <input type="checkbox" value="4"
-                                                {{ request('ratings') == 4 ? 'checked' : '' }}>
+                                                {{ $currentRating == 4 ? 'checked' : '' }}>
                                             <span class="rating-checkmark"></span>
                                             <div class="rating-stars">
                                                 <i class="fas fa-star"></i>
@@ -581,7 +607,7 @@
                                         </div>
                                         <div class="rating-option">
                                             <input type="checkbox" value="3"
-                                                {{ request('ratings') == 3 ? 'checked' : '' }}>
+                                                {{ $currentRating == 3 ? 'checked' : '' }}>
                                             <span class="rating-checkmark"></span>
                                             <div class="rating-stars">
                                                 <i class="fas fa-star"></i>
@@ -594,7 +620,7 @@
                                         </div>
                                         <div class="rating-option">
                                             <input type="checkbox" value="2"
-                                                {{ request('ratings') == 2 ? 'checked' : '' }}>
+                                                {{ $currentRating == 2 ? 'checked' : '' }}>
                                             <span class="rating-checkmark"></span>
                                             <div class="rating-stars">
                                                 <i class="fas fa-star"></i>
@@ -607,7 +633,7 @@
                                         </div>
                                         <div class="rating-option">
                                             <input type="checkbox" value="1"
-                                                {{ request('ratings') == 1 ? 'checked' : '' }}>
+                                                {{ $currentRating == 1 ? 'checked' : '' }}>
                                             <span class="rating-checkmark"></span>
                                             <div class="rating-stars">
                                                 <i class="fas fa-star"></i>
@@ -629,20 +655,20 @@
                             <!-- Content Header -->
                             <div class="content-header">
                                 <div class="search-results">
-                                    Results for "<span class="search-term">{{ request()->search }}</span>"
+                                    Results for "<span class="search-term">{{ request()->search ?: 'All Products' }}</span>"
                                 </div>
                                 <div class="sort-container">
                                     <span class="sort-label">Sort by:</span>
                                     <select name="ec-select" class="sort-select"
                                         onchange='updateSearchParams("filter_products",this.value,"{{ $route }}")'>
                                         <option value="most-sold"
-                                            {{ request()->filter_products == 'most-sold' ? 'selected' : '' }}>Most Sold
+                                            {{ $currentFilterProducts == 'most-sold' ? 'selected' : '' }}>Most Sold
                                         </option>
                                         <option value="price-low-high"
-                                            {{ request()->filter_products == 'price-low-high' ? 'selected' : '' }}>Price,
+                                            {{ $currentFilterProducts == 'price-low-high' ? 'selected' : '' }}>Price,
                                             low to high</option>
                                         <option value="price-high-low"
-                                            {{ request()->filter_products == 'price-high-low' ? 'selected' : '' }}>Price,
+                                            {{ $currentFilterProducts == 'price-high-low' ? 'selected' : '' }}>Price,
                                             high to low</option>
                                     </select>
                                 </div>
@@ -651,10 +677,8 @@
                             <div class="shop-pro-content">
                                 <div class="shop-pro-inner">
                                     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-                                        @foreach ($products as $shopId => $items)
-                                            @foreach ($items as $product)
-                                                <x-products.product :product="$product" :variant="'red'" :showMultipleCategories="true" />
-                                            @endforeach
+                                        @foreach ($products as $product)
+                                            <x-products.product :product="$product" :variant="'red'" :showMultipleCategories="true" />
                                         @endforeach
                                     </div>
                                 </div>
@@ -674,4 +698,89 @@
     <script src="{{ asset('assets/frontend-assets/js/plugins/jquery.sticky-sidebar.js') }}"></script>
 
     <script src="{{ asset('assets/frontend-assets/js/main.js') }}"></script>
+    
+    <script>
+        var shopUrl = "{{ route('shops') }}";
+        var currentPriceMin = {{ $currentPriceMin }};
+        var currentPriceMax = {{ $currentPriceMax }};
+
+        $(document).ready(function() {
+            // Initialize price slider with current values
+            $("#price-slider").slider({
+                range: true,
+                min: 0,
+                max: 1000,
+                values: [currentPriceMin, currentPriceMax],
+                slide: function(event, ui) {
+                    $("#minPriceDisplay").text('$' + ui.values[0]);
+                    $("#maxPriceDisplay").text('$' + ui.values[1]);
+                },
+                stop: function(event, ui) {
+                    updateSearchParams('', '', shopUrl, ui.values[0], ui.values[1]);
+                }
+            });
+
+            // Display initial price values
+            $("#minPriceDisplay").text('$' + $("#price-slider").slider("values", 0));
+            $("#maxPriceDisplay").text('$' + $("#price-slider").slider("values", 1));
+
+            // Rating filter functionality
+            $('#ratingForm input[type="checkbox"]').on('change', function() {
+                if ($(this).is(':checked')) {
+                    updateSearchParams("ratings", $(this).val(), shopUrl);
+                } else {
+                    removeSearchParam("ratings", shopUrl);
+                }
+            });
+        });
+
+        function updateSearchParams(searchParam, searchValue, route, priceMin, priceMax) {
+            var url;
+            
+            if (window.location.pathname !== "/shops") {
+                url = new URL(route);
+            } else {
+                url = new URL(window.location.href);
+            }
+
+            if (searchParam) {
+                url.searchParams.set(searchParam, searchValue);
+            }
+
+            // Set the price range parameters if provided
+            if (priceMin !== undefined) {
+                url.searchParams.set('priceMin', priceMin);
+            }
+
+            if (priceMax !== undefined) {
+                url.searchParams.set('priceMax', priceMax);
+            }
+
+            // Preserve existing parameters
+            var existingParams = new URLSearchParams(window.location.search);
+            existingParams.forEach(function(value, key) {
+                if (key !== searchParam && key !== 'priceMin' && key !== 'priceMax') {
+                    url.searchParams.set(key, value);
+                }
+            });
+
+            window.location = url.href;
+        }
+
+        function removeSearchParam(searchParam, route) {
+            var url;
+
+            if (window.location.pathname !== "/shops") {
+                url = new URL(route);
+            } else {
+                url = new URL(window.location.href);
+            }
+
+            var existingParams = new URLSearchParams(window.location.search);
+            existingParams.delete(searchParam);
+
+            var newUrl = url.href.split('?')[0] + '?' + existingParams.toString();
+            window.location = newUrl;
+        }
+    </script>
 @endsection

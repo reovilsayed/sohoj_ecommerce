@@ -20,7 +20,7 @@
         <div class="product-image-wrapper">
             <div class="product-image">
                 {{-- Placeholder Image (shown by default) --}}
-                <img src="{{ asset('assets/product.jpg') }}" 
+                <img src="{{ asset('product.jpg') }}" 
                      alt="{{ $product->name }}" 
                      class="product-img placeholder-img" 
                      style="width: 100%; height: 100%; object-fit: cover;">

@@ -13,7 +13,7 @@
         "flowframe/laravel-trend": "^0.4.0",
         "laravel/cashier": "*",
         "laravel/framework": "^12.0",
-        "laravel/sanctum": "*",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6",
         "oriondevelops/filament-greeter": "^0.2.2",
