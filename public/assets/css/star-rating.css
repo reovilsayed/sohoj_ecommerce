@@ -1,3 +1,5 @@
+@import url('colors.css');
+
 /*!
  * bootstrap-star-rating v4.0.6
  * http://plugins.krajee.com/star-rating
@@ -89,8 +91,8 @@
 }
 
 .rating-container .empty-stars {
-    color: #aaa;
-    border: #777;
+    color: var(--rating-empty);
+    border: var(--text-secondary);
 }
 
 .rating-container .filled-stars {
@@ -98,7 +100,7 @@
     left: 0;
     top: 0;
     margin: auto;
-    color: #fde16d;
+    color: var(--rating-color);
     white-space: nowrap;
     overflow: hidden;
     /* -webkit-text-stroke: 1px #777;
@@ -133,7 +135,7 @@
  * Clear
  */
 .rating-container .clear-rating {
-    color: #aaa;
+    color: var(--text-secondary);
     cursor: not-allowed;
     display: inline-block;
     vertical-align: middle;
@@ -145,7 +147,7 @@
 }
 
 .clear-rating-active:hover {
-    color: #843534;
+    color: var(--error-color);
 }
 
 .rating-container .clear-rating {
@@ -167,7 +169,7 @@
 }
 
 .rating-container .caption {
-    color: #999;
+    color: var(--text-secondary);
     display: inline-block;
     vertical-align: middle;
     line-height: 1;

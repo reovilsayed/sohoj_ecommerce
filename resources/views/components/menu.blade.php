@@ -41,8 +41,8 @@
 @if ($items && $items->count())
     <ul class="mt-4">
         @foreach ($items as $item)
-            <li class="mb-2 text-light">
-                <a class="text-light" href="{{ $item->url }}" @if ($item->target) target="{{ $item->target }}" @endif>
+            <li class="mb-2">
+                <a class="footer-link" href="{{ $item->url }}" @if ($item->target) target="{{ $item->target }}" @endif>
                     @if ($item->icon_class)
                         <i class="{{ $item->icon_class }}"></i>
                     @endif

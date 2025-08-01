@@ -5,20 +5,20 @@
     <link rel="stylesheet" id="bg-switcher-css" href="{{ asset('assets/frontend-assetss/css/backgrounds/bg-4.css') }}">
     <style>
         :root {
-            --primary-green: #01949a;
-            --primary-hover: #01787a;
-            --input-bg: #f8f9fa;
-            --input-border: #b6e2ce;
-            --input-focus-shadow: 0 0 0 0.2rem rgba(1, 153, 154, 0.15);
+            --primary-green: var(--accent-color);
+            --primary-hover: var(--primary-dark);
+            --input-bg: var(--bg-light);
+            --input-border: var(--border-light);
+            --input-focus-shadow: 0 0 0 0.2rem var(--shadow-primary);
         }
         .register-header {
-            background: linear-gradient(90deg, #01949a 60%, #01787a 100%) !important;
+            background: var(--accent-color) !important;
             border-radius: 1rem 1rem 0 0;
-            box-shadow: 0 4px 24px rgba(1, 153, 154, 0.08);
+            box-shadow: 0 4px 24px var(--shadow-primary);
             padding: 2.5rem 1rem 2rem 1rem;
         }
         .register-header h1, .register-header p {
-            color: #fff !important;
+            color: var(--text-light) !important;
             letter-spacing: 0.5px;
         }
         .input-group-text, .form-check-input:checked {
@@ -34,17 +34,17 @@
             letter-spacing: 0.2px;
         }
         .btn-green, .btn-green:active, .btn-green:focus {
-            background: linear-gradient(90deg, #01949a 60%, #01787a 100%) !important;
-            color: #fff !important;
+            background: var(--accent-color) !important;
+            color: var(--text-light) !important;
             border: none !important;
             font-weight: 700;
-            box-shadow: 0 2px 8px rgba(1, 153, 154, 0.10);
+            box-shadow: 0 2px 8px var(--shadow-primary);
             transition: background 0.2s, box-shadow 0.2s;
         }
         .btn-green:hover {
-            background: #01787a !important;
-            color: #fff !important;
-            box-shadow: 0 4px 16px rgba(1, 153, 154, 0.13);
+            background: var(--primary-dark) !important;
+            color: var(--text-light) !important;
+            box-shadow: 0 4px 16px var(--shadow-primary);
             /* transform: translateY(-2px) scale(1.03); */
         }
         .form-control {
@@ -60,41 +60,41 @@
             box-shadow: var(--input-focus-shadow) !important;
         }
         .alert {
-            border-left: 4px solid var(--primary-green) !important;
-            background: #e6f4ec !important;
-            color: var(--primary-green) !important;
+            border-left: 4px solid var(--accent-color) !important;
+            background: var(--bg-light) !important;
+            color: var(--accent-color) !important;
             font-weight: 600;
             border-radius: 0.5rem;
-            box-shadow: 0 2px 8px rgba(1, 153, 154, 0.07);
+            box-shadow: 0 2px 8px var(--shadow-primary);
         }
         a {
-            color: var(--primary-green);
+            color: var(--accent-color);
             font-weight: 600;
             text-decoration: none;
             transition: color 0.2s;
         }
         a:hover {
-            color: #01787a;
+            color: var(--primary-dark);
             text-decoration: underline;
         }
         .card {
             border-radius: 1.2rem;
-            box-shadow: 0 8px 32px rgba(1, 153, 154, 0.10);
+            box-shadow: 0 8px 32px var(--shadow-primary);
             border: none;
         }
         .toggle-password {
             background: transparent !important;
-            color: var(--primary-green) !important;
+            color: var(--accent-color) !important;
             border: none !important;
             font-size: 1.2rem;
             height: 50px;
             /* transition: color 0.2s; */
         }
         .toggle-password:hover {
-            color: #ffffff !important;
+            color: var(--text-light) !important;
         }
         .form-text {
-            color: #718096;
+            color: var(--text-secondary);
             font-size: 0.95rem;
             margin-top: 0.25rem;
         }

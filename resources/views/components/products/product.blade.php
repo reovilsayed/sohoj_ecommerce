@@ -9,13 +9,11 @@
     $fullStars = floor($averageRating);
     $hasHalfStar = $averageRating - $fullStars >= 0.5;
     
-    // Get variant from props or default to 'red'
-    $variant = $variant ?? 'red';
     $showMultipleCategories = $showMultipleCategories ?? true;
 @endphp
 
 <div class="col-md-3 col-sm-6 col-12 mb-4">
-    <div class="product-card product-card-{{ $variant }}">
+    <div class="product-card">
         {{-- Product Image Section --}}
         <div class="product-image-wrapper">
             <div class="product-image">

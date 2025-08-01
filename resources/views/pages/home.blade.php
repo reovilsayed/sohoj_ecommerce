@@ -87,12 +87,12 @@
             text-transform: uppercase;
             font-weight: 700;
             letter-spacing: 4px;
-            color: #7fad39;
+            color: var(--accent-color);
         }
 
         .hero__text h2 {
             font-size: clamp(28px, 5vw, 46px);
-            color: #252525;
+            color: var(--text-dark);
             line-height: 1.2;
             font-weight: 700;
             margin: 10px 0;
@@ -101,17 +101,17 @@
         .hero__text p {
             margin-bottom: 35px;
             font-size: 16px;
-            color: #666;
+            color: var(--text-secondary);
         }
 
         .primary-btn {
             display: inline-block;
             font-size: 14px;
             padding: 10px 28px;
-            color: #ffffff;
+            color: var(--text-light);
             text-transform: uppercase;
             font-weight: 700;
-            background: #7fad39;
+            background: var(--accent-color);
             border-radius: 4px;
             letter-spacing: 1px;
             transition: background 0.3s ease;
@@ -120,8 +120,8 @@
 
         .primary-btn:hover,
         .primary-btn:focus {
-            background: #689f38;
-            outline: 2px solid #fff;
+            background: var(--primary-dark);
+            outline: 2px solid var(--text-light);
             outline-offset: 2px;
         }
 
@@ -145,7 +145,7 @@
         }
 
         .slider-dots .dot.active {
-            background: #7fad39;
+            background: var(--accent-color);
         }
 
         @media (min-width: 768px) {
@@ -161,7 +161,7 @@
 
         /* Header */
         .hero__categories__all {
-            background: #01949a !important;
+            background: var(--accent-color) !important;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
@@ -186,7 +186,7 @@
 
         .hero__categories__all:hover {
             transform: translateY(-1px);
-            box-shadow: 0 8px 25px rgba(59, 183, 126, 0.3);
+            box-shadow: 0 8px 25px var(--shadow-primary);
         }
 
         .category-icon-wrapper {
@@ -227,8 +227,8 @@
         }
 
         .category-link {
-            background: white;
-            border: 1px solid #e9ecef;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
             transition: all 0.3s ease;
             text-decoration: none;
             position: relative;
@@ -242,7 +242,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(59, 183, 126, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, var(--shadow-primary), transparent);
             transition: left 0.5s ease;
         }
 
@@ -251,26 +251,26 @@
         }
 
         .category-link:hover {
-            background: #f8f9fa;
-            border-color: #3bb77e;
+            background: var(--bg-light);
+            border-color: var(--accent-color);
             transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(59, 183, 126, 0.15);
+            box-shadow: 0 4px 15px var(--shadow-primary);
         }
 
         .category-link:hover .fas.fa-chevron-right {
             transform: translateX(3px);
-            color: #3bb77e !important;
+            color: var(--accent-color) !important;
         }
 
         .category-icon {
-            background: linear-gradient(135deg, #3bb77e, #2d9d6b);
+            background: var(--accent-color);
             border-radius: 50%;
             width: 32px;
             height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white !important;
+            color: var(--text-light) !important;
             font-size: 12px;
         }
 
@@ -309,7 +309,7 @@
         /* Hover effects for category items */
         .category-item:hover .category-icon {
             transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(59, 183, 126, 0.3);
+            box-shadow: 0 4px 12px var(--shadow-primary);
         }
 
         /* Responsive adjustments */
@@ -348,7 +348,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #3bb77e, #2d9d6b, #1a7a4a);
+            background: var(--accent-color);
             transform: scaleX(0);
             transition: transform 0.3s ease;
         }
@@ -359,8 +359,8 @@
 
         .category-card:hover {
             transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-            border-color: #3bb77e;
+            box-shadow: 0 20px 60px var(--shadow-medium);
+            border-color: var(--accent-color);
         }
 
         .category-card-inner {
@@ -401,7 +401,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(59, 183, 126, 0.9), rgba(45, 157, 107, 0.9));
+            background: var(--accent-color);
             opacity: 0;
             display: flex;
             align-items: center;
@@ -425,7 +425,7 @@
         }
 
         .category-icon i {
-            color: white;
+            color: var(--text-light);
             font-size: 20px;
         }
 
@@ -438,9 +438,9 @@
         }
 
         .category-badge .badge {
-            background: linear-gradient(135deg, #3bb77e, #2d9d6b) !important;
-            border: 2px solid white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            background: var(--accent-color) !important;
+            border: 2px solid var(--text-light);
+            box-shadow: 0 2px 8px var(--shadow-medium);
             font-weight: 600;
             font-size: 0.75rem;
         }
@@ -471,7 +471,7 @@
         }
 
         .stat-item i {
-            color: #3bb77e;
+            color: var(--accent-color);
             font-size: 0.7rem;
         }
 
@@ -492,7 +492,7 @@
         .category-title {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #2c3e50;
+            color: var(--text-dark);
             margin-bottom: 0;
             line-height: 1.3;
             flex: 1;
@@ -535,7 +535,7 @@
         }
 
         .shop-count i {
-            color: #3bb77e;
+            color: var(--accent-color);
         }
 
         .product-count {
@@ -558,37 +558,37 @@
         }
 
         .tag {
-            background: linear-gradient(135deg, #e8f5e8, #d4edda);
-            color: #2d9d6b;
+            background: var(--bg-light);
+            color: var(--accent-color);
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 0.7rem;
             font-weight: 600;
-            border: 1px solid rgba(45, 157, 107, 0.2);
+            border: 1px solid var(--border-light);
         }
 
         .category-link {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            color: #3bb77e;
+            color: var(--accent-color);
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9rem;
             transition: all 0.3s ease;
             margin-top: auto;
             padding: 12px 16px;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            background: var(--bg-light);
             border-radius: 12px;
-            border: 1px solid rgba(59, 183, 126, 0.1);
+            border: 1px solid var(--border-light);
         }
 
         .category-link:hover {
-            color: #2d9d6b;
-            background: linear-gradient(135deg, #e8f5e8, #d4edda);
-            border-color: #3bb77e;
+            color: var(--primary-dark);
+            background: var(--bg-light);
+            border-color: var(--accent-color);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 183, 126, 0.2);
+            box-shadow: 0 4px 12px var(--shadow-primary);
         }
 
         .link-icon {
@@ -597,19 +597,19 @@
             justify-content: center;
             width: 24px;
             height: 24px;
-            background: #3bb77e;
+            background: var(--accent-color);
             border-radius: 50%;
             transition: all 0.3s ease;
         }
 
         .link-icon i {
-            color: white;
+            color: var(--text-light);
             font-size: 0.7rem;
             transition: transform 0.3s ease;
         }
 
         .category-link:hover .link-icon {
-            background: #2d9d6b;
+            background: var(--primary-dark);
             transform: scale(1.1);
         }
 
@@ -726,8 +726,8 @@
             align-items: center;
             gap: 12px;
             padding: 7px 14px;
-            background: #01949a;
-            color: white;
+            background: var(--accent-color);
+            color: var(--text-light);
             text-decoration: none;
             border-radius: 50px;
             font-weight: 600;
@@ -735,7 +735,7 @@
             letter-spacing: 0.5px;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 32px rgba(59, 183, 126, 0.3);
+            box-shadow: 0 8px 32px var(--shadow-primary);
             border: 2px solid transparent;
             min-width: 280px;
             justify-content: center;
@@ -758,7 +758,7 @@
 
         .view-more-shops-btn:hover {
             transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 16px 48px rgba(59, 183, 126, 0.4);
+            box-shadow: 0 16px 48px var(--shadow-primary);
             border-color: rgba(255, 255, 255, 0.3);
         }
 
@@ -788,7 +788,7 @@
 
         .btn-icon i {
             font-size: 14px;
-            color: white;
+            color: var(--text-light);
         }
 
         .view-more-shops-btn:hover .btn-icon {
@@ -811,7 +811,7 @@
 
         .btn-arrow i {
             font-size: 12px;
-            color: white;
+            color: var(--text-light);
             transition: transform 0.3s ease;
         }
 
@@ -947,10 +947,10 @@
         }
 
         .category-circle:hover {
-            box-shadow: 0 8px 24px rgba(59, 183, 126, 0.18);
-            border: 2px solid #01949a;
+            box-shadow: 0 8px 24px var(--shadow-primary);
+            border: 2px solid var(--accent-color);
             transform: translateY(-4px) scale(1.04);
-            background: #f8fefb;
+            background: var(--bg-light);
         }
 
         /* Circle Icon */
@@ -1004,7 +1004,7 @@
 
 
         .category-arrow:hover {
-            background: #e8f5e8;
+            background: var(--bg-light);
         }
 
         .left-arrow {

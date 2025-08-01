@@ -266,7 +266,7 @@
     <style>
         .main-header .navbar-nav .nav-link {
             font-weight: 500;
-            color: #232946;
+            color: var(--text-dark);
             margin: 0 10px;
             transition: color 0.2s, border-bottom 0.2s;
             border-bottom: 2px solid transparent;
@@ -274,9 +274,9 @@
 
         .main-header .navbar-nav .nav-link:hover,
         .main-header .navbar-nav .nav-link.active {
-            color: #01949a;
-            border-bottom: 2px solid #01949a;
-            background: rgba(1, 153, 154, 0.07);
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            background: var(--shadow-primary);
         }
 
         .main-header .header-main {
@@ -285,114 +285,114 @@
 
         .main-header .header-top {
             font-size: 0.95rem;
-            background: #01949a !important;
-            color: #fff !important;
+            background: var(--accent-color) !important;
+            color: var(--text-light) !important;
         }
 
         .main-header .header-top a,
         .main-header .header-top i {
-            color: #fff !important;
+            color: var(--text-light) !important;
         }
 
         .main-header .header-top a:hover {
-            color: #e0f7fa !important;
+            color: var(--bg-light) !important;
         }
 
         .main-header .navbar-light .navbar-nav .nav-link {
-            color: #232946;
+            color: var(--text-dark);
         }
 
         .main-header .navbar-light .navbar-nav .nav-link:hover,
         .main-header .navbar-light .navbar-nav .nav-link.active {
-            color: #01949a;
+            color: var(--accent-color);
         }
 
         .main-header .form-select {
-            background-color: #f8f9fa;
-            border: 2px solid #01949a;
+            background-color: var(--bg-light);
+            border: 2px solid var(--accent-color);
             border-radius: 8px;
-            color: #495057;
+            color: var(--text-secondary);
             font-weight: 500;
             transition: all 0.3s ease;
         }
 
         .main-header .form-select:focus {
-            background-color: #ffffff;
-            border-color: #01949a;
-            box-shadow: 0 0 0 0.2rem rgba(1, 153, 154, 0.15);
-            color: #232946;
+            background-color: var(--bg-secondary);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem var(--shadow-primary);
+            color: var(--text-dark);
         }
 
         .main-header .form-select:hover {
-            border-color: #01949a;
-            background-color: #ffffff;
+            border-color: var(--accent-color);
+            background-color: var(--bg-secondary);
         }
 
         /* Optgroup Styling */
         .main-header .form-select optgroup {
             font-weight: 600;
-            color: #01949a;
-            background-color: #f8f9fa;
+            color: var(--accent-color);
+            background-color: var(--bg-light);
         }
 
         .main-header .form-select option {
-            background-color: #ffffff;
-            color: #495057;
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
             padding: 8px 12px;
         }
 
         .main-header .form-select option:hover {
-            background-color: #01949a;
-            color: #ffffff;
+            background-color: var(--accent-color);
+            color: var(--text-light);
         }
 
         .main-header .btn-success,
         .main-header .btn-primary {
-            background: #01949a !important;
-            border-color: #01949a !important;
+            background: var(--accent-color) !important;
+            border-color: var(--accent-color) !important;
         }
 
         .main-header .btn-success:hover,
         .main-header .btn-primary:hover {
-            background: #017a7a !important;
-            border-color: #017a7a !important;
+            background: var(--primary-dark) !important;
+            border-color: var(--primary-dark) !important;
         }
 
         .main-header .btn-outline-primary {
-            color: #01949a;
-            border-color: #01949a;
+            color: var(--accent-color);
+            border-color: var(--accent-color);
         }
 
         .main-header .btn-outline-primary:hover {
-            background: #01949a;
-            color: #fff;
+            background: var(--accent-color);
+            color: var(--text-light);
         }
 
         .main-header .dropdown-menu {
-            border-top: 2px solid #01949a;
+            border-top: 2px solid var(--accent-color);
         }
 
         .main-header .dropdown-item.active,
         .main-header .dropdown-item:active {
-            background-color: #01949a;
-            color: #fff;
+            background-color: var(--accent-color);
+            color: var(--text-light);
         }
 
         .main-header .dropdown-item:hover {
-            background-color: #e0f7fa;
-            color: #01949a;
+            background-color: var(--bg-light);
+            color: var(--accent-color);
         }
 
         .main-header .badge.bg-danger {
-            background: #01949a !important;
+            background: var(--accent-color) !important;
         }
 
         .main-header .offcanvas-title {
-            color: #01949a;
+            color: var(--accent-color);
         }
 
         .main-header .btn-close:focus {
-            box-shadow: 0 0 0 0.2rem rgba(1, 153, 154, 0.25);
+            box-shadow: 0 0 0 0.2rem var(--shadow-primary);
         }
 
         .header-icon-btn {
@@ -402,82 +402,82 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: #f8f9fa;
-            color: #01949a;
+            background: var(--bg-light);
+            color: var(--accent-color);
             font-size: 1.5rem;
             position: relative;
             transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 8px rgba(1, 153, 154, 0.07);
+            box-shadow: 0 2px 8px var(--shadow-primary);
             text-decoration: none;
         }
 
         .header-icon-btn:hover,
         .header-icon-btn:focus {
-            /* background: #01949a; */
-            color: #017a7a !important;
-            box-shadow: 0 4px 16px rgba(1, 153, 154, 0.18);
+            /* background: var(--accent-color); */
+            color: var(--primary-dark) !important;
+            box-shadow: 0 4px 16px var(--shadow-primary);
         }
 
         .header-icon-badge {
             position: absolute;
             top: -4px;
             right: 1px;
-            background: #FF0000;
-            color: #fff;
+            background: var(--error-color);
+            color: var(--text-light);
             font-size: 0.75rem;
             border-radius: 50%;
             padding: 2px 6px;
             min-width: 20px;
             text-align: center;
             font-weight: 600;
-            box-shadow: 0 2px 8px rgba(1, 153, 154, 0.18);
+            box-shadow: 0 2px 8px var(--shadow-primary);
         }
 
         .user-dropdown-toggle {
-            /* border: 2px solid #01949a; */
-            background: #fff;
+            /* border: 2px solid var(--accent-color); */
+            background: var(--bg-secondary);
         }
 
         .user-dropdown-toggle:hover,
         .user-dropdown-toggle:focus {
-            /* background: #01949a; */
-            color: #fff;
+            /* background: var(--accent-color); */
+            color: var(--text-light);
         }
 
         .user-dropdown-menu {
             min-width: 200px;
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(1, 153, 154, 0.10);
-            border-top: 3px solid #01949a;
+            box-shadow: 0 8px 32px var(--shadow-primary);
+            border-top: 3px solid var(--accent-color);
             padding: 0.5rem 0;
         }
 
         .user-dropdown-menu .dropdown-item {
             font-weight: 500;
-            color: #232946;
+            color: var(--text-dark);
             padding: 10px 20px;
             border-radius: 8px;
             transition: background 0.2s, color 0.2s;
         }
 
         .user-dropdown-menu .dropdown-item i {
-            color: #01949a;
+            color: var(--accent-color);
             min-width: 18px;
             text-align: center;
         }
 
         .user-dropdown-menu .dropdown-item:hover,
         .user-dropdown-menu .dropdown-item:focus {
-            background: #e0f7fa;
-            color: #01949a;
+            background: var(--bg-light);
+            color: var(--accent-color);
         }
 
         .user-dropdown-menu .dropdown-divider {
             margin: 0.3rem 0;
         }
         .removeBtn{
-            background: #a2a1a05d;
-            color: #017a7a !important;
+            background: var(--border-light);
+            color: var(--primary-dark) !important;
             border-radius: 50%;
             width: 30px;
             height: 30px;
@@ -487,7 +487,7 @@
             transition: background 0.2s, color 0.2s;
         }
         .removeBtn:hover {
-            color: #FF0000 !important;
+            color: var(--error-color) !important;
         }
     </style>
 </header>

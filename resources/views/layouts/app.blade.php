@@ -41,6 +41,7 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/plugins/owl.theme.default.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/plugins/bootstrap.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/colors.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/star-rating.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/product-cards.css') }}">
@@ -69,7 +70,7 @@
 
     <style>
         .ec-footer {
-            background: #fff !important;
+            background: var(--bg-secondary) !important;
         }
 
         .ec-footer .footer-top .ec-footer-widget .ec-footer-links .ec-footer-link:not(:last-child) {
@@ -78,25 +79,25 @@
         }
 
         .ec-footer .footer-top .ec-footer-widget .ec-footer-heading {
-            color: #212529 !important;
+            color: var(--text-dark) !important;
 
         }
 
         .ec-footer .footer-top .ec-footer-widget .ec-footer-heading::before {
-            border-bottom: 1px solid #000000 !important;
+            border-bottom: 1px solid var(--text-primary) !important;
         }
 
         .footer-bottom .ec-copy .site-name:hover {
-            color: #000 !important;
+            color: var(--text-primary) !important;
             ;
         }
 
         #scrollUp {
-            background-color: #000000 !important;
+            background-color: var(--text-primary) !important;
         }
 
         .is-invalid {
-            border: 1px solid red !important;
+            border: 1px solid var(--error-color) !important;
         }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -121,12 +122,12 @@
     </main>
 
     <!-- Footer Start -->
-    <footer class="footer-modern py-5 text-light" id="footer" style="background: #1a2238;">
+    <footer class="footer-modern py-5 text-light" id="footer" style="background: var(--primary-color);">
         <div class="container">
             <div class="row gy-5 align-items-start">
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                     <h6 class="fw-bold mb-3 text-uppercase">Newsletter</h6>
-                    <p class="mb-2" style="color:#b8c1ec; font-size: 0.97rem;">Subscribe to our newsletter and be the
+                    <p class="mb-2" style="color:var(--text-secondary); font-size: 0.97rem;">Subscribe to our newsletter and be the
                         first to know about new arrivals, exclusive deals, and special offers!</p>
                     <form class="d-flex" name="ec-newsletter-form" method="post" action="{{ route('subscribe') }}">
                         @csrf
@@ -134,24 +135,24 @@
                             name="email" placeholder="Your email" required>
                         <button class="btn btn-pink btn-sm px-3" type="submit">Subscribe</button>
                     </form>
-                    <small class="d-block mt-2" style="color:#b8c1ec;">Get the latest updates and offers.</small>
+                    <small class="d-block mt-2" style="color:var(--text-secondary);">Get the latest updates and offers.</small>
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-                    <h6 class="fw-bold mb-3 text-uppercase" style="color:#fff;letter-spacing:1px;">Account</h6>
+                    <h6 class="fw-bold mb-3 text-uppercase" style="color:var(--text-light);letter-spacing:1px;">Account</h6>
                     <x-menu name="leftside" />
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-                    <h6 class="fw-bold mb-3 text-uppercase" style="color:#fff;letter-spacing:1px;">Useful Links</h6>
+                    <h6 class="fw-bold mb-3 text-uppercase" style="color:var(--text-light);letter-spacing:1px;">Useful Links</h6>
                     <x-menu name="middle" />
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-                    <h6 class="fw-bold mb-3 text-uppercase" style="color:#fff;letter-spacing:1px;">Customer Service
+                    <h6 class="fw-bold mb-3 text-uppercase" style="color:var(--text-light);letter-spacing:1px;">Customer Service
                     </h6>
                     <x-menu name="main" />
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
-                    <h6 class="fw-bold mb-3 text-uppercase" style="color:#fff;letter-spacing:1px;">Social links</h6>
-                    <p class="mt-3 small" style="color:#b0b8c1;">Your trusted marketplace for quality products and
+                    <h6 class="fw-bold mb-3 text-uppercase" style="color:var(--text-light);letter-spacing:1px;">Social links</h6>
+                    <p class="mt-3 small" style="color:var(--text-secondary);">Your trusted marketplace for quality products and
                         great deals.</p>
                     <div class="d-flex gap-2 mt-3">
                         <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i
@@ -166,9 +167,9 @@
                 </div>
 
             </div>
-            <hr class="my-4" style="border-color: #232a36;">
+            <hr class="my-4" style="border-color: var(--border-medium);">
             <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start small" style="color:#b0b8c1;">
+                <div class="col-md-6 text-center text-md-start small" style="color:var(--text-secondary);">
                     &copy; {{ date('Y') }} <a href="{{ route('homepage') }}"
                         class="fw-bold text-light text-decoration-none">Afrikartt E-commerce</a>. All rights reserved.
                 </div>
@@ -180,42 +181,42 @@
     </footer>
     <style>
         .footer-modern h6 {
-            /* border-bottom: 2px solid #f4d160; */
-            color: #ffffff;
+            /* border-bottom: 2px solid var(--accent-color); */
+            color: var(--text-light);
         }
 
         .footer-modern .footer-link {
-            color: #eaeaea;
+            color: var(--text-light);
         }
 
         .footer-modern .footer-link:hover {
-            color: #f4d160;
+            color: var(--accent-color);
         }
 
         .footer-modern .btn-outline-light {
-            border: 1px solid #01949a;
+            border: 1px solid var(--accent-color);
         }
 
         .footer-modern .btn-outline-light:hover {
-            background: #01949a;
-            color: #ffffff !important;
+            background: var(--accent-color);
+            color: var(--text-light) !important;
         }
 
         .footer-modern .btn-pink,
         .btn-pink {
-            background: #01949a !important;
-            color: #fcfcfc !important;
+            background: var(--accent-color) !important;
+            color: var(--text-light) !important;
             border: none !important;
         }
 
         .footer-modern .btn-pink:hover,
         .btn-pink:hover {
-            background: #fff !important;
-            color: #1a2238 !important;
+            background: var(--bg-secondary) !important;
+            color: var(--primary-color) !important;
         }
 
         .footer-modern hr {
-            border-color: #222b45;
+            border-color: var(--border-medium);
         }
     </style>
     <!-- Footer Area End -->
