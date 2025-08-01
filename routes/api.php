@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductApiController;
 use App\Http\Controllers\Api\CategoryApiController;
+use App\Http\Controllers\Api\VendorApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/products', [ProductApiController::class, 'index']);
 Route::get('/categories', [CategoryApiController::class, 'index']);
+Route::get('/vendors', [VendorApiController::class, 'index']);
+Route::get('/vendors/{slug}', [VendorApiController::class, 'show']);

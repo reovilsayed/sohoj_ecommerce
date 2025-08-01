@@ -24,27 +24,15 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/frontend-assetss/responsive.css') }}" />
     <style>
-        :root {
-            --primary: #01949a;
-            --primary-hover: #a1887f;
-            --bg: #d7ccc8;
-            --card-bg: #ffffff;
-            --border-radius: 18px;
-            --shadow: 0 8px 32px rgba(141, 110, 99, 0.10);
-            --text: #4e342e;
-            --muted: #a1887f;
-            --danger: #e53935;
-            --success: #43a047;
-            --accent: #efebe9;
-            --step-gradient: linear-gradient(90deg, #8d6e63 0%, #a1887f 100%);
-        }
+        /* Import centralized color system */
+        @import url('{{ asset("assets/css/colors.css") }}');
 
 
         .checkout-hero {
-            background: #01949a;
-            color: #fff;
+            background: var(--accent-color);
+            color: var(--text-light);
             /* border-radius: var(--border-radius); */
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-medium);
             padding: 2rem 2.5rem 1.5rem 2.5rem;
             margin-bottom: 2rem;
             text-align: center;
@@ -59,7 +47,7 @@
             top: -40px;
             width: 180px;
             height: 180px;
-            background: var(--accent);
+            background: var(--bg-light);
             opacity: 0.12;
             border-radius: 50%;
             z-index: 0;
@@ -73,18 +61,18 @@
         }
 
         .checkout-card {
-            background: var(--card-bg);
+            background: var(--bg-secondary);
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-medium);
             padding: 2rem 2.5rem;
             margin-bottom: 2rem;
-            border: 1px solid #e3eafc;
+            border: 1px solid var(--border-light);
         }
 
         .checkout-table {
-            background: var(--card-bg);
+            background: var(--bg-secondary);
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-medium);
             padding: 1.5rem 1.5rem 0 1.5rem;
         }
 
@@ -98,63 +86,63 @@
 
         .checkout-table .table thead th {
             padding: 1.1rem 1.5rem;
-            background: #f5f7fa;
+            background: var(--bg-light);
             border: none !important;
             font-weight: 700;
-            color: #01949a !important;
+            color: var(--accent-color) !important;
             font-size: 1.05rem;
             letter-spacing: 0.5px;
             border-bottom: none !important;
         }
 
         .checkout-table .table tbody td {
-            background: var(--card-bg);
+            background: var(--bg-secondary);
             border: none;
             padding: 1.1rem 1.5rem;
             vertical-align: middle;
             font-size: 1rem;
-            color: var(--text);
+            color: var(--text-dark);
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(141, 110, 99, 0.04);
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         .checkout-product-image {
             border-radius: 8px;
             margin-right: 18px;
-            box-shadow: 0 2px 8px rgba(141, 110, 99, 0.10);
-            background: #efebe9;
+            box-shadow: 0 2px 8px var(--shadow-light);
+            background: var(--bg-light);
             width: 80px;
             height: 80px;
             object-fit: cover;
         }
 
         .remove-item {
-            color: #01949a;
+            color: var(--accent-color);
             transition: 0.2s;
             border-radius: 50%;
-            background: #e3eafc;
-            border: 1px solid #e0e0e0;
+            background: var(--bg-light);
+            border: 1px solid var(--border-light);
             padding: 8px;
         }
 
         .remove-item:hover {
-            color: var(--danger);
-            background: #fff0f0;
-            border-color: var(--danger);
+            color: var(--error-color);
+            background: var(--bg-light);
+            border-color: var(--error-color);
         }
 
         .checkout-summary {
-            background: var(--card-bg);
+            background: var(--bg-secondary);
             /* border-radius: var(--border-radius); */
-            box-shadow: 0 2px 8px rgba(141, 110, 99, 0.06);
+            box-shadow: 0 2px 8px var(--shadow-primary);
             padding: 1.5rem 1.5rem 1rem 1.5rem;
-            border: 1px solid #d7ccc8;
+            border: 1px solid var(--border-light);
         }
 
         .checkout-summary-title {
             font-size: 1.3rem;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--accent-color);
             margin-bottom: 1.2rem;
             letter-spacing: 0.5px;
         }
@@ -167,33 +155,33 @@
         }
 
         .checkout-summary-total {
-            border-top: 2px solid #e0e0e0;
+            border-top: 2px solid var(--border-light);
             padding-top: 1rem;
             margin-top: 1.2rem;
             font-size: 1.2rem;
-            color: #222;
+            color: var(--text-dark);
         }
 
         .checkout-btn {
-            background: #FF0000 !important;
-            color: #fff !important;
+            background: var(--accent-color) !important;
+            color: var(--text-light) !important;
             font-weight: 600;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(30, 136, 229, 0.10);
+            box-shadow: 0 2px 8px var(--shadow-primary);
             border: none;
             transition: 0.2s;
         }
 
         .checkout-btn:hover {
-            background: #FF0000 !important;
-            color: #fff !important;
-            box-shadow: 0 4px 16px rgba(30, 136, 229, 0.13);
+            background: var(--primary-dark) !important;
+            color: var(--text-light) !important;
+            box-shadow: 0 4px 16px var(--shadow-primary);
         }
 
         .form-control,
         .form-check-input {
             border-radius: 8px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border-light);
             font-size: 1rem;
             padding: 0.7rem 1rem;
             transition: 0.2s;
@@ -201,20 +189,20 @@
 
         .form-control:focus,
         .form-check-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px #eaf0ff;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px var(--shadow-primary);
         }
 
         .badge.bg-light.text-black {
-            background: #e3eafc !important;
-            color: var(--primary) !important;
+            background: var(--bg-light) !important;
+            color: var(--accent-color) !important;
             font-weight: 600;
             border-radius: 6px;
             letter-spacing: 0.2px;
         }
 
         .card {
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         .pay-img {
@@ -260,15 +248,15 @@
             position: relative;
             display: flex;
             align-items: center;
-            border: 2px solid #e3eafc;
+            border: 2px solid var(--border-light);
             border-radius: 12px;
             padding: 1rem;
             cursor: pointer;
             transition: border-color 0.2s, box-shadow 0.2s, background 0.2s, transform 0.15s;
-            background: #f8fbff;
+            background: var(--bg-light);
             margin-bottom: 0.5rem;
             gap: 1rem;
-            box-shadow: 0 2px 8px rgba(30, 136, 229, 0.03);
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         .payment-card-option input[type="radio"] {
@@ -287,9 +275,9 @@
         .custom-radio-indicator {
             width: 22px;
             height: 22px;
-            border: 2px solid #b0bec5;
+            border: 2px solid var(--border-medium);
             border-radius: 50%;
-            background: #fff;
+            background: var(--bg-secondary);
             display: inline-block;
             margin-right: 1rem;
             position: relative;
@@ -298,8 +286,8 @@
         }
 
         .payment-card-option input[type="radio"]:checked + .custom-radio-indicator {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px #e0f7fa;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--shadow-primary);
         }
 
         .payment-card-option input[type="radio"]:checked + .custom-radio-indicator::after {
@@ -307,7 +295,7 @@
             display: block;
             width: 12px;
             height: 12px;
-            background: var(--primary);
+            background: var(--accent-color);
             border-radius: 50%;
             position: absolute;
             top: 3px;
@@ -316,15 +304,15 @@
 
         .payment-card-option input[type="radio"]:checked ~ .payment-card-content {
             /* Highlight the card background and border */
-            background: #e3f8fa;
+            background: var(--bg-light);
             border-radius: 10px;
-            box-shadow: 0 4px 18px rgba(1, 148, 154, 0.10);
+            box-shadow: 0 4px 18px var(--shadow-primary);
             /* Optional: scale up a bit */
             transform: scale(1.02);
         }
 
         .payment-card-option input[type="radio"]:checked ~ .payment-card-content .payment-title {
-            color: var(--primary);
+            color: var(--accent-color);
         }
 
         /* Optional: checkmark in the top-right corner of the selected card */
@@ -334,23 +322,23 @@
             top: 12px;
             right: 18px;
             font-size: 1.3rem;
-            color: var(--primary);
-            background: #fff;
+            color: var(--accent-color);
+            background: var(--bg-secondary);
             border-radius: 50%;
             width: 24px;
             height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(1, 148, 154, 0.10);
+            box-shadow: 0 2px 8px var(--shadow-primary);
             z-index: 3;
             pointer-events: none;
         }
 
         .payment-card-option:hover,
         .payment-card-option input[type="radio"]:focus+.custom-radio-indicator {
-            border-color: var(--primary);
-            box-shadow: 0 4px 16px rgba(30, 136, 229, 0.10);
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 16px var(--shadow-primary);
         }
 
         .payment-card-content {
@@ -367,9 +355,9 @@
             justify-content: center;
             width: 56px;
             height: 56px;
-            background: #fff;
+            background: var(--bg-secondary);
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(30, 136, 229, 0.06);
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         .pay-img {
@@ -390,7 +378,7 @@
         .payment-title {
             font-size: 1.15rem;
             font-weight: 700;
-            color: #222;
+            color: var(--text-dark);
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -398,7 +386,7 @@
 
         .payment-desc {
             font-size: 0.97rem;
-            color: #6c757d;
+            color: var(--text-secondary);
             margin-top: 2px;
             font-weight: 400;
             line-height: 1.3;
@@ -514,16 +502,16 @@
                                         <h4 class="fw-semibold mb-3">Order Items</h4>
                                         <div class="table-responsive">
                                             <table class="table align-middle">
-                                                <thead style="background: #dce1e2">
-                                                    <tr>
-                                                        <th class="py-3" style="color: #01949a">Product</th>
-                                                        <th class="py-3" style="color: #01949a">Qty</th>
-                                                        <th class="py-3" style="color: #01949a">Price</th>
-                                                        <th class="py-3" style="color: #01949a">Shipping</th>
-                                                        <th class="py-3" style="color: #01949a">Total</th>
-                                                        <th class="text-center py-3" style="color: #01949a">Remove</th>
-                                                    </tr>
-                                                </thead>
+                                                                                            <thead style="background: var(--bg-light)">
+                                                <tr>
+                                                    <th class="py-3" style="color: var(--accent-color)">Product</th>
+                                                    <th class="py-3" style="color: var(--accent-color)">Qty</th>
+                                                    <th class="py-3" style="color: var(--accent-color)">Price</th>
+                                                    <th class="py-3" style="color: var(--accent-color)">Shipping</th>
+                                                    <th class="py-3" style="color: var(--accent-color)">Total</th>
+                                                    <th class="text-center py-3" style="color: var(--accent-color)">Remove</th>
+                                                </tr>
+                                            </thead>
                                                 <tbody>
                                                     @foreach ($items as $item)
                                                         <tr>
@@ -577,7 +565,7 @@
                                         aria-labelledby="step2-tab">
                                         <h4 class="fw-semibold mb-3">Shipping & Contact Info</h4>
                                         <div class="checkout-card mb-4 p-4 shadow-sm border-0 rounded-4"
-                                            style="background: #f8fbff; border: 1px solid #e3eafc;">
+                                            style="background: var(--bg-light); border: 1px solid var(--border-light);">
                                             <div class="row g-3 align-items-end">
                                                 <div class="col-md-6">
                                                     <label for="first_name" class="form-label">First Name</label>
@@ -684,7 +672,7 @@
 
                                         <div class="d-flex justify-content-between mt-4">
                                             <button type="button" class="btn px-4"
-                                                style="background: #01949a; color: #ffffff !important;"
+                                                style="background: var(--accent-color); color: var(--text-light) !important;"
                                                 id="backToStep1"><i class="fa fa-arrow-left me-2"></i>Back</button>
                                             <button type="button" class="btn checkout-btn px-4" id="toStep3">Next:
                                                 Payment <i class="fa fa-arrow-right ms-2"></i></button>
@@ -739,7 +727,7 @@
                                         aria-labelledby="step3-tab">
                                         <h4 class="fw-semibold mb-3">Payment Method</h4>
                                         <div class="checkout-card mb-4 p-4 shadow-sm border-0 rounded-4"
-                                            style="background: var(--card-bg); border: 1px solid #d7ccc8;">
+                                            style="background: var(--bg-secondary); border: 1px solid var(--border-light);">
                                             <div class="row g-4 align-items-stretch">
                                                 <div class="col-md-12 d-flex flex-column gap-3">
                                                     <label class="payment-card-option">
@@ -796,7 +784,7 @@
                                         </div>
                                         <div class="d-flex justify-content-between mt-4">
                                             <button type="button" class="btn px-4"
-                                                style="background: #01949a; color: #ffffff !important;"
+                                                style="background: var(--accent-color); color: var(--text-light) !important;"
                                                 id="backToStep2"><i class="fa fa-arrow-left me-2"></i>Back</button>
                                             <button type="button" class="btn checkout-btn px-4" id="toStep4">Next:
                                                 Review <i class="fa fa-arrow-right ms-2"></i></button>
@@ -926,10 +914,10 @@
 
         .step-indicator .nav-link.active,
         .step-indicator .nav-link:focus {
-            color: #fff;
-            background: #01949a;
+            color: var(--text-light);
+            background: var(--accent-color);
             border-radius: 8px 8px 0 0;
-            box-shadow: 0 2px 8px rgba(30, 136, 229, 0.10);
+            box-shadow: 0 2px 8px var(--shadow-primary);
         }
 
         .step-indicator .step-circle {
@@ -938,8 +926,8 @@
             height: 32px;
             line-height: 32px;
             border-radius: 50%;
-            background: #e3eafc;
-            color: var(--primary);
+            background: var(--bg-light);
+            color: var(--accent-color);
             font-weight: 700;
             margin-right: 8px;
             text-align: center;
@@ -949,15 +937,15 @@
         }
 
         .step-indicator .nav-link.active .step-circle {
-            background: #fff;
-            color: #01949a;
-            border: 2px solid #00695c;
+            background: var(--text-light);
+            color: var(--accent-color);
+            border: 2px solid var(--primary-dark);
         }
 
         .step-indicator .step-circle.completed {
-            background: #01949a;
-            color: #fff;
-            border: 2px solid #00695c;
+            background: var(--accent-color);
+            color: var(--text-light);
+            border: 2px solid var(--primary-dark);
         }
 
         .step-indicator .step-circle.completed::after {
@@ -971,7 +959,7 @@
             align-items: center;
             justify-content: center;
             font-size: 1.2em;
-            color: #fff;
+            color: var(--text-light);
         }
     </style>
     </div>
@@ -1003,7 +991,7 @@
                         <input type="hidden" name="payment_method" id="paymentmethod">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn" style="background: #01949a; color: #ffffff !important;"
+                        <button type="button" class="btn" style="background: var(--accent-color); color: var(--text-light) !important;"
                             data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="card-button"
                             data-secret="{{ $intent->client_secret }}">
@@ -1037,7 +1025,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn" style="background: #01949a; color: #ffffff !important;"
+                        <button type="button" class="btn" style="background: var(--accent-color); color: var(--text-light) !important;"
                             data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" id="card-button"
                             data-secret="{{ $intent->client_secret }}">Save changes</button>
