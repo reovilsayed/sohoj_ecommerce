@@ -105,7 +105,7 @@ Route::post('/store-checkout', [CheckoutController::class, 'store'])->name('chec
 
 //Rating
 Route::post('rating/{product_id}', [PageController::class, 'rating'])->name('rating');
-Route::get('/store_front/{slug}', [PageController::class, 'store_front'])->name('store_front');
+Route::get('/profile/{slug}', [PageController::class, 'store_front'])->name('store_front');
 
 Route::get('/seller', [SellerPagesController::class, 'dashboard'])->middleware('role:vendor')->name('dashboard');
 
