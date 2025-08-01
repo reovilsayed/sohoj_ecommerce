@@ -15,6 +15,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
@@ -52,7 +54,7 @@ class ProductResource extends Resource
         if (!$user || !$user->shop) {
             return parent::getEloquentQuery()->whereRaw('1 = 0'); // Return empty query
         }
-        
+
         // SIMPLIFIED QUERY - Remove complex with() and select() to prevent memory exhaustion
         return parent::getEloquentQuery()
             ->where('shop_id', $user->shop->id)
@@ -64,130 +66,517 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Product Details')
-                    ->icon('heroicon-o-cube')
-                    ->description('Add or update your product information.')
-                    ->schema([
-                        Forms\Components\Hidden::make('shop_id')
-                            ->default(function () {
-                                $user = Auth::user();
-                                return $user && $user->shop ? $user->shop->id : null;
-                            }),
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                TextInput::make('name')
-                                    ->label('Product Name')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null)
-                                    ->placeholder('Enter product name'),
-                                TextInput::make('slug')
-                                    ->label('Slug')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->unique(Product::class, 'slug', ignoreRecord: true)
-                                    ->rules(['alpha_dash'])
-                                    ->placeholder('Auto-generated from name'),
-                                Grid::make(3)
-                                    ->schema([
-                                        Select::make('prodcats')
-                            ->label('Categories')
-                            ->relationship('prodcats', 'name')
-                            ->multiple()
-                            ->searchable()
-                            ->getSearchResultsUsing(fn (string $search): array => \App\Models\Prodcat::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
-                            ->getOptionLabelsUsing(fn (array $values): array => \App\Models\Prodcat::whereIn('id', $values)->pluck('name', 'id')->toArray()),
-                                        TextInput::make('price')
-                                            ->label('Regular Price')
-                                            ->numeric()
-                                            ->prefix('$')
-                                            ->maxValue(999999.99)
-                                            ->required(),
+                Forms\Components\Hidden::make('shop_id')
+                    ->default(function () {
+                        $user = Auth::user();
+                        return $user && $user->shop ? $user->shop->id : null;
+                    }),
 
-                                        TextInput::make('sale_price')
-                                            ->label('Sale Price')
-                                            ->numeric()
-                                            ->prefix('$')
-                                            ->maxValue(999999.99)
-                                            ->nullable()
-                                            ->rules([
-                                                fn (callable $get) => function (string $attribute, $value, callable $fail) use ($get) {
-                                                    $price = $get('price');
-                                                    if ($value && $price && floatval($value) > floatval($price)) {
-                                                        $fail('Sale price must be less than or equal to regular price.');
-                                                    }
-                                                },
+                Tabs::make('Product Management')
+                    ->tabs([
+                        Tabs\Tab::make('Basic Information')
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
+                                Forms\Components\Section::make('Product Details')
+                                    ->description('Essential product information and categorization.')
+                                    ->schema([
+                                        Forms\Components\Grid::make(3)
+                                            ->schema([
+                                                TextInput::make('name')
+                                                    ->label('Product Name')
+                                                    ->required()
+                                                    ->maxLength(255)
+                                                    ->live(onBlur: true)
+                                                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null)
+                                                    ->placeholder('Enter product name')
+                                                    ->helperText('Enter a clear, descriptive name for your product. This will be displayed to customers and used to generate the URL slug.')
+                                                    ->columnSpan(2),
+
+                                                TextInput::make('sku')
+                                                    ->label('SKU')
+                                                    ->maxLength(255)
+                                                    ->unique(Product::class, 'sku', ignoreRecord: true)
+                                                    ->placeholder('Auto-generated or custom')
+                                                    ->helperText('Stock Keeping Unit. Leave empty to auto-generate, or enter a unique identifier for inventory tracking.')
+                                                    ->columnSpan(1),
+
+                                                TextInput::make('slug')
+                                                    ->label('Slug')
+                                                    ->required()
+                                                    ->maxLength(255)
+                                                    ->unique(Product::class, 'slug', ignoreRecord: true)
+                                                    ->rules(['alpha_dash'])
+                                                    ->placeholder('Auto-generated from name')
+                                                    ->helperText('URL-friendly version of the product name. Used in web addresses. Auto-generated from product name.')
+                                                    ->columnSpan(2),
+
+                                                Select::make('type')
+                                                    ->label('Product Type')
+                                                    ->options([
+                                                        'simple' => 'Simple Product',
+                                                        'variable' => 'Variable Product',
+                                                        'grouped' => 'Grouped Product',
+                                                        'external' => 'External Product',
+                                                        'digital' => 'Digital Product',
+                                                    ])
+                                                    ->default('simple')
+                                                    ->required()
+                                                    ->helperText('Choose the type of product: Simple (single item), Variable (sizes/colors), Grouped (bundle), External (affiliate), or Digital (downloadable).')
+                                                    ->columnSpan(1),
+                                            ]),
+
+                                        Forms\Components\Grid::make(2)
+                                            ->schema([
+                                                Select::make('parent_id')
+                                                    ->label('Parent Product')
+                                                    ->relationship('parentproduct', 'name')
+                                                    ->searchable()
+                                                    ->nullable()
+                                                    ->getSearchResultsUsing(function (string $search) {
+                                                        $user = Auth::user();
+                                                        if (!$user || !$user->shop) return [];
+
+                                                        return Product::where('shop_id', $user->shop->id)
+                                                            ->where('name', 'like', "%{$search}%")
+                                                            ->whereNull('parent_id')
+                                                            ->limit(50)
+                                                            ->pluck('name', 'id')
+                                                            ->toArray();
+                                                    })
+                                                    ->helperText('Optional. Select if this is a variation of another product (e.g., different size or color of the same item).')
+                                                    ->columnSpan(2),
                                             ]),
                                     ]),
-                                Toggle::make('manage_stock')
-                                    ->label('Manage Stock')
-                                    ->live(),
-                                TextInput::make('quantity')
-                                    ->label('Stock Quantity')
-                                    ->numeric()
-                                    ->minValue(0)
-                                    ->visible(fn(callable $get) => $get('manage_stock')),
-                                TextInput::make('weight')
-                                    ->label('Weight (kg)')
-                                    ->numeric(),
-                                TextInput::make('dimensions')
-                                    ->label('Dimensions (L x W x H)')
-                                    ->placeholder('e.g., 10 x 5 x 3'),
-                                Forms\Components\TextInput::make('shipping_cost')
-                                    ->label('Shipping Cost')
-                                    ->numeric()
-                                    ->required()
-                                    ->default(0),
                             ]),
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                FileUpload::make('image')
-                                    ->label('Featured Image')
-                                    ->image()
-                                    ->directory('products')
-                                    ->imagePreviewHeight('80')
-                                    ->visibility('public'),
-                                FileUpload::make('images')
-                                    ->label('Gallery Images')
-                                    ->image()
-                                    ->multiple()
-                                    ->directory('products')
-                                    ->imagePreviewHeight('80')
-                                    ->visibility('public'),
-                            ]),
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                RichEditor::make('short_description')
-                                    ->label('Short Description')
-                                    ->columnSpanFull()
-                                    ->maxLength(500)
-                                    ->placeholder('A short summary for listings'),
-                                RichEditor::make('description')
-                                    ->label('Full Description')
-                                    ->columnSpanFull()
-                                    ->placeholder('Detailed product description'),
-                            ]),
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\Toggle::make('is_variable_product')
-                                    ->label('Variable Product')
-                                    ->helperText('Enable if this product has variations like size, color')
-                                    ->default(false),
-                                Forms\Components\Toggle::make('is_offer')
-                                    ->label('Offer')
-                                    ->default(false)
-                                    ->helperText('Enable this if the product has a special offer'),
 
-                                Toggle::make('status')
-                                    ->label('Active')
-                                    ->default(true),
+                        Tabs\Tab::make('Categories')
+                            ->icon('heroicon-o-tag')
+                            ->schema([
+                                Forms\Components\Section::make('Product Categories')
+                                    ->description('Select relevant categories for your product.')
+                                    ->schema([
+                                        Forms\Components\Grid::make(1)
+                                            ->schema([
+                                                // Parent Categories Section
+                                                Forms\Components\Fieldset::make('Main Categories')
+                                                    ->schema([
+                                                        CheckboxList::make('parent_categories')
+                                                            ->relationship('prodcats', 'name')
+                                                            ->searchable()
+                                                            ->bulkToggleable()
+                                                            ->options(function () {
+                                                                return \App\Models\Prodcat::query()
+                                                                    ->whereNull('parent_id')
+                                                                    ->orderBy('name')
+                                                                    ->pluck('name', 'id')
+                                                                    ->toArray();
+                                                            })
+                                                            ->columns(3)
+                                                            ->columnSpanFull(),
+                                                    ]),
 
-                                Toggle::make('featured')
-                                    ->label('Featured Product')
-                                    ->default(false),
+                                                // Dynamic Subcategory Groups
+                                                ...collect(\App\Models\Prodcat::query()
+                                                    ->whereNull('parent_id')
+                                                    ->with('childrens')
+                                                    ->orderBy('name')
+                                                    ->get())
+                                                    ->map(function ($parentCategory) {
+                                                        $children = $parentCategory->childrens()->orderBy('name')->get();
+
+                                                        if ($children->isEmpty()) {
+                                                            return null;
+                                                        }
+
+                                                        return Forms\Components\Fieldset::make("subcategories_{$parentCategory->id}")
+                                                            ->label("{$parentCategory->name}")
+                                                            ->schema([
+                                                                CheckboxList::make("subcategories_{$parentCategory->id}")
+                                                                    ->relationship('prodcats', 'name')
+                                                                    ->searchable()
+                                                                    ->bulkToggleable()
+                                                                    ->options(function () use ($parentCategory) {
+                                                                        return $parentCategory->childrens()
+                                                                            ->orderBy('name')
+                                                                            ->pluck('name', 'id')
+                                                                            ->toArray();
+                                                                    })
+                                                                    ->columns(5)
+                                                                    ->columnSpanFull(),
+                                                            ]);
+                                                    })
+                                                    ->filter()
+                                                    ->toArray(),
+
+                                                Forms\Components\Placeholder::make('category_structure_info')
+                                                    ->label('� Category Selection Guide')
+                                                    ->content('Select from main categories above, then choose specific subcategories from the grouped sections below. Each parent category groups its subcategories in a 5-column layout for easy selection.')
+                                                    ->columnSpanFull(),
+                                            ]),
+                                    ]),
                             ]),
-                    ]),
+
+                        Tabs\Tab::make('Pricing & Inventory')
+                            ->icon('heroicon-o-currency-dollar')
+                            ->schema([
+                                Forms\Components\Section::make('Pricing Information')
+                                    ->description('Set product prices and manage inventory.')
+                                    ->schema([
+                                        Forms\Components\Grid::make(2)
+                                            ->schema([
+                                                TextInput::make('price')
+                                                    ->label('Regular Price')
+                                                    ->numeric()
+                                                    ->prefix('$')
+                                                    ->maxValue(999999.99)
+                                                    ->required()
+                                                    ->helperText('Set the standard selling price for this product. This is the main price customers will see.')
+                                                    ->columnSpan(1),
+
+                                                TextInput::make('sale_price')
+                                                    ->label('Sale Price')
+                                                    ->numeric()
+                                                    ->prefix('$')
+                                                    ->maxValue(999999.99)
+                                                    ->nullable()
+                                                    ->rules([
+                                                        fn(callable $get) => function (string $attribute, $value, callable $fail) use ($get) {
+                                                            $price = $get('price');
+                                                            if ($value && $price && floatval($value) > floatval($price)) {
+                                                                $fail('Sale price must be less than or equal to regular price.');
+                                                            }
+                                                        },
+                                                    ])
+                                                    ->helperText('Optional. Set a discounted price to show this product as on sale. Must be lower than regular price.')
+                                                    ->columnSpan(1),
+                                            ]),
+
+                                        Forms\Components\Grid::make(2)
+                                            ->schema([
+                                                Toggle::make('manage_stock')
+                                                    ->label('Manage Stock')
+                                                    ->live()
+                                                    ->helperText('Enable to track inventory levels for this product. When enabled, you can set stock quantities.')
+                                                    ->columnSpan(1),
+
+                                                TextInput::make('quantity')
+                                                    ->label('Stock Quantity')
+                                                    ->numeric()
+                                                    ->minValue(0)
+                                                    ->visible(fn(callable $get) => $get('manage_stock'))
+                                                    ->helperText('Enter the number of items you have in stock. This will be updated automatically when orders are placed.')
+                                                    ->columnSpan(1),
+                                            ]),
+                                    ]),
+                            ]),
+
+                        Tabs\Tab::make('Physical Properties')
+                            ->icon('heroicon-o-scale')
+                            ->schema([
+                                Forms\Components\Section::make('Product Dimensions & Weight')
+                                    ->description('Define physical characteristics of the product.')
+                                    ->schema([
+                                        Forms\Components\Grid::make(3)
+                                            ->schema([
+                                                TextInput::make('weight')
+                                                    ->label('Weight (kg)')
+                                                    ->numeric()
+                                                    ->step(0.01)
+                                                    ->helperText('Product weight in kilograms. Used for shipping calculations and logistics planning.')
+                                                    ->columnSpan(1),
+
+                                                TextInput::make('dimensions')
+                                                    ->label('Dimensions (L x W x H)')
+                                                    ->placeholder('e.g., 10 x 5 x 3 cm')
+                                                    ->helperText('Product dimensions in Length x Width x Height format. Include units (cm, inches, etc.). Used for shipping and display purposes.')
+                                                    ->columnSpan(1),
+
+                                                TextInput::make('rating_count')
+                                                    ->label('Rating Count')
+                                                    ->numeric()
+                                                    ->default(0)
+                                                    ->disabled()
+                                                    ->dehydrated(false)
+                                                    ->helperText('Number of customer ratings received. This field is automatically updated and cannot be edited manually.')
+                                                    ->columnSpan(1),
+                                            ]),
+                                    ]),
+                            ]),
+
+                        Tabs\Tab::make('Media')
+                            ->icon('heroicon-o-photo')
+                            ->schema([
+                                Forms\Components\Section::make('Product Images')
+                                    ->description('Upload product images and media files.')
+                                    ->schema([
+                                        Forms\Components\Grid::make(2)
+                                            ->schema([
+                                                FileUpload::make('image')
+                                                    ->label('Featured Image')
+                                                    ->image()
+                                                    ->directory('products')
+                                                    ->imagePreviewHeight('120')
+                                                    ->visibility('public')
+                                                    ->maxSize(2048)
+                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                                    ->helperText('Upload a high-quality image that represents your product. This will be the main image displayed.')
+                                                    ->columnSpan(1),
+
+                                                FileUpload::make('images')
+                                                    ->label('Gallery Images')
+                                                    ->image()
+                                                    ->multiple()
+                                                    ->directory('products')
+                                                    ->imagePreviewHeight('120')
+                                                    ->visibility('public')
+                                                    ->maxSize(2048)
+                                                    ->maxFiles(10)
+                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                                    ->helperText('Upload additional product images (max 10). Show different angles, details, or variations of your product.')
+                                                    ->columnSpan(1),
+                                            ]),
+                                    ]),
+                            ]),
+
+                        Tabs\Tab::make('Content')
+                            ->icon('heroicon-o-document-text')
+                            ->schema([
+                                Forms\Components\Section::make('Product Descriptions')
+                                    ->description('Add detailed product descriptions and content.')
+                                    ->schema([
+                                        RichEditor::make('short_description')
+                                            ->label('Short Description')
+                                            ->maxLength(500)
+                                            ->placeholder('A brief summary for product listings')
+                                            ->helperText('Brief product summary (max 500 characters). This appears in product listings and search results to give customers a quick overview.')
+                                            ->toolbarButtons([
+                                                'bold',
+                                                'italic',
+                                                'underline',
+                                                'bulletList',
+                                                'orderedList',
+                                                'link',
+                                            ]),
+
+                                        RichEditor::make('description')
+                                            ->label('Full Description')
+                                            ->placeholder('Detailed product description with features and specifications')
+                                            ->helperText('Comprehensive product description with features, specifications, benefits, and usage instructions. This is displayed on the product detail page.')
+                                            ->toolbarButtons([
+                                                'bold',
+                                                'italic',
+                                                'underline',
+                                                'strike',
+                                                'bulletList',
+                                                'orderedList',
+                                                'h2',
+                                                'h3',
+                                                'link',
+                                                'blockquote',
+                                            ]),
+                                    ]),
+                            ]),
+
+                        Tabs\Tab::make('Settings')
+                            ->icon('heroicon-o-cog-6-tooth')
+                            ->schema([
+                                Forms\Components\Section::make('Product Settings')
+                                    ->description('Configure product visibility and special features.')
+                                    ->schema([
+                                        Forms\Components\Grid::make(2)
+                                            ->schema([
+                                                Toggle::make('status')
+                                                    ->label('Active')
+                                                    ->default(true)
+                                                    ->helperText('Make product visible to customers. Inactive products are hidden from the store but remain in your inventory.')
+                                                    ->columnSpan(1),
+
+                                                Toggle::make('is_variable_product')
+                                                    ->label('Variable Product')
+                                                    ->helperText('Enable if this product has variations like different sizes, colors, or materials. This will show the Variations tab.')
+                                                    ->default(false)
+                                                    ->live()
+                                                    ->columnSpan(1),
+                                            ]),
+                                    ]),
+                            ]),
+
+                        Tabs\Tab::make('Variations')
+                            ->icon('heroicon-o-squares-plus')
+                            ->visible(fn(callable $get) => $get('is_variable_product'))
+                            ->schema([
+                                Forms\Components\Section::make('Product Variants')
+                                    ->description('Create and manage individual product variants with specific attributes and pricing.')
+                                    ->schema([
+                                        Forms\Components\Repeater::make('variations')
+                                            ->label('')
+                                            ->schema([
+                                                Forms\Components\Section::make('Variant Details')
+                                                    ->schema([
+                                                        Forms\Components\Grid::make(2)
+                                                            ->schema([
+                                                                TextInput::make('sku')
+                                                                    ->label('SKU')
+                                                                    ->required()
+                                                                    ->unique(ignoreRecord: true)
+                                                                    ->placeholder('Enter variant SKU')
+                                                                    ->columnSpan(1),
+
+                                                                TextInput::make('barcode')
+                                                                    ->label('Barcode')
+                                                                    ->placeholder('Product barcode (UPC, EAN, etc.)')
+                                                                    ->columnSpan(1),
+                                                            ]),
+
+                                                        Forms\Components\Fieldset::make('Attributes (e.g. color, size)')
+                                                            ->schema([
+                                                                Forms\Components\Repeater::make('attributes')
+                                                                    ->schema([
+                                                                        Forms\Components\Grid::make(2)
+                                                                            ->schema([
+                                                                                TextInput::make('attribute')
+                                                                                    ->label('Attribute')
+                                                                                    ->placeholder('e.g., Color, Size')
+                                                                                    ->required()
+                                                                                    ->columnSpan(1),
+
+                                                                                TextInput::make('value')
+                                                                                    ->label('Value')
+                                                                                    ->placeholder('e.g., Red, Large')
+                                                                                    ->required()
+                                                                                    ->columnSpan(1),
+                                                                            ]),
+                                                                    ])
+                                                                    ->addActionLabel('Add row')
+                                                                    ->deleteAction(
+                                                                        fn($action) => $action->label('Remove')
+                                                                    )
+                                                                    ->defaultItems(1)
+                                                                    ->columns(1)
+                                                                    ->helperText('Specify attributes like color, size, etc.')
+                                                                    ->columnSpanFull(),
+                                                            ]),
+
+                                                        Forms\Components\Fieldset::make('Pricing & Inventory')
+                                                            ->schema([
+                                                                Forms\Components\Grid::make(2)
+                                                                    ->schema([
+                                                                        Toggle::make('track_quantity')
+                                                                            ->label('Track Quantity')
+                                                                            ->helperText('Enable to track inventory quantity.')
+                                                                            ->default(true)
+                                                                            ->live()
+                                                                            ->columnSpan(2),
+                                                                    ]),
+
+                                                                Forms\Components\Grid::make(3)
+                                                                    ->schema([
+                                                                        TextInput::make('price')
+                                                                            ->label('Price')
+                                                                            ->numeric()
+                                                                            ->prefix('$')
+                                                                            ->required()
+                                                                            ->helperText('Current selling price.')
+                                                                            ->columnSpan(1),
+
+                                                                        TextInput::make('compare_at_price')
+                                                                            ->label('Compare at Price')
+                                                                            ->numeric()
+                                                                            ->prefix('$')
+                                                                            ->helperText('Original price for showing discounts.')
+                                                                            ->columnSpan(1),
+
+                                                                        TextInput::make('cost_per_item')
+                                                                            ->label('Cost per Item')
+                                                                            ->numeric()
+                                                                            ->prefix('$')
+                                                                            ->helperText('Internal cost for profit calculation.')
+                                                                            ->columnSpan(1),
+                                                                    ]),
+
+                                                                TextInput::make('stock')
+                                                                    ->label('Stock')
+                                                                    ->numeric()
+                                                                    ->default(0)
+                                                                    ->visible(fn(callable $get) => $get('track_quantity'))
+                                                                    ->helperText('Available quantity in inventory.')
+                                                                    ->columnSpan(1),
+                                                            ]),
+
+                                                        Forms\Components\Fieldset::make('Dimensions (Physical dimensions for shipping)')
+                                                            ->schema([
+                                                                Forms\Components\TextInput::make('dimensions_help')
+                                                                    ->label('')
+                                                                    ->default('Physical dimensions for shipping.')
+                                                                    ->disabled()
+                                                                    ->dehydrated(false)
+                                                                    ->extraAttributes(['style' => 'background: transparent; border: none; font-size: 12px; color: #6b7280;'])
+                                                                    ->columnSpanFull(),
+
+                                                                Forms\Components\Grid::make(4)
+                                                                    ->schema([
+                                                                        TextInput::make('weight')
+                                                                            ->label('Weight (kg)')
+                                                                            ->numeric()
+                                                                            ->step(0.01)
+                                                                            ->columnSpan(1),
+
+                                                                        TextInput::make('height')
+                                                                            ->label('Height (cm)')
+                                                                            ->numeric()
+                                                                            ->step(0.1)
+                                                                            ->columnSpan(1),
+
+                                                                        TextInput::make('width')
+                                                                            ->label('Width (cm)')
+                                                                            ->numeric()
+                                                                            ->step(0.1)
+                                                                            ->columnSpan(1),
+
+                                                                        TextInput::make('length')
+                                                                            ->label('Length (cm)')
+                                                                            ->numeric()
+                                                                            ->step(0.1)
+                                                                            ->columnSpan(1),
+                                                                    ]),
+                                                            ]),
+
+                                                        Forms\Components\Fieldset::make('Variant Image')
+                                                            ->schema([
+                                                                FileUpload::make('variant_image')
+                                                                    ->label('')
+                                                                    ->image()
+                                                                    ->directory('variants')
+                                                                    ->imagePreviewHeight('150')
+                                                                    ->visibility('public')
+                                                                    ->maxSize(2048)
+                                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                                                    ->helperText('Image specific to this variant.')
+                                                                    ->columnSpanFull(),
+                                                            ]),
+                                                    ])
+                                                    ->collapsible()
+                                                    ->collapsed(false),
+                                            ])
+                                            ->addActionLabel('Add Variant')
+                                            ->deleteAction(
+                                                fn($action) => $action->label('Remove Variant')
+                                            )
+                                            ->reorderableWithButtons()
+                                            ->collapsible()
+                                            ->itemLabel(
+                                                fn(array $state): ?string => ($state['sku'] ?? 'New Variant') .
+                                                    (isset($state['attributes'][0]['value']) ? ' - ' . $state['attributes'][0]['value'] : '')
+                                            )
+                                            ->defaultItems(1)
+                                            ->columnSpanFull(),
+                                    ]),
+
+                                
+                            ]),
+                    ])
+                    ->columnSpanFull()
+                    ->persistTabInQueryString(),
             ]);
     }
 
@@ -198,7 +587,9 @@ class ProductResource extends Resource
                 ImageColumn::make('image')
                     ->label('Image')
                     ->circular()
-                    ->size(60),
+                    ->size(60)
+                    ->defaultImageUrl(url('/assets/img/no-image.png')),
+
                 TextColumn::make('name')
                     ->label('Product Name')
                     ->searchable()
@@ -206,12 +597,16 @@ class ProductResource extends Resource
                     ->badge()
                     ->color('primary')
                     ->weight(FontWeight::Medium)
-                    ->limit(30),
-                // TextColumn::make('sku')
-                //     ->label('SKU')
-                //     ->searchable()
-                //     ->icon('heroicon-o-hashtag')
-                //     ->toggleable(),
+                    ->limit(30)
+                    ->wrap(),
+
+                TextColumn::make('sku')
+                    ->label('SKU')
+                    ->searchable()
+                    ->icon('heroicon-o-hashtag')
+                    ->copyable()
+                    ->toggleable(),
+
                 TextColumn::make('type')
                     ->label('Type')
                     ->badge()
@@ -225,75 +620,129 @@ class ProductResource extends Resource
                         default => 'gray',
                     })
                     ->toggleable(),
-                // TEMPORARILY DISABLED FOR DEBUGGING - POTENTIAL MEMORY ISSUE
-                /*
-                TextColumn::make('prodcats.name')
+
+                // Simplified category display to prevent memory issues
+                TextColumn::make('categories_count')
                     ->label('Categories')
-                    ->badge()
-                    ->separator(',')
-                    ->icon('heroicon-o-tag')
-                    ->limit(20)
-                    ->toggleable()
-                    ->formatStateUsing(function ($state) {
-                        if (is_array($state)) {
-                            return collect($state)->take(3)->implode(', ');
+                    ->getStateUsing(function (Product $record): string {
+                        try {
+                            $count = $record->prodcats()->count();
+                            return $count > 0 ? "{$count} categories" : 'No categories';
+                        } catch (\Exception $e) {
+                            return 'Error loading';
                         }
-                        return $state;
-                    }),
-                */
+                    })
+                    ->badge()
+                    ->color('secondary')
+                    ->icon('heroicon-o-tag')
+                    ->toggleable(),
+
                 TextColumn::make('price')
                     ->label('Regular Price')
                     ->money('USD')
                     ->color('success')
-                    ->sortable(),
+                    ->sortable()
+                    ->weight(FontWeight::SemiBold),
+
+                TextColumn::make('sale_price')
+                    ->label('Sale Price')
+                    ->money('USD')
+                    ->color('warning')
+                    ->sortable()
+                    ->placeholder('—')
+                    ->toggleable(),
+
                 TextColumn::make('quantity')
                     ->label('Stock')
                     ->sortable()
                     ->badge()
-                    ->color(fn($state) => $state > 10 ? 'success' : ($state > 0 ? 'warning' : 'danger'))
+                    ->color(fn($state) => match (true) {
+                        $state === null => 'gray',
+                        $state > 50 => 'success',
+                        $state > 10 => 'warning',
+                        $state > 0 => 'danger',
+                        default => 'gray'
+                    })
+                    ->formatStateUsing(fn($state) => $state ?? 'N/A')
                     ->toggleable(),
+
+                TextColumn::make('views')
+                    ->label('Views')
+                    ->sortable()
+                    ->badge()
+                    ->color('info')
+                    ->icon('heroicon-o-eye')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 BooleanColumn::make('status')
                     ->label('Active')
                     ->icon('heroicon-o-check-circle')
-                    ->sortable(),
+                    ->sortable()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
 
-                TextColumn::make('sku')
-                    ->label('SKU')
-                    ->searchable()
-                    ->icon('heroicon-o-hashtag')
-                    ->toggleable(isToggledHiddenByDefault: true),
                 BooleanColumn::make('featured')
                     ->label('Featured')
                     ->icon('heroicon-o-star')
-                    ->sortable(),
+                    ->sortable()
+                    ->trueIcon('heroicon-o-star')
+                    ->falseIcon('heroicon-o-star')
+                    ->trueColor('warning')
+                    ->falseColor('gray')
+                    ->toggleable(),
+
+                BooleanColumn::make('manage_stock')
+                    ->label('Stock Managed')
+                    ->icon('heroicon-o-archive-box')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('total_sale')
                     ->label('Sales')
                     ->badge()
                     ->color('info')
+                    ->icon('heroicon-o-shopping-cart')
                     ->sortable()
+                    ->default(0)
                     ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('shipping_cost')
+                    ->label('Shipping')
+                    ->money('USD')
+                    ->color('secondary')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('weight')
+                    ->label('Weight (kg)')
+                    ->icon('heroicon-o-scale')
+                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('created_at')
                     ->label('Created At')
-                    ->dateTime('F j, Y')
+                    ->dateTime('M j, Y g:i A')
                     ->icon('heroicon-o-calendar-days')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
                     ->label('Updated At')
-                    ->dateTime('F j, Y')
+                    ->dateTime('M j, Y g:i A')
                     ->icon('heroicon-o-arrow-path')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('type')
+                    ->label('Product Type')
                     ->options([
                         'simple' => 'Simple Product',
                         'variable' => 'Variable Product',
                         'grouped' => 'Grouped Product',
                         'external' => 'External Product',
                         'digital' => 'Digital Product',
-                    ]),
+                    ])
+                    ->multiple(),
 
                 Filter::make('featured')
                     ->query(fn(Builder $query): Builder => $query->where('featured', true))
@@ -302,6 +751,10 @@ class ProductResource extends Resource
                 Filter::make('active')
                     ->query(fn(Builder $query): Builder => $query->where('status', true))
                     ->label('Active Products'),
+                    
+                Filter::make('inactive')
+                    ->query(fn(Builder $query): Builder => $query->where('status', false))
+                    ->label('Inactive Products'),
 
                 Filter::make('out_of_stock')
                     ->query(fn(Builder $query): Builder => $query->where('quantity', '<=', 0))
@@ -310,31 +763,87 @@ class ProductResource extends Resource
                 Filter::make('low_stock')
                     ->query(fn(Builder $query): Builder => $query->whereBetween('quantity', [1, 10]))
                     ->label('Low Stock (1-10)'),
+                    
+                Filter::make('has_sale_price')
+                    ->query(fn(Builder $query): Builder => $query->whereNotNull('sale_price')->where('sale_price', '>', 0))
+                    ->label('On Sale'),
+                    
+                Filter::make('variable_products')
+                    ->query(fn(Builder $query): Builder => $query->where('is_variable_product', true))
+                    ->label('Variable Products'),
+                    
+                Filter::make('offers')
+                    ->query(fn(Builder $query): Builder => $query->where('is_offer', true))
+                    ->label('Special Offers'),                SelectFilter::make('parent_id')
+                    ->label('Product Type')
+                    ->options([
+                        'parent' => 'Parent Products',
+                        'child' => 'Child Products (Variations)',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return match ($data['value'] ?? null) {
+                            'parent' => $query->whereNull('parent_id'),
+                            'child' => $query->whereNotNull('parent_id'),
+                            default => $query,
+                        };
+                    }),
             ])
             ->actions([
                 ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                ])->iconButton()
+                    Tables\Actions\ViewAction::make()
+                        ->icon('heroicon-o-eye'),
+                    Tables\Actions\EditAction::make()
+                        ->icon('heroicon-o-pencil'),
+                    Tables\Actions\ReplicateAction::make()
+                        ->icon('heroicon-o-document-duplicate')
+                        ->beforeReplicaSaved(function (Product $replica, array $data): void {
+                            $replica->name = $data['name'] . ' (Copy)';
+                            $replica->slug = Str::slug($replica->name);
+                            $replica->sku = null; // Clear SKU to avoid conflicts
+                        }),
+                    Tables\Actions\DeleteAction::make()
+                        ->icon('heroicon-o-trash'),
+                ])
+                    ->iconButton()
+                    ->tooltip('Actions')
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->icon('heroicon-o-trash'),
                     Tables\Actions\BulkAction::make('activate')
                         ->label('Activate Selected')
                         ->icon('heroicon-o-check-circle')
                         ->action(fn($records) => $records->each(fn($record) => $record->update(['status' => true])))
-                        ->color('success'),
+                        ->color('success')
+                        ->requiresConfirmation(),
                     Tables\Actions\BulkAction::make('deactivate')
                         ->label('Deactivate Selected')
                         ->icon('heroicon-o-x-circle')
                         ->action(fn($records) => $records->each(fn($record) => $record->update(['status' => false])))
-                        ->color('danger'),
+                        ->color('danger')
+                        ->requiresConfirmation(),
+                    Tables\Actions\BulkAction::make('mark_featured')
+                        ->label('Mark as Featured')
+                        ->icon('heroicon-o-star')
+                        ->action(fn($records) => $records->each(fn($record) => $record->update(['featured' => true])))
+                        ->color('warning')
+                        ->requiresConfirmation(),
+                    Tables\Actions\BulkAction::make('unmark_featured')
+                        ->label('Remove from Featured')
+                        ->icon('heroicon-o-star')
+                        ->action(fn($records) => $records->each(fn($record) => $record->update(['featured' => false])))
+                        ->color('gray')
+                        ->requiresConfirmation(),
                 ]),
             ])
             ->defaultSort('created_at', 'desc')
             ->defaultPaginationPageOption(25)
-            ->paginationPageOptions([10, 25, 50, 100]);
+            ->paginationPageOptions([10, 25, 50, 100])
+            ->striped()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistFiltersInSession();
     }
 
     public static function getRelations(): array
@@ -355,17 +864,16 @@ class ProductResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        // TEMPORARILY DISABLED FOR DEBUGGING
-        return null;
-        
         try {
             $user = Auth::user();
             if (!$user || !$user->shop) {
                 return null;
             }
-            
+
             // DIRECT QUERY - DON'T USE getEloquentQuery()
-            $count = Product::where('shop_id', $user->shop->id)->count();
+            $count = Product::where('shop_id', $user->shop->id)
+                ->whereNull('parent_id')
+                ->count();
             return $count > 0 ? (string) $count : null;
         } catch (\Exception $e) {
             Log::error('Navigation badge error: ' . $e->getMessage());
@@ -389,7 +897,7 @@ class ProductResource extends Resource
             if (!$user || !$user->shop) {
                 return 'primary';
             }
-            
+
             // SIMPLIFIED: Use direct query instead of static::getModel()
             $lowStockCount = Product::where('shop_id', $user->shop->id)
                 ->where('quantity', '<=', 10)
