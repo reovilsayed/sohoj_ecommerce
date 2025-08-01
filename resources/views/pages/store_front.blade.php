@@ -128,7 +128,7 @@
             <a href="">
                 <img class="banner img-fluid rounded shadow" 
                      data-src="{{ $shop->banner ? Storage::url($shop->banner) : asset('placeholder/shop_banner.webp') }}"
-                     src="{{ asset('placeholder/shop_banner.webp') }}"
+                     src="{{ asset('placeholder/shop_banner.webp') }}" style="object-fit: cover; width: 100%; height: 300px; border-radius: 8px;"
                      alt="{{ $shop->name }} banner"
                      onload="this.classList.add('loaded')"
                      onerror="this.src='{{ asset('placeholder/shop_banner.webp') }}'; this.classList.add('error')">
@@ -149,15 +149,15 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="#">Home</a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link"
                                 href="{{ route('store_front', [$shop->slug, 'shop_products' => 'most-popular']) }}">Popular
                                 Items</a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
                             <a class="nav-link" href="#offer">Promotions</a>
                         </li>
-                        @if ($shop->menuTitle1)
+                        {{-- @if ($shop->menuTitle1)
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ $shop->menuLink1 }}">{{ $shop->menuTitle1 }}</a>
                             </li>
@@ -166,7 +166,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ $shop->menuLink2 }}">{{ $shop->menuTitle2 }}</a>
                             </li>
-                        @endif
+                        @endif --}}
                     </ul>
                     <form class="d-flex ms-3" action="{{ route('store_front', $shop->slug) }}" method="get">
                         <input type="text" name="search" class="form-control me-2"
