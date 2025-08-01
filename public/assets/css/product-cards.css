@@ -1,49 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
-
-/* CSS Variables for consistent theming */
-:root {
-    --primary-color: #3C5F3F;
-    --primary-dark: #2c432e;
-    --primary-darker: #1f2f20;
-    --accent-color: #E39B22;
-    --text-primary: #000;
-    --text-secondary: #6c757d;
-    --background-light: #f8f9fa;
-    --background-lighter: #e9ecef;
-    --border-light: rgba(0, 0, 0, 0.05);
-    --shadow-light: rgba(0, 0, 0, 0.08);
-    --shadow-medium: rgba(0, 0, 0, 0.15);
-    --white: #fff;
-    --rating-color: #E39B22;
-    --discount-gradient: linear-gradient(135deg, #E39B22, #e39c22be);
-    --category-bg: linear-gradient(135deg, #e8f5e8, #d4edda);
-    --overlay-bg: linear-gradient(135deg, rgba(60, 95, 63, 0.796), rgba(60, 95, 63, 0.478));
-}
+@import url('colors.css');
 
 /* Base Product Card Styles */
 .product-card {
-    background: var(--white);
-    border-radius: 20px;
+    background: var(--card-bg);
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 8px 32px var(--shadow-light);
+    box-shadow: 0 8px 32px var(--card-shadow);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     height: 100%;
-    border: 1px solid var(--border-light);
+    border: 1px solid var(--card-border);
     will-change: transform;
     font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
 }
 
 .product-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 60px var(--shadow-medium);
+    box-shadow: 0 20px 60px var(--card-shadow-hover);
 }
 
 /* Image Section */
 .product-image-wrapper {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, var(--background-light), var(--background-lighter));
+    background: var(--bg-light);
 }
 
 .product-image {
@@ -63,7 +44,7 @@
 
 /* Placeholder image styling */
 .placeholder-img {
-    background: linear-gradient(135deg, var(--background-light), var(--background-lighter));
+    background: var(--bg-light);
     opacity: 0.8;
 }
 
@@ -88,7 +69,7 @@
 .product-overlay {
     position: absolute;
     inset: 0;
-    background: var(--overlay-bg);
+    background: rgba(65, 95, 66, 0.85);
     opacity: 0;
     display: flex;
     align-items: center;
@@ -111,7 +92,7 @@
     border-radius: 50%;
     border: none;
     background: rgba(255, 255, 255, 0.2);
-    color: var(--white);
+    color: var(--text-light);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -138,10 +119,10 @@
     position: absolute;
     top: 15px;
     left: 15px;
-    background: var(--discount-gradient);
-    color: var(--white);
+    background: var(--accent-color);
+    color: var(--text-light);
     padding: 6px 12px;
-    border-radius: 15px;
+    border-radius: 10px;
     font-size: 0.75rem;
     font-weight: 600;
     z-index: 2;
@@ -161,15 +142,16 @@
 }
 
 .product-category span {
-    background: var(--category-bg);
-    color: var(--primary-dark);
+    background: var(--bg-light);
+    color: var(--primary-color);
     padding: 4px 10px;
-    border-radius: 12px;
+    border-radius: 10px;
     font-size: 0.7rem;
     font-weight: 600;
     margin-right: 5px;
     margin-bottom: 5px;
     display: inline-block;
+    border: 1px solid var(--border-light);
 }
 
 .product-title {
@@ -206,7 +188,7 @@
 }
 
 .stars i {
-    color: #ddd;
+    color: var(--rating-empty);
     font-size: 0.8rem;
 }
 
@@ -245,10 +227,10 @@
 }
 
 .add-to-cart-btn {
-    color: var(--white);
+    color: var(--text-light);
     border: none;
     padding: 7px 12px;
-    border-radius: 12px;
+    border-radius: 10px;
     font-weight: 600;
     font-size: 0.9rem;
     transition: all 0.3s ease;
@@ -256,18 +238,18 @@
     width: 100%;
     margin-top: auto;
     will-change: transform;
-    box-shadow: 0 2px 8px rgba(58, 112, 151, 0.10);
+    box-shadow: 0 2px 8px var(--shadow-primary);
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+    background: var(--primary-color) !important;
 }
 
 .add-to-cart-btn:hover {
-    background: linear-gradient(135deg, var(--primary-dark), var(--primary-darker)) !important;
+    background: var(--primary-dark) !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 183, 126, 0.3);
+    box-shadow: 0 4px 12px var(--shadow-primary);
 }
 
 .add-to-cart-btn .spinner {

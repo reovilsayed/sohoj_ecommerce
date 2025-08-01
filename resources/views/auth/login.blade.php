@@ -3,22 +3,22 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />
     <style>
         :root {
-            --primary-green: #01949a;
-            --primary-hover: #01787a;
-            --secondary-color: #F4F9FF;
-            --text-dark: #2D3748;
-            --text-medium: #4A5568;
-            --text-light: #718096;
-            --border-color: #E2E8F0;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --primary-green: var(--accent-color);
+            --primary-hover: var(--primary-dark);
+            --secondary-color: var(--bg-light);
+            --text-dark: var(--text-dark);
+            --text-medium: var(--text-secondary);
+            --text-light: var(--text-secondary);
+            --border-color: var(--border-light);
+            --shadow-sm: var(--shadow-light);
+            --shadow-md: var(--shadow-medium);
+            --shadow-lg: var(--shadow-dark);
             --transition: all 0.3s ease;
         }
         .login-wrapper {
             display: flex;
             min-height: 100vh;
-            background-color: #F4F9FF;
+            background-color: var(--bg-light);
         }
         .login-content {
             flex: 1;
@@ -30,15 +30,15 @@
         .login-card {
             width: 100%;
             max-width: 400px;
-            background: white;
+            background: var(--bg-secondary);
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: var(--shadow-medium);
             padding: 2.5rem;
         }
         .brand-logo {
             font-size: 1.75rem;
             font-weight: 700;
-            color: var(--primary-green);
+            color: var(--accent-color);
             margin-bottom: 2rem;
             text-align: center;
             display: block;
@@ -50,11 +50,11 @@
         .login-header h1 {
             font-size: 1.5rem;
             font-weight: 600;
-            color: var(--primary-green);
+            color: var(--accent-color);
             margin-bottom: 0.5rem;
         }
         .login-header p {
-            color: #718096;
+            color: var(--text-secondary);
             font-size: 1rem;
         }
         .form-group {
@@ -63,7 +63,7 @@
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
-            color: var(--primary-green);
+            color: var(--accent-color);
             font-size: 0.875rem;
             font-weight: 500;
         }
@@ -71,14 +71,14 @@
             width: 100%;
             height: 3rem;
             padding: 0.75rem;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-light);
             border-radius: 8px;
             font-size: 0.875rem;
             transition: all 0.2s;
         }
         .form-control:focus {
-            border-color: var(--primary-green);
-            box-shadow: 0 0 0 3px rgba(1, 153, 154, 0.1);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--shadow-primary);
             outline: none;
         }
         .forgot-password {
@@ -86,19 +86,19 @@
             margin: -0.75rem 0 1rem;
         }
         .forgot-password a {
-            color: var(--primary-green);
+            color: var(--accent-color);
             font-size: 0.875rem;
             text-decoration: none;
             transition: color 0.2s;
         }
         .forgot-password a:hover {
-            color: var(--primary-hover);
+            color: var(--primary-dark);
         }
         .btn-login {
             width: 100%;
             height: 3rem;
-            background: var(--primary-green);
-            color: white;
+            background: var(--accent-color);
+            color: var(--text-light);
             border: none;
             border-radius: 8px;
             font-size: 1rem;
@@ -107,19 +107,19 @@
             transition: background 0.2s;
         }
         .btn-login:hover {
-            background: var(--primary-hover);
+            background: var(--primary-dark);
         }
         .divider {
             display: flex;
             align-items: center;
             margin: 1.5rem 0;
-            color: #a0aec0;
+            color: var(--text-secondary);
         }
         .divider::before,
         .divider::after {
             content: "";
             flex: 1;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid var(--border-light);
         }
         .divider-text {
             padding: 0 1rem;
@@ -137,17 +137,17 @@
             width: 100%;
             height: 3rem;
             padding: 0 1rem;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-light);
             border-radius: 8px;
-            background: white;
-            color: var(--primary-green);
+            background: var(--bg-secondary);
+            color: var(--accent-color);
             font-size: 0.875rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
         }
         .btn-social:hover {
-            background: #e6f4ec;
+            background: var(--bg-light);
         }
         .btn-social i {
             margin-right: 0.5rem;
@@ -155,25 +155,25 @@
         }
         .signup-link {
             text-align: center;
-            color: #718096;
+            color: var(--text-secondary);
             font-size: 0.875rem;
         }
         .signup-link a {
-            color: var(--primary-green);
+            color: var(--accent-color);
             font-weight: 500;
             text-decoration: none;
             transition: color 0.2s;
         }
         .signup-link a:hover {
             text-decoration: underline;
-            color: var(--primary-hover);
+            color: var(--primary-dark);
         }
         .input-icon {
             position: absolute;
             right: 15px;
             top: 72%;
             transform: translateY(-50%);
-            color: var(--primary-green);
+            color: var(--accent-color);
         }
         @media (min-width: 768px) {
             .login-image {

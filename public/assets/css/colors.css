@@ -1,0 +1,152 @@
+/* ========================================
+   CENTRALIZED COLOR SYSTEM
+   ======================================== */
+
+:root {
+    /* Primary Color Palette */
+    --hunter-green: #415F42;
+    --harvest-gold: #DE991B;
+    --seal-brown: #642B0D;
+    --seal-brown-2: #562309;
+    --cosmic-latte: #FEF6E5;
+    
+    /* Semantic Color Mapping */
+    --primary-color: var(--hunter-green);
+    --primary-dark: var(--seal-brown-2);
+    --primary-darker: var(--seal-brown);
+    --accent-color: var(--harvest-gold);
+    --accent-light: #e39c22be;
+    
+    /* Text Colors */
+    --text-primary: #000000;
+    --text-secondary: #6c757d;
+    --text-muted: #8a8a8a;
+    --text-light: #ffffff;
+    --text-dark: #2c2c2c;
+    
+    /* Background Colors */
+    --bg-primary: var(--cosmic-latte);
+    --bg-secondary: #ffffff;
+    --bg-light: #f8f9fa;
+    --bg-lighter: #e9ecef;
+    --bg-dark: var(--hunter-green);
+    --bg-accent: var(--harvest-gold);
+    
+    /* Border Colors */
+    --border-light: rgba(0, 0, 0, 0.05);
+    --border-medium: rgba(0, 0, 0, 0.1);
+    --border-dark: rgba(0, 0, 0, 0.2);
+    --border-primary: var(--hunter-green);
+    --border-accent: var(--harvest-gold);
+    
+    /* Shadow Colors */
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+    --shadow-dark: rgba(0, 0, 0, 0.25);
+    --shadow-primary: rgba(65, 95, 66, 0.2);
+    --shadow-accent: rgba(222, 153, 27, 0.2);
+    
+    /* Status Colors */
+    --success-color: #28a745;
+    --warning-color: var(--harvest-gold);
+    --error-color: #dc3545;
+    --info-color: #17a2b8;
+    
+    /* Rating Colors */
+    --rating-color: var(--harvest-gold);
+    --rating-empty: #ddd;
+    
+    /* Button Colors */
+    --btn-primary: var(--hunter-green);
+    --btn-primary-hover: var(--seal-brown-2);
+    --btn-secondary: var(--harvest-gold);
+    --btn-secondary-hover: #c88a15;
+    --btn-light: var(--cosmic-latte);
+    --btn-light-hover: #f5e8d0;
+    
+    /* Link Colors */
+    --link-color: var(--hunter-green);
+    --link-hover: var(--seal-brown-2);
+    
+    /* Form Colors */
+    --input-border: var(--border-medium);
+    --input-focus: var(--hunter-green);
+    --input-bg: var(--bg-secondary);
+    --input-disabled: var(--bg-light);
+    
+    /* Overlay Colors */
+    --overlay-light: rgba(255, 255, 255, 0.9);
+    --overlay-dark: rgba(0, 0, 0, 0.5);
+    --overlay-primary: rgba(65, 95, 66, 0.9);
+    --overlay-accent: rgba(222, 153, 27, 0.9);
+    
+    /* Gradient Definitions */
+    --gradient-primary: linear-gradient(135deg, var(--hunter-green), var(--seal-brown-2));
+    --gradient-accent: linear-gradient(135deg, var(--harvest-gold), var(--accent-light));
+    --gradient-light: linear-gradient(135deg, var(--bg-light), var(--bg-lighter));
+    --gradient-overlay: linear-gradient(135deg, rgba(65, 95, 66, 0.9), rgba(86, 35, 9, 0.9));
+    
+    /* Category Badge Colors */
+    --category-bg: linear-gradient(135deg, #e8f5e8, #d4edda);
+    --category-text: var(--hunter-green);
+    
+    /* Discount Badge Colors */
+    --discount-gradient: linear-gradient(135deg, var(--harvest-gold), var(--accent-light));
+    
+    /* Card Colors */
+    --card-bg: var(--bg-secondary);
+    --card-border: var(--border-light);
+    --card-shadow: var(--shadow-light);
+    --card-shadow-hover: var(--shadow-medium);
+    
+    /* Header Colors */
+    --header-bg: var(--bg-secondary);
+    --header-text: var(--text-primary);
+    --header-border: var(--border-light);
+    
+    /* Footer Colors */
+    --footer-bg: var(--hunter-green);
+    --footer-text: var(--text-light);
+    --footer-link: var(--harvest-gold);
+    
+    /* Navigation Colors */
+    --nav-bg: var(--bg-secondary);
+    --nav-text: var(--text-primary);
+    --nav-active: var(--hunter-green);
+    --nav-hover: var(--harvest-gold);
+}
+
+/* Dark Theme Support (Optional) */
+/* @media (prefers-color-scheme: dark) {
+    :root {
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --bg-light: #3a3a3a;
+        --bg-lighter: #4a4a4a;
+        --border-light: rgba(255, 255, 255, 0.1);
+        --border-medium: rgba(255, 255, 255, 0.2);
+        --shadow-light: rgba(0, 0, 0, 0.3);
+        --shadow-medium: rgba(0, 0, 0, 0.5);
+    }
+} */
+
+/* High Contrast Mode Support */
+/* @media (prefers-contrast: high) {
+    :root {
+        --text-primary: #000000;
+        --text-secondary: #333333;
+        --border-light: rgba(0, 0, 0, 0.3);
+        --border-medium: rgba(0, 0, 0, 0.5);
+    }
+} */
+
+/* Reduced Motion Support */
+/* @media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}  */

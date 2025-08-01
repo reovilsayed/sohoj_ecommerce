@@ -40,35 +40,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <style>
-        :root {
-            --primary-color: #FF0000;
-            /* Button color */
-            --secondary-color: #01949a;
-            /* Accent color */
-            --text-color: #1f2937;
-            --light-gray: #f3f4f6;
-            --medium-gray: #e5e7eb;
-            --dark-gray: #6b7280;
-            --white: #ffffff;
-            --primary: #01949a;
-            --primary-hover: #a1887f;
-            --bg: #d7ccc8;
-            --card-bg: #ffffff;
-            --border-radius: 18px;
-            --shadow: 0 8px 32px rgba(141, 110, 99, 0.10);
-            --text: #4e342e;
-            --muted: #a1887f;
-            --danger: #e53935;
-            --success: #43a047;
-            --accent: #efebe9;
-            --step-gradient: linear-gradient(90deg, #8d6e63 0%, #a1887f 100%);
-        }
+        /* Import centralized color system */
+        @import url('{{ asset("assets/css/colors.css") }}');
 
         .checkout-hero {
-            background: #01949a;
-            color: #fff;
+            background: var(--accent-color);
+            color: var(--text-light);
             /* border-radius: var(--border-radius); */
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-medium);
             padding: 2rem 2.5rem 1.5rem 2.5rem;
             margin-bottom: 2rem;
             text-align: center;
@@ -83,7 +62,7 @@
             top: -40px;
             width: 180px;
             height: 180px;
-            background: var(--accent);
+            background: var(--bg-light);
             opacity: 0.12;
             border-radius: 50%;
             z-index: 0;
@@ -105,8 +84,8 @@
             <p class="mb-0">Discover top-rated vendors and get your orders delivered quickly and safely.</p>
 
             <div class="checkout-hero-steps d-none d-md-flex position-absolute end-0 top-0 h-100 align-items-center pe-4">
-                <a href="{{ route('homepage') }}"><span class="badge bg-light text-primary me-2">Home</span></a>
-                <span class="badge bg-light text-primary me-2">Vendors</span>
+                <a href="{{ route('homepage') }}"><span class="badge bg-light text-accent me-2">Home</span></a>
+                <span class="badge bg-light text-accent me-2">Vendors</span>
             </div>
         </div>
         <div class="row">
