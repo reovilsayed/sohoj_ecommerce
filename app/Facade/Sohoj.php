@@ -73,9 +73,9 @@ class Sohoj
         return ($this->newSubtotal());
         // return ($this->newSubtotal() + $this->shipping());
     }
-    public function round_num($price)
+    public function round_num($price)   
     {
-        return sprintf(newSubtotal $price);
+        return sprintf($this->newSubtotal(), $price);
     }
     public function average_rating($ratings)
     {
