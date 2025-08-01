@@ -197,6 +197,8 @@ Route::post('settings/update', [PageController::class, 'settingsUpdate'])->name(
 
     Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
     Route::get('privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy.policy');
+    Route::get('contact', [PageController::class, 'contact'])->name('contact');
+    Route::post('contact', [PageController::class, 'contactStore'])->name('contact.store');
 
 // API Documentation Route
 Route::get('/api-docs', function () {
