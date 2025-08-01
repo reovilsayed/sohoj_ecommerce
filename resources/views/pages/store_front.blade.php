@@ -1,4 +1,4 @@
-.@section('title', $shop->name . ' | Shop on Afrikartt E-commerce')
+@section('title', $shop->name . ' | Shop on Afrikartt E-commerce')
 @section('meta_description',
     Str::limit(
     $shop->description ??
