@@ -20,7 +20,7 @@
                 <img src="{{ Storage::url($product->image) }}" 
                      alt="{{ $product->name }}" 
                      class="product-img actual-img" 
-                     style="width: 100%; height: 100%; object-fit: cover; display: none;"
+                     style="width: 100%; height: 100%; object-fit: cover;"
                      >
 
                 {{-- Product Actions Overlay --}}
