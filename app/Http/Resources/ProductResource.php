@@ -15,7 +15,7 @@ class ProductResource extends JsonResource
             'slug'          => $this->slug,
             'image'         => Storage::url($this->image),
             'images'        => array_map(function ($image) {
-                return asset('storage/' . $image);
+                return Storage::url($image);
             }, $this->images),
             'price'         => $this->price,
             'sale_price'    => $this->sale_price,

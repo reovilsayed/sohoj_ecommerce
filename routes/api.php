@@ -28,5 +28,5 @@ Route::get('/products', [ProductApiController::class, 'index']);
 Route::get('/products/{product:slug}', [ProductApiController::class, 'show']);
 Route::get('/categories', [CategoryApiController::class, 'index']);
 Route::get('/vendors', [VendorApiController::class, 'index']);
-Route::get('vendor/{shop:slug}/products', [ProductApiController::class, 'vendorProducts']);
 Route::get('/vendors/{shop:slug}', [VendorApiController::class, 'show']);
+Route::get('vendor/{shop:slug}/products', [ProductApiController::class, 'vendorProducts']);
