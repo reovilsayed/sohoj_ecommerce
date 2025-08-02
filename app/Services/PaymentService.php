@@ -48,11 +48,11 @@ class PaymentService
                         'product_data' => [
                             'name' => $orderProduct->Product->name,
                         ],
-                        'unit_amount' => intval($orderProduct->total * 100), // Stripe expects amount in cents
+                        'unit_amount' => intval(($orderProduct->total / $orderProduct->quantity) * 100), // Stripe expects amount in cents
                     ],
                     'quantity' => $orderProduct->quantity,
                 ];
-                $totalAmount += $orderProduct->total * $orderProduct->quantity;
+                $totalAmount += $orderProduct->total;
             }
         } else {
             // Fallback for single-product order (no childs)
@@ -67,7 +67,7 @@ class PaymentService
                     ],
                     'quantity' => $this->order->quantity,
                 ];
-                $totalAmount = $this->order->product_price * $this->order->quantity;
+                $totalAmount = $this->order->product_price ;
             }
         }
 
@@ -78,7 +78,7 @@ class PaymentService
         // Calculate tax amount (you can customize this logic)
         $taxRate = $this->getTaxRate(); // Get tax rate from your system
 
-        $taxAmount =$taxRate * 100;
+        $taxAmount = $taxRate * 100;
         // Add tax as a separate line item
         if ($taxRate > 0) {
             $lineItems[] = [
@@ -104,7 +104,7 @@ class PaymentService
             'metadata' => [
                 'order_id' => $this->order->id,
                 'tax_amount' => $taxAmount,
-              
+
             ],
             // Alternative: Use Stripe's automatic tax calculation
             // 'automatic_tax' => [
@@ -124,13 +124,13 @@ class PaymentService
     {
         // Method 1: Fixed tax rate
         return \Sohoj::tax(); // 8% tax rate
-        
+
         // Method 2: Get from order/shipping address
         // if ($this->order->shipping) {
         //     $shipping = json_decode($this->order->shipping);
         //     return $this->getTaxRateByLocation($shipping->state ?? 'CA');
         // }
-        
+
         // Method 3: Get from environment variable
         // return env('DEFAULT_TAX_RATE', 0.08);
     }
@@ -147,7 +147,7 @@ class PaymentService
             'FL' => 0.06,   // Florida
             // Add more states as needed
         ];
-        
+
         return $taxRates[$state] ?? 0.08; // Default 8%
     }
 
