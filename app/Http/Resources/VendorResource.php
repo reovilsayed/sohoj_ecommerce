@@ -25,7 +25,6 @@ class VendorResource extends JsonResource
             'status'        => $this->status,
             'rating'        => $this->rating,
             'total_products' => $this->products_count ?? $this->products->count(),
-            'products'      => ProductResource::collection($this->whenLoaded('products')),
             'created_at'    => $this->created_at,
             'updated_at'    => $this->updated_at,
         ];
