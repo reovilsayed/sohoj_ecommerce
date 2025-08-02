@@ -532,55 +532,7 @@
             $('.toast').toast('hide');
         })
 
-        // Enhanced lazy loading for product images
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if Intersection Observer is supported
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            const actualImg = img.nextElementSibling;
-                            
-                            if (actualImg && actualImg.classList.contains('actual-img')) {
-                                // Load the actual image
-                                actualImg.src = actualImg.dataset.src || actualImg.src;
-                                
-                                // Handle image load success
-                                actualImg.onload = function() {
-                                    this.style.display = 'block';
-                                    this.style.opacity = '1';
-                                    img.style.display = 'none';
-                                };
-                                
-                                // Handle image load error
-                                actualImg.onerror = function() {
-                                    this.style.display = 'none';
-                                    img.style.display = 'block';
-                                };
-                                
-                                // Stop observing this element
-                                observer.unobserve(img);
-                            }
-                        }
-                    });
-                }, {
-                    rootMargin: '50px 0px', // Start loading 50px before the image comes into view
-                    threshold: 0.01
-                });
-
-                // Observe all placeholder images
-                document.querySelectorAll('.placeholder-img').forEach(img => {
-                    imageObserver.observe(img);
-                });
-            } else {
-                // Fallback for browsers that don't support Intersection Observer
-                document.querySelectorAll('.actual-img').forEach(img => {
-                    img.style.display = 'block';
-                    img.previousElementSibling.style.display = 'none';
-                });
-            }
-        });
+   
     </script>
     @if (session()->has('subscribeEmail'))
         <script>
