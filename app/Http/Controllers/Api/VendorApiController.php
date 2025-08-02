@@ -50,9 +50,9 @@ class VendorApiController extends Controller
         return VendorResource::collection($vendors);
     }
 
-    public function show($slug)
+    public function show(Shop $shop)
     {
-        $vendor = Shop::where('slug', $slug)
+        $vendor = Shop::where('slug', $shop->slug)
             ->where('status', 1)
             ->with(['products' => function ($query) {
                 $query->whereNull('parent_id');

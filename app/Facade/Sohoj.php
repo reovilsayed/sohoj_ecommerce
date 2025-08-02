@@ -75,7 +75,7 @@ class Sohoj
     }
     public function round_num($price)   
     {
-        return sprintf($this->newSubtotal(), $price);
+        return sprintf("%0.2f", $price);
     }
     public function average_rating($ratings)
     {

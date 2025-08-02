@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Models\Product;
+use App\Models\Shop;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
@@ -85,7 +86,7 @@ class ProductRepository
                 ->limit($limit)
                 ->get();
         });
-    }   
+    }
 
     public static function getAllProducts(int $paginate = 12)
     {
@@ -93,6 +94,13 @@ class ProductRepository
     }
 
     public function allProducts(int $paginate = 12)
+    {
+        return Product::where("status", 1)->whereNull('parent_id')->whereHas('shop', function ($q) {
+            $q->where('status', 1);
+        })->filter()->simplePaginate(12);
+    }
+
+    public static function getVendorProducts(Shop $shop, array $filters = [])
     {
         return Product::where("status", 1)->whereNull('parent_id')->whereHas('shop', function ($q) {
             $q->where('status', 1);
