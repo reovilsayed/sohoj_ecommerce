@@ -35,6 +35,7 @@ class PaymentService
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         $lineItems = [];
+        $totalAmount = 0;
 
         if ($this->order->childs && $this->order->childs->count() > 0) {
             foreach ($this->order->childs as $orderProduct) {
@@ -51,6 +52,7 @@ class PaymentService
                     ],
                     'quantity' => $orderProduct->quantity,
                 ];
+                $totalAmount += $orderProduct->total * $orderProduct->quantity;
             }
         } else {
             // Fallback for single-product order (no childs)
@@ -61,15 +63,35 @@ class PaymentService
                         'product_data' => [
                             'name' => $this->order->Product->name,
                         ],
-                        'unit_amount' => intval($this->order->total * 100),
+                        'unit_amount' => intval(($this->order->product_price / $this->order->quantity) * 100),
                     ],
                     'quantity' => $this->order->quantity,
                 ];
+                $totalAmount = $this->order->product_price * $this->order->quantity;
             }
         }
 
         if (empty($lineItems)) {
             throw new \Exception('No products found for this order. Cannot create Stripe Checkout Session.');
+        }
+
+        // Calculate tax amount (you can customize this logic)
+        $taxRate = $this->getTaxRate(); // Get tax rate from your system
+
+        $taxAmount =$taxRate * 100;
+        // Add tax as a separate line item
+        if ($taxRate > 0) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => 'Tax',
+                        'description' => 'Sales tax',
+                    ],
+                    'unit_amount' => intval($taxAmount),
+                ],
+                'quantity' => 1,
+            ];
         }
 
         $session = StripeSession::create([
@@ -81,9 +103,52 @@ class PaymentService
             'cancel_url' => route('thankyou'),
             'metadata' => [
                 'order_id' => $this->order->id,
+                'tax_amount' => $taxAmount,
+              
             ],
+            // Alternative: Use Stripe's automatic tax calculation
+            // 'automatic_tax' => [
+            //     'enabled' => true,
+            // ],
+            // 'tax_id_collection' => [
+            //     'enabled' => true,
+            // ],
         ]);
         return $session->url;
+    }
+
+    /**
+     * Get tax rate based on location or other criteria
+     */
+    private function getTaxRate()
+    {
+        // Method 1: Fixed tax rate
+        return \Sohoj::tax(); // 8% tax rate
+        
+        // Method 2: Get from order/shipping address
+        // if ($this->order->shipping) {
+        //     $shipping = json_decode($this->order->shipping);
+        //     return $this->getTaxRateByLocation($shipping->state ?? 'CA');
+        // }
+        
+        // Method 3: Get from environment variable
+        // return env('DEFAULT_TAX_RATE', 0.08);
+    }
+
+    /**
+     * Get tax rate by location (example)
+     */
+    private function getTaxRateByLocation($state)
+    {
+        $taxRates = [
+            'CA' => 0.0825, // California
+            'NY' => 0.08,   // New York
+            'TX' => 0.0625, // Texas
+            'FL' => 0.06,   // Florida
+            // Add more states as needed
+        ];
+        
+        return $taxRates[$state] ?? 0.08; // Default 8%
     }
 
     public function createPayPalCheckoutLink()
