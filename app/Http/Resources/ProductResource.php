@@ -15,12 +15,12 @@ class ProductResource extends JsonResource
             'slug'          => $this->slug,
             'image'         => Storage::url($this->image),
             'images'        => array_map(function ($image) {
-                return Storage::url($image);
+                return asset('storage/' . $image);
             }, $this->images),
             'price'         => $this->price,
             'sale_price'    => $this->sale_price,
-            'shop'          => $this->shop,
-            'categories'    => $this->prodcats,
+            'shop'          => VendorResource::make($this->shop),
+            'categories'    => CategoryResource::collection($this->prodcats),
             'description'   => $this->description,
             'short_description' => $this->short_description,
             'views'         => $this->views,
