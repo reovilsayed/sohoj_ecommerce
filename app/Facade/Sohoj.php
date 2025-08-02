@@ -20,8 +20,12 @@ class Sohoj
     {
         $subtotal = floatval(str_replace(',', '', Cart::subtotal()));
         $total = $subtotal - $this->discount();
-        $taxRate = Settings::setting('admin_tax');
-        return ($taxRate * $total) / 100;
+        $taxRate = (float) Settings::setting('admin_tax');
+
+        if ($taxRate > 0) {
+            return ($taxRate * $total) / 100;
+        }
+        return 0;
     }
 
     public function discount()
@@ -75,7 +79,7 @@ class Sohoj
         return ($this->newSubtotal());
         // return ($this->newSubtotal() + $this->shipping());
     }
-    public function round_num($price)   
+    public function round_num($price)
     {
         return sprintf("%0.2f", $price);
     }
