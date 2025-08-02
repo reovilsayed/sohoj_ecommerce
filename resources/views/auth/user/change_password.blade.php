@@ -160,29 +160,14 @@
     </div>
 
     <style>
-        :root {
-            --primary-color: #01949a;
-            --primary-dark: #01949a;
-            --primary-light: #e8f5e8;
-            --secondary-color: #2c3e50;
-            --accent-color: #f39c12;
-            --light-gray: #f8f9fa;
-            --medium-gray: #e9ecef;
-            --dark-gray: #6c757d;
-            --danger-color: #dc3545;
-            --success-color: #28a745;
-            --info-color: #17a2b8;
-            --border-radius: 12px;
-            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-        }
+
         /* Header Section */
         .password-header-section {
-            background: linear-gradient(135deg, #01949a, #01949a);
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-color));
             padding: 2rem;
             border-radius: 20px;
             color: white;
-            box-shadow: 0 10px 30px rgba(1, 153, 154, 0.3);
+            box-shadow: 0 10px 30px rgba(var(--accent-color-rgb), 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -359,8 +344,8 @@
         }
 
         .form-control:focus {
-            border-color: #01949a;
-            box-shadow: 0 0 0 0.2rem rgba(1, 153, 154, 0.25);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(var(--accent-color-rgb), 0.25);
             outline: none;
         }
 
@@ -374,7 +359,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #01949a, #01949a);
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color));
             transition: width 0.3s ease;
         }
 
@@ -397,8 +382,8 @@
         }
 
         .password-toggle:hover {
-            color: #01949a;
-            background: rgba(1, 153, 154, 0.1);
+            color: var(--accent-color);
+            background: rgba(var(--accent-color-rgb), 0.1);
         }
 
         .error-message {
@@ -663,7 +648,7 @@
 
         .tip-item i {
             margin-right: 0.75rem;
-            color: #01949a;
+            color: var(--accent-color);
             font-size: 1rem;
         }
 
@@ -702,7 +687,7 @@
         }
 
         .btn-edit-profile {
-            background: rgba(1, 153, 154, 0.1);
+            background: rgba(var(--accent-color-rgb), 0.1);
             color: var(--primary-color);
             border: none;
             padding: 0.5rem 1rem;

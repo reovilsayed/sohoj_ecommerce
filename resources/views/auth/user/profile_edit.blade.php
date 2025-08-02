@@ -177,26 +177,10 @@
     </div>
 
     <style>
-        :root {
-            --primary-color: #01949a;
-            --primary-dark: #01949a;
-            --primary-light: #e8f5e8;
-            --secondary-color: #2c3e50;
-            --accent-color: #f39c12;
-            --light-gray: #f8f9fa;
-            --medium-gray: #e9ecef;
-            --dark-gray: #6c757d;
-            --danger-color: #dc3545;
-            --success-color: #28a745;
-            --info-color: #17a2b8;
-            --border-radius: 12px;
-            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-        }
 
         /* Header Section */
         .profile-header-section {
-            background: #01949a;
+            background: var(--accent-color);
             padding: 2rem;
             border-radius: 20px;
             color: white;
@@ -241,7 +225,7 @@
             gap: 1rem;
         }
         .btn-edit-profile {
-            background: rgba(1, 153, 154, 0.1);
+            background: rgba(var(--accent-color-rgb), 0.1);
             color: var(--primary-color);
             border: none;
             padding: 0.5rem 1rem;
@@ -387,7 +371,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(1, 153, 154, 0.1) !important;
+            background: rgba(var(--accent-color-rgb), 0.1) !important;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -442,7 +426,7 @@
             display: inline-flex;
             align-items: center;
             padding: 0.75rem 1.5rem;
-            background: rgba(1, 153, 154, 0.1);
+            background: rgba(var(--accent-color-rgb), 0.1);
             color: var(--primary-color);
             border-radius: 25px;
             font-weight: 600;

@@ -1,26 +1,10 @@
 @extends('layouts.user_dashboard')
 @section('dashboard-content')
     <style>
-       :root {
-            --primary-color: #01949a;
-            --primary-dark: #01949a;
-            --primary-light: #e8f5e8;
-            --secondary-color: #2c3e50;
-            --accent-color: #f39c12;
-            --light-gray: #f8f9fa;
-            --medium-gray: #e9ecef;
-            --dark-gray: #6c757d;
-            --danger-color: #dc3545;
-            --success-color: #28a745;
-            --info-color: #17a2b8;
-            --border-radius: 12px;
-            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-        }
-
+    
         /* Redesigned order-header */
         .order-header {
-            background: linear-gradient(90deg, var(--primary-color) 60%, #00b6b6 100%);
+            background:var(--accent-color);
             color: #fff;
             border-radius: 1.5rem;
             padding: 2rem 2.5rem 2rem 2rem;
@@ -70,7 +54,7 @@
         }
         .order-header .btn-group .btn:hover,
         .order-header .btn-group .btn:focus {
-            background: var(--primary-dark);
+            background: var(--accent-color);
             color: #fff;
         }
         .order-header .dropdown-menu {
@@ -98,8 +82,8 @@
         }
 
         .order-status-badge {
-            background: rgba(1, 153, 154, 0.1);
-            color: var(--primary-color);
+            background: rgb(179 149 0 / 22%);
+            color: var(--accent-color);
             border-radius: 0.5rem;
             padding: 0.25rem 0.75rem;
             font-size: 0.95rem;
@@ -128,14 +112,14 @@
         .btn-green,
         .btn-green:active,
         .btn-green:focus {
-            background: #01949a !important;
-            color: #fff !important;
+            background: #ffffff !important;
+            color: #000000 !important;
             border: none !important;
         }
 
         .btn-green:hover {
-            background: #01787a !important;
-            color: #fff !important;
+            background: #ffffff !important;
+            color: #000000 !important;
         }
 
         .order-meta-label {
@@ -144,7 +128,7 @@
         }
 
         .order-meta-value {
-            color: #01949a;
+            color: var(--accent-color);
             font-weight: 600;
         }
 
@@ -165,8 +149,8 @@
         }
 
         .btn-edit-profile {
-            background: rgb(1 153 154 / 19%);   
-            color: var(--primary-color);
+            background: rgb(179 149 0 / 22%);   
+            color: var(--accent-color);
             border: none;
             padding: 0.5rem 1rem;
             /* border-radius: 8px; */
@@ -179,7 +163,7 @@
         }
 
         .btn-edit-profile:hover {
-            background: var(--primary-color);
+            background: var(--accent-color);
             color: white;
         }
     </style>

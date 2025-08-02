@@ -124,11 +124,11 @@
                 Quick Actions
             </h6>
             <div class="action-buttons">
-                <a href="{{ route('homepage') }}" class="action-btn">
+                <a href="{{ route('homepage') }}" class="action-btn w-100">
                     <i class="fas fa-shopping-cart me-1"></i>
                     Start Shopping
                 </a>
-                <a href="{{ route('wishlist.index') }}" class="action-btn">
+                <a href="{{ route('wishlist.index') }}" class="action-btn w-100">
                     <i class="fas fa-heart me-1"></i>
                     Wishlist
                 </a>
@@ -148,7 +148,7 @@
 
         /* User Profile Section */
         .user-profile-section {
-            background: #01949a;
+            background: var(--accent-color);
             padding: 2rem 1.5rem;
             color: white;
             text-align: center;
@@ -271,14 +271,14 @@
         }
 
         .nav-link:hover {
-            background: rgba(1, 153, 154, 0.1);
-            color: #01949a;
+            background: rgba(var(--accent-color-rgb), 0.1);
+            color: var(--accent-color);
             text-decoration: none;
             transform: translateX(5px);
         }
 
         .nav-link.active {
-            background: #01949a;
+            background: var(--accent-color);
             color: white;
             box-shadow: 0 5px 15px rgba(59, 183, 126, 0.3);
         }
@@ -336,12 +336,11 @@
 
         .action-btn {
             display: flex;
-            background: rgba(1, 153, 154, 0.1) !important; 
+            background: var(--accent-color) !important; 
             align-items: center;
             justify-content: center;
             padding: 0.75rem 1rem;
-            background: white;
-            color: #01949a;
+            color: #ffffff;
             text-decoration: none;
             border-radius: 10px;
             font-size: 0.9rem;
@@ -351,7 +350,7 @@
         }
 
         .action-btn:hover {
-            background: #01949a !important;
+            background: var(--primary-dark) !important;
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(59, 183, 126, 0.3);
