@@ -63,7 +63,7 @@ class PaymentService
                         'product_data' => [
                             'name' => $this->order->Product->name,
                         ],
-                        'unit_amount' => intval($this->order->product_price * 100),
+                        'unit_amount' => intval(($this->order->product_price / $this->order->quantity) * 100),
                     ],
                     'quantity' => $this->order->quantity,
                 ];
@@ -77,10 +77,10 @@ class PaymentService
 
         // Calculate tax amount (you can customize this logic)
         $taxRate = $this->getTaxRate(); // Get tax rate from your system
-        $taxAmount = $totalAmount * $taxRate;
-        
+
+        $taxAmount =$taxRate * 100;
         // Add tax as a separate line item
-        if ($taxAmount > 0) {
+        if ($taxRate > 0) {
             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'usd',
@@ -88,7 +88,7 @@ class PaymentService
                         'name' => 'Tax',
                         'description' => 'Sales tax',
                     ],
-                    'unit_amount' => intval($taxAmount * 100),
+                    'unit_amount' => intval($taxAmount),
                 ],
                 'quantity' => 1,
             ];
@@ -104,7 +104,7 @@ class PaymentService
             'metadata' => [
                 'order_id' => $this->order->id,
                 'tax_amount' => $taxAmount,
-                'tax_rate' => $taxRate,
+              
             ],
             // Alternative: Use Stripe's automatic tax calculation
             // 'automatic_tax' => [
