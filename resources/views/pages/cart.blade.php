@@ -164,7 +164,7 @@
         }
 
         .remove-btn {
-            color: var(--text-secondary);
+            color: var(--accent-color);
             border: none;
             font-size: 1.1rem;
             cursor: pointer;
@@ -254,9 +254,6 @@
             font-size: 1rem;
         }
 
-        .summary-label {
-            color: var(--text-secondary);
-        }
 
         .summary-value {
             font-weight: 600;
