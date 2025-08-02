@@ -35,5 +35,7 @@ Route::group(
         Route::get('remove-card', [UserController::class, 'removeCard'])->name('removeCard');
         Route::get('set-card-as-default', [UserController::class, 'setCardAsDefault'])->name('setCardAsDefault');
         Route::post('/feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
+
+        Route::get('liked/shops', [PageController::class, 'followShops'])->name('follow.shops');
     }
 );

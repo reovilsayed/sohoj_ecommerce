@@ -53,7 +53,7 @@ Route::get('/vendors', [PageController::class, 'vendors'])->name('vendors');
 Route::any('/get-state', [PageController::class, 'getShops']);
 
 Route::post('follow/{shop}', [PageController::class, 'follow'])->name('follow');
-Route::get('liked/shops', [PageController::class, 'followShops'])->name('follow.shops');
+// Route::get('liked/shops', [PageController::class, 'followShops'])->name('follow.shops');
 
 Route::post('/add-address', [CheckoutController::class, 'userAddress'])->name('user.address.store');
 

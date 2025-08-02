@@ -42,8 +42,7 @@
 @endsection
 @section('content')
     <x-app.header />
-
-    @auth
+    @if (auth()->check())
         @if (auth()->user()->followedShops->count() > 0)
             <div class="container">
                 <div class="row">
@@ -118,15 +117,10 @@
         @else
             <h3 class="m-4 poppins text-center "> No Shop in liked</h3>
         @endif
-    @else
-        <h2 class="text-danger text-center m-4" style="height: 60vh;">Please login</h2>
-    @endauth
+    @endif
 
-    <!-- End User history section -->
-@endsection
 @section('js')
     <script src="{{ asset('assets/frontend-assets/js/vendor/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('assets/frontend-assets/js/plugins/jquery.sticky-sidebar.js') }}"></script>
-
     <script src="{{ asset('assets/frontend-assets/js/main.js') }}"></script>
 @endsection
