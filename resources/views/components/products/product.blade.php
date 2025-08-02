@@ -19,7 +19,7 @@
             <div class="product-image">
                 <img src="{{ Storage::url($product->image) }}" 
                      alt="{{ $product->name }}" 
-                     class="product-img actual-img" 
+                     class="product-img" 
                      style="width: 100%; height: 100%; object-fit: cover;"
                      >
 
