@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use App\Models\Email;
 use App\Models\Order;
+use App\Models\Page;
 use App\Models\Prodcat;
 use App\Models\Product;
 use App\Models\Rating;
@@ -17,7 +18,6 @@ use App\Repository\ShopRepsitory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
-use TCG\Voyager\Models\Page;
 
 class PageController extends Controller
 {
