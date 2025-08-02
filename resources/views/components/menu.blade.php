@@ -55,3 +55,9 @@
         @endforeach
     </ul>
 @endif
+
+<style>
+    .footer-link:hover {
+        color: #ffffff !important;
+    }
+</style>

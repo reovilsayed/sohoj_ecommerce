@@ -23,6 +23,7 @@ use App\Mail\TicketPlaced;
 use App\Mail\VerifyEmail;
 use App\Models\Offer;
 use App\Models\Order;
+use App\Models\Page;
 use App\Models\Shop;
 use App\Models\Ticket;
 use App\Models\User;
@@ -193,6 +194,11 @@ Route::post('settings/update', [PageController::class, 'settingsUpdate'])->name(
     // Route::get('test',function(){
     //     dd(settings::setting('site.description'));
     // });
+
+    Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
+    Route::get('privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy.policy');
+    Route::get('contact', [PageController::class, 'contact'])->name('contact');
+    Route::post('contact', [PageController::class, 'contactStore'])->name('contact.store');
 
 // API Documentation Route
 Route::get('/api-docs', function () {

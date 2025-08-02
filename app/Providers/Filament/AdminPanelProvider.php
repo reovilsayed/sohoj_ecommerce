@@ -73,7 +73,7 @@ class AdminPanelProvider extends PanelProvider
     HTML
             )
 
-            ->brandLogo(asset('assets/logo/Logo.png'))
+            ->brandLogo(asset('assets/logo/PHOTO.png'))
             ->favicon(asset('assets/images/favicon.ico'))
             ->colors([
                 'danger' => Color::Red,
