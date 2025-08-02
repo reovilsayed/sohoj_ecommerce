@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend-assetss/responsive.css') }}" />
     <style>
         /* Import centralized color system */
-        @import url('{{ asset("assets/css/colors.css") }}');
+        @import url('{{ asset('assets/css/colors.css') }}');
 
 
         .checkout-hero {
@@ -285,12 +285,12 @@
             flex-shrink: 0;
         }
 
-        .payment-card-option input[type="radio"]:checked + .custom-radio-indicator {
+        .payment-card-option input[type="radio"]:checked+.custom-radio-indicator {
             border-color: var(--accent-color);
             box-shadow: 0 0 0 3px var(--shadow-primary);
         }
 
-        .payment-card-option input[type="radio"]:checked + .custom-radio-indicator::after {
+        .payment-card-option input[type="radio"]:checked+.custom-radio-indicator::after {
             content: '';
             display: block;
             width: 12px;
@@ -302,7 +302,7 @@
             left: 3px;
         }
 
-        .payment-card-option input[type="radio"]:checked ~ .payment-card-content {
+        .payment-card-option input[type="radio"]:checked~.payment-card-content {
             /* Highlight the card background and border */
             background: var(--bg-light);
             border-radius: 10px;
@@ -311,12 +311,12 @@
             transform: scale(1.02);
         }
 
-        .payment-card-option input[type="radio"]:checked ~ .payment-card-content .payment-title {
+        .payment-card-option input[type="radio"]:checked~.payment-card-content .payment-title {
             color: var(--accent-color);
         }
 
         /* Optional: checkmark in the top-right corner of the selected card */
-        .payment-card-option input[type="radio"]:checked ~ .payment-card-content::after {
+        .payment-card-option input[type="radio"]:checked~.payment-card-content::after {
             content: '✔';
             position: absolute;
             top: 12px;
@@ -395,6 +395,15 @@
 @endsection
 
 @section('content')
+    @php
+        $prices = Cart::subtotalFloat();
+        $shipping = Sohoj::shipping();
+        $flatCharge = Sohoj::flatCommision($prices);
+        $discount = Sohoj::discount();
+        $tax = Sohoj::tax();
+
+        $total = $prices + $shipping + $flatCharge - $discount + $tax;
+    @endphp
     <x-app.header />
     <div class="checkout-main-bg py-4">
         @php
@@ -421,15 +430,7 @@
                     <div class="checkout-summary sticky-top" style="top: 32px; z-index: 2;">
                         <div class="checkout-summary-title">Order Summary</div>
                         <div class="checkout-summary-list">
-                            @php
-                         
-                                $prices = Cart::subtotal();
-                                // dd($prices);
-                                $shipping = (float) Sohoj::shipping();
-                                $flatCharge = (float) Sohoj::flatCommision($prices);
-                                $discount = (float) Sohoj::discount();
-                                // $total = $prices + $shipping + $flatCharge - $discount;
-                            @endphp
+
                             <div>
                                 <span>Items({{ Cart::count() }}):</span>
                                 <span>{{ Sohoj::price($prices) }}</span>
@@ -442,6 +443,10 @@
                                 <span>Shipping:</span>
                                 <span>{{ Sohoj::price($shipping) }}</span>
                             </div>
+                            <div>
+                                <span>Tax:</span>
+                                <span>{{ Sohoj::price(Sohoj::tax()) }}</span>
+                            </div>
                             @if (session()->has('discount'))
                                 <div>
                                     <span>Discount:</span>
@@ -451,7 +456,7 @@
                         </div>
                         <div class="checkout-summary-total d-flex justify-content-between align-items-center">
                             <span class="fw-bold">Order Total:</span>
-                            <span class="fw-bold">{{ Sohoj::price(Sohoj::newSubtotal()) }}</span>
+                            <span class="fw-bold">{{ Sohoj::price($total) }}</span>
                         </div>
                     </div>
                 </aside>
@@ -502,16 +507,18 @@
                                         <h4 class="fw-semibold mb-3">Order Items</h4>
                                         <div class="table-responsive">
                                             <table class="table align-middle">
-                                                                                            <thead style="background: var(--bg-light)">
-                                                <tr>
-                                                    <th class="py-3" style="color: var(--accent-color)">Product</th>
-                                                    <th class="py-3" style="color: var(--accent-color)">Qty</th>
-                                                    <th class="py-3" style="color: var(--accent-color)">Price</th>
-                                                    <th class="py-3" style="color: var(--accent-color)">Shipping</th>
-                                                    <th class="py-3" style="color: var(--accent-color)">Total</th>
-                                                    <th class="text-center py-3" style="color: var(--accent-color)">Remove</th>
-                                                </tr>
-                                            </thead>
+                                                <thead style="background: var(--bg-light)">
+                                                    <tr>
+                                                        <th class="py-3" style="color: var(--accent-color)">Product</th>
+                                                        <th class="py-3" style="color: var(--accent-color)">Qty</th>
+                                                        <th class="py-3" style="color: var(--accent-color)">Price</th>
+                                                        <th class="py-3" style="color: var(--accent-color)">Shipping
+                                                        </th>
+                                                        <th class="py-3" style="color: var(--accent-color)">Total</th>
+                                                        <th class="text-center py-3" style="color: var(--accent-color)">
+                                                            Remove</th>
+                                                    </tr>
+                                                </thead>
                                                 <tbody>
                                                     @foreach ($items as $item)
                                                         <tr>
@@ -821,13 +828,8 @@
                                         <div class="checkout-summary mb-4">
                                             <div class="checkout-summary-title">Order Summary</div>
                                             <div class="checkout-summary-list">
-                                                @php
-                                                    $prices = (float) Cart::SubTotal();
-                                                    $shipping = (float) Sohoj::shipping();
-                                                    $flatCharge = (float) Sohoj::flatCommision($prices);
-                                                    $discount = (float) Sohoj::discount();
-                                                    $total = $prices + $shipping + $flatCharge - $discount;
-                                                @endphp
+
+
                                                 <div>
                                                     <span>Items({{ Cart::count() }}):</span>
                                                     <span>{{ Sohoj::price($prices) }}</span>
@@ -839,6 +841,10 @@
                                                 <div>
                                                     <span>Shipping:</span>
                                                     <span>{{ Sohoj::price($shipping) }}</span>
+                                                </div>
+                                                <div>
+                                                    <span>Tax:</span>
+                                                    <span>{{ Sohoj::price(Sohoj::tax()) }}</span>
                                                 </div>
                                                 @if (session()->has('discount'))
                                                     <div>
@@ -859,7 +865,8 @@
                                                 id="terms" value="1" name="terms">
                                             <label class="form-check-label ms-2" for="terms">
                                                 I have read and agree to the <a href="{{ url('page/policies') }}"
-                                                    target="_blank" class="text-primary">Terms & Conditions</a> of Afrikartt
+                                                    target="_blank" class="text-primary">Terms & Conditions</a> of
+                                                Afrikartt
                                                 E-commerce
                                             </label>
                                             @error('terms')
@@ -991,7 +998,8 @@
                         <input type="hidden" name="payment_method" id="paymentmethod">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn" style="background: var(--accent-color); color: var(--text-light) !important;"
+                        <button type="button" class="btn"
+                            style="background: var(--accent-color); color: var(--text-light) !important;"
                             data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="card-button"
                             data-secret="{{ $intent->client_secret }}">
@@ -1025,7 +1033,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn" style="background: var(--accent-color); color: var(--text-light) !important;"
+                        <button type="button" class="btn"
+                            style="background: var(--accent-color); color: var(--text-light) !important;"
                             data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" id="card-button"
                             data-secret="{{ $intent->client_secret }}">Save changes</button>

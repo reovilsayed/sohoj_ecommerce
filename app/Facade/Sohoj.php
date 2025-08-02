@@ -2,10 +2,12 @@
 
 namespace App\Facade;
 
+use App\Models\Setting;
 use Cart;
 use Voyager;
-use App\Models\Shipping;
 
+use App\Models\Shipping;
+use App\Setting\Settings;
 
 class Sohoj
 {
@@ -18,7 +20,7 @@ class Sohoj
     {
         $subtotal = floatval(str_replace(',', '', Cart::subtotal()));
         $total = $subtotal - $this->discount();
-        $taxRate = 15;
+        $taxRate = Settings::setting('admin_tax');
         return ($taxRate * $total) / 100;
     }
 
