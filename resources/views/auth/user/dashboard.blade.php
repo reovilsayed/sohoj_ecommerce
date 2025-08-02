@@ -9,23 +9,23 @@
                 <div class="welcome-card">
                     <div class="welcome-content">
                         <div class="welcome-icon">
-                            <i class="fas fa-user-circle"></i>
+                            <i class="fas fa-user-circle" style="color:var(--accent-color);"></i>
                         </div>
                         <div class="welcome-text">
                             <h1 class="text-light">Welcome back, {{ Auth::user()->name }}!</h1>
                             <p>Here's your personalized dashboard to manage your account</p>
                             <div class="welcome-stats">
                                 <div class="stat-item">
-                                    <i class="fas fa-shopping-bag"></i>
-                                    <span>{{Auth()->user()->orders->count()}}</span>
+                                    <i class="fas fa-shopping-bag" style="color:var(--accent-color);"></i>
+                                    <span class="text-dark">{{Auth()->user()->orders->count()}}</span>
                                 </div>
                                 <div class="stat-item">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>{{ Auth()->user()->addresses->count() }} Addresses</span>
+                                    <i class="fas fa-map-marker-alt" style="color:var(--accent-color);"></i>
+                                    <span class="text-dark">{{ Auth()->user()->addresses->count() }} Addresses</span>
                                 </div>
                                 <div class="stat-item">
-                                    <i class="fas fa-credit-card"></i>
-                                    <span>{{ auth()->user()->paymentMethods()->count() }} Cards</span>
+                                    <i class="fas fa-credit-card" style="color:var(--accent-color);"></i>
+                                    <span class="text-dark">{{ auth()->user()->paymentMethods()->count() }} Cards</span>
                                 </div>
                             </div>
                         </div>
@@ -823,7 +823,7 @@
         }
 
         .info-label i {
-            color: var(--primary-color);
+            color: var(--accent-color);
             width: 18px;
             text-align: center;
         }
@@ -861,24 +861,24 @@
         }
 
         .user-dashboard-modern .add-phone-link {
-            color: var(--accent-color);
+            color: #000000;
             text-decoration: none;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: var(--transition);
+            /* transition: var(--transition); */
             font-size: 0.95rem;
         }
 
-        .user-dashboard-modern .add-phone-link:hover {
+        /* .user-dashboard-modern .add-phone-link:hover {
             color: var(--primary-dark);
             transform: translateX(3px);
-        }
+        } */
 
         .user-dashboard-modern .btn-edit-profile {
             background: var(--accent-light);
-            color: var(--accent-color);
+            color: #ffffff;
             border: none;
             padding: 0.5rem 1rem;
             border-radius: 8px;
@@ -923,13 +923,13 @@
         .user-dashboard-modern .action-icon {
             width: 40px;
             height: 40px;
-            background: var(--accent-light);
+            background: var(--accent-color);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1rem;
-            color: var(--primary-color);
+            color: #ffffff;
             font-size: 1.1rem;
         }
 
@@ -959,7 +959,7 @@
 
         .promo-icon {
             font-size: 2.5rem;
-            color: var(--primary-color);
+            color: var(--accent-color);
             background: white;
             padding: 1.5rem;
             border-radius: 20px;
@@ -995,11 +995,11 @@
         }
 
         .benefit-item i {
-            color: var(--primary-color);
+            color: var(--accent-color);
         }
 
         .btn-become-seller {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background: var(--accent-color);
             color: white;
             text-decoration: none;
             padding: 0.75rem 1.5rem;
@@ -1237,7 +1237,7 @@
         }
 
         .btn-add-first-address {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background:var(--accent-color);
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;

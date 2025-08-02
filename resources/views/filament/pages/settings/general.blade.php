@@ -218,7 +218,7 @@
 
         {{-- Preview --}}
         <div x-show="iconPreview" x-cloak
-            class="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+            class="mt-3 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
             <div class="flex items-center space-x-4">
                 <img :src="iconPreview" alt="Icon Preview"
                     class="w-8 h-8 object-cover rounded border border-gray-200 dark:border-gray-600" />
@@ -235,7 +235,7 @@
                 </button>
             </div>
         </div>
-
+            {{-- @dd($settings['site_icon']) --}}
         {{-- Current Logo --}}
         @if (isset($settings['site_icon']) && $settings['site_icon'])
             <div x-show="!logoPreview"
