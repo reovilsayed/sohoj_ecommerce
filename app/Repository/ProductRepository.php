@@ -97,13 +97,13 @@ class ProductRepository
     {
         return Product::where("status", 1)->whereNull('parent_id')->whereHas('shop', function ($q) {
             $q->where('status', 1);
-        })->filter()->simplePaginate(12);
+        })->filter()->paginate($paginate);
     }
 
     public static function getVendorProducts(Shop $shop, array $filters = [])
     {
         return Product::where("status", 1)->whereNull('parent_id')->whereHas('shop', function ($q) {
             $q->where('status', 1);
-        })->filter()->simplePaginate(12);
+        })->filter()->paginate(12);
     }
 }

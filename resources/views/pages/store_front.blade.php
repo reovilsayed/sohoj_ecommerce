@@ -1,3 +1,4 @@
+@extends('layouts.app')
 @section('title', $shop->name . ' | Shop on Afrikartt E-commerce')
 @section('meta_description',
     Str::limit(
@@ -27,365 +28,905 @@
         content="{{ Str::limit($shop->description ?? ($shop->short_description ?? 'Shop ' . $shop->name . ' on Afrikartt E-commerce. Quality products, great deals, and excellent customer service.'), 160) }}">
     <meta name="twitter:image" content="{{ Storage::url($shop->logo) }}">
 @endsection
-@extends('layouts.app')
+
 @section('css')
-    {{-- <link rel="stylesheet" href="{{ asset('assets/frontend-assetss/responsive.css') }}" />
-    <link rel="stylesheet" id="bg-switcher-css" href="{{ asset('assets/frontend-assetss/css/backgrounds/bg-4.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/shops.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/store_front.css') }}"> --}}
-    <style>
-        .nav-pills .nav-link.active {
-            background: linear-gradient(135deg, #e8f5e8, #d4edda) !important;
-            color: #01949a !important;
-        }
+<link rel="stylesheet" href="{{ asset('assets/css/colors.css') }}">
+<style>
+/* Facebook-inspired Design with Brand Colors */
+:root {
+    --fb-blue: var(--primary-color);
+    --fb-green: var(--success-color);
+    --fb-gray: var(--bg-light);
+    --fb-dark: var(--text-dark);
+    --fb-text: var(--text-primary);
+    --fb-text-secondary: var(--text-muted);
+    --fb-border: var(--border-light);
+    --fb-hover: var(--bg-lighter);
+    --fb-shadow: 0 2px 4px var(--shadow-light);
+    --fb-shadow-lg: 0 4px 12px var(--shadow-medium);
+    --fb-accent: var(--accent-color);
+}
 
-        .checkout-hero {
-            background: #01949a;
-            color: #fff;
-            /* border-radius: var(--border-radius); */
-            box-shadow: var(--shadow);
-            padding: 2rem 2.5rem 1.5rem 2.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
+body {
+    background-color: var(--bg-light);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
 
-        .checkout-hero::after {
-            content: '';
-            position: absolute;
-            right: -60px;
-            top: -40px;
-            width: 180px;
-            height: 180px;
-            background: var(--accent);
-            opacity: 0.12;
-            border-radius: 50%;
-            z-index: 0;
-        }
+/* Cover Photo Section */
+.cover-photo-container {
+    position: relative;
+    height: 350px;
+    background: var(--gradient-primary);
+    border-radius: 0 0 20px 20px;
+    overflow: hidden;
+    margin-bottom: 80px;
+}
 
-        .checkout-hero h2,
-        .checkout-hero p,
-        .checkout-hero-steps {
-            position: relative;
-            z-index: 1;
-        }
-    </style>
+.cover-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.8;
+}
+
+.cover-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(transparent, rgba(0,0,0,0.3));
+}
+
+/* Profile Section */
+.profile-section {
+    position: relative;
+    margin-top: -80px;
+    padding: 0 20px;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--fb-shadow-lg);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: var(--fb-shadow);
+    object-fit: cover;
+    margin-top: -120px;
+    margin-bottom: 20px;
+}
+
+.profile-info h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--fb-text);
+    margin-bottom: 8px;
+}
+
+.profile-subtitle {
+    color: var(--fb-text-secondary);
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--fb-text-secondary);
+    font-size: 14px;
+}
+
+.stat-number {
+    font-weight: 600;
+    color: var(--fb-text);
+}
+
+.profile-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-fb-primary {
+    background: var(--btn-primary);
+    color: var(--text-light);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-fb-primary:hover {
+    background: var(--btn-primary-hover);
+    color: var(--text-light);
+}
+
+.btn-fb-secondary {
+    background: var(--btn-secondary);
+    color: var(--text-light);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-fb-secondary:hover {
+    background: var(--btn-secondary-hover);
+    color: var(--text-light);
+}
+
+/* Navigation Tabs */
+.nav-tabs-fb {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    box-shadow: var(--fb-shadow);
+    padding: 8px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 4px;
+}
+
+.nav-tab-fb {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--fb-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-size: 14px;
+}
+
+.nav-tab-fb.active {
+    background: var(--primary-color);
+    color: var(--text-light);
+}
+
+.nav-tab-fb:hover:not(.active) {
+    background: var(--bg-lighter);
+}
+
+/* Content Cards */
+.content-card {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    box-shadow: var(--fb-shadow);
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.card-header-fb {
+    padding: 20px;
+    border-bottom: 1px solid var(--fb-border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.card-title {
+    font-weight: 600;
+    color: var(--fb-text);
+    margin: 0;
+    font-size: 16px;
+}
+
+.card-subtitle {
+    color: var(--fb-text-secondary);
+    font-size: 14px;
+    margin: 0;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+/* Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.product-card-fb {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    box-shadow: var(--fb-shadow);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.product-card-fb:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--fb-shadow-lg);
+}
+
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 16px;
+}
+
+.product-title {
+    font-weight: 600;
+    color: var(--fb-text);
+    margin-bottom: 8px;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.product-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 8px;
+}
+
+.product-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--fb-text-secondary);
+}
+
+/* Reviews Section */
+.review-card {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    box-shadow: var(--fb-shadow);
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.review-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.review-info h6 {
+    margin: 0;
+    font-weight: 600;
+    color: var(--fb-text);
+}
+
+.review-date {
+    color: var(--fb-text-secondary);
+    font-size: 12px;
+}
+
+.review-content {
+    color: var(--fb-text);
+    line-height: 1.5;
+}
+
+/* About Section */
+.about-card {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    box-shadow: var(--fb-shadow);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.about-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--fb-text);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.about-content {
+    color: var(--fb-text);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 16px;
+    background: var(--bg-light);
+    border-radius: 8px;
+}
+
+.stat-icon {
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--fb-text-secondary);
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--fb-text);
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.social-link {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    transition: transform 0.2s;
+    text-decoration: none;
+}
+
+.social-link:hover {
+    transform: scale(1.1);
+    color: white;
+}
+
+.social-facebook { background: var(--primary-color); }
+.social-instagram { background: var(--gradient-accent); }
+.social-twitter { background: var(--info-color); }
+.social-linkedin { background: var(--primary-color); }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .cover-photo-container {
+        height: 250px;
+        margin-bottom: 60px;
+    }
+    
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        margin-top: -80px;
+    }
+    
+    .profile-info h1 {
+        font-size: 24px;
+    }
+    
+    .profile-actions {
+        flex-direction: column;
+    }
+    
+    .nav-tabs-fb {
+        flex-direction: column;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 16px;
+    }
+    
+    .about-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Loading Animation */
+.loading-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+</style>
 @endsection
+
 @section('content')
-    <x-app.header />
-    <section class="w-100 bg-light py-4 shadow-sm mb-4">
-        <div class="container">
-            <div class="row align-items-center g-3">
-                <div class="col-md-3 d-flex justify-content-center align-items-center">
-                    <a href="">
-                        <img class="img-fluid rounded-circle shadow" style="width: 110px; height: 110px; object-fit: cover;"
-                            src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }} logo">
-                    </a>
-                </div>
-                <div class="col-md-6">
-                    <div class="card border-0 shadow-sm p-3 mb-2 bg-white rounded">
-                        <h2 class="text-center mb-1" style="font-size: 26px;">{{ $shop->name }}</h2>
-                        <p class="text-center text-muted mb-1">{{ $shop->short_description }}</p>
-                        <p class="text-center small text-secondary mb-2">{{ $shop->city }}, {{ $shop->state }}</p>
-                        <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
-                            <span class="badge bg-secondary">Silver Seller</span>
-                            <span class="badge bg-success">{{ $shop->orders->count() }} Sold</span>
-                            <span class="ms-2">({{ $shop->ratings->count() }} Reviews)</span>
-                            <div class="ec-single-rating ms-2">
-                                <input value="{{ Sohoj::average_rating($shop->ratings) }}" class="rating published_rating"
-                                    data-size="sm">
-                            </div>
-                        </div>
+<x-app.header />
+
+<!-- Cover Photo Section -->
+<div class="cover-photo-container">
+    <img class="cover-photo" 
+         src="{{ $shop->banner ? Storage::url($shop->banner) : asset('placeholder/shop_banner.webp') }}"
+         alt="{{ $shop->name }} cover photo">
+    <div class="cover-overlay"></div>
+</div>
+
+<!-- Profile Section -->
+<div class="profile-section container mt-3">
+    <div class="profile-card">
+        <div class="text-center">
+            <img class="profile-avatar" 
+                 src="{{ Storage::url($shop->logo) }}" 
+                 alt="{{ $shop->name }} logo">
+            
+            <div class="profile-info">
+                <h1>{{ $shop->name }}</h1>
+                <p class="profile-subtitle">{{ $shop->short_description }}</p>
+                <p class="profile-subtitle">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    {{ $shop->city }}, {{ $shop->state }}
+                </p>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-star text-warning"></i>
+                        <span class="stat-number">{{ number_format(Sohoj::average_rating($shop->ratings), 1) }}</span>
+                        <span>Rating</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-shopping-cart text-success"></i>
+                        <span class="stat-number">{{ $shop->orders->count() }}</span>
+                        <span>Sales</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-users text-primary"></i>
+                        <span class="stat-number">{{ $shop->ratings->count() }}</span>
+                        <span>Reviews</span>
                     </div>
                 </div>
-                <div class="col-md-3 d-flex flex-column align-items-center gap-2">
+                
+                <div class="profile-actions">
                     @auth
                         <form action="{{ route('follow', $shop) }}" method="post" style="display:inline">
                             @csrf
                             @php
                                 $follow = auth()->user()->follows($shop);
                             @endphp
-                            <button class="btn btn-dark rounded-pill px-4 mb-2">
-                                <i class="fa fa-user-plus me-2"></i>{{ $follow ? 'Unfollow' : 'Follow' }}
+                            <button class="btn-fb-primary">
+                                <i class="fas fa-user-plus"></i>
+                                {{ $follow ? 'Unfollow' : 'Follow' }}
                             </button>
                         </form>
                     @else
-                        <a class="btn btn-dark rounded-pill px-4 mb-2" href="{{ route('login') }}">
-                            <i class="fa fa-user-plus me-2"></i>Follow
+                        <a class="btn-fb-primary" href="{{ route('login') }}">
+                            <i class="fas fa-user-plus"></i>
+                            Follow
                         </a>
                     @endauth
-                    <a href="{{ route('massage.create', $shop->id) }}" data-bs-toggle="tooltip" title="Send Message">
-                        <i class="fa-regular fa-envelope fa-2xl"></i>
+                    
+                    <a href="{{ route('massage.create', $shop->id) }}" class="btn-fb-secondary">
+                        <i class="fas fa-envelope"></i>
+                        Message
                     </a>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 
-    <section class="w-100 mb-4">
-        <div class="container">
-            <a href="">
-                <img class="banner img-fluid rounded shadow" 
-                     data-src="{{ $shop->banner ? Storage::url($shop->banner) : asset('placeholder/shop_banner.webp') }}"
-                     src="{{ asset('placeholder/shop_banner.webp') }}" style="object-fit: cover; width: 100%; height: 300px; border-radius: 8px;"
-                     alt="{{ $shop->name }} banner"
-                     onload="this.classList.add('loaded')"
-                     onerror="this.src='{{ asset('placeholder/shop_banner.webp') }}'; this.classList.add('error')">
-            </a>
-        </div>
-    </section>
+<!-- Navigation Tabs -->
+<div class="container">
+    <div class="nav-tabs-fb">
+        <button class="nav-tab-fb active" onclick="showTab('home')">
+            <i class="fas fa-home me-2"></i>Home
+        </button>
+        <button class="nav-tab-fb" onclick="showTab('products')">
+            <i class="fas fa-box me-2"></i>Products
+        </button>
+        <button class="nav-tab-fb" onclick="showTab('about')">
+            <i class="fas fa-info-circle me-2"></i>About
+        </button>
+        <button class="nav-tab-fb" onclick="showTab('reviews')">
+            <i class="fas fa-star me-2"></i>Reviews
+        </button>
+    </div>
+</div>
 
-    <section>
-        <nav class="navbar navbar-expand-lg bg-white shadow-sm rounded mb-3" style="height: 56px;z-index:99">
-            <div class="container">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <i class="fa fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav nav-pills">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Home</a>
-                        </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ route('store_front', [$shop->slug, 'shop_products' => 'most-popular']) }}">Popular
-                                Items</a>
-                        </li> --}}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#offer">Promotions</a>
-                        </li>
-                        {{-- @if ($shop->menuTitle1)
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ $shop->menuLink1 }}">{{ $shop->menuTitle1 }}</a>
-                            </li>
-                        @endif
-                        @if ($shop->menuTitle2)
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ $shop->menuLink2 }}">{{ $shop->menuTitle2 }}</a>
-                            </li>
-                        @endif --}}
-                    </ul>
-                    <form class="d-flex ms-3" action="{{ route('store_front', $shop->slug) }}" method="get">
-                        <input type="text" name="search" class="form-control me-2"
-                            placeholder="Search for product?">
-                        <button type="submit" class="btn btn-outline-dark"><i class="fa fa-search"></i></button>
-                    </form>
-                </div>
-            </div>
-        </nav>
-    </section>
-
-    <section class="container mt-4">
-        <div class="shop-pro-inner">
-            <div class="row ">
-                @if (count($shop->products) == !0)
-                    @foreach ($shop->products as $product)
-                       
-                            <x-products.product :product="$product" :variant="'red'" :showMultipleCategories="true" />
-                       
-                    @endforeach
-                @endif
-            </div>
-        </div>
-    </section>
-
-    <section class="container mt-2" id="offer">
-        <x-offer :shop="$shop" />
-    </section>
-
-    <section class="seller-footer mt-5">
-        <div class="col-md-12 seller-icon p-4 bg-white rounded shadow-sm">
-            <ul class="mb-2 d-flex justify-content-center gap-3" style="width: 100%;">
-                <li class="list-inline-item"><a target="_blank" class="hdr-facebook" href="{{ $shop->facebook }}"><i
-                            class="ecicon eci-facebook e rounded-circle p-3 d-flex justify-content-center"
-                            style="font-size:15px; height:47px; width:45px;"></i></a></li>
-                <li class="list-inline-item"><a target="_blank" class="hdr-linkedin" href="{{ $shop->linkedin }}"><i
-                            class="ecicon eci-linkedin rounded-circle p-3" style="font-size:15px"></i></a></li>
-                <li class="list-inline-item"><a target="_blank" class="hdr-instagram" href="{{ $shop->instagram }}"><i
-                            class="ecicon eci-instagram rounded-circle p-3 border" style="font-size:15px;"></i></a></li>
-                <li class="list-inline-item"><a target="_blank" class="hdr-twitter" href="{{ $shop->twitter }}"><i
-                            class="ecicon eci-twitter rounded-circle p-3 border" style="font-size:15px"></i></a></li>
-            </ul>
-            <div class="seller-footer mt-4 text-center">
-                <h2><strong>About</strong> {{ $shop->name }}</h2>
-                <p>{{ $shop->description }}</p>
-                <div style="border-top: 1px solid #eeeeee;border-bottom: 1px solid #eeeeee;"></div>
-            </div>
-            <div class="container flex-wrap">
-                <h5 class="my-5" style="margin-left:30px;">Reviews</h5>
-                @if ($shop->ratings()->count())
-                    @foreach ($shop->ratings as $rating)
-                        <div class="card mb-3 shadow-sm">
-                            <div class="card-body d-flex align-items-center">
-                                <img src="{{ asset('assets/img/single_product/person.png') }}"
-                                    class="rounded-circle me-3" style="width: 50px; height: 50px;" alt="Reviewer avatar">
-                                <div>
-                                    <h6 class="mb-0">{{ $rating->name }}</h6>
-                                    <div>
-                                        <input name="rating" type="number" value="{{ $rating->rating }}"
-                                            class="rating published_rating" data-size="sm">
-                                    </div>
-                                    <p class="mb-0 text-muted">{{ $rating->review }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                @else
-                    <p class="d-flex justify-content-center text-danger">No reviews</p>
-                @endif
-                <div class="d-flex justify-content-center align-items-end mb-2"></div>
-                <div style="border-top: 1px solid #eeeeee;border-bottom: 1px solid #eeeeee;"></div>
-            </div>
-            <div class="container my-4">
-                <div class="card shadow-sm rounded p-3">
-                    <div class="row text-center">
-                        <div class="col-6 col-md-3 mb-3 mb-md-0">
-                            <div class="mb-1 text-muted small"><i class="fa fa-user-circle me-1"></i>Owner</div>
-                            <div class="fw-bold fs-5">{{ $shop->user->name }}</div>
-                        </div>
-                        <div class="col-6 col-md-3 mb-3 mb-md-0">
-                            <div class="mb-1 text-muted small"><i class="fa fa-building me-1"></i>Company</div>
-                            <div class="fw-bold fs-5">{{ $shop->company_name }}</div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="mb-1 text-muted small"><i class="fa fa-calendar-alt me-1"></i>Joined</div>
-                            <div class="fw-bold fs-5">{{ $shop->created_at ? $shop->created_at->format('Y') : '' }}</div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="mb-1 text-muted small"><i class="fa fa-shopping-cart me-1"></i>Sales</div>
-                            <div class="fw-bold fs-5">{{ $shop->orders->count() }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- <div class="container mb-3" style="border: 1px solid #eeeeee"></div> --}}
-            @if ($shop->shopPolicy)
-                <div class="container my-4">
-                    <div class="card shadow-sm rounded p-4">
-                        <h4 class="mb-4"><i class="fa fa-info-circle me-2 text-primary"></i>Shop Policy</h4>
-                        <div class="row g-3">
-                            <div class="col-12 col-md-6">
-                                <div class="d-flex align-items-start mb-3">
-                                    <span class="me-3 fs-3 text-danger"><i class="fa fa-ban"></i></span>
-                                    <div>
-                                        <div class="fw-bold">Cancellation</div>
-                                        <div class="text-muted small">{{ $shop->shopPolicy->cancellation }}</div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-start mb-3">
-                                    <span class="me-3 fs-3 text-warning"><i class="fa fa-exchange-alt"></i></span>
-                                    <div>
-                                        <div class="fw-bold">Return & Exchange</div>
-                                        <div class="text-muted small">{{ $shop->shopPolicy->return_exchange }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="d-flex align-items-start mb-3">
-                                    <span class="me-3 fs-3 text-success"><i class="fa fa-credit-card"></i></span>
-                                    <div>
-                                        <div class="fw-bold">Payment Option</div>
-                                        <div class="text-muted small">{{ $shop->shopPolicy->payment_option }}</div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-start mb-3">
-                                    <span class="me-3 fs-3 text-primary"><i class="fa fa-truck"></i></span>
-                                    <div>
-                                        <div class="fw-bold">Delivery</div>
-                                        <div class="text-muted small">{{ $shop->shopPolicy->delivery }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @else
-                <span class="text-danger">No Shop Policy Added</span>
-            @endif
-        </div>
-    </section>
-
-    <!-- Modal -->
-    <div class="modal fade" id="massageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Send Massage</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('massage.store', $shop) }}" method="post">
-                        @csrf
-                        <div class="form-group">
-                            <label for="email">Email address</label>
-                            <input type="email" class="form-control" required name="email" id="email"
-                                aria-describedby="emailHelp" placeholder="Enter email">
-                        </div>
-                        <div class="form-group">
-                            <label for="massage">Massage</label>
-                            <textarea class="form-control" rows="5" name="massage" id="massage"></textarea>
-                        </div>
-
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
+<!-- Content Sections -->
+<div class="container">
+    <!-- Home Tab -->
+    <div id="home-tab" class="tab-content">
+        <!-- Search Bar -->
+        <div class="content-card">
+            <div class="card-content">
+                <form action="{{ route('store_front', $shop->slug) }}" method="get" class="d-flex gap-2">
+                    <input type="text" name="search" class="form-control" 
+                           placeholder="Search products in {{ $shop->name }}..."
+                                                       style="border-radius: 20px; border: 1px solid var(--border-light);">
+                    <button type="submit" class="btn-fb-primary" style="border-radius: 20px; background: var(--btn-primary);">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </form>
             </div>
         </div>
-    </div>
-@endsection
-@section('js')
-    <script src="{{ asset('assets/frontend-assets/js/vendor/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('assets/frontend-assets/js/plugins/jquery.sticky-sidebar.js') }}"></script>
 
-    <script src="{{ asset('assets/frontend-assets/js/main.js') }}"></script>
+        <!-- Products Section -->
+        @if (count($shop->products) > 0)
+        <div class="content-card">
+            <div class="card-header-fb">
+                <img class="card-avatar" src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}">
+                <div>
+                    <h5 class="card-title">{{ $shop->name }}</h5>
+                    <p class="card-subtitle">Products</p>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="row">
+                    @foreach ($shop->products as $product)
+                    <x-products.product :product="$product" />
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <!-- Offers Section -->
+        <div class="content-card">
+            <div class="card-header-fb">
+                <img class="card-avatar" src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}">
+                <div>
+                    <h5 class="card-title">{{ $shop->name }}</h5>
+                    <p class="card-subtitle">Current Offers</p>
+                </div>
+            </div>
+            <div class="card-content">
+                <x-offer :shop="$shop" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Tab -->
+    <div id="products-tab" class="tab-content" style="display: none;">
+        <div class="content-card">
+            <div class="card-header-fb">
+                <img class="card-avatar" src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}">
+                <div>
+                    <h5 class="card-title">{{ $shop->name }}</h5>
+                    <p class="card-subtitle">All Products</p>
+                </div>
+            </div>
+            <div class="card-content">
+                @if (count($shop->products) > 0)
+                <div class="row">
+                    @foreach ($shop->products as $product)
+                    <x-products.product :product="$product" />
+                    @endforeach
+                </div>
+                @else
+                <div class="text-center py-4">
+                    <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No products available</h5>
+                    <p class="text-muted">This shop hasn't added any products yet.</p>
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- About Tab -->
+    <div id="about-tab" class="tab-content" style="display: none;">
+        <div class="about-card p-3">
+            <h3 class="about-title">
+                <i class="fas fa-info-circle"></i>
+                About {{ $shop->name }}
+            </h3>
+            <div class="about-content">
+                {!! $shop->description !!}
+            </div>
+            
+            <div class="about-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="stat-label">Owner</div>
+                    <div class="stat-value">{{ $shop->user->name }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="stat-label">Company</div>
+                    <div class="stat-value">{{ $shop->company_name }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-label">Joined</div>
+                    <div class="stat-value">{{ $shop->created_at ? $shop->created_at->format('Y') : '' }}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-label">Sales</div>
+                    <div class="stat-value">{{ $shop->orders->count() }}</div>
+                </div>
+            </div>
+        </div>
+
+        @if ($shop->shopPolicy)
+        <div class="content-card p-3">
+            <div class="card-header-fb">
+                <img class="card-avatar" src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}">
+                <div>
+                    <h5 class="card-title">{{ $shop->name }}</h5>
+                    <p class="card-subtitle">Shop Policy</p>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start mb-3">
+                            <span class="me-3 fs-3 text-danger"><i class="fas fa-ban"></i></span>
+                            <div>
+                                <div class="fw-bold">Cancellation</div>
+                                <div class="text-muted small">{{ $shop->shopPolicy->cancellation }}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-3">
+                            <span class="me-3 fs-3 text-warning"><i class="fas fa-exchange-alt"></i></span>
+                            <div>
+                                <div class="fw-bold">Return & Exchange</div>
+                                <div class="text-muted small">{{ $shop->shopPolicy->return_exchange }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start mb-3">
+                            <span class="me-3 fs-3 text-success"><i class="fas fa-credit-card"></i></span>
+                            <div>
+                                <div class="fw-bold">Payment Option</div>
+                                <div class="text-muted small">{{ $shop->shopPolicy->payment_option }}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-3">
+                            <span class="me-3 fs-3 text-primary"><i class="fas fa-truck"></i></span>
+                            <div>
+                                <div class="fw-bold">Delivery</div>
+                                <div class="text-muted small">{{ $shop->shopPolicy->delivery }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <!-- Social Links -->
+        <div class="content-card">
+            <div class="card-header-fb">
+                <img class="card-avatar" src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}">
+                <div>
+                    <h5 class="card-title">{{ $shop->name }}</h5>
+                    <p class="card-subtitle">Follow Us</p>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="social-links">
+                    @if($shop->facebook)
+                    <a href="{{ $shop->facebook }}" target="_blank" class="social-link social-facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    @endif
+                    @if($shop->instagram)
+                    <a href="{{ $shop->instagram }}" target="_blank" class="social-link social-instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    @endif
+                    @if($shop->twitter)
+                    <a href="{{ $shop->twitter }}" target="_blank" class="social-link social-twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    @endif
+                    @if($shop->linkedin)
+                    <a href="{{ $shop->linkedin }}" target="_blank" class="social-link social-linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Tab -->
+    <div id="reviews-tab" class="tab-content" style="display: none;">
+        <div class="content-card">
+            <div class="card-header-fb">
+                <img class="card-avatar" src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}">
+                <div>
+                    <h5 class="card-title">{{ $shop->name }}</h5>
+                    <p class="card-subtitle">Customer Reviews</p>
+                </div>
+            </div>
+            <div class="card-content">
+                @if ($shop->ratings()->count() > 0)
+                    @foreach ($shop->ratings as $rating)
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img class="review-avatar" 
+                                 src="{{ asset('assets/img/single_product/person.png') }}" 
+                                 alt="Reviewer">
+                            <div class="review-info">
+                                <h6>{{ $rating->name }}</h6>
+                                <div class="review-date">{{ $rating->created_at->format('M d, Y') }}</div>
+                            </div>
+                            <div class="ms-auto">
+                                <input name="rating" type="number" value="{{ $rating->rating }}"
+                                       class="rating published_rating" data-size="sm">
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            {{ $rating->review }}
+                        </div>
+                    </div>
+                    @endforeach
+                @else
+                <div class="text-center py-4">
+                    <i class="fas fa-star fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No reviews yet</h5>
+                    <p class="text-muted">Be the first to review this shop!</p>
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Message Modal -->
+<div class="modal fade" id="massageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Send Message</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('massage.store', $shop) }}" method="post">
+                    @csrf
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" required name="email" id="email"
+                               aria-describedby="emailHelp" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="massage">Message</label>
+                        <textarea class="form-control" rows="5" name="massage" id="massage"></textarea>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('js')
+<script src="{{ asset('assets/frontend-assets/js/vendor/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{ asset('assets/frontend-assets/js/plugins/jquery.sticky-sidebar.js') }}"></script>
+<script src="{{ asset('assets/frontend-assets/js/main.js') }}"></script>
+
+<script>
+// Tab switching functionality
+function showTab(tabName) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = 'none';
+    });
     
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Banner image loading with fallback
-            const bannerImage = document.querySelector('.banner');
+    // Remove active class from all tabs
+    document.querySelectorAll('.nav-tab-fb').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Show selected tab content
+    document.getElementById(tabName + '-tab').style.display = 'block';
+    
+    // Add active class to clicked tab
+    event.target.classList.add('active');
+}
+
+// Banner image loading with fallback
+document.addEventListener('DOMContentLoaded', function() {
+    const bannerImage = document.querySelector('.cover-photo');
+    
+    if (bannerImage) {
+        // Set initial placeholder
+        bannerImage.src = '{{ asset('placeholder/shop_banner.webp') }}';
+        
+        // Try to load the actual banner image
+        const actualBannerSrc = '{{ $shop->banner ? Storage::url($shop->banner) : asset('placeholder/shop_banner.webp') }}';
+        
+        if (actualBannerSrc && actualBannerSrc !== '{{ asset('placeholder/shop_banner.webp') }}') {
+            const tempImage = new Image();
             
-            if (bannerImage) {
-                // Set initial placeholder
-                bannerImage.src = '{{ asset('assets/img/store_front/banner.png') }}';
-                
-                // Try to load the actual banner image
-                const actualBannerSrc = bannerImage.dataset.src;
-                
-                if (actualBannerSrc && actualBannerSrc !== '{{ asset('assets/img/store_front/banner.png') }}') {
-                    const tempImage = new Image();
-                    
-                    tempImage.onload = function() {
-                        // Actual image loaded successfully
-                        bannerImage.src = actualBannerSrc;
-                        bannerImage.classList.add('loaded');
-                    };
-                    
-                    tempImage.onerror = function() {
-                        // Actual image failed to load, keep placeholder
-                        bannerImage.classList.add('error');
-                        console.log('Banner image failed to load, using placeholder');
-                    };
-                    
-                    // Start loading the actual image
-                    tempImage.src = actualBannerSrc;
-                } else {
-                    // No custom banner, use placeholder
-                    bannerImage.classList.add('placeholder');
-                }
-            }
+            tempImage.onload = function() {
+                // Actual image loaded successfully
+                bannerImage.src = actualBannerSrc;
+                bannerImage.classList.add('loaded');
+            };
             
-            // Add loading animation
-            bannerImage.addEventListener('load', function() {
-                this.style.opacity = '1';
-            });
-        });
-    </script>
+            tempImage.onerror = function() {
+                // Actual image failed to load, keep placeholder
+                bannerImage.classList.add('error');
+                console.log('Banner image failed to load, using placeholder');
+            };
+            
+            // Start loading the actual image
+            tempImage.src = actualBannerSrc;
+        } else {
+            // No custom banner, use placeholder
+            bannerImage.classList.add('placeholder');
+        }
+    }
+    
+    // Add loading animation
+    bannerImage.addEventListener('load', function() {
+        this.style.opacity = '1';
+    });
+});
+</script>
 @endsection
