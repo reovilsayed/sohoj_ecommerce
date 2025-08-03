@@ -119,7 +119,34 @@
             <h3 class="m-4 poppins text-center "> No Shop in liked</h3>
         @endif
     @else
-        <h2 class="text-danger text-center m-4" style="height: 60vh;">Please login</h2>
+        <div class="container">
+            <div class="row justify-content-center align-items-center" style="min-height: 60vh;">
+            <div class="col-md-7 col-lg-6">
+                <div class="card shadow border-0 rounded-4 p-5 text-center bg-light position-relative overflow-hidden">
+                <div class="position-absolute top-0 end-0 opacity-10" style="z-index:0; pointer-events:none;">
+                    <svg width="120" height="120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="60" cy="60" r="60" fill="var(--accent-color)" opacity="0.08"/>
+                    <circle cx="60" cy="60" r="40" fill="var(--accent-color)" opacity="0.06"/>
+                    </svg>
+                </div>
+                <div class="mb-4">
+                    <svg width="64" height="64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="32" cy="32" r="32" fill="var(--accent-color)" opacity="0.12"/>
+                    <path d="M32 40c-6.5 0-13-3.5-13-8.5V27a7 7 0 0 1 7-7h12a7 7 0 0 1 7 7v4.5c0 5-6.5 8.5-13 8.5Z" fill="var(--accent-color)" opacity="0.7"/>
+                    <circle cx="32" cy="22" r="6" fill="var(--accent-color)" opacity="0.7"/>
+                    </svg>
+                </div>
+                <h2 class="fw-bold mb-2 poppins" style="color:var(--accent-color);">Login Required</h2>
+                <p class="mb-4 text-secondary">
+                    Please sign in to view your liked shops and enjoy a personalized shopping experience.
+                </p>
+                <a href="{{ route('login') }}" class="btn fw-semibold shadow-sm px-5" style="background:var(--accent-color); color:#fff;">
+                    Login
+                </a>
+                </div>
+            </div>
+            </div>
+        </div>
     @endauth
 
     <!-- End User history section -->
