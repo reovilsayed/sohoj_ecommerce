@@ -233,25 +233,25 @@
                                 <p class="community-description">Connect with artists and art lovers worldwide. Follow us
                                     for daily inspiration and updates.</p>
                                 <div class="social-grid">
-                                    <a href="#" class="social-item facebook">
+                                    <a href="{{ Settings::setting('social_fb_link') }}" class="social-item facebook">
                                         <i class="fab fa-facebook-f"></i>
                                         <span>Facebook</span>
                                         <small>15K followers</small>
                                     </a>
-                                    <a href="#" class="social-item instagram">
+                                    <a href="{{ Settings::setting('social_inst_link') }}" class="social-item instagram">
                                         <i class="fab fa-instagram"></i>
                                         <span>Instagram</span>
                                         <small>25K followers</small>
                                     </a>
-                                    <a href="#" class="social-item twitter">
+                                    <a href="{{ Settings::setting('social_twitter_link') }}" class="social-item twitter">
                                         <i class="fab fa-twitter"></i>
                                         <span>Twitter</span>
                                         <small>8K followers</small>
                                     </a>
-                                    <a href="#" class="social-item youtube">
-                                        <i class="fab fa-youtube"></i>
-                                        <span>YouTube</span>
-                                        <small>12K subscribers</small>
+                                    <a href="{{ Settings::setting('social_linkedin_link') }}" class="social-item linkedin">
+                                        <i class="fab fa-linkedin-in"></i>
+                                        <span>LinkedIn</span>
+                                        <small>5K followers</small>
                                     </a>
                                 </div>
                             </div>
