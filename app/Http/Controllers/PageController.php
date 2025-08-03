@@ -482,4 +482,9 @@ class PageController extends Controller
         Mail::to(Settings::setting('admin_email'))->send(new ContactMessageMail($contactData));
         return redirect()->back()->with('success_msg', 'Thank you for your message! We will get back to you within 24 hours.');
     }
+
+    public function paymentCancel()
+    {
+        return view('pages.payment_cancel');
+    }
 }

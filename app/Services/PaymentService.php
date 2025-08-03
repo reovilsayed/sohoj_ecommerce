@@ -100,7 +100,7 @@ class PaymentService
             'mode' => 'payment',
             'customer_email' => $this->order->shipping ? json_decode($this->order->shipping)->email : null,
             'success_url' => route('thankyou'),
-            'cancel_url' => route('thankyou'),
+            'cancel_url' => route('payment.cancel'),
             'metadata' => [
                 'order_id' => $this->order->id,
                 'tax_amount' => $taxAmount,
