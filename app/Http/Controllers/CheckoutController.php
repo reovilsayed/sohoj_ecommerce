@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
 use App\Mail\AdminOrderPlacedMail;
+use App\Mail\CustomarOrderPlacedMail;
 use App\Mail\OrderPlaced;
 use App\Mail\VendorOrderPlacedMail;
 use App\Models\Address;
@@ -137,11 +138,11 @@ class CheckoutController extends Controller
         $url = $paymentService->getPaymentRedirectUrl();
         $shipping = json_decode($order->shipping, true);
         if ($shipping['email']) {
-            Mail::to($shipping['email'])->send(new OrderPlaced($order, $childOrder, $order));
+            Mail::to($shipping['email'])->send(new CustomarOrderPlacedMail($order, $childOrder));
         }
-        // if (optional($childOrder->shop)->email) {
-        //     Mail::to(optional($childOrder->shop)->email)->send(new VendorOrderPlacedMail($childOrder, $order));
-        // }
+        if (optional($childOrder->shop)->email) {
+            Mail::to(optional($childOrder->shop)->email)->send(new VendorOrderPlacedMail($childOrder, $order));
+        }
         if (Settings::setting('admin_email')) {
             Mail::to(Settings::setting('admin_email'))->send(new AdminOrderPlacedMail($order, $childOrder));
         }

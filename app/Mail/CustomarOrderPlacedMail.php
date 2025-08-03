@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VendorOrderPlacedMail extends Mailable
+class CustomarOrderPlacedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -17,8 +17,9 @@ class VendorOrderPlacedMail extends Mailable
      * Create a new message instance.
      */
     protected $order;
+
     public $childOrder;
-    public function __construct($order, $childOrder )
+    public function __construct($order, $childOrder = null)
     {
         $this->order = $order;
         $this->childOrder = $childOrder;
@@ -30,7 +31,7 @@ class VendorOrderPlacedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Vendor Order Placed Mail',
+            subject: 'Your order has been placed successfully!',
         );
     }
 
@@ -40,11 +41,11 @@ class VendorOrderPlacedMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.vendorOrder_placed',
+            view: 'emails.customarOrder_placed',
             with: [
                 'order' => $this->order,
                 'childOrder' => $this->childOrder,
-            ],
+            ]
         );
     }
 
