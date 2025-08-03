@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactMessageMail;
 use App\Models\Address;
 use App\Models\Email;
 use App\Models\Order;
@@ -15,8 +16,10 @@ use App\Models\Slider;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ShopRepsitory;
+use App\Setting\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class PageController extends Controller
@@ -467,21 +470,16 @@ class PageController extends Controller
 
     public function contactStore(Request $request)
     {
-        $request->validate([
+        $contactData = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:20',
-            'subject' => 'required|string|max:255',
             'order_number' => 'nullable|string|max:50',
             'message' => 'required|string|max:2000',
             'privacy_agree' => 'required|accepted',
         ]);
-
-        // Here you can add logic to save the contact form data to database
-        // or send email notification to admin
-        
-        // For now, we'll just redirect back with success message
+        Mail::to(Settings::setting('admin_email'))->send(new ContactMessageMail($contactData));
         return redirect()->back()->with('success_msg', 'Thank you for your message! We will get back to you within 24 hours.');
     }
 }
