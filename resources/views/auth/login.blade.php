@@ -155,7 +155,6 @@
         }
         .signup-link {
             text-align: center;
-            color: var(--text-secondary);
             font-size: 0.875rem;
         }
         .signup-link a {
