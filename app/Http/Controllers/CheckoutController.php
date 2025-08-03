@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Mail\AdminOrderPlacedMail;
 use App\Mail\OrderPlaced;
+use App\Mail\VendorOrderPlacedMail;
 use App\Models\Address;
 use App\Models\Notification;
 // Use the Sohoj facade alias registered in config/app.php
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
+use App\Models\Setting;
 use App\Models\User;
 use App\Services\PaymentService;
+use App\Setting\Settings;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Error;
 use Exception;
@@ -126,12 +130,23 @@ class CheckoutController extends Controller
                 'shop_id' => $item->model->shop_id,
             ]);
         }
-      
+
 
         // return redirect('/thankyou')->with('thank', 'Order Created successfully!');
         $paymentService = new PaymentService($order);
         $url = $paymentService->getPaymentRedirectUrl();
-          Cart::destroy();
+        $shipping = json_decode($order->shipping, true);
+        if ($shipping['email']) {
+            Mail::to($shipping['email'])->send(new OrderPlaced($order, $childOrder, $order));
+        }
+        // if (optional($childOrder->shop)->email) {
+        //     Mail::to(optional($childOrder->shop)->email)->send(new VendorOrderPlacedMail($childOrder, $order));
+        // }
+        if (Settings::setting('admin_email')) {
+            Mail::to(Settings::setting('admin_email'))->send(new AdminOrderPlacedMail($order, $childOrder));
+        }
+        
+        Cart::destroy();
         return redirect($url);
 
 

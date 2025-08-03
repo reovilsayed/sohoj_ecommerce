@@ -9,18 +9,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OrderPlaced extends Mailable implements ShouldQueue
+class AdminOrderPlacedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $order;
-    public $childOrder;
-
     /**
      * Create a new message instance.
-     *
-     * @return void
      */
+
+    public $order;
+    
+    public $childOrder;
     public function __construct($order, $childOrder)
     {
         // Convert order to object
@@ -36,28 +35,22 @@ class OrderPlaced extends Mailable implements ShouldQueue
 
     /**
      * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your Order Has Been Successfully Placed - Thank You for Shopping with Us!',
-            from: config('mail.from.address'),
-            replyTo: config('mail.reply_to.address', 'support@yourdomain.com'),
+            subject: 'Admin Order Placed Mail',
         );
     }
 
     /**
      * Get the message content definition.
-     *
-     * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
+    public function content(): Content
     {
         return new Content(
-            view: 'emails.placed',
-            with: [
+            view: 'emails.adminOrder_placed',
+            with: [ 
                 'order' => $this->order,
                 'childOrder' => $this->childOrder,
             ],
@@ -67,9 +60,9 @@ class OrderPlaced extends Mailable implements ShouldQueue
     /**
      * Get the attachments for the message.
      *
-     * @return array
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments()
+    public function attachments(): array
     {
         return [];
     }
