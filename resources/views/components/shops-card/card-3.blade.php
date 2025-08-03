@@ -6,13 +6,13 @@
                 <div class="shop-card-overlay">
                     <div class="shop-card-actions">
                         <a href="{{ route('store_front', $shop->slug) }}" class="shop-action-btn" title="Visit Shop">
-                            <i class="fas fa-external-link-alt text-light"></i>
+                            <i class="fas fa-external-link-alt" style="color: var(--rating-color)"></i>
                         </a>
                         <button class="shop-action-btn" title="Follow Shop">
-                            <i class="fas fa-heart"></i>
+                            <i class="fas fa-heart" style="color: var(--rating-color)"></i>
                         </button>
                         <button class="shop-action-btn" title="Share Shop">
-                            <i class="fas fa-share-alt"></i>
+                            <i class="fas fa-share-alt" style="color: var(--rating-color)"></i>
                         </button>
                     </div>
                 </div>
@@ -42,7 +42,8 @@
                             <i class="fas fa-star {{ $i <= 4 ? 'filled' : '' }}"></i>
                         @endfor
                     </div>
-                    <span class="shop-rating-text">({{ Sohoj::average_rating($shop->ratings) }})</span>
+                    <span class="shop-rating-text text-dark">({{ $shop->ratings->count() }})</span>
+
                 </div>
             </div>
 
@@ -52,7 +53,8 @@
                 </div>
                 <div class="shop-card-location">
                     <i class="fas fa-map-marker-alt"></i>
-                    <span>{{ $shop->city . ' ' . $shop->state . ' ' . $shop->post_code . ' ' . $shop->country ?? 'Unknown Location' }}</span>
+                    <span
+                        class="text-dark">{{ $shop->city . ' ' . $shop->state . ' ' . $shop->post_code . ' ' . $shop->country ?? 'Unknown Location' }}</span>
                 </div>
             </div>
 
@@ -93,7 +95,8 @@
             </div>
 
             <div class="shop-card-description">
-                <p>{{ Str::limit($shop->short_description ?? 'A trusted shop offering quality products and excellent service.', 60, '...') }}
+                <p class="text-dark">
+                    {{ Str::limit($shop->short_description ?? 'A trusted shop offering quality products and excellent service.', 60, '...') }}
                 </p>
             </div>
 

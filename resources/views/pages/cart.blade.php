@@ -30,7 +30,7 @@
 
     <style>
         /* Import centralized color system */
-        @import url('{{ asset("assets/css/colors.css") }}');
+        @import url('{{ asset('assets/css/colors.css') }}');
 
         body,
         #body {
@@ -324,7 +324,7 @@
                     <p class="mb-0">Complete your order and enjoy fast, secure delivery.</p>
                     <div
                         class="checkout-hero-steps d-none d-md-flex position-absolute end-0 top-0 h-100 align-items-center pe-4">
-                        <a href="{{route('homepage')}}"><span class="badge bg-light text-primary me-2">Home</span></a>
+                        <a href="{{ route('homepage') }}"><span class="badge bg-light text-primary me-2">Home</span></a>
                         <span class="badge bg-light text-primary me-2">Cart</span>
                     </div>
                 </div>
@@ -382,9 +382,17 @@
                                         @csrf
                                         <input class="coupon-input me-2" style="height: 45px;" type="text" required
                                             placeholder="Coupon Code" name="coupon_code" value="">
-                                                                <button class="btn Whoops" style="background: var(--accent-color); color: var(--text-light);"
-                            type="submit">Apply Coupon Code</button>
+                                        <button class="btn Whoops"
+                                            style="background: var(--accent-color); color: var(--text-light);"
+                                            type="submit">Apply Coupon Code</button>
                                     </form>
+                                </div>
+                            @else
+                                <div class="text-center">
+                                    <h3 class="text-secondary pt-4">Your cart is empty</h3>
+                                    <a href="{{ route('homepage') }}" class="btn Whoops mt-4"
+                                        style="background: var(--accent-color); color: var(--text-light);">Continue
+                                        Shopping</a>
                                 </div>
                             @endif
                         </div>
