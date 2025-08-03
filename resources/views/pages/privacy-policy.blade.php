@@ -448,7 +448,7 @@
                                         </div>
                                         <div class="contact-details">
                                             <h5>Email</h5>
-                                            <p>privacy@afrikartt.com</p>
+                                            <p>{{ settings::setting('site_email') }}</p>
                                         </div>
                                     </div>
 
@@ -458,7 +458,7 @@
                                         </div>
                                         <div class="contact-details">
                                             <h5>Phone</h5>
-                                            <p>+1 (555) 287-4378</p>
+                                            <p>{{ settings::setting('site_phone') }}</p>
                                         </div>
                                     </div>
 

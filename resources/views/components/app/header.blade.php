@@ -52,19 +52,19 @@
                     <input type="text" class="form-control rounded-start" name="search"
                         placeholder="Search products...">
                     <select class="form-select border rounded-0 pt-2 h-100" name="category" style="max-width: 200px;">
-                        <option value="">All Categories</option>
+                        <option value="" class="text-dark">All Categories</option>
                         @foreach ($categories as $category)
                             @if ($category->childrens->count())
                                 <optgroup label="{{ $category->name }}">
                                     @foreach ($category->childrens as $child)
-                                        <option value="{{ $child->slug }}"
+                                        <option value="{{ $child->slug }}" class="text-dark"
                                             @if (request('category') == $child->slug) selected @endif>
                                             {{ $child->name }}
                                         </option>
                                     @endforeach
                                 </optgroup>
                             @else
-                                <option value="{{ $category->slug }}" @if (request('category') == $category->slug) selected @endif>
+                                <option value="{{ $category->slug }}" @if (request('category') == $category->slug) selected @endif class="text-dark">
                                     {{ $category->name }}
                                 </option>
                             @endif
