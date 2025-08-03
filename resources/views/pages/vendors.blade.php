@@ -12,7 +12,7 @@
     <meta property="og:title" content="All Vendors & Shops | Afrikartt E-commerce">
     <meta property="og:description"
         content="Browse all verified vendors and shops on Afrikartt E-commerce. Find trusted sellers, quality products, and great deals from our curated list of vendors.">
-    <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
+    <meta property="og:image" content="{{ Settings::setting('site_logo') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
 @endsection
@@ -21,7 +21,7 @@
     <meta name="twitter:title" content="All Vendors & Shops | Afrikartt E-commerce">
     <meta name="twitter:description"
         content="Browse all verified vendors and shops on Afrikartt E-commerce. Find trusted sellers, quality products, and great deals from our curated list of vendors.">
-    <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
+    <meta name="twitter:image" content="{{ Settings::setting('site_logo') }}">
 @endsection
 
 @extends('layouts.app')

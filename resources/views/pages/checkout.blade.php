@@ -8,7 +8,7 @@
     <meta property="og:title" content="Checkout | Afrikartt E-commerce">
     <meta property="og:description"
         content="Complete your purchase securely on Afrikartt E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
-    <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
+    <meta property="og:image" content="{{ Settings::setting('site_logo') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
 @endsection
@@ -17,7 +17,7 @@
     <meta name="twitter:title" content="Checkout | Afrikartt E-commerce">
     <meta name="twitter:description"
         content="Complete your purchase securely on Afrikartt E-commerce. Fast, safe checkout with multiple payment options and order tracking.">
-    <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
+    <meta name="twitter:image" content="{{ Settings::setting('site_logo') }}">
 @endsection
 @extends('layouts.app')
 @section('css')

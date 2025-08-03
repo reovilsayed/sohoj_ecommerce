@@ -11,22 +11,6 @@
                 <a href="{{ Settings::setting('social_inst_link') }}" class="text-light me-2"><i class="fab fa-instagram"></i></a>
                 <a href="{{ Settings::setting('social_twitter_link') }}" class="text-light me-2"><i class="fab fa-twitter"></i></a>
                 <a href="{{ Settings::setting('social_linkedin') }}" class="text-light me-2"><i class="fab fa-linkedin-in"></i></a>
-                <!-- Language/Currency Switcher -->
-                {{-- <div class="dropdown d-inline mx-2">
-                    <a class="dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown">EN</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">EN</a></li>
-                        <li><a class="dropdown-item" href="#">BN</a></li>
-                    </ul>
-                </div>
-                <div class="dropdown d-inline">
-                    <a class="dropdown-toggle text-light" href="#" role="button"
-                        data-bs-toggle="dropdown">USD</a>
-                            <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">USD</a></li>
-                        <li><a class="dropdown-item" href="#">EUR</a></li>
-                            </ul>
-                </div> --}}
             </div>
         </div>
     </div>

@@ -8,7 +8,7 @@
     <meta property="og:title" content="Afrikartt E-commerce | Home">
     <meta property="og:description"
         content="Discover trending products, top shops, and exclusive deals on Afrikartt E-commerce. Shop by category and enjoy a seamless online shopping experience.">
-    <meta property="og:image" content="{{ asset('assets/logo/logo007.png') }}">
+    <meta property="og:image" content="{{ Settings::setting('site_logo') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
 @endsection
@@ -17,7 +17,7 @@
     <meta name="twitter:title" content="Afrikartt E-commerce | Home">
     <meta name="twitter:description"
         content="Discover trending products, top shops, and exclusive deals on Afrikartt E-commerce. Shop by category and enjoy a seamless online shopping experience.">
-    <meta name="twitter:image" content="{{ asset('assets/logo/logo007.png') }}">
+    <meta name="twitter:image" content="{{ Settings::setting('site_logo') }}">
 @endsection
 @section('canonical_url', route('homepage'))
 
