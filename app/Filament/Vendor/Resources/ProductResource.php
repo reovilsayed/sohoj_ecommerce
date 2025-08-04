@@ -318,7 +318,7 @@ class ProductResource extends Resource
                                                     ->imagePreviewHeight('120')
                                                     ->visibility('public')
                                                     ->maxSize(2048)
-                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp','image/jpg', 'image/gif', 'image/svg+xml','image/avif'])
+                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
                                                     ->helperText('Upload a high-quality image that represents your product. This will be the main image displayed.')
                                                     ->columnSpan(1),
 
@@ -331,7 +331,7 @@ class ProductResource extends Resource
                                                     ->visibility('public')
                                                     ->maxSize(2048)
                                                     ->maxFiles(10)
-                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp','image/jpg', 'image/gif', 'image/svg+xml','image/avif'])
+                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
                                                     ->helperText('Upload additional product images (max 10). Show different angles, details, or variations of your product.')
                                                     ->columnSpan(1),
                                             ]),
@@ -396,6 +396,12 @@ class ProductResource extends Resource
                                                     ->helperText('Enable if this product has variations like different sizes, colors, or materials. This will show the Variations tab.')
                                                     ->default(false)
                                                     ->live()
+                                                    ->columnSpan(1),
+
+                                                Toggle::make('is_featured')
+                                                    ->label('Featured')
+                                                    ->default(false)
+                                                    ->helperText('Highlight this product as a featured item.')
                                                     ->columnSpan(1),
                                             ]),
                                     ]),
@@ -550,7 +556,7 @@ class ProductResource extends Resource
                                                                     ->imagePreviewHeight('150')
                                                                     ->visibility('public')
                                                                     ->maxSize(2048)
-                                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp','image/jpg', 'image/gif', 'image/svg+xml','image/avif'])
+                                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
                                                                     ->helperText('Image specific to this variant.')
                                                                     ->columnSpanFull(),
                                                             ]),
@@ -572,7 +578,7 @@ class ProductResource extends Resource
                                             ->columnSpanFull(),
                                     ]),
 
-                                
+
                             ]),
                     ])
                     ->columnSpanFull()
@@ -751,7 +757,7 @@ class ProductResource extends Resource
                 Filter::make('active')
                     ->query(fn(Builder $query): Builder => $query->where('status', true))
                     ->label('Active Products'),
-                    
+
                 Filter::make('inactive')
                     ->query(fn(Builder $query): Builder => $query->where('status', false))
                     ->label('Inactive Products'),
@@ -763,18 +769,19 @@ class ProductResource extends Resource
                 Filter::make('low_stock')
                     ->query(fn(Builder $query): Builder => $query->whereBetween('quantity', [1, 10]))
                     ->label('Low Stock (1-10)'),
-                    
+
                 Filter::make('has_sale_price')
                     ->query(fn(Builder $query): Builder => $query->whereNotNull('sale_price')->where('sale_price', '>', 0))
                     ->label('On Sale'),
-                    
+
                 Filter::make('variable_products')
                     ->query(fn(Builder $query): Builder => $query->where('is_variable_product', true))
                     ->label('Variable Products'),
-                    
+
                 Filter::make('offers')
                     ->query(fn(Builder $query): Builder => $query->where('is_offer', true))
-                    ->label('Special Offers'),                SelectFilter::make('parent_id')
+                    ->label('Special Offers'),
+                SelectFilter::make('parent_id')
                     ->label('Product Type')
                     ->options([
                         'parent' => 'Parent Products',

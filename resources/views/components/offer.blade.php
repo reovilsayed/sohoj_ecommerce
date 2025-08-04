@@ -1,4 +1,5 @@
 <div class="row" style="">
+    
     @if ($shop->category1)
         <div class="col-lg-4 ps-0 d-flex mid-bn mb-4 me-5 margin-left"
             style="height: 275px; overflow:hidden;position:relative;background-size: cover; background-image: url({{ $shop->image1 ? Storage::url($shop->image1) : asset('assets/img/store_front/bnwatch.png') }})">
