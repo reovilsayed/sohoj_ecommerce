@@ -533,7 +533,7 @@
 
         {{-- <div class="cover-overlay"></div> --}}
     </div>
-    {{-- @if ($shop->slug == 'adidas-bd')
+    @if ($shop->slug == 'adidas-bd')
         <div class="container mt-4">
             <div class="row">
                 <!-- Left Sidebar - Brand Information -->
@@ -543,10 +543,10 @@
                         <div class="brand-header text-center mb-4">
                             <img class="brand-logo" src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }} logo">
                             <h2 class="brand-name mt-3">{{ $shop->name }}</h2>
-                      
+
 
                             <p class="brand-tagline text-muted">
-                                {{  Illuminate\Support\Str::limit($shop->short_description, 200) }}
+                                {{ Illuminate\Support\Str::limit($shop->short_description, 200) }}
                             </p>
                         </div>
 
@@ -613,7 +613,8 @@
                                 </a>
                             @endauth
 
-                            <a href="{{ route('massage.create', $shop->id) }}" class="btn btn-block btn-message text-white">
+                            <a href="{{ route('massage.create', $shop->id) }}"
+                                class="btn btn-block btn-message text-white">
                                 <i class="fas fa-envelope me-2"></i>
                                 Contact Seller
                             </a>
@@ -700,32 +701,75 @@
                         <div class="tab-content" id="shopTabsContent">
                             <!-- Home Tab -->
                             <div class="tab-pane fade show active" id="home" role="tabpanel">
-                                
-                                <!-- Featured Products -->
-                                @if (count($shop->products()->where('featured', 1)->get()) > 0)
-                                    <div class="content-card mb-4">
-                                        <div class="card-header">
-                                            <h4>Featured Products</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                @foreach ($shop->products()->where('featured', 1)->get() as $product)
-                                                    <x-products.product :product="$product" />
-                                                @endforeach
+                                @if (count($shop->products) > 0)
+                                    @php
+                                        $products = $shop->products->where('featured', 1)->chunk(4);
+                                        $bannerToggle = false; // Flag to alternate between your two banner styles
+                                    @endphp
+
+                                    @foreach ($products as $productGroup)
+                                        <!-- Product Group (4 products) -->
+                                        <div class="content-card mb-3">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    @foreach ($productGroup as $product)
+                                                        <x-products.product :product="$product" />
+                                                    @endforeach
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @endif
 
-                                <!-- Current Offers -->
-                                <div class="content-card">
-                                    <div class="card-header">
-                                        <h4>Current Offers</h4>
+                                        <!-- Banner after each product group -->
+                                        @if ($bannerToggle)
+                                            <!-- First Banner Style -->
+                                            @if ($shop->category1)
+                                                <div class="row mb-4">
+                                                    <div class="col-lg-12 ps-0 d-flex mid-bn me-5 margin-left"
+                                                        style="height: 180px; overflow:hidden;position:relative;background-size: cover; background-image: url({{ $shop->image1 ? Storage::url($shop->image1) : asset('assets/img/store_front/bnwatch.png') }})">
+                                                        <div class="p-4 ms-4">
+                                                            <p style="font-size:14px ;color: #fff !important;">
+                                                                {{ $shop->category1 ? $shop->category1 : 'Please Category Add' }}
+                                                            </p>
+                                                            <h4 style="font-size:1.2rem;color: #fff !important;">
+                                                                {{ $shop->title1 ? $shop->title1 : 'Please Add title' }}
+                                                            </h4>
+                                                            <a class="mid-btn mt-2 btn btn-dark"
+                                                                href="{{ $shop->link1 }}"><span
+                                                                    style="font-size: 10px">View Collection</span></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @else
+                                            <!-- Second Banner Style -->
+                                            @if ($shop->category2)
+                                                <div class="row mb-4">
+                                                    <div class="col-lg-12 mid-bn"
+                                                        style="height: 180px; overflow: hidden; background-size: cover;background-image: url({{ $shop->image2 ? Storage::url($shop->image2) : asset('assets/img/store_front/bnbag.png') }})">
+                                                        <div class="p-4 ms-4">
+                                                            <p style="font-size:14px ;color: #fff !important;">
+                                                                {{ $shop->category2 ? $shop->category2 : 'Please Add Category' }}
+                                                            </p>
+                                                            <h4 style="font-size:1.2rem;color: #fff !important;">
+                                                                {{ $shop->title2 ? $shop->title2 : 'Please add Title' }}
+                                                            </h4>
+                                                            <a class="mid-btn mt-2 btn btn-dark"
+                                                                href="{{ $shop->link2 }}"><span
+                                                                    style="font-size: 10px">View Collection</span></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endif
+
+                                        @php $bannerToggle = !$bannerToggle; @endphp
+                                    @endforeach
+                                @else
+                                    <div class="text-center py-4">
+                                        <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">No products available</h5>
                                     </div>
-                                    <div class="card-body">
-                                        <x-offer :shop="$shop" />
-                                    </div>
-                                </div>
+                                @endif  
                             </div>
 
                             <!-- Products Tab -->
@@ -1261,8 +1305,8 @@
                     tab.show();
                 }
             });
-        </script> --}}
-    {{-- @else --}}
+        </script>
+    @else
         <!-- Profile Section -->
         <div class="profile-section container mt-3">
             <div class="profile-card">
@@ -1595,7 +1639,7 @@
                 </div>
             </div>
         </div>
-    {{-- @endif --}}
+    @endif
 
     <!-- Message Modal -->
     <div class="modal fade" id="massageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
