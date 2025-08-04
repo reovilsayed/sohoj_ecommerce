@@ -18,7 +18,7 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, $role)
     {
         if (auth()->check() && auth()->user()->role->name == $role) {
-            dd( $next($request)); // Debugging line to check the role
+            // dd( $next($request)); // Debugging line to check the role
             return $next($request);
         } else {
             return redirect()->route('homepage')->with('error_msg', 'You do not have permission to access this page.');
