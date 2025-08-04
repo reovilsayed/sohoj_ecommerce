@@ -79,7 +79,7 @@ class VendorPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                RoleMiddleware::class . ':vendor',
+                // RoleMiddleware::class . ':vendor',
                 // TEMPORARILY DISABLED FOR DEBUGGING
                 // QueryLoggerMiddleware::class,
             ])
@@ -113,7 +113,6 @@ class VendorPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Marketing')
                     ->icon('heroicon-o-megaphone'),
-            ]);
-        ;
+            ]);;
     }
 }

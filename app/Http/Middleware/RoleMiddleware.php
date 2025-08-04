@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use TCG\Voyager\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
@@ -17,11 +17,15 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        if (auth()->check() && auth()->user()->role->name == $role) {
-            // dd( $next($request)); // Debugging line to check the role
-            return $next($request);
-        } else {
-            return redirect()->route('homepage')->with('error_msg', 'You do not have permission to access this page.');
+        if (!Auth::check()) {
+            if ($request->is('vendor') || $request->is('vendor/*')) {
+                return $next($request);
+            }
+            return redirect()->guest(route('login'));
         }
+        if (Auth::user()->role->name !== $role) {
+            abort(403, 'Forbidden: You do not have the required role.');
+        }
+        return $next($request);
     }
 }
