@@ -171,24 +171,6 @@
                                     <img src="{{ asset('assets/img/heaer.jpg') }}" alt="Shop Banner"
                                         class="w-full object-cover rounded-t-lg" style="height: 250px; ">
                                 @endif
-                                {{-- <div class="avatar-banner-overlay">
-                                        <div
-                                            class="absolute inset-0 bg-black/40 flex items-center justify-center hover:bg-black/60 transition cursor-pointer">
-                                            <label for="banner-upload"
-                                                class="flex flex-col items-center text-white w-full">
-                                                <svg class="w-8 h-8 mb-1" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                </svg>
-                                                <span class="text-xs">Change Banner</span>
-                                            </label>
-                                            <input id="banner-upload" type="file" name="banner" class="hidden" />
-                                        </div>
-                                    </div> --}}
                             </div>
                         </div>
                     </div>
@@ -202,19 +184,6 @@
                                     <img src="{{ asset('assets/img/heaer.jpg') }}" alt="Profile"
                                         class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg">
                                 @endif
-                                {{-- <div class="avatar-overlay">
-                                        <label for="logo-upload" class="flex flex-col items-center text-white">
-                                            <svg class="w-8 h-8 mb-1" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            </svg>
-                                            <span class="text-xs">Change logo</span>
-                                        </label>
-                                        <input id="logo-upload" type="file" name="logo" class="hidden" />
-                                    </div> --}}
                             </div>
                             <div class=" ms-6">
                                 <h1 class="text-2xl font-bold text-gray-900">{{ $shop->name }}

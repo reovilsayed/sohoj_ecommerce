@@ -55,9 +55,9 @@ body {
 /* Cover Photo Section */
 .cover-photo-container {
     position: relative;
-    height: 350px;
+    height: 500px;
     background: var(--gradient-primary);
-    border-radius: 0 0 20px 20px;
+    /* border-radius: 0 0 20px 20px; */
     overflow: hidden;
     margin-bottom: 80px;
 }
@@ -494,9 +494,14 @@ body {
 
 <!-- Cover Photo Section -->
 <div class="cover-photo-container">
-    <img class="cover-photo" 
-         src="{{ $shop->banner ? Storage::url($shop->banner) : asset('placeholder/shop_banner.webp') }}"
-         alt="{{ $shop->name }} cover photo">
+    {{-- @if ($shop->banner) --}}
+        <img class="cover-photo" 
+             src="{{ Storage::url($shop->banner) }}" 
+             alt="{{ $shop->name }} cover photo">
+        
+    {{-- @else
+        <video src="{{ Storage::url($shop->banner_video) }}" autoplay muted loop></video>
+    @endif --}}
     <div class="cover-overlay"></div>
 </div>
 

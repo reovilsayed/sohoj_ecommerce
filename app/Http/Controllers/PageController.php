@@ -116,7 +116,7 @@ class PageController extends Controller
     public function store_front($slug)
 
     {
-        $shop = Shop::where('slug', $slug)->products()->firstOrFail();
+        $shop = Shop::where('slug', $slug)->products()->find();
 
 
 
