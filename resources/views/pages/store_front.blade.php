@@ -1,3 +1,4 @@
+@dd($shop);
 @extends('layouts.app')
 @section('title', $shop->name . ' | Shop on Afrikartt E-commerce')
 @section('meta_description',
@@ -515,7 +516,7 @@ body {
             
             <div class="profile-info">
                 <h1>{{ $shop->name }}</h1>
-                
+
                 @dd($shop);
 
                 <p class="profile-subtitle">{{ $shop->short_description }}</p>
