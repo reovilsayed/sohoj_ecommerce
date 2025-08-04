@@ -533,7 +533,7 @@
 
         {{-- <div class="cover-overlay"></div> --}}
     </div>
-    @if ($shop->slug == 'adidas-bd')
+    {{-- @if ($shop->slug == 'adidas-bd')
         <div class="container mt-4">
             <div class="row">
                 <!-- Left Sidebar - Brand Information -->
@@ -700,6 +700,7 @@
                         <div class="tab-content" id="shopTabsContent">
                             <!-- Home Tab -->
                             <div class="tab-pane fade show active" id="home" role="tabpanel">
+                                
                                 <!-- Featured Products -->
                                 @if (count($shop->products()->where('featured', 1)->get()) > 0)
                                     <div class="content-card mb-4">
@@ -707,8 +708,8 @@
                                             <h4>Featured Products</h4>
                                         </div>
                                         <div class="card-body">
-                                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                                                @foreach ($shop->products->take(4) as $product)
+                                            <div class="row">
+                                                @foreach ($shop->products()->where('featured', 1)->get() as $product)
                                                     <x-products.product :product="$product" />
                                                 @endforeach
                                             </div>
@@ -1260,7 +1261,7 @@
                     tab.show();
                 }
             });
-        </script>
+        </script> --}}
     @else
         <!-- Profile Section -->
         <div class="profile-section container mt-3">
