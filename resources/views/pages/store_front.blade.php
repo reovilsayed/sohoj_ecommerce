@@ -1262,7 +1262,7 @@
                 }
             });
         </script> --}}
-    @else
+    {{-- @else --}}
         <!-- Profile Section -->
         <div class="profile-section container mt-3">
             <div class="profile-card">
@@ -1595,7 +1595,7 @@
                 </div>
             </div>
         </div>
-    @endif
+    {{-- @endif --}}
 
     <!-- Message Modal -->
     <div class="modal fade" id="massageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
