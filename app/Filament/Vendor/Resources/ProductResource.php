@@ -398,7 +398,7 @@ class ProductResource extends Resource
                                                     ->live()
                                                     ->columnSpan(1),
 
-                                                Toggle::make('is_featured')
+                                                Toggle::make('featured')
                                                     ->label('Featured')
                                                     ->default(false)
                                                     ->helperText('Highlight this product as a featured item.')
