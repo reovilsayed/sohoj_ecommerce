@@ -701,7 +701,7 @@
                             <!-- Home Tab -->
                             <div class="tab-pane fade show active" id="home" role="tabpanel">
                                 <!-- Featured Products -->
-                                @if (count($shop->products()->where('featured', true)->get()) > 0)
+                                @if (count($shop->products()->where('featured', 1)->get()) > 0)
                                     <div class="content-card mb-4">
                                         <div class="card-header">
                                             <h4>Featured Products</h4>
