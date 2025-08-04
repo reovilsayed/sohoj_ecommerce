@@ -515,6 +515,9 @@ body {
             
             <div class="profile-info">
                 <h1>{{ $shop->name }}</h1>
+                
+                @dd($shop);
+
                 <p class="profile-subtitle">{{ $shop->short_description }}</p>
                 <p class="profile-subtitle">
                     <i class="fas fa-map-marker-alt me-2"></i>
