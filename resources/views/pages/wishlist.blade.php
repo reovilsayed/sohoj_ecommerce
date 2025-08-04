@@ -95,12 +95,12 @@
             <p class="mb-0">Keep track of your favorite items and purchase them whenever you're ready.</p>
 
             <div class="checkout-hero-steps d-none d-md-flex position-absolute end-0 top-0 h-100 align-items-center pe-4">
-                <a href="{{ route('homepage') }}"><span class="badge bg-light text-accent me-2">Home</span></a>
-                <span class="badge bg-light text-accent me-2">wishlist</span>
+                <a href="{{ route('homepage') }}"><span class="badge bg-light text-accent me-2 text-dark">Home</span></a>
+                <span class="badge bg-light text-accent me-2 text-dark">Wishlist</span>
             </div>
         </div>
         @if ($products->count() > 0)
-            <div class="row row-cols-lg-5 cols-12">
+            <div class="row row-cols-lg-5 cols-2 mt-4">
                 {{-- <h5 class="m-4 poppins ">liked Products</h5> --}}
                 @foreach ($products as $product)
                     <x-products.wishlist :product="$product" />

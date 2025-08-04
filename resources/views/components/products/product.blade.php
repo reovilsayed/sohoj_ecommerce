@@ -102,7 +102,7 @@
             {{-- Product Price --}}
             <div class="product-price">
                 @if ($hasDiscount)
-                    <span class="original-price" aria-label="Original price">{{ Sohoj::price($originalPrice) }}</span>
+                    <span class="original-price" style="color: red !important; font-weight: 600; font-size: large;" aria-label="Original price">{{ Sohoj::price($originalPrice) }}</span>
                 @endif
                 <span class="current-price" aria-label="Current price">{{ Sohoj::price($currentPrice) }}</span>
             </div>

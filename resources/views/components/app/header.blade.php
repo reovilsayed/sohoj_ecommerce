@@ -211,7 +211,7 @@
                                 class="me-3" style="width: 60px; height: 60px; object-fit: cover;">
                             <div class="flex-grow-1">
                                 <h6 class="mb-1">{{ $product->name }}</h6>
-                                <p class="mb-1 text-muted">Qty: {{ $product->quantity }}</p>
+                                <p class="mb-1 text-muted">Qty: {{ $product->qty }}</p>
                                 <p class="mb-0 fw-bold">${{ $product->price }}</p>
                             </div>
                             <a href="{{ route('cart.destroy', $product->rowId) }}"
