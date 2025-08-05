@@ -87,8 +87,8 @@ class HomeController extends Controller
                 "state" => "required",
                 "city" => "required",
                 "post_code" => "required",
-                // "govt_id_back" => "required|image|mimes:jpeg,png",
-                // "govt_id_front" => "required|image|mimes:jpeg,png",
+                "govt_id_back" => "required|image|mimes:jpeg,png",
+                "govt_id_front" => "required|image|mimes:jpeg,png",
                 "paypal_email" => "required",
                 'paypal_email_confirmation' => 'required|same:paypal_email',
 
@@ -122,14 +122,13 @@ class HomeController extends Controller
 
         $sub->create($data['payment_method']);
         Verification::create([
-            'user_id' => Auth()->id(),
+            'user_id' => auth()->id(),
             'phone' => $request->phone,
-            'govt_id_front' => $request->file('govt_id_front') ? $request->file('govt_id_front')->store('verifications') : null,
-            'govt_id_back' => $request->file('govt_id_back') ? $request->file('govt_id_back')->store('verifications') : null,
+            'govt_id_front' => $request->file('govt_id_front') ? $request->file('govt_id_front')->storeAs('verifications', $request->file('govt_id_front')->hashName(), 'public') : null,
+            'govt_id_back' => $request->file('govt_id_back') ? $request->file('govt_id_back')->storeAs('verifications', $request->file('govt_id_back')->hashName(), 'public') : null,
             'address' => $request->address,
             'paypal_email' => $request->paypal_email,
             'ismonthly_charge' => $request->ismonthly_charge,
-
         ]);
 
         Address::create([
