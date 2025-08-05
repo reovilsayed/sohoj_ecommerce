@@ -200,6 +200,7 @@ Route::get('privacy-policy', [PageController::class, 'privacyPolicy'])->name('pr
 Route::get('contact', [PageController::class, 'contact'])->name('contact');
 Route::post('contact', [PageController::class, 'contactStore'])->name('contact.store');
 Route::get('payment/cancel', [PageController::class, 'paymentCancel'])->name('payment.cancel');
+Route::get('why-sell-on-afrikart', [PageController::class, 'whySellOnAfrikart'])->name('why.sell.on.afrikart');
 
 // API Documentation Route
 Route::get('/api-docs', function () {

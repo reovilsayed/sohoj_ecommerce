@@ -481,4 +481,9 @@ class PageController extends Controller
     {
         return view('pages.payment_cancel');
     }
+
+    public function whySellOnAfrikart()
+    {
+        return view('pages.Why_sell_on_AfrikArtt');
+    }
 }
