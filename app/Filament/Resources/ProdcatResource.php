@@ -99,21 +99,11 @@ class ProdcatResource extends Resource
                     ->searchable()
                     ->toggleable(),
 
-                TextColumn::make('shop.name')
-                    ->label('Shop')
-                    ->sortable()
-                    ->toggleable(),
-
                 TextColumn::make('parent.name')
                     ->label('Parent Category')
                     ->sortable()
                     ->toggleable()
                     ->placeholder('Root Category'),
-
-                TextColumn::make('products_count')
-                    ->label('Products')
-                    ->counts('products')
-                    ->sortable(),
 
                 TextColumn::make('created_at')
                     ->label('Created At')
@@ -123,9 +113,6 @@ class ProdcatResource extends Resource
 
             ])
             ->filters([
-                SelectFilter::make('shop_id')
-                    ->label('Shop')
-                    ->relationship('shop', 'name'),
 
                 SelectFilter::make('parent_id')
                     ->label('Parent Category')
