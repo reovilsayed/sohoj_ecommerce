@@ -1168,7 +1168,7 @@
                 <div class="col-lg-9 pe-md-0">
                     <div class="hero-slider-wrapper">
                         <div class="hero-slider" role="region" aria-label="Product carousel">
-                            @foreach($sliders as $index => $slider)
+                            @foreach ($sliders as $index => $slider)
                                 <div class="hero__item set-bg"
                                     style="background-image: url('{{ Storage::url($slider->image) }}');"
                                     aria-hidden="{{ $index !== 0 ? 'true' : 'false' }}">
@@ -1178,8 +1178,9 @@
 
                         <!-- Navigation Dots -->
                         <div class="slider-dots">
-                            @foreach($sliders as $index => $slider)
-                                <button class="dot{{ $index === 0 ? ' active' : '' }}" aria-label="Slide {{ $index + 1 }}"></button>
+                            @foreach ($sliders as $index => $slider)
+                                <button class="dot{{ $index === 0 ? ' active' : '' }}"
+                                    aria-label="Slide {{ $index + 1 }}"></button>
                             @endforeach
                         </div>
                     </div>
@@ -1190,33 +1191,6 @@
         </div>
     </section>
     <!-- hero section end -->
-
-
-    <!-- Main Slider Start -->
-    {{-- <div id="carouselExampleIndicators" class="carousel slide container my-2" data-bs-ride="carousel">
-        <div class="carousel-indicators" style="justify-content: start;margin-left: 100px;margin-bottom:20px">
-            @foreach ($sliders as $key => $slider)
-                <button type="button" style="width: 15px;
-        height: 15px;
-        border-radius: 50%;"
-                    data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $key }}" class="active"
-                    aria-current="true" aria-label="Slide {{ $slider->id }}">
-                </button>
-            @endforeach
-        </div>
-        <div class="carousel-inner">
-            @foreach ($sliders as $slider)
-                <div class="carousel-item {{ $loop->index == 0 ? 'active' : '' }}">
-                    <a href="{{ $slider->url }}"><img src="{{ Storage::url($slider->image) }}"
-                            class="d-block w-100 img-fluid " style="height: 450px;
-                object-fit: cover;"
-                            alt="..."></a>
-                </div>
-            @endforeach
-
-        </div>
-
-    </div> --}}
 
 
     <!-- Main Slider End -->
@@ -1246,8 +1220,8 @@
                                             <i class="fas fa-box-open"></i>
                                         @endif
                                     </div>
-                                    <div class="category-name px-1">
-                                        {{ Str::limit($category->name, 22) }}
+                                    <div class="category-name px-3">
+                                        {{ Str::limit($category->name, 15) }}
                                     </div>
                                 </div>
                             </a>
@@ -1289,7 +1263,8 @@
                                                         <div class="row row-cols-lg-5 cols-2 mt-4">
                                                             @foreach ($products as $product)
                                                                 {{-- @dd($product) --}}
-                                                                <x-products.product :product="$product" :variant="'green'" :showMultipleCategories="false" />
+                                                                <x-products.product :product="$product" :variant="'green'"
+                                                                    :showMultipleCategories="false" />
                                                             @endforeach
                                                         </div>
 
@@ -1336,7 +1311,8 @@
                                                         <div class="ec-fs-pro-inner">
                                                             <div class="row row-cols-lg-5 cols-2 mt-4">
                                                                 @foreach ($products as $product)
-                                                                    <x-products.product :product="$product" :variant="'green'" :showMultipleCategories="false" />
+                                                                    <x-products.product :product="$product" :variant="'green'"
+                                                                        :showMultipleCategories="false" />
                                                                 @endforeach
                                                             </div>
                                                         </div>
@@ -1348,7 +1324,8 @@
                                                         <div class="ec-fs-pro-inner">
                                                             <div class="row row-cols-lg-5 cols-2 mt-4">
                                                                 @foreach ($products as $product)
-                                                                    <x-products.product :product="$product" :variant="'green'" :showMultipleCategories="false" />
+                                                                    <x-products.product :product="$product" :variant="'green'"
+                                                                        :showMultipleCategories="false" />
                                                                 @endforeach
                                                             </div>
                                                         </div>
@@ -1385,7 +1362,9 @@
 
                                             <div class="row mt-4">
                                                 @foreach ($shops as $shop)
-                                                    <x-shops-card.card-3 :shop="$shop" />
+                                                    <div class="col-lg-3 col-12 mb-4 pro-gl-content-shop">
+                                                        <x-shops-card.card-1 :shop="$shop" />
+                                                    </div>
                                                 @endforeach
                                             </div>
 
@@ -1416,60 +1395,49 @@
                     <div class=" col-md-12">
                         <!-- Product tab area start -->
                         <div class="row space-t-50">
-                            <!-- <div class="col-md-12">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div class="section-title">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <h2 class="ec-title">New Products</h2>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div> -->
+                            <!-- <div class="col-md-12">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div> -->
                             <h2 class="related-product-sec-title my-5"> Recommended For You</h2>
                         </div>
 
                         <!-- 1st Product tab start -->
                         <div class="tab-pane fade show active" id="all">
-                            <div>
-                                @foreach ($latest_shops as $shop)
-                                    @if ($shop->products->count())
-                                        <div class="row mb-4 mt-4">
-                                            <div class="col-md-3">
-                                                <x-shops-card.card-1 :shop="$shop" />
-                                            </div>
-                                            <div class="col-md-9 mt-4">
-                                                <div class="ec-spe-products">
-                                                    @foreach ($shop->products->whereNull('parent_id')->chunk(4) as $products)
-                                                        {{-- @dd($products) --}}
-                                                        <div class="ec-fs-product">
-                                                            <div class="ec-fs-pro-inner">
+                            @foreach ($latest_shops as $shop)
+                                @if ($shop->products->count())
+                                    <div class="row mb-4 mt-4">
+                                        <div class="col-md-3 cols-12">
+                                            <x-shops-card.card-1 :shop="$shop" />
+                                        </div>
+                                        <div class="col-md-9 mt-4">
+                                            <div class="ec-spe-products">
+                                                @foreach ($shop->products->whereNull('parent_id')->chunk(4) as $products)
+                                                    <div class="ec-fs-product">
+                                                        <div class="ec-fs-pro-inner">
+                                                            <div class="row">
+                                                                @php
+                                                                    $last = $loop->last;
+                                                                    $count = $shop->products->count();
+                                                                @endphp
+                                                                @foreach ($products as $product)
+                                                                    <x-products.product :product="$product"
+                                                                        :variant="'red'" :showMultipleCategories="true" />
+                                                                @endforeach
 
-                                                                <div class="row">
-                                                                    @php
-                                                                        $last = $loop->last;
-                                                                        $count = $shop->products->count();
-                                                                    @endphp
-                                                                    @foreach ($products as $product)
-                                                                        <x-products.product :product="$product" :variant="'red'" :showMultipleCategories="true" />
-                                                                    @endforeach
-
-                                                                    @if ($last && $count >= 8)
-                                                                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pro-gl-content d-flex align-items-center"
-                                                                            style="margin-bottom: 35px;">
-                                                                            <a href="{{ route('store_front', $shop->slug) }}"
-                                                                                class="btn btn-dark">View More</a>
-                                                                        </div>
-                                                                    @endif
-
-
-                                                                </div>
-
+                                                                @if ($last && $count >= 8)
+                                                                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pro-gl-content d-flex align-items-center"
+                                                                        style="margin-bottom: 35px;">
+                                                                        <a href="{{ route('store_front', $shop->slug) }}"
+                                                                            class="btn btn-dark">View More</a>
+                                                                    </div>
+                                                                @endif
                                                             </div>
                                                         </div>
-                                                    @endforeach
-                                                </div>
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </div>
-                                    @endif
-                                @endforeach
-                                {{-- <livewire:shops /> --}}
-                            </div>
+                                    </div>
+                                @endif
+                            @endforeach
 
 
                             <div class="view-more-shops-container">
@@ -1687,7 +1655,7 @@
             },
             breakpoints: {
                 0: {
-                    slidesPerView: 2,
+                    slidesPerView: 3,
                 },
                 576: {
                     slidesPerView: 3,

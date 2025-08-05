@@ -139,14 +139,14 @@
             <div class="input-group w-100">
                 <input type="text" class="form-control rounded-start" name="search"
                     placeholder="Search products...">
-                <select class="form-select" name="category" style="max-width: 200px;">
+                <select class="form-select h-100" name="category" style="max-width: 200px;">
                     <option value="">All Categories</option>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->slug }}" @if (request('category') == $category->slug) selected @endif>
+                        <option class="text-dark" value="{{ $category->slug }}" @if (request('category') == $category->slug) selected @endif>
                             {{ $category->name }}
                         </option>
                         @foreach ($category->childrens as $child)
-                            <option value="{{ $child->slug }}" @if (request('category') == $child->slug) selected @endif
+                            <option class="text-dark" value="{{ $child->slug }}" @if (request('category') == $child->slug) selected @endif
                                 style="font-weight:300;">&nbsp;&nbsp;&nbsp;&nbsp;{{ $child->name }}</option>
                         @endforeach
                     @endforeach
