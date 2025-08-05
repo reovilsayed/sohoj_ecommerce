@@ -108,12 +108,8 @@ class PageController extends Controller
         return view('pages.checkout', ['intent' => auth()->user()->createSetupIntent()]);
     }
     public function store_front($slug)
-
     {
         $shop = Shop::where('slug', $slug)->first();
-
-
-
         return view('pages.store_front', compact('shop'));
     }
 

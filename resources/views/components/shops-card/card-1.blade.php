@@ -13,6 +13,7 @@
     );
     $isAuthenticated = auth()->check();
     $isFollowing = $isAuthenticated ? auth()->user()->follows($shop) : false;
+
 @endphp
 
 {{-- <div class="col-12 mb-6 mt-4"> --}}
@@ -22,15 +23,29 @@
             <img src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}" class="shop-card-img">
             <div class="shop-card-overlay">
                 <div class="shop-card-actions">
-                    <a href="{{ route('store_front', $shop->slug) }}" target="_blank" class="shop-action-btn" title="Visit Shop">
+                    <a href="{{ route('store_front', $shop->slug) }}" target="_blank" class="shop-action-btn"
+                        title="Visit Shop">
                         <i class="fas fa-external-link-alt" style="color: var(--rating-color)"></i>
                     </a>
-                    <button class="shop-action-btn" title="Follow Shop">
-                        <i class="fas fa-heart" style="color: var(--rating-color)"></i>
-                    </button>
-                    <button class="shop-action-btn" title="Share Shop">
+
+                    @auth
+                        @php
+                            $follow = auth()->user()->follows($shop);
+                        @endphp
+                        <form action="{{ route('follow', $shop) }}" method="post" style="display:inline">
+                            @csrf
+                            <button class="shop-action-btn" type="submit" title="{{ $follow ? 'Unfollow' : 'Follow' }}">
+                                <i class="fas fa-heart" style="color: var(--rating-color)"></i></button>
+                        </form>
+                    @else
+                        <button class="shop-action-btn" title="Follow Shop">
+                            <i class="fas fa-heart" style="color: var(--rating-color)"></i>
+                        </button>
+                    @endauth
+                    <button class="shop-action-btn" title="Share Shop" onclick="toggleShareBox({{ $shop->id }})">
                         <i class="fas fa-share-alt" style="color: var(--rating-color)"></i>
                     </button>
+
                 </div>
             </div>
             @if ($shop->is_featured)
@@ -124,16 +139,17 @@
                 <i class="fas fa-arrow-right text-light"></i>
             </a>
             @auth
+                @php
+                    $follow = auth()->user()->follows($shop);
+                @endphp
                 <form action="{{ route('follow', $shop) }}" method="post" style="display:inline">
                     @csrf
-                    @php
-                        $follow = auth()->user()->follows($shop);
-                    @endphp
                     <button class="shop-follow-btn text-center d-block w-auto" type="submit"><i class="fas fa-heart"></i>
                         {{ $follow ? 'Unfollow' : 'Follow' }}</button>
                 </form>
             @else
-                <a class="shop-follow-btn text-center d-block w-auto" href="{{ route('login') }}"><i class="fas fa-heart"></i>
+                <a class="shop-follow-btn text-center d-block w-auto" href="{{ route('login') }}"><i
+                        class="fas fa-heart"></i>
                     <span>Follow</span></a>
             @endauth
         </div>
@@ -261,7 +277,8 @@
     .shop-card-content {
         padding: 16px;
     }
-    .shop_card_details{
+
+    .shop_card_details {
         height: 280px;
     }
 

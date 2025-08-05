@@ -153,65 +153,86 @@ class ProductResource extends Resource
                             ->icon('heroicon-o-tag')
                             ->schema([
                                 Forms\Components\Section::make('Product Categories')
-                                    ->description('Select relevant categories for your product.')
+                                    ->description('Select relevant categories for your product to help customers find it easily.')
                                     ->schema([
                                         Forms\Components\Grid::make(1)
                                             ->schema([
-                                                // Parent Categories Section
-                                                Forms\Components\Fieldset::make('Main Categories')
-                                                    ->schema([
-                                                        CheckboxList::make('parent_categories')
-                                                            ->relationship('prodcats', 'name')
-                                                            ->searchable()
-                                                            ->bulkToggleable()
-                                                            ->options(function () {
-                                                                return \App\Models\Prodcat::query()
-                                                                    ->whereNull('parent_id')
-                                                                    ->orderBy('name')
-                                                                    ->pluck('name', 'id')
-                                                                    ->toArray();
-                                                            })
-                                                            ->columns(3)
-                                                            ->columnSpanFull(),
-                                                    ]),
-
-                                                // Dynamic Subcategory Groups
-                                                ...collect(\App\Models\Prodcat::query()
-                                                    ->whereNull('parent_id')
-                                                    ->with('childrens')
-                                                    ->orderBy('name')
-                                                    ->get())
-                                                    ->map(function ($parentCategory) {
-                                                        $children = $parentCategory->childrens()->orderBy('name')->get();
-
-                                                        if ($children->isEmpty()) {
-                                                            return null;
-                                                        }
-
-                                                        return Forms\Components\Fieldset::make("subcategories_{$parentCategory->id}")
-                                                            ->label("{$parentCategory->name}")
-                                                            ->schema([
-                                                                CheckboxList::make("subcategories_{$parentCategory->id}")
-                                                                    ->relationship('prodcats', 'name')
-                                                                    ->searchable()
-                                                                    ->bulkToggleable()
-                                                                    ->options(function () use ($parentCategory) {
-                                                                        return $parentCategory->childrens()
-                                                                            ->orderBy('name')
-                                                                            ->pluck('name', 'id')
-                                                                            ->toArray();
-                                                                    })
-                                                                    ->columns(5)
-                                                                    ->columnSpanFull(),
-                                                            ]);
+                                                // All Categories in One CheckboxList
+                                                CheckboxList::make('prodcats')
+                                                    ->label('Select Categories')
+                                                    ->relationship('prodcats', 'name')
+                                                    ->searchable()
+                                                    ->bulkToggleable()
+                                                    ->options(function () {
+                                                        return \App\Models\Prodcat::query()
+                                                            ->orderBy('name')
+                                                            ->pluck('name', 'id')
+                                                            ->toArray();
                                                     })
-                                                    ->filter()
-                                                    ->toArray(),
+                                                    ->columns(3)
+                                                    ->columnSpanFull()
+                                                    ->helperText('Select one or more categories that best describe your product. This helps customers find your product when browsing or searching.'),
 
-                                                Forms\Components\Placeholder::make('category_structure_info')
-                                                    ->label('� Category Selection Guide')
-                                                    ->content('Select from main categories above, then choose specific subcategories from the grouped sections below. Each parent category groups its subcategories in a 5-column layout for easy selection.')
-                                                    ->columnSpanFull(),
+                                                // Or use a more organized structure with parent/child categories
+                                                // Forms\Components\Fieldset::make('Category Selection Guide')
+                                                //     ->schema([
+                                                //         Forms\Components\Placeholder::make('category_help')
+                                                //             ->label('💡 Category Tips')
+                                                //             ->content(new \Illuminate\Support\HtmlString('
+                                                //                 <div class="space-y-2 text-sm">
+                                                //                     <p><strong>Choose relevant categories:</strong> Select categories that accurately describe your product.</p>
+                                                //                     <p><strong>Multiple selections:</strong> You can select multiple categories to increase product visibility.</p>
+                                                //                     <p><strong>Search function:</strong> Use the search box above to quickly find specific categories.</p>
+                                                //                     <p><strong>Bulk toggle:</strong> Use "Select All" or "Deselect All" for quick selection management.</p>
+                                                //                 </div>
+                                                //             '))
+                                                //             ->columnSpanFull(),
+                                                //     ])
+                                                //     ->columns(1),
+
+                                                // // Alternative: Hierarchical Category Selection
+                                                // Forms\Components\Section::make('Hierarchical Categories (Optional)')
+                                                //     ->description('Select primary and secondary categories for better organization.')
+                                                //     ->schema([
+                                                //         Forms\Components\Select::make('primary_category')
+                                                //             ->label('Primary Category')
+                                                //             ->options(function () {
+                                                //                 return \App\Models\Prodcat::query()
+                                                //                     ->whereNull('parent_id')
+                                                //                     ->orderBy('name')
+                                                //                     ->pluck('name', 'id')
+                                                //                     ->toArray();
+                                                //             })
+                                                //             ->searchable()
+                                                //             ->placeholder('Select a main category')
+                                                //             ->helperText('Choose the primary category that best represents your product.')
+                                                //             ->live()
+                                                //             ->afterStateUpdated(function (callable $set) {
+                                                //                 $set('secondary_category', null);
+                                                //             }),
+
+                                                //         Forms\Components\Select::make('secondary_category')
+                                                //             ->label('Secondary Category')
+                                                //             ->options(function (callable $get) {
+                                                //                 $primaryCategory = $get('primary_category');
+                                                //                 if (!$primaryCategory) {
+                                                //                     return [];
+                                                //                 }
+                                                                
+                                                //                 return \App\Models\Prodcat::query()
+                                                //                     ->where('parent_id', $primaryCategory)
+                                                //                     ->orderBy('name')
+                                                //                     ->pluck('name', 'id')
+                                                //                     ->toArray();
+                                                //             })
+                                                //             ->searchable()
+                                                //             ->placeholder('Select a subcategory')
+                                                //             ->helperText('Choose a more specific subcategory if available.')
+                                                //             ->visible(fn (callable $get) => !empty($get('primary_category'))),
+                                                //     ])
+                                                //     ->columns(2)
+                                                //     ->collapsed()
+                                                //     ->collapsible(),
                                             ]),
                                     ]),
                             ]),
@@ -333,6 +354,7 @@ class ProductResource extends Resource
                                                     ->maxFiles(10)
                                                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
                                                     ->helperText('Upload additional product images (max 10). Show different angles, details, or variations of your product.')
+                                                    ->dehydrateStateUsing(fn ($state) => is_array($state) ? $state : [])
                                                     ->columnSpan(1),
                                             ]),
                                     ]),
@@ -801,13 +823,13 @@ class ProductResource extends Resource
                         ->icon('heroicon-o-eye'),
                     Tables\Actions\EditAction::make()
                         ->icon('heroicon-o-pencil'),
-                    Tables\Actions\ReplicateAction::make()
-                        ->icon('heroicon-o-document-duplicate')
-                        ->beforeReplicaSaved(function (Product $replica, array $data): void {
-                            $replica->name = $data['name'] . ' (Copy)';
-                            $replica->slug = Str::slug($replica->name);
-                            $replica->sku = null; // Clear SKU to avoid conflicts
-                        }),
+                    // Tables\Actions\ReplicateAction::make()
+                    //     ->icon('heroicon-o-document-duplicate')
+                    //     ->beforeReplicaSaved(function (Product $replica, array $data): void {
+                    //         $replica->name = $data['name'] . ' (Copy)';
+                    //         $replica->slug = Str::slug($replica->name);
+                    //         $replica->sku = null; // Clear SKU to avoid conflicts
+                    //     }),
                     Tables\Actions\DeleteAction::make()
                         ->icon('heroicon-o-trash'),
                 ])

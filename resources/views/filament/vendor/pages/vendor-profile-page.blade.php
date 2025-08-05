@@ -177,20 +177,6 @@
             .modal.show .modal-dialog {
                 transform: none;
             }
-
-            /* Status Badge Enhancement */
-            .shop-status-badge {
-                background: linear-gradient(135deg, #f97316 0%, #dc2626 100%);
-                color: white;
-                padding: 0.5rem 1rem;
-                border-radius: 20px;
-                font-size: 0.875rem;
-                font-weight: 600;
-                display: inline-flex;
-                align-items: center;
-                gap: 0.5rem;
-                animation: pulse 2s infinite;
-            }
         </style>
     @endpush
 
@@ -198,11 +184,10 @@
         $user = Auth::user();
         $shop = $user->shop;
 
-        // Calculate profile completion percentage
-        $userFields = ['name', 'l_name', 'email', 'avatar'];
+        $userFields = ['name', 'l_name', 'email'];
         $shopFields = [
             'name',
-            'lolo',
+            'logo',
             'banner',
             'short_description',
             'company_name',
@@ -215,12 +200,15 @@
             'post_code',
             'country',
         ];
+
         $userCompleted = collect($userFields)->filter(fn($field) => !empty($user->$field))->count();
         $shopCompleted = collect($shopFields)->filter(fn($field) => !empty($shop->$field))->count();
         $totalFields = count($userFields) + count($shopFields);
         $completedFields = $userCompleted + $shopCompleted;
         $profileCompletion = round(($completedFields / $totalFields) * 100);
-
+        $radius = 28;
+        $circumference = 2 * M_PI * $radius;
+        $offset = $circumference * (1 - $profileCompletion / 100);
     @endphp
 
     <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
@@ -235,8 +223,10 @@
                             <div class="card">
                                 <div class="card-header avatar-banner-upload">
                                     @php
-                                        $bannerPath = $shop->banner;
-                                        $extension = strtolower(pathinfo($bannerPath, PATHINFO_EXTENSION));
+                                        $bannerPath = $shop ? $shop->banner : null;
+                                        $extension = $bannerPath
+                                            ? strtolower(pathinfo($bannerPath, PATHINFO_EXTENSION))
+                                            : '';
                                         $videoExtensions = ['mp4', 'webm', 'ogg', 'mov', 'avi'];
                                         $imageExtensions = [
                                             'jpeg',
@@ -249,8 +239,8 @@
                                             'avif',
                                         ];
 
-                                        $isVideo = in_array($extension, $videoExtensions);
-                                        $isImage = in_array($extension, $imageExtensions);
+                                        $isVideo = $bannerPath && in_array($extension, $videoExtensions);
+                                        $isImage = $bannerPath && in_array($extension, $imageExtensions);
                                     @endphp
                                     {{-- @dd($bannerPath, $isVideo, $isImage) --}}
                                     @if ($bannerPath)
@@ -265,10 +255,8 @@
                                                 class="w-full object-cover rounded-t-lg" style="height: 250px;">
                                         @endif
                                     @else
-                                        <div
-                                            class="cover-placeholder w-full h-[250px] bg-gray-200 rounded-t-lg flex items-center justify-center">
-                                            <span class="text-gray-600">No banner available</span>
-                                        </div>
+                                        <img src="{{ asset('assets/img/heaer.jpg') }}" alt="Default Banner"
+                                            class="w-full object-cover rounded-t-lg" style="height: 250px;">
                                     @endif
                                     <div class="avatar-banner-overlay">
                                         <div
@@ -328,15 +316,18 @@
                                         </span>
                                         @if ($shop)
                                             @if ($shop->status == 1)
-                                                <span class="shop-status-badge">
-                                                    <i class="fas fa-exclamation-triangle"></i>
-                                                    Shop Inactive
+                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200 shadow-sm ms-1">
+                                                    <svg class="w-4 h-4 mr-1 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                    Shop Active
                                                 </span>
                                             @else
-                                                <span
-                                                    class="inline-flex items-center py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                    <span class="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
-                                                    Shop Active
+                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 border border-red-200 shadow-sm ms-1">
+                                                    <svg class="w-4 h-4 mr-1 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-12.728 12.728M5.636 5.636l12.728 12.728"/>
+                                                    </svg>
+                                                    Shop Inactive
                                                 </span>
                                             @endif
                                         @endif
@@ -576,89 +567,6 @@
 
         </div>
     </div>
-
-    <!-- Shop Status Modal -->
-    @if ($shop && $shop->status == 1)
-        <div class="modal fade" id="shopStatusModal" tabindex="-1" aria-labelledby="shopStatusModalLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border-0 shadow-lg">
-                    <div class="modal-header bg-gradient-to-r from-orange-500 to-red-500 text-white border-0">
-                        <h5 class="modal-title" id="shopStatusModalLabel">
-                            <i class="fas fa-exclamation-triangle me-2"></i>
-                            Shop Status Notice
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-4">
-                        <div class="text-center mb-4">
-                            <div
-                                class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                                <i class="fas fa-store text-2xl text-orange-500"></i>
-                            </div>
-                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Shop Currently Inactive</h4>
-                            <p class="text-gray-600 mb-4">
-                                Your shop is currently not active. To activate your shop, please complete your shop
-                                profile with all required information.
-                            </p>
-                        </div>
-
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                            <h6 class="font-semibold text-blue-900 mb-2">
-                                <i class="fas fa-info-circle me-2"></i>
-                                What you need to do:
-                            </h6>
-                            <ul class="text-sm text-blue-800 space-y-1">
-                                <li class="flex items-center">
-                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                                    Complete your shop information
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                                    Upload shop logo and banner
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                                    Add shop description and details
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                                    Provide contact information
-                                </li>
-                                <li class="flex items-center">
-                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                                    Add business address
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-                            <h6 class="font-semibold text-green-900 mb-2">
-                                <i class="fas fa-lightbulb me-2"></i>
-                                Good News!
-                            </h6>
-                            <p class="text-sm text-green-800">
-                                Once you complete your profile with all required information, your shop will be reviewed
-                                and activated soon.
-                                You'll be notified via email when your shop becomes active.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="modal-footer border-0 bg-gray-50">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-2"></i>
-                            Close
-                        </button>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='#personal'">
-                            <i class="fas fa-edit me-2"></i>
-                            Complete Profile Now
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
 
     @push('scripts')
         <script>

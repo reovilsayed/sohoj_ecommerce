@@ -161,12 +161,12 @@
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="{{ route('homepage') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('shops') }}">Shops</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('shops') }}">Products</a></li>
                     <li class="nav-item"><a class="nav-link"
                             href="{{ route('shops', ['filter_products' => 'trending']) }}">Trending</a></li>
                     <li class="nav-item"><a class="nav-link"
                             href="{{ route('shops', ['filter_products' => 'most-popular']) }}">Best Seller</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Vendors</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Shops</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('faqs') }}">FAQ</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact Us</a></li>
                 </ul>

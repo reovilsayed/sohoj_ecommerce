@@ -13,6 +13,7 @@ class Product extends Model
 
     protected $casts = [
         'images' => 'array',
+        'variations' => 'array',
     ];
 
     public $with = ['ratings'];
@@ -123,17 +124,6 @@ class Product extends Model
         return $this->hasMany(Rating::class)->where('status', 1)->latest();
     }
 
-    public function setVariationsAttribute($value)
-    {
-        $this->attributes['variations'] = json_encode($value);
-    }
-    public function getVariationsAttribute($value)
-    {
-
-        if ($value) {
-            return json_decode($value);
-        }
-    }
     public function setImagesAttribute($value)
     {
         $this->attributes['images'] = is_array($value) ? json_encode($value) : $value;

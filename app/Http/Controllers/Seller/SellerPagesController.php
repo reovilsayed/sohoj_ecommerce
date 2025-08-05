@@ -217,6 +217,7 @@ class SellerPagesController extends Controller
     }
     public function shopPolicyStore(Request $request)
     {
+      
         $shopPolicy = ShopPolicy::updateOrCreate([
             'shop_id' => auth()->user()->shop->id,
         ], [
