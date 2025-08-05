@@ -106,8 +106,8 @@ Route::post('/store-checkout', [CheckoutController::class, 'store'])->name('chec
 
 //Rating
 Route::post('rating/{product_id}', [PageController::class, 'rating'])->name('rating');
-Route::get('/profile/{slug}', [PageController::class, 'store_front'])->name('store_front');
-Route::get('/store/{slug}', [PageController::class, 'store_front'])->name('store_front');
+// Route::get('/profile/{slug}', [PageController::class, 'store_front'])->name('store_front');
+Route::get('/store/{shop:slug}', [PageController::class, 'store_front'])->name('store_front');
 
 Route::get('/seller', [SellerPagesController::class, 'dashboard'])->middleware('role:vendor')->name('dashboard');
 
@@ -191,14 +191,14 @@ Route::post('/status-update/{shop}', [PageController::class, 'shop_status_update
 Route::post('settings/update', [PageController::class, 'settingsUpdate'])->name('settings.update');
 
 
-    // Route::get('test',function(){
-    //     dd(settings::setting('site.description'));
-    // });
+// Route::get('test',function(){
+//     dd(settings::setting('site.description'));
+// });
 
-    Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
-    Route::get('privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy.policy');
-    Route::get('contact', [PageController::class, 'contact'])->name('contact');
-    Route::post('contact', [PageController::class, 'contactStore'])->name('contact.store');
+Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
+Route::get('privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy.policy');
+Route::get('contact', [PageController::class, 'contact'])->name('contact');
+Route::post('contact', [PageController::class, 'contactStore'])->name('contact.store');
 Route::get('payment/cancel', [PageController::class, 'paymentCancel'])->name('payment.cancel');
 
 // API Documentation Route
