@@ -11,7 +11,11 @@ class ProductRepository
 {
 
     protected $select = ['id', 'slug', 'name', 'shop_id', 'views', 'post_code', 'status', 'parent_id', 'images', 'image', 'price', 'sale_price'];
-    protected $relations = ['shop:id,name,status', 'ratings', 'prodcats:id,name,slug'];
+    protected $relations = [
+        'shop:id,name,status,slug', 
+        'ratings:id,product_id,rating', 
+        'prodcats:id,name,slug'
+    ];
     protected $locationPostcodes;
     protected $recommand;
 

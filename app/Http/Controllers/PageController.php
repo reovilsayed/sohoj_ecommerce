@@ -26,25 +26,19 @@ class PageController extends Controller
 {
     public function home()
     {
-
-
-
-        $latest_products = ProductRepository::getLatestProducts();
-
-        $bestsaleproducts = ProductRepository::getBestsaleProducts();
-
-
-        $recommandProducts = ProductRepository::getRecommandProducts();
-        $latest_shops = ShopRepsitory::getLatestShops();
-
-        $prodcats = CategoryRepository::getAllCategoriesWithProducts();
-
-
-        $sliders = Cache::remember('sliders', 3600, function () {
-            return Slider::latest()->get();
+        // Cache the entire homepage data together to reduce individual repository calls
+        $homeData = Cache::remember('homepage_data', 1800, function () { // 30 minutes cache
+            return [
+                'latest_products' => ProductRepository::getLatestProducts(),
+                'bestsaleproducts' => ProductRepository::getBestsaleProducts(), 
+                'recommandProducts' => ProductRepository::getRecommandProducts(),
+                'latest_shops' => ShopRepsitory::getLatestShops(),
+                'prodcats' => CategoryRepository::getAllCategoriesWithProducts(),
+                'sliders' => Slider::latest()->get()
+            ];
         });
 
-        return view('pages.home', compact('latest_products', 'bestsaleproducts', 'latest_shops', 'prodcats', 'sliders', 'recommandProducts'));
+        return view('pages.home', $homeData);
     }
     public function shops()
     {

@@ -20,7 +20,7 @@ class CategoryRepository
     public  function allCategoriesWithProducts()
     {
         return Cache::remember('prodcats', 3600, function () {
-            return Prodcat::with('childrens')
+            return Prodcat::with(['childrens:id,name,slug,parent_id'])
                 ->whereNull('parent_id')
                 ->whereHas('products')
                 ->orderBy('role', 'asc')
