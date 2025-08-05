@@ -49,72 +49,73 @@
     </div>
 
     <div class="shop-card-content">
-        <div class="shop-card-header">
-            <h5 class="shop-card-title">
-                <a href="{{ route('store_front', $shop->slug) }}">{{ $shop->name }}</a>
-            </h5>
-            <div class="shop-card-rating">
-                <div class="shop-stars">
-                    @for ($i = 1; $i <= 5; $i++)
-                        <i class="fas fa-star {{ $i <= 4 ? 'filled' : '' }}"></i>
-                    @endfor
-                </div>
-                <span class="shop-rating-text text-dark">({{ $shop->ratings->count() }})</span>
+        <div class="shop_card_details">
+            <div class="shop-card-header">
+                <h5 class="shop-card-title">
+                    <a href="{{ route('store_front', $shop->slug) }}">{{ $shop->name }}</a>
+                </h5>
+                <div class="shop-card-rating">
+                    <div class="shop-stars">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <i class="fas fa-star {{ $i <= 4 ? 'filled' : '' }}"></i>
+                        @endfor
+                    </div>
+                    <span class="shop-rating-text text-dark">({{ $shop->ratings->count() }})</span>
 
-            </div>
-        </div>
-
-        <div class="shop-card-meta">
-            <div class="shop-card-category">
-                <span>{{ $shop->company_name ?? 'General Store' }}</span>
-            </div>
-            <div class="shop-card-location">
-                <i class="fas fa-map-marker-alt"></i>
-                <span
-                    class="text-dark">{{ $shop->city . ' ' . $shop->state . ' ' . $shop->post_code . ' ' . $shop->country ?? 'Unknown Location' }}</span>
-            </div>
-        </div>
-
-        @php
-            if (is_array($shop->tags)) {
-                $tags = $shop->tags;
-            } elseif (is_string($shop->tags)) {
-                $tags = explode(',', $shop->tags);
-            } else {
-                $tags = [];
-            }
-        @endphp
-        @if (!empty($shop->tags))
-            <div class="shop-card-tags">
-                @foreach (array_slice($tags, 0, 3) as $tag)
-                    <span class="shop-tag" title="{{ $tag }}">
-                        {{ Str::limit($tag, 8, '...') }}
-                    </span>
-                @endforeach
-            </div>
-        @endif
-
-        <div class="shop-card-stats">
-            <div class="shop-stat-item">
-                <i class="fas fa-box"></i>
-                <div>
-                    <span class="stat-number">{{ $shop->products->count() }}</span>
-                    <span>Products</span>
                 </div>
             </div>
-            <div class="shop-stat-item">
-                <i class="fas fa-users"></i>
-                <div>
-                    <span class="stat-number">{{ rand(50, 500) }}</span>
-                    <span>Followers</span>
+
+            <div class="shop-card-meta">
+                <div class="shop-card-category">
+                    <span>{{ $shop->company_name ?? 'General Store' }}</span>
+                </div>
+                <div class="shop-card-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span
+                        class="text-dark">{{ Str::limit($shop->city . ' ' . $shop->state . ' ' . $shop->post_code . ' ' . $shop->country ?? 'Unknown Location', 50, '...') }}</span>
                 </div>
             </div>
-        </div>
 
-        <div class="shop-card-description">
-            <p class="text-dark">
-                {{ Str::limit($shop->short_description ?? 'A trusted shop offering quality products and excellent service.', 60, '...') }}
-            </p>
+            @php
+                if (is_array($shop->tags)) {
+                    $tags = $shop->tags;
+                } elseif (is_string($shop->tags)) {
+                    $tags = explode(',', $shop->tags);
+                } else {
+                    $tags = [];
+                }
+            @endphp
+            @if (!empty($shop->tags))
+                <div class="shop-card-tags">
+                    @foreach (array_slice($tags, 0, 3) as $tag)
+                        <span class="shop-tag" title="{{ $tag }}">
+                            {{ Str::limit($tag, 8, '...') }}
+                        </span>
+                    @endforeach
+                </div>
+            @endif
+
+            <div class="shop-card-stats">
+                <div class="shop-stat-item">
+                    <i class="fas fa-box"></i>
+                    <div>
+                        <span class="stat-number">{{ $shop->products->count() }}</span>
+                        <span>Products</span>
+                    </div>
+                </div>
+                <div class="shop-stat-item">
+                    <i class="fas fa-users"></i>
+                    <div>
+                        <span class="stat-number">{{ $shop->followers->count() }}</span>
+                        <span>Followers</span>
+                    </div>
+                </div>
+            </div>
+            <div class="shop-card-description">
+                <p class="text-dark">
+                    {{ Str::limit($shop->short_description ?? 'A trusted shop offering quality products and excellent service.', 60, '...') }}
+                </p>
+            </div>
         </div>
 
         <div class="shop-card-footer">
@@ -128,11 +129,11 @@
                     @php
                         $follow = auth()->user()->follows($shop);
                     @endphp
-                    <button class="shop-follow-btn text-center d-block" type="submit"><i class="fas fa-heart"></i>
+                    <button class="shop-follow-btn text-center d-block w-100" type="submit"><i class="fas fa-heart"></i>
                         {{ $follow ? 'Unfollow' : 'Follow' }}</button>
                 </form>
             @else
-                <a class="shop-follow-btn text-center d-block" href="{{ route('login') }}"><i class="fas fa-heart"></i>
+                <a class="shop-follow-btn text-center d-block w-100" href="{{ route('login') }}"><i class="fas fa-heart"></i>
                     <span>Follow</span></a>
             @endauth
         </div>
@@ -259,6 +260,9 @@
 
     .shop-card-content {
         padding: 16px;
+    }
+    .shop_card_details{
+        height: 280px;
     }
 
     .shop-card-header {

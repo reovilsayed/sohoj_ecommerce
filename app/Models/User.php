@@ -120,10 +120,11 @@ public function canAccessPanel(Panel $panel): bool
     }
     public function follows(Shop $shop)
     {
-        $cacheKey = 'user:' . $this->id . ':follows_shop:' . $shop->id;
-        return \Illuminate\Support\Facades\Cache::remember($cacheKey, now()->addMinutes(10), function () use ($shop) {
+        // dd($this->followedShops()->where('shop_id', $shop->id)->get(),$shop->id,auth()->user()->id());
+        // $cacheKey = 'user:' . $this->id . ':follows_shop:' . $shop->id;
+        // return \Illuminate\Support\Facades\Cache::remember($cacheKey, now()->addMinutes(10), function () use ($shop) {
             return $this->followedShops()->where('shop_id', $shop->id)->exists();
-        });
+        // });
     }
 
     public function chargeWithSubscription($amount, $comment)
