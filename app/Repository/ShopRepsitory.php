@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\Cache;
 
 class ShopRepsitory
 {
-    protected $relations = ['products:id,name,shop_id,slug,images,views,image,sale_price,price,post_code,status', 'products.ratings', 'products.prodcats:id,name,slug'];
+    protected $relations = [
+        'products:id,name,shop_id,slug,images,views,image,sale_price,price,post_code,status', 
+        'products.ratings:id,product_id,rating', 
+        'products.prodcats:id,name,slug'
+    ];
     public static function getLatestShops(int $limit = 8)
     {
         return (new self())->latestShops($limit);
