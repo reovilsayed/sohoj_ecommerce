@@ -234,12 +234,41 @@
                         <div class="">
                             <div class="card">
                                 <div class="card-header avatar-banner-upload">
-                                    @if ($shop && $shop->banner)
-                                        <img src="{{ Storage::url($shop->banner) }}" alt="Shop Banner"
-                                            class="w-full object-cover rounded-t-lg" style="height: 250px; ">
+                                    @php
+                                        $bannerPath = $shop->banner;
+                                        $extension = strtolower(pathinfo($bannerPath, PATHINFO_EXTENSION));
+                                        $videoExtensions = ['mp4', 'webm', 'ogg', 'mov', 'avi'];
+                                        $imageExtensions = [
+                                            'jpeg',
+                                            'png',
+                                            'webp',
+                                            'jpg',
+                                            'gif',
+                                            'svg',
+                                            'svg+xml',
+                                            'avif',
+                                        ];
+
+                                        $isVideo = in_array($extension, $videoExtensions);
+                                        $isImage = in_array($extension, $imageExtensions);
+                                    @endphp
+                                    {{-- @dd($bannerPath, $isVideo, $isImage) --}}
+                                    @if ($bannerPath)
+                                        @if ($isVideo)
+                                            <video src="{{ Storage::url($bannerPath) }}" autoplay muted loop
+                                                class="w-full object-cover rounded-t-lg" style="height: 250px;"></video>
+                                        @elseif ($isImage)
+                                            <img src="{{ Storage::url($bannerPath) }}" alt="Shop Banner"
+                                                class="w-full object-cover rounded-t-lg" style="height: 250px;">
+                                        @else
+                                            <img src="{{ asset('assets/img/header.jpg') }}" alt="Default Banner"
+                                                class="w-full object-cover rounded-t-lg" style="height: 250px;">
+                                        @endif
                                     @else
-                                        <img src="{{ asset('assets/img/heaer.jpg') }}" alt="Shop Banner"
-                                            class="w-full object-cover rounded-t-lg" style="height: 250px; ">
+                                        <div
+                                            class="cover-placeholder w-full h-[250px] bg-gray-200 rounded-t-lg flex items-center justify-center">
+                                            <span class="text-gray-600">No banner available</span>
+                                        </div>
                                     @endif
                                     <div class="avatar-banner-overlay">
                                         <div
@@ -297,14 +326,15 @@
                                                 class="w-2 h-2 bg-primary-400 rounded-full mr-1 status-indicator"></span>
                                             Vendor Profile
                                         </span>
-                                        @if($shop)
-                                            @if($shop->status == 1)
+                                        @if ($shop)
+                                            @if ($shop->status == 1)
                                                 <span class="shop-status-badge">
                                                     <i class="fas fa-exclamation-triangle"></i>
                                                     Shop Inactive
                                                 </span>
                                             @else
-                                                <span class="inline-flex items-center py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                <span
+                                                    class="inline-flex items-center py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                                     <span class="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
                                                     Shop Active
                                                 </span>
@@ -548,8 +578,9 @@
     </div>
 
     <!-- Shop Status Modal -->
-    @if($shop && $shop->status == 1)
-        <div class="modal fade" id="shopStatusModal" tabindex="-1" aria-labelledby="shopStatusModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    @if ($shop && $shop->status == 1)
+        <div class="modal fade" id="shopStatusModal" tabindex="-1" aria-labelledby="shopStatusModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-0 shadow-lg">
                     <div class="modal-header bg-gradient-to-r from-orange-500 to-red-500 text-white border-0">
@@ -557,19 +588,22 @@
                             <i class="fas fa-exclamation-triangle me-2"></i>
                             Shop Status Notice
                         </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-4">
                         <div class="text-center mb-4">
-                            <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <div
+                                class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
                                 <i class="fas fa-store text-2xl text-orange-500"></i>
                             </div>
                             <h4 class="text-lg font-semibold text-gray-900 mb-2">Shop Currently Inactive</h4>
                             <p class="text-gray-600 mb-4">
-                                Your shop is currently not active. To activate your shop, please complete your shop profile with all required information.
+                                Your shop is currently not active. To activate your shop, please complete your shop
+                                profile with all required information.
                             </p>
                         </div>
-                        
+
                         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                             <h6 class="font-semibold text-blue-900 mb-2">
                                 <i class="fas fa-info-circle me-2"></i>
@@ -605,7 +639,8 @@
                                 Good News!
                             </h6>
                             <p class="text-sm text-green-800">
-                                Once you complete your profile with all required information, your shop will be reviewed and activated soon. 
+                                Once you complete your profile with all required information, your shop will be reviewed
+                                and activated soon.
                                 You'll be notified via email when your shop becomes active.
                             </p>
                         </div>
@@ -640,7 +675,7 @@
                 });
 
                 // Auto-open modal if shop is inactive
-                @if($shop && $shop->status == 1)
+                @if ($shop && $shop->status == 1)
                     const shopStatusModal = new bootstrap.Modal(document.getElementById('shopStatusModal'));
                     shopStatusModal.show();
                 @endif
