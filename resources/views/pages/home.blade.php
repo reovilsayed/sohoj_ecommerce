@@ -1391,73 +1391,66 @@
         <section class="section ec-product-tab section-space-p">
             <div class="container">
                 <div class="row">
-                    <!-- Product area start -->
                     <div class=" col-md-12">
-                        <!-- Product tab area start -->
-                        <div class="row space-t-50">
-                            <!-- <div class="col-md-12">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          </div> -->
-                            <h2 class="related-product-sec-title my-5"> Recommended For You</h2>
-                        </div>
+                        <h2 class="related-product-sec-title"> Recommended For You</h2>
+                    </div>
 
-                        <!-- 1st Product tab start -->
-                        <div class="tab-pane fade show active" id="all">
-                            @foreach ($latest_shops as $shop)
-                                @if ($shop->products->count())
-                                    <div class="row mb-4 mt-4">
-                                        <div class="col-md-3 cols-12">
-                                            <x-shops-card.card-1 :shop="$shop" />
-                                        </div>
-                                        <div class="col-md-9 mt-4">
-                                            <div class="ec-spe-products">
-                                                @foreach ($shop->products->whereNull('parent_id')->chunk(4) as $products)
-                                                    <div class="ec-fs-product">
-                                                        <div class="ec-fs-pro-inner">
-                                                            <div class="row">
-                                                                @php
-                                                                    $last = $loop->last;
-                                                                    $count = $shop->products->count();
-                                                                @endphp
-                                                                @foreach ($products as $product)
-                                                                    <x-products.product :product="$product"
-                                                                        :variant="'red'" :showMultipleCategories="true" />
-                                                                @endforeach
+                    <div class="tab-pane fade show active" id="all">
+                        @foreach ($latest_shops as $shop)
+                            @if ($shop->products->count())
+                                <div class="row mb-4 mt-4">
+                                    <div class="col-md-3 cols-12 pro-gl-content-shop">
+                                        <x-shops-card.card-1 :shop="$shop" />
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="ec-spe-products">
+                                            @foreach ($shop->products->whereNull('parent_id')->chunk(4) as $products)
+                                                <div class="ec-fs-product">
+                                                    <div class="ec-fs-pro-inner">
+                                                        <div class="row">
+                                                            @php
+                                                                $last = $loop->last;
+                                                                $count = $shop->products->count();
+                                                            @endphp
+                                                            @foreach ($products as $product)
+                                                                <x-products.product :product="$product" :variant="'red'"
+                                                                    :showMultipleCategories="true" />
+                                                            @endforeach
 
-                                                                @if ($last && $count >= 8)
-                                                                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pro-gl-content d-flex align-items-center"
-                                                                        style="margin-bottom: 35px;">
-                                                                        <a href="{{ route('store_front', $shop->slug) }}"
-                                                                            class="btn btn-dark">View More</a>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
+                                                            {{-- @if ($last && $count >= 8)
+                                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pro-gl-content d-flex align-items-center"
+                                                                    style="margin-bottom: 35px;">
+                                                                    <a href="{{ route('store_front', $shop->slug) }}"
+                                                                        class="btn btn-dark">View More</a>
+                                                                </div>
+                                                            @endif --}}
                                                         </div>
                                                     </div>
-                                                @endforeach
-                                            </div>
+                                                </div>
+                                            @endforeach
                                         </div>
                                     </div>
-                                @endif
-                            @endforeach
+                                </div>
+                            @endif
+                        @endforeach
 
 
-                            <div class="view-more-shops-container">
-                                <a href="{{ route('vendors') }}" class="view-more-shops-btn">
-                                    <span class="btn-text" style="color: #ffffff">Explore All Shops</span>
-                                    <div class="btn-icon">
-                                        <i class="fas fa-store"></i>
-                                    </div>
-                                    <div class="btn-arrow">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </div>
-                                    <div class="btn-shine"></div>
-                                </a>
-                            </div>
-
+                        <div class="view-more-shops-container">
+                            <a href="{{ route('vendors') }}" class="view-more-shops-btn">
+                                <span class="btn-text" style="color: #ffffff">Explore All Shops</span>
+                                <div class="btn-icon">
+                                    <i class="fas fa-store"></i>
+                                </div>
+                                <div class="btn-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                                <div class="btn-shine"></div>
+                            </a>
                         </div>
+
                     </div>
                 </div>
-
-
+            </div>
         </section>
     @endif
     <!-- ec Product tab Area End -->
