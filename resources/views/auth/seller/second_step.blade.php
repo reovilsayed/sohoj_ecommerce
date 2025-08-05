@@ -75,7 +75,7 @@
                                             <label for="govt_id_front" class="form-label fw-bold" style="font-size: 1rem; color: #01949a;">ID Front side <span class="text-danger">*</span></label>
                                             <label for="govt_id_front" class="w-100 d-flex flex-column align-items-center justify-content-center mb-2" style="border:2px dashed #01949a; border-radius:0; padding:28px 0; cursor:pointer; background:#fafdff; transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 0 0 2px #01949a22'" onmouseout="this.style.boxShadow='none'">
                                                 <i class="fas fa-id-badge mb-2" style="font-size:2rem;color:#01949a;"></i>
-                                                <span class="fw-bold text-secondary">Click or drag file to upload</span>
+                                                <span class="fw-bold text-secondary">Click or drag file to upload (JPEG or PNG)</span>
                                                 <input id="govt_id_front" type="file" class="d-none @error('govt_id_front') is-invalid @enderror" name="govt_id_front" onchange="document.getElementById('govt_id_front_name').textContent = this.files[0]?.name || 'No file chosen'">
                                             </label>
                                             <span id="govt_id_front_name" class="ms-2 align-self-center text-secondary small">No file chosen</span>
