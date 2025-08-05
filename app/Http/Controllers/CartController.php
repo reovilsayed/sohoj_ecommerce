@@ -94,7 +94,7 @@ class CartController extends Controller
 	}
 	public function cartQty()
 	{
-		$cartqty = Cart::getTotalQuantity();
+		$cartqty = Cart::count();
 
 		return response()->json($cartqty);
 	}

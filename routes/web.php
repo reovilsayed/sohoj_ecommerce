@@ -201,6 +201,7 @@ Route::get('contact', [PageController::class, 'contact'])->name('contact');
 Route::post('contact', [PageController::class, 'contactStore'])->name('contact.store');
 Route::get('payment/cancel', [PageController::class, 'paymentCancel'])->name('payment.cancel');
 Route::get('why-sell-on-afrikart', [PageController::class, 'whySellOnAfrikart'])->name('why.sell.on.afrikart');
+Route::get('sellers-helps', [PageController::class, 'sellersHelps'])->name('sellers.helps');
 
 // API Documentation Route
 Route::get('/api-docs', function () {

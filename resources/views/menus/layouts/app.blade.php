@@ -399,7 +399,7 @@
                 var addToCartBtn = $(this);
                 var productId = $(this).data('product-id');
                 var quantity = $('.addToCartForm_' + productId).find('.qty').val();
-                var oldQty = "{{ Cart::getTotalQuantity() }}";
+                var oldQty = "{{ Cart::count() }}";
                 var parentDiv = $(this).closest('.ec-product-inner');
 
                 $.ajax({

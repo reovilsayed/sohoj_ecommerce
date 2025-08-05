@@ -6,7 +6,7 @@ use App\Models\Coupon;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 
-use Cart;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Session;
 
 class CouponController extends Controller
@@ -31,7 +31,7 @@ class CouponController extends Controller
 			session()->flash('errors', collect(['Minimum cart required to use this coupon ' . $coupon->minimum_cart]));
 			return back();
 		}
-		$discount = (Cart::getSubTotal()*$coupon->discount)/100;
+		$discount = (Cart::subTotal()*$coupon->discount)/100;
 		Session::put('discount', $discount);
 		Session::put('discount_code', $coupon->code);
 		$coupon->increment('used');

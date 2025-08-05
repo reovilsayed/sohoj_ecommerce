@@ -606,7 +606,7 @@
                 <a href="{{ route('homepage') }}" class=""
                     style="position: relative;border: 0;font-size: 30px;line-height: 1;color: #555;">×</a>
             </div>
-            @if (Cart::getTotalQuantity() > 0)
+            @if (Cart::count() > 0)
                 <ul class="eccart-pro-items">
                     @foreach (Cart::getContent() as $product)
                         <li class="d-flex align-items-center">
@@ -635,8 +635,8 @@
         </div>
         <div class="ec-cart-bottom">
             <div class="cart-sub-total">
-                @if (Cart::getTotalQuantity() > 0)
-                    <table class="table cart-table">
+                @if (Cart::count() > 0)
+                    <table class="table cart-table">`
                         <tbody>
                             <tr>
                                 <td class="text-left">Sub-Total :</td>
@@ -654,7 +654,7 @@
                     </table>
                 @endif
             </div>
-            @if (Cart::getTotalQuantity() > 0)
+            @if (Cart::count() > 0)
                 <div class="cart_btn continue">
                     <a href="{{ route('cart') }}" class="btn btn-dark">View Cart</a>
                     <a href="{{ route('checkout') }}" class="btn btn-secondary">Checkout</a>

@@ -486,4 +486,9 @@ class PageController extends Controller
     {
         return view('pages.Why_sell_on_AfrikArtt');
     }
+
+    public function sellersHelps()
+    {
+        return view('pages.sellers_helps');
+    }
 }
