@@ -19,7 +19,7 @@ class CategoryRepository
 
     public  function allCategoriesWithProducts()
     {
-        return Cache::remember('prodcats', 3600, function () {
+        return Cache::remember('prodcats', 300, function () {
             return Prodcat::with(['childrens:id,name,slug,parent_id'])
                 ->whereNull('parent_id')
                 ->whereHas('products')

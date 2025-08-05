@@ -19,7 +19,7 @@ class ShopRepsitory
 
     public  function latestShops(int $limit = 8)
     {
-        return Cache::remember('latest_shops_' . $limit, 3600, function () use ($limit) {
+        return Cache::remember('latest_shops_' . $limit, 300, function () use ($limit) {
             return Shop::query()
                 ->where('status', 1)
                 ->whereHas('products', fn($q) => $q->whereNull('parent_id'))

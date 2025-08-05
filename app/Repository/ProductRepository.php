@@ -34,7 +34,7 @@ class ProductRepository
     {
 
         $locationPostcodes = $this->locationPostcodes;
-        return Cache::remember('latest_products_' . md5(json_encode($locationPostcodes)) . '_' . $limit, 3600, function () use ($locationPostcodes, $limit) {
+        return Cache::remember('latest_products_' . md5(json_encode($locationPostcodes)) . '_' . $limit, 300, function () use ($locationPostcodes, $limit) {
             return Product::query()
                 ->select($this->select)
                 ->where('status', 1)

@@ -454,11 +454,14 @@
                                         <input type="file" name="avatar"
                                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
                                     </div>
-                                    <div class="col-span-1 md:col-span-2">
+                                    {{-- @dd($user->avatar) --}}
+                                    @if ($user->avatar)
+                                        <div class="col-span-1 md:col-span-2">
                                         <label class="block mb-1">Avatar</label>
                                         <img src="{{ Storage::url($user->avatar) }}" alt="User Avatar"
                                             class="w-20 h-20 object-cover mt-2 border border-gray-300 shadow" />
                                     </div>
+                                    @endif
                                 </div>
                                 <div class="flex justify-end mt-6">
                                     <button type="submit"
@@ -514,7 +517,7 @@
                             </div>
 
                             <!-- Two-Factor Authentication -->
-                            <div class="bg-gray-50 rounded-lg p-6">
+                            {{-- <div class="bg-gray-50 rounded-lg p-6">
                                 <h3 class="text-lg font-medium text-gray-900 mb-4">Two-Factor Authentication</h3>
                                 <div class="flex items-center justify-between">
                                     <div>
@@ -559,7 +562,7 @@
                                         </label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
