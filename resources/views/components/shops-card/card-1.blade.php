@@ -22,7 +22,7 @@
             <img src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }}" class="shop-card-img">
             <div class="shop-card-overlay">
                 <div class="shop-card-actions">
-                    <a href="{{ route('store_front', $shop->slug) }}" class="shop-action-btn" title="Visit Shop">
+                    <a href="{{ route('store_front', $shop->slug) }}" target="_blank" class="shop-action-btn" title="Visit Shop">
                         <i class="fas fa-external-link-alt" style="color: var(--rating-color)"></i>
                     </a>
                     <button class="shop-action-btn" title="Follow Shop">
@@ -119,7 +119,7 @@
         </div>
 
         <div class="shop-card-footer">
-            <a href="{{ route('store_front', $shop->slug) }}" class="shop-visit-btn">
+            <a href="{{ route('store_front', $shop->slug) }}" class="shop-visit-btn w-auto">
                 <span class="text-light">Visit Shop</span>
                 <i class="fas fa-arrow-right text-light"></i>
             </a>
@@ -129,11 +129,11 @@
                     @php
                         $follow = auth()->user()->follows($shop);
                     @endphp
-                    <button class="shop-follow-btn text-center d-block w-100" type="submit"><i class="fas fa-heart"></i>
+                    <button class="shop-follow-btn text-center d-block w-auto" type="submit"><i class="fas fa-heart"></i>
                         {{ $follow ? 'Unfollow' : 'Follow' }}</button>
                 </form>
             @else
-                <a class="shop-follow-btn text-center d-block w-100" href="{{ route('login') }}"><i class="fas fa-heart"></i>
+                <a class="shop-follow-btn text-center d-block w-auto" href="{{ route('login') }}"><i class="fas fa-heart"></i>
                     <span>Follow</span></a>
             @endauth
         </div>

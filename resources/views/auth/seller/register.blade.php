@@ -6,48 +6,47 @@
     <link rel="stylesheet" id="bg-switcher-css" href="{{ asset('assets/frontend-assetss/css/backgrounds/bg-4.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/checkout.css') }}">
     <style>
-        :root {
-            --primary-green: #01949a;
-        }
         .register-header {
-            background: var(--primary-green) !important;
+            background: var(--accent-color) !important;
         }
         .register-header h2, .register-header p {
             color: #fff !important;
         }
         .input-group-text, .rounded-circle, .form-check-input:checked {
-            background-color: #e6f4ec !important;
-            color: var(--primary-green) !important;
+            background-color: var(--accent-color) !important;
+            color:  #ffffff !important;
             border-color: #b6e2ce !important;
         }
         .form-label, .form-check-label, .card-title {
-            color: var(--primary-green) !important;
+            color: var(--accent-color) !important;
         }
         .btn-green, .btn-green:active, .btn-green:focus {
-            background: var(--primary-green) !important;
+            background: var(--accent-color) !important;
             color: #fff !important;
             border: none !important;
         }
         .btn-green:hover {
-            background: #01787a !important;
+            background: var(--accent-color) !important;
             color: #fff !important;
+            filter: brightness(0.9);
         }
         .alert {
-            border-left: 4px solid var(--primary-green) !important;
+            border-left: 4px solid var(--accent-color) !important;
         }
         .register-benefit-icon {
             background-color: #e6f4ec !important;
-            color: var(--primary-green) !important;
+            color: var(--accent-color) !important;
         }
         .form-control:focus {
-            border-color: var(--primary-green) !important;
+            border-color: var(--accent-color) !important;
             box-shadow: 0 0 0 0.2rem rgba(1, 153, 154, 0.15) !important;
         }
         a {
-            color: var(--primary-green);
+            color: var(--accent-color);
         }
         a:hover {
-            color: #01787a;
+            color: var(--accent-color);
+            filter: brightness(0.9);
         }
     </style>
 @endsection
@@ -117,7 +116,7 @@
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                             <input id="password" type="password" placeholder="Create password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                                            <button class="btn btn-success toggle-password" type="button"><i class="fas fa-eye"></i></button>
+                                            <button class="btn toggle-password h-auto" style="background: var(--accent-color);" type="button"><i class="fas fa-eye text-light"></i></button>
                                         </div>
                                         <div class="form-text text-muted">Minimum 8 characters</div>
                                         @error('password')
@@ -129,7 +128,7 @@
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                             <input id="password-confirm" type="password" placeholder="Confirm password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                                            <button class="btn btn-success toggle-password" type="button"><i class="fas fa-eye"></i></button>
+                                            <button class="btn toggle-password h-auto" style="background: var(--accent-color);" type="button"><i class="fas fa-eye text-light"></i></button>
                                         </div>
                                     </div>
                                 </div>
