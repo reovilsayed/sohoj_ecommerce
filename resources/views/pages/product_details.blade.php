@@ -8,7 +8,159 @@
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/shops.css') }}">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
-    
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap');
+
+        /* Optimized CSS with better organization and performance */
+w
+      
+        /* Cart Form */
+        .cart-form {
+            margin: 0;
+            display: inline;
+        }
+
+     
+
+        /* Content Section */
+        .product-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 250px);
+        }
+
+        .product-category {
+            margin-bottom: 8px;
+        }
+
+        .product-category span {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            color: #01949a;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .product-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            flex-grow: 1;
+            font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+            color: #000 !important;
+        }
+
+        .product-title a {
+            color: #000 !important;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        /* Rating */
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 1px;
+        }
+
+        .stars i {
+            color: #ddd;
+            font-size: 0.8rem;
+        }
+
+        .stars i.filled {
+            color: #ffc107;
+        }
+
+        .rating-count {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+
+        /* Price */
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .original-price {
+            color: #6c757d;
+            text-decoration: line-through;
+            font-size: 0.85rem;
+        }
+
+        .current-price {
+            color: #000;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* Add to Cart Button */
+       
+
+        .add-to-cart-btn.loading .spinner {
+            display: inline-block;
+        }
+
+        .add-to-cart-btn.loading .btn-text {
+            opacity: 0.6;
+        }
+
+        .add-to-cart-btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* @keyframes spin {
+                        from { transform: rotate(0deg); }
+                        to { transform: rotate(360deg); }
+                    } */
+
+        .product-title {
+            font-size: 0.9rem;
+        }
+
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 576px) {
+            .product-image {
+                height: 180px;
+            }
+
+            .product-content {
+                padding: 12px;
+            }
+
+            .product-title {
+                font-size: 0.85rem;
+            }
+
+            .add-to-cart-btn {
+                padding: 10px 16px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Focus states for accessibility */
+      
+    </style>
+@endsection
 @section('canonical_url', route('product_details', $product->slug))
 @section('title', $product->name . ' | Afrikartt E-commerce')
 @section('meta_description', Str::limit(strip_tags($product->short_description ?? $product->description), 150))

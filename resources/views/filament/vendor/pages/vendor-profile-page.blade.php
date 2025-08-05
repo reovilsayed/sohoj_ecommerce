@@ -126,6 +126,71 @@
                     opacity: 0.5;
                 }
             }
+
+            /* Modal Enhancements */
+            .modal-content {
+                border-radius: 16px;
+                overflow: hidden;
+            }
+
+            .modal-header {
+                background: linear-gradient(135deg, #f97316 0%, #dc2626 100%);
+            }
+
+            .modal-body {
+                font-family: 'Inter', sans-serif;
+            }
+
+            .modal-footer {
+                background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            }
+
+            .btn-primary {
+                background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                border: none;
+                transition: all 0.3s ease;
+            }
+
+            .btn-primary:hover {
+                background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            }
+
+            .btn-secondary {
+                background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+                border: none;
+                transition: all 0.3s ease;
+            }
+
+            .btn-secondary:hover {
+                background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+                transform: translateY(-1px);
+            }
+
+            /* Modal Animation */
+            .modal.fade .modal-dialog {
+                transition: transform 0.3s ease-out;
+                transform: translate(0, -50px);
+            }
+
+            .modal.show .modal-dialog {
+                transform: none;
+            }
+
+            /* Status Badge Enhancement */
+            .shop-status-badge {
+                background: linear-gradient(135deg, #f97316 0%, #dc2626 100%);
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                font-size: 0.875rem;
+                font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                animation: pulse 2s infinite;
+            }
         </style>
     @endpush
 
@@ -225,13 +290,26 @@
                                     <h1 class="text-2xl font-bold text-gray-900">{{ $user->name }} {{ $user->l_name }}
                                     </h1>
                                     <p class="text-gray-600">{{ $user->email }}</p>
-                                    <div class="flex items-center mt-1">
+                                    <div class="flex items-center mt-1 space-x-2">
                                         <span
                                             class="inline-flex items-center py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
                                             <span
                                                 class="w-2 h-2 bg-primary-400 rounded-full mr-1 status-indicator"></span>
                                             Vendor Profile
                                         </span>
+                                        @if($shop)
+                                            @if($shop->status == 1)
+                                                <span class="shop-status-badge">
+                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                    Shop Inactive
+                                                </span>
+                                            @else
+                                                <span class="inline-flex items-center py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    <span class="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
+                                                    Shop Active
+                                                </span>
+                                            @endif
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -469,6 +547,84 @@
         </div>
     </div>
 
+    <!-- Shop Status Modal -->
+    @if($shop && $shop->status == 1)
+        <div class="modal fade" id="shopStatusModal" tabindex="-1" aria-labelledby="shopStatusModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header bg-gradient-to-r from-orange-500 to-red-500 text-white border-0">
+                        <h5 class="modal-title" id="shopStatusModalLabel">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Shop Status Notice
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="text-center mb-4">
+                            <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-store text-2xl text-orange-500"></i>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 mb-2">Shop Currently Inactive</h4>
+                            <p class="text-gray-600 mb-4">
+                                Your shop is currently not active. To activate your shop, please complete your shop profile with all required information.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                            <h6 class="font-semibold text-blue-900 mb-2">
+                                <i class="fas fa-info-circle me-2"></i>
+                                What you need to do:
+                            </h6>
+                            <ul class="text-sm text-blue-800 space-y-1">
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Complete your shop information
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Upload shop logo and banner
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Add shop description and details
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Provide contact information
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Add business address
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <h6 class="font-semibold text-green-900 mb-2">
+                                <i class="fas fa-lightbulb me-2"></i>
+                                Good News!
+                            </h6>
+                            <p class="text-sm text-green-800">
+                                Once you complete your profile with all required information, your shop will be reviewed and activated soon. 
+                                You'll be notified via email when your shop becomes active.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 bg-gray-50">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='#personal'">
+                            <i class="fas fa-edit me-2"></i>
+                            Complete Profile Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -482,6 +638,12 @@
                 logoInput.addEventListener('change', function() {
                     this.closest('form').submit();
                 });
+
+                // Auto-open modal if shop is inactive
+                @if($shop && $shop->status == 1)
+                    const shopStatusModal = new bootstrap.Modal(document.getElementById('shopStatusModal'));
+                    shopStatusModal.show();
+                @endif
             });
         </script>
     @endpush
