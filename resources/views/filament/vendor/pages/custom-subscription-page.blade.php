@@ -1,4 +1,5 @@
-<x-filament-panels::page>
+@if (Auth::user()->shop->status == 1)
+    <x-filament-panels::page>
     @push('styles')
         <script>
             tailwind.config = {
@@ -182,7 +183,7 @@
                 <div id="myModal"
                     class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
                     <div class="bg-white rounded-lg shadow p-6 w-full max-w-xl">
-                        <h2 class="text-xl font-semibold mb-4">Modal Title</h2>
+                        <h2 class="text-xl font-semibold mb-4">Add Payment Card</h2>
                         <form id="cardAddFrom" action="{{ route('user.card.add') }}" method="POST">
                             @csrf
                             <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
@@ -284,7 +285,7 @@
                     document.getElementById('paymentmethod').value = setupIntent.payment_method
                     toastr.success('Card added');
                     $('#cardAddFrom').submit();
-                    window.location.href = url;
+                    window.refresh();
                 }
             });
         </script>
@@ -302,3 +303,4 @@
         </script>
     @endpush
 </x-filament-panels::page>
+@endif

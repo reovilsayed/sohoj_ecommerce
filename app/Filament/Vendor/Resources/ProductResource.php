@@ -823,13 +823,28 @@ class ProductResource extends Resource
                         ->icon('heroicon-o-eye'),
                     Tables\Actions\EditAction::make()
                         ->icon('heroicon-o-pencil'),
-                    // Tables\Actions\ReplicateAction::make()
-                    //     ->icon('heroicon-o-document-duplicate')
-                    //     ->beforeReplicaSaved(function (Product $replica, array $data): void {
-                    //         $replica->name = $data['name'] . ' (Copy)';
-                    //         $replica->slug = Str::slug($replica->name);
-                    //         $replica->sku = null; // Clear SKU to avoid conflicts
-                    //     }),
+                    Tables\Actions\ReplicateAction::make()
+                        ->icon('heroicon-o-document-duplicate')
+                        ->excludeAttributes(['slug', 'sku'])
+                        ->beforeReplicaSaved(function (Product $replica): void {
+                            // Modify name and generate new slug
+                            $replica->name = $replica->name . ' (Copy)';
+                            $replica->slug = Str::slug($replica->name);
+                            $replica->sku = null; // Clear SKU to avoid conflicts
+                            
+                            // Ensure shop_id is set to current user's shop
+                            $user = Auth::user();
+                            if ($user && $user->shop) {
+                                $replica->shop_id = $user->shop->id;
+                            }
+                        })
+                        ->afterReplicaSaved(function (Product $replica, Product $original): void {
+                            // Copy the many-to-many relationship (categories)
+                            if ($original->prodcats()->exists()) {
+                                $categoryIds = $original->prodcats()->pluck('prodcats.id')->toArray();
+                                $replica->prodcats()->sync($categoryIds);
+                            }
+                        }),
                     Tables\Actions\DeleteAction::make()
                         ->icon('heroicon-o-trash'),
                 ])

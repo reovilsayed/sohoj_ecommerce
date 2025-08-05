@@ -47,11 +47,11 @@ class OfferBannerPage extends Page
         $this->form->fill([
             'title1' => $shop->title1,
             'category1' => $shop->category1,
-            'image1' => '',
+            'image1' => $shop->image1 ? [$shop->image1] : [],
             'link1' => $shop->link1,
             'title2' => $shop->title2,
             'category2' => $shop->category2,
-            'image2' => '',
+            'image2' => $shop->image2 ? [$shop->image2] : [],
             'link2' => $shop->link2,
         ]);
     }
@@ -77,7 +77,11 @@ class OfferBannerPage extends Page
                     ->label('Banner 1 Image')
                     ->image()
                     ->disk('public')
-                    ->directory('offer-banners'),
+                    ->directory('offer-banners')
+                    ->imagePreviewHeight('150')
+                    ->maxSize(2048)
+                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])
+                    ->helperText('Upload banner image (max 2MB). Recommended size: 800x400px'),
 
                 Grid::make('3')
                     ->schema([
@@ -95,7 +99,11 @@ class OfferBannerPage extends Page
                     ->label('Banner 2 Image')
                     ->image()
                     ->disk('public')
-                    ->directory('offer-banners'),
+                    ->directory('offer-banners')
+                    ->imagePreviewHeight('150')
+                    ->maxSize(2048)
+                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])
+                    ->helperText('Upload banner image (max 2MB). Recommended size: 800x400px'),
             ]);
     }
 
@@ -113,7 +121,7 @@ class OfferBannerPage extends Page
             }
         }
 
-        $shop = auth()->user()->shop;
+        $shop = Auth::user()->shop;
 
         $data = $this->data;
 
