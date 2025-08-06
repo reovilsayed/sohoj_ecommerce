@@ -648,7 +648,7 @@
                     <div class="summary-card">
                         <div class="summary-card-icon">🚀</div>
                         <div class="summary-card-value">
-                            <span class="status-badge status-new">{{ $order->payment_status === 1 ? 'Paid' : 'Pending' }}</span>
+                            <span class="status-badge status-new">{{ $childOrder->payment_status === 1 ? 'Paid' : 'Pending' }}</span>
                         </div>
                         <div class="summary-card-label">Payment Status</div>
                     </div>
