@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
 use App\Mail\AdminOrderPlacedMail;
+use App\Mail\AdminOrderSuccessMail;
 use App\Mail\CustomarOrderPlacedMail;
+use App\Mail\CustomerOrderSuccessMail;
 use App\Mail\OrderPlaced;
 use App\Mail\VendorOrderPlacedMail;
+use App\Mail\VendorOrderSuccessMail;
 use App\Models\Address;
 use App\Models\Notification;
 // Use the Sohoj facade alias registered in config/app.php
@@ -68,9 +71,9 @@ class CheckoutController extends Controller
         }
         // try {
         // DB::beginTransaction();
-        $cartSubtotal = (float) (Cart::SubTotal() ?? 0);
-        $platform_fee = (float) (\Sohoj::flatCommision($cartSubtotal) ?? 0);
-        $shipping_cost = (float) (\Sohoj::shipping() ?? 0);
+        $cartSubtotal = Cart::SubTotal() ?? 0;
+        $platform_fee = \Sohoj::flatCommision($cartSubtotal) ?? 0;
+        $shipping_cost = \Sohoj::shipping() ?? 0;
         $discount = (float) (\Sohoj::discount() ?? 0);
         $total = $cartSubtotal + $platform_fee + $shipping_cost - $discount;
 
@@ -80,18 +83,29 @@ class CheckoutController extends Controller
             'product_id' => null,
             'shipping' => json_encode($shipping),
             'aptment' => $request->aptment,
-            'subtotal' => floatval(str_replace(',', '', Cart::SubTotal())),
-            'discount' => \Sohoj::round_num(\Sohoj::discount()),
+            'subtotal' => $cartSubtotal,
+            'discount' => \Sohoj::discount(),
             'discount_code' => \Sohoj::discount_code(),
             'tax' => null,
-            'shipping_total' => floatval(str_replace(',', '', \Sohoj::round_num(\Sohoj::shipping()))),
-            'platform_fee' => floatval(str_replace(',', '', $platform_fee)),
-            'total' => floatval(str_replace(',', '', \Sohoj::round_num($total))),
+            'shipping_total' => \Sohoj::shipping(),
+            'platform_fee' => $platform_fee,
+            'total' => \Sohoj::newTotal(),
             'quantity' => null,
             'vendor_total' => null,
             'payment_method' => $request->payment_method,
         ]);
         foreach (Cart::Content() as $item) {
+            $vendor_price = $item->model->vendor_price;
+            $shipping_cost = $item->model->shipping_cost;
+
+            // Fallback to (price - 0.10) if vendor_price is null
+            $vendor_price = $vendor_price ?? ($item->model->price - 0.10);
+
+            if ($item->model->sale_price) {
+                $flat_commision = $item->model->sale_price - $vendor_price;
+            } else {
+                $flat_commision = $item->model->price - $vendor_price;
+            }
             OrderProduct::create([
                 'quantity' => $item->qty,
                 'order_id' => $order->id,
@@ -112,13 +126,15 @@ class CheckoutController extends Controller
                 'discount' => null,
                 'discount_code' => null,
                 'tax' => null,
-                'shipping_total' => floatval(str_replace(',', '', $item->model->shipping_cost)),
-                'platform_fee' => floatval(str_replace(',', '', \Sohoj::flatCommision($item->price))),
-                'total' => floatval(str_replace(',', '', \Sohoj::round_num(($item->price * $item->qty) + $item->model->shipping_cost))),
+                'shipping_total' => floatval(str_replace(',', '', $shipping_cost)),
+                'platform_fee' => $flat_commision,
+                'total' => floatval(str_replace(',', '', \Sohoj::round_num(($item->price * $item->qty) + $shipping_cost))),
                 'quantity' => $item->qty,
-                'vendor_total' => $item->model->vendor_price * $item->qty,
+                'vendor_total' => ($vendor_price  * $item->qty),
                 'payment_method' => $request->payment_method,
                 'product_price' => $item->price,
+                // 'admin_tax'=> \Sohoj::taxCalculation($flat_commision) ?? 0,
+
             ]);
 
             OrderProduct::create([
@@ -130,23 +146,27 @@ class CheckoutController extends Controller
                 'variation' => $item->model->variations,
                 'shop_id' => $item->model->shop_id,
             ]);
+            
+            $shipping = json_decode($childOrder->shipping, true);
+            // dd($shipping);
+            if ($shipping['email']) {
+                Mail::to($shipping['email'])->send(new CustomarOrderPlacedMail($order, $childOrder));
+            }
+            if (optional($childOrder->shop)->email) {
+                Mail::to(optional($childOrder->shop)->email)->send(new VendorOrderPlacedMail( $order,$childOrder));
+            }
+            if (Settings::setting('admin_email')) {
+                Mail::to(Settings::setting('admin_email'))->send(new AdminOrderPlacedMail($order, $childOrder));
+            }
+            // dd('hello');
         }
 
 
         // return redirect('/thankyou')->with('thank', 'Order Created successfully!');
         $paymentService = new PaymentService($order);
         $url = $paymentService->getPaymentRedirectUrl();
-        $shipping = json_decode($order->shipping, true);
-        if ($shipping['email']) {
-            Mail::to($shipping['email'])->send(new CustomarOrderPlacedMail($order, $childOrder));
-        }
-        if (optional($childOrder->shop)->email) {
-            Mail::to(optional($childOrder->shop)->email)->send(new VendorOrderPlacedMail($childOrder, $order));
-        }
-        if (Settings::setting('admin_email')) {
-            Mail::to(Settings::setting('admin_email'))->send(new AdminOrderPlacedMail($order, $childOrder));
-        }
-        
+
+
         Cart::destroy();
         return redirect($url);
 
@@ -259,4 +279,26 @@ class CheckoutController extends Controller
         ]);
         return redirect()->back()->with('success_msg', 'Address create successfull ');
     }
+
+    public function handle(Order $order)
+    {
+        // dd($order->childs);
+        $order->update([
+            'payment_status' => 1,
+        ]);
+
+        foreach ($order->childs as $childOrder) {
+            $childOrder->update(['payment_status' => 1]);
+            Mail::to($childOrder->shop->email)->send(new VendorOrderSuccessMail($childOrder));
+        }
+
+        Mail::to($order->user->email)->send(new CustomerOrderSuccessMail($order));
+        if (Settings::setting('admin_email')) {
+            Mail::to(Settings::setting('admin_email'))->send(new AdminOrderSuccessMail($order));
+        }
+
+        session()->forget('discount');
+        session()->forget('discount_code');
+        return redirect('/thankyou')->with('thank', 'Order Created successfully!');
+    }                   
 }

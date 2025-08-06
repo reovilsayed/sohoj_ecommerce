@@ -386,7 +386,7 @@
 
         .payment-desc {
             font-size: 0.97rem;
-            color: var(--text-secondary);
+            color: #000;
             margin-top: 2px;
             font-weight: 400;
             line-height: 1.3;
@@ -418,10 +418,8 @@
                 <p class="mb-0">Complete your order and enjoy fast, secure delivery.</p>
                 <div
                     class="checkout-hero-steps d-none d-md-flex position-absolute end-0 top-0 h-100 align-items-center pe-4">
-                    <span class="badge bg-light text-primary me-2">Cart</span>
                     <span class="badge bg-light text-primary me-2">Shipping</span>
-                    <span class="badge bg-light text-primary me-2">Payment</span>
-                    <span class="badge bg-light text-primary">Review</span>
+                    <span class="badge bg-light text-primary">Payment</span>
                 </div>
             </div>
             <!-- Multi-Step Checkout -->
@@ -433,142 +431,39 @@
 
                             <div>
                                 <span>Items({{ Cart::count() }}):</span>
-                                <span>{{ Sohoj::price($prices) }}</span>
-                            </div>
-                            <div>
-                                <span>Platform fee:</span>
-                                <span>{{ Sohoj::price($flatCharge) }}</span>
+                                <span>{{ Cart::subtotal() }}</span>
                             </div>
                             <div>
                                 <span>Shipping:</span>
                                 <span>{{ Sohoj::price($shipping) }}</span>
                             </div>
-                            <div>
+
+                            {{-- <div>
                                 <span>Tax:</span>
                                 <span>{{ Sohoj::price(Sohoj::tax()) }}</span>
-                            </div>
-                            @if (session()->has('discount'))
+                            </div> --}}
+
+                            {{-- @if (session()->has('discount')) --}}
                                 <div>
                                     <span>Discount:</span>
                                     <span>{{ Sohoj::price(Sohoj::discount()) }}</span>
                                 </div>
-                            @endif
+                            {{-- @endif --}}
                         </div>
                         <div class="checkout-summary-total d-flex justify-content-between align-items-center">
                             <span class="fw-bold">Order Total:</span>
-                            <span class="fw-bold">{{ Sohoj::price($total) }}</span>
+                            <span class="fw-bold">{{ Sohoj::price(Sohoj::newTotal()) }}</span>
                         </div>
                     </div>
                 </aside>
                 <div class="col-lg-8">
                     <div class="card shadow-lg border-0 rounded-4 p-0 overflow-hidden">
                         <div class="card-body p-0">
-                            <!-- Progress Bar -->
-                            <div class="checkout-progress mb-2">
-                                <div class="progress" style="height: 5px; background: #eaf0ff;">
-                                    <div id="checkoutProgressBar" class="progress-bar bg-primary" role="progressbar"
-                                        style="width: 25%; transition: width 0.4s; background-color: #01949a  !important;"
-                                        aria-valuenow="1" aria-valuemin="1" aria-valuemax="4"></div>
-                                </div>
-                            </div>
-                            <ul class="nav nav-pills nav-justified step-indicator mb-4" id="checkoutSteps" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="step1-tab" data-bs-toggle="pill"
-                                        data-bs-target="#step1" type="button" role="tab" aria-controls="step1"
-                                        aria-selected="true">
-                                        <span class="step-circle step-check step1">1</span> Cart
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="step2-tab" data-bs-toggle="pill" data-bs-target="#step2"
-                                        type="button" role="tab" aria-controls="step2" aria-selected="false">
-                                        <span class="step-circle step-check step2">2</span> Shipping
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="step3-tab" data-bs-toggle="pill" data-bs-target="#step3"
-                                        type="button" role="tab" aria-controls="step3" aria-selected="false">
-                                        <span class="step-circle step-check step3">3</span> Payment
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="step4-tab" data-bs-toggle="pill" data-bs-target="#step4"
-                                        type="button" role="tab" aria-controls="step4" aria-selected="false">
-                                        <span class="step-circle step-check step4">4</span> Review
-                                    </button>
-                                </li>
-                            </ul>
                             <form action="{{ route('checkout.store') }}" method="POST" id="multiStepCheckoutForm">
                                 @csrf
                                 <div class="tab-content p-4" id="checkoutStepsContent">
-                                    <!-- Step 1: Cart -->
-                                    <div class="tab-pane fade show active" id="step1" role="tabpanel"
-                                        aria-labelledby="step1-tab">
-                                        <h4 class="fw-semibold mb-3">Order Items</h4>
-                                        <div class="table-responsive">
-                                            <table class="table align-middle">
-                                                <thead style="background: var(--bg-light)">
-                                                    <tr>
-                                                        <th class="py-3" style="color: var(--accent-color)">Product</th>
-                                                        <th class="py-3" style="color: var(--accent-color)">Qty</th>
-                                                        <th class="py-3" style="color: var(--accent-color)">Price</th>
-                                                        <th class="py-3" style="color: var(--accent-color)">Shipping
-                                                        </th>
-                                                        <th class="py-3" style="color: var(--accent-color)">Total</th>
-                                                        <th class="text-center py-3" style="color: var(--accent-color)">
-                                                            Remove</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($items as $item)
-                                                        <tr>
-                                                            <td class="border-0 d-flex align-items-center">
-                                                                <img src="{{ Storage::url($item->model->image) }}"
-                                                                    alt="Product"
-                                                                    class="checkout-product-image me-2 flex-shrink-0">
-                                                                <div>
-                                                                    <div class="fw-semibold">{{ $item->name }}</div>
-                                                                    <div class="text-muted small">
-                                                                        {{ Str::limit(strip_tags($item->model->short_description), 40) }}
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td class="border-0">
-                                                                <span
-                                                                    class="badge bg-light text-black">{{ $item->qty }}</span>
-                                                            </td>
-                                                            <td class="price border-0">{{ Sohoj::price($item->price) }}
-                                                            </td>
-                                                            <td class="price border-0">
-                                                                {{ Sohoj::price($item->model->shipping_cost) }}</td>
-                                                            <td class="price border-0">
-                                                                {{ Sohoj::price($item->price * $item->qty + ($item->model->shipping_cost ?? 0)) }}
-                                                            </td>
-                                                            <td class="text-center border-0">
-                                                                <a href="{{ route('cart.destroy', $item->rowId) }}"
-                                                                    class="remove-item" title="Remove item">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                        height="16" fill="currentColor"
-                                                                        viewBox="0 0 16 16">
-                                                                        <path
-                                                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                                        <path fill-rule="evenodd"
-                                                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                                                    </svg>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="d-flex justify-content-end mt-4">
-                                            <button type="button" class="btn checkout-btn px-4" id="toStep2">Next:
-                                                Shipping <i class="fa fa-arrow-right ms-2"></i></button>
-                                        </div>
-                                    </div>
                                     <!-- Step 2: Shipping -->
-                                    <div class="tab-pane fade" id="step2" role="tabpanel"
+                                    <div class="tab-pane fade show active" id="step2" role="tabpanel"
                                         aria-labelledby="step2-tab">
                                         <h4 class="fw-semibold mb-3">Shipping & Contact Info</h4>
                                         <div class="checkout-card mb-4 p-4 shadow-sm border-0 rounded-4"
@@ -674,16 +569,88 @@
                                                             style="top:100%;left:0;">{{ $message }}</span>
                                                     @enderror
                                                 </div>
+
+                                                <div class="mt-5">
+                                                    <label class="payment-card-option">
+                                                        <input type="radio" name="payment_method" id="cash"
+                                                            value="cash" class="form-check-input" required>
+                                                        <span class="custom-radio-indicator"></span>
+                                                        <span class="payment-card-content">
+                                                            <span class="payment-img-wrap">
+                                                                <img src="https://img.icons8.com/color/64/000000/us-dollar-circled--v1.png"
+                                                                    alt="Dollar" class="pay-img" />
+                                                            </span>
+                                                            <span class="payment-text-wrap">
+                                                                <span class="payment-title">Cash</span>
+                                                                <span class="payment-desc">Pay with cash upon
+                                                                    delivery.</span>
+                                                            </span>
+                                                        </span>
+                                                    </label>
+
+                                                    <label class="payment-card-option">
+                                                        <input type="radio" name="payment_method" id="paypal"
+                                                            value="paypal" class="form-check-input" required>
+                                                        <span class="custom-radio-indicator"></span>
+                                                        <span class="payment-card-content">
+                                                            <span class="payment-img-wrap">
+                                                                <img src="https://img.icons8.com/color/64/000000/paypal.png"
+                                                                    alt="PayPal" class="pay-img" />
+                                                            </span>
+                                                            <span class="payment-text-wrap">
+                                                                <span class="payment-title">PayPal</span>
+                                                                <span class="payment-desc">Pay securely using your PayPal
+                                                                    account.</span>
+                                                            </span>
+                                                        </span>
+                                                    </label>
+
+                                                    <label class="payment-card-option">
+                                                        <input type="radio" name="payment_method" id="stripe"
+                                                            value="stripe" class="form-check-input" required>
+                                                        <span class="custom-radio-indicator"></span>
+                                                        <span class="payment-card-content">
+                                                            <span class="payment-img-wrap">
+                                                                <img src="https://img.icons8.com/color/64/000000/bank-card-back-side.png"
+                                                                    alt="Stripe" class="pay-img" />
+                                                            </span>
+                                                            <span class="payment-text-wrap">
+                                                                <span class="payment-title">Cart</span>
+                                                                <span class="payment-desc">Pay with any major credit or
+                                                                    debit card.</span>
+                                                            </span>
+                                                        </span>
+                                                    </label>
+                                                    <div class="mt-4 mb-3 d-flex align-items-center px-3 py-2 rounded-3 shadow-sm"
+                                                        style="background: var(--bg-light); border: 1px solid var(--border-light);">
+                                                        <input type="checkbox" required
+                                                            class="form-check-input me-2 @error('terms') is-invalid @enderror"
+                                                            id="terms" value="1" name="terms"
+                                                            style="width: 22px; height: 22px; accent-color: var(--accent-color);">
+                                                        <label class="form-check-label ms-1" for="terms"
+                                                            style="font-size: 1rem;">
+                                                            I have read and agree to the
+                                                            <a href="{{ url('page/policies') }}" target="_blank"
+                                                                class="text-decoration-underline text-primary fw-semibold">
+                                                                Terms & Conditions
+                                                            </a>
+                                                            of Afrikartt E-commerce
+                                                        </label>
+                                                        @error('terms')
+                                                            <span
+                                                                class="invalid-feedback d-block ms-2">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+
+                                                    <button type="submit" class="btn checkout-btn w-auto mt-2 shadow-sm"
+                                                        style="font-size: 1.1rem;">
+                                                        <i class="fas fa-shopping-cart me-2"></i> Place Order
+                                                    </button>
+                                                </div>
+
                                             </div>
                                         </div>
 
-                                        <div class="d-flex justify-content-between mt-4">
-                                            <button type="button" class="btn px-4"
-                                                style="background: var(--accent-color); color: var(--text-light) !important;"
-                                                id="backToStep1"><i class="fa fa-arrow-left me-2"></i>Back</button>
-                                            <button type="button" class="btn checkout-btn px-4" id="toStep3">Next:
-                                                Payment <i class="fa fa-arrow-right ms-2"></i></button>
-                                        </div>
                                         <style>
                                             .checkout-card .form-floating>label>i {
                                                 position: absolute;
@@ -728,152 +695,6 @@
                                                 }
                                             }
                                         </style>
-                                    </div>
-                                    <!-- Step 3: Payment -->
-                                    <div class="tab-pane fade" id="step3" role="tabpanel"
-                                        aria-labelledby="step3-tab">
-                                        <h4 class="fw-semibold mb-3">Payment Method</h4>
-                                        <div class="checkout-card mb-4 p-4 shadow-sm border-0 rounded-4"
-                                            style="background: var(--bg-secondary); border: 1px solid var(--border-light);">
-                                            <div class="row g-4 align-items-stretch">
-                                                <div class="col-md-12 d-flex flex-column gap-3">
-                                                    <label class="payment-card-option">
-                                                        <input type="radio" name="payment_method" id="cash"
-                                                            value="cash" class="form-check-input" required>
-                                                        <span class="custom-radio-indicator"></span>
-                                                        <span class="payment-card-content">
-                                                            <span class="payment-img-wrap">
-                                                                <img src="https://img.icons8.com/color/64/000000/us-dollar-circled--v1.png"
-                                                                    alt="Dollar" class="pay-img" />
-                                                            </span>
-                                                            <span class="payment-text-wrap">
-                                                                <span class="payment-title">Cash</span>
-                                                                <span class="payment-desc">Pay with cash upon
-                                                                    delivery.</span>
-                                                            </span>
-                                                        </span>
-                                                    </label>
-                                                    <label class="payment-card-option">
-                                                        <input type="radio" name="payment_method" id="paypal"
-                                                            value="paypal" class="form-check-input" required>
-                                                        <span class="custom-radio-indicator"></span>
-                                                        <span class="payment-card-content">
-                                                            <span class="payment-img-wrap">
-                                                                <img src="https://img.icons8.com/color/64/000000/paypal.png"
-                                                                    alt="PayPal" class="pay-img" />
-                                                            </span>
-                                                            <span class="payment-text-wrap">
-                                                                <span class="payment-title">PayPal</span>
-                                                                <span class="payment-desc">Pay securely using your PayPal
-                                                                    account.</span>
-                                                            </span>
-                                                        </span>
-                                                    </label>
-                                                    <label class="payment-card-option">
-                                                        <input type="radio" name="payment_method" id="stripe"
-                                                            value="stripe" class="form-check-input" required>
-                                                        <span class="custom-radio-indicator"></span>
-                                                        <span class="payment-card-content">
-                                                            <span class="payment-img-wrap">
-                                                                <img src="https://img.icons8.com/color/64/000000/bank-card-back-side.png"
-                                                                    alt="Stripe" class="pay-img" />
-                                                            </span>
-                                                            <span class="payment-text-wrap">
-                                                                <span class="payment-title">Stripe</span>
-                                                                <span class="payment-desc">Pay with any major credit or
-                                                                    debit card.</span>
-                                                            </span>
-                                                        </span>
-                                                    </label>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between mt-4">
-                                            <button type="button" class="btn px-4"
-                                                style="background: var(--accent-color); color: var(--text-light) !important;"
-                                                id="backToStep2"><i class="fa fa-arrow-left me-2"></i>Back</button>
-                                            <button type="button" class="btn checkout-btn px-4" id="toStep4">Next:
-                                                Review <i class="fa fa-arrow-right ms-2"></i></button>
-                                        </div>
-                                        <style>
-                                            .payment-option .form-check-input:checked~.form-check-label {
-                                                color: var(--primary);
-                                                font-weight: 600;
-                                            }
-
-                                            .pay-img {
-                                                width: 100%;
-                                                height: 100%;
-                                                object-fit: contain;
-                                            }
-
-                                            .form-floating>label>i {
-                                                position: absolute;
-                                                left: 1.1rem;
-                                                top: 50%;
-                                                transform: translateY(-50%);
-                                                pointer-events: none;
-                                            }
-
-                                            .form-floating>input {
-                                                padding-left: 2.5rem;
-                                            }
-                                        </style>
-                                    </div>
-                                    <!-- Step 4: Review -->
-                                    <div class="tab-pane fade" id="step4" role="tabpanel"
-                                        aria-labelledby="step4-tab">
-                                        <h4 class="fw-semibold mb-3">Review & Place Order</h4>
-                                        <div class="checkout-summary mb-4">
-                                            <div class="checkout-summary-title">Order Summary</div>
-                                            <div class="checkout-summary-list">
-
-
-                                                <div>
-                                                    <span>Items({{ Cart::count() }}):</span>
-                                                    <span>{{ Sohoj::price($prices) }}</span>
-                                                </div>
-                                                <div>
-                                                    <span>Platform fee:</span>
-                                                    <span>{{ Sohoj::price($flatCharge) }}</span>
-                                                </div>
-                                                <div>
-                                                    <span>Shipping:</span>
-                                                    <span>{{ Sohoj::price($shipping) }}</span>
-                                                </div>
-                                                <div>
-                                                    <span>Tax:</span>
-                                                    <span>{{ Sohoj::price(Sohoj::tax()) }}</span>
-                                                </div>
-                                                @if (session()->has('discount'))
-                                                    <div>
-                                                        <span>Discount:</span>
-                                                        <span>{{ Sohoj::price(Sohoj::discount()) }}</span>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                            <div
-                                                class="checkout-summary-total d-flex justify-content-between align-items-center">
-                                                <span class="fw-bold">Order Total:</span>
-                                                <span class="fw-bold">{{ Sohoj::price($total) }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="form-check mt-3 mb-2">
-                                            <input type="checkbox" required
-                                                class="form-check-input @error('terms') is-invalid @enderror"
-                                                id="terms" value="1" name="terms">
-                                            <label class="form-check-label ms-2" for="terms">
-                                                I have read and agree to the <a href="{{ url('page/policies') }}"
-                                                    target="_blank" class="text-primary">Terms & Conditions</a> of
-                                                Afrikartt
-                                                E-commerce
-                                            </label>
-                                            @error('terms')
-                                                <span class="invalid-feedback d-block">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <button class="btn checkout-btn w-100 mt-2" type="submit">Place Order</button>
                                     </div>
                                 </div>
                             </form>
@@ -968,6 +789,10 @@
             font-size: 1.2em;
             color: var(--text-light);
         }
+
+        .form-check-input {
+            border: 2px solid #000 !important;
+        }
     </style>
     </div>
 
@@ -1034,7 +859,111 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn"
-                            style="background: var(--accent-color); color: var(--text-light) !important;"
+                            style="background: var(--accent-color); color: var(--text-light) !important;" apse collapse
+                            show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
+
+                                <!-- Stripe Elements Placeholder -->
+                                <div id="card-element"></div>
+                                <div class="">
+
+
+                                    <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
+
+                                    <!-- Stripe Elements Placeholder -->
+                                    <div id="card-element"></div>
+                                    <div class="row">
+                                        <div class="col-12 " style="margin-top: 12px">
+                                            <div class="form-check d-flex align-items-center">
+                                                <input class="form-check-input " style="margin-right: 11px"
+                                                    type="checkbox" id="gridCheck">
+                                                <label class="form-check-label address-label" for="gridCheck">
+                                                    Make this my default card
+
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="margin-top: 15px; ">
+                                            <button class="btn  btn-dark btn-lg rounded shadow"
+                                                style="border-radius: 10px" type="button" id="card-button"
+                                                data-secret="{{ $intent->client_secret }}">Use
+                                                this
+                                                Card</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="payment-form" action="{{ route('user.user.card_add') }}" method="post">
+                    @csrf
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Card</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
+
+                        <div id="card-element"></div>
+
+                        <div class="mt-3 d-flex justify-content-start align-items-center">
+                            <input class="form-check-input" name="default_card" type="checkbox" id="gridCheck"
+                                style="margin-right: 11px">
+                            <label class="form-check-label address-label" for="gridCheck">
+                                Make this my default card
+                            </label>
+                        </div>
+
+                        <!-- IMPORTANT: hidden input for payment method -->
+                        <input type="hidden" name="payment_method" id="paymentmethod">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" style="background: #01949a; color: #ffffff !important;"
+                            data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="card-button"
+                            data-secret="{{ $intent->client_secret }}">
+                            Save changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="{{ route('user.user.card_add') }}" method="post">
+                    @csrf
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
+
+                        <div id="card-element"></div>
+
+                        <div class="mt-3 d-flex justify-content-start align-items-center">
+                            <input class="form-check-input " style="margin-right: 11px" type="checkbox" id="gridCheck">
+                            <label class="form-check-label address-label" for="gridCheck">
+                                Make this my default card
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" style="background: #01949a; color: #ffffff !important;"
                             data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" id="card-button"
                             data-secret="{{ $intent->client_secret }}">Save changes</button>
@@ -1052,7 +981,7 @@
     <script src="{{ asset('assets/frontend-assets/js/main.js') }}"></script>
     <script src="https://js.stripe.com/v3/"></script>
 
-    {{-- <script>
+    <script>
         const stripe = Stripe("{{ env('STRIPE_KEY') }}");
         const elements = stripe.elements();
         const cardElement = elements.create('card');
@@ -1092,7 +1021,7 @@
             toastr.success('Card added');
             document.getElementById('payment-form').submit();
         });
-    </script> --}}
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1133,21 +1062,17 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const step1 = new bootstrap.Tab(document.getElementById('step1-tab'));
             const step2 = new bootstrap.Tab(document.getElementById('step2-tab'));
             const step3 = new bootstrap.Tab(document.getElementById('step3-tab'));
-            const step4 = new bootstrap.Tab(document.getElementById('step4-tab'));
 
             const progressBar = document.getElementById('checkoutProgressBar');
             const stepCircles = [
-                document.querySelector('.step-circle.step1'),
                 document.querySelector('.step-circle.step2'),
-                document.querySelector('.step-circle.step3'),
-                document.querySelector('.step-circle.step4')
+                document.querySelector('.step-circle.step3')
             ];
 
             function updateProgress(stepIdx) {
-                const percent = [25, 50, 75, 100][stepIdx];
+                const percent = [50, 100][stepIdx];
                 progressBar.style.width = percent + '%';
                 progressBar.setAttribute('aria-valuenow', stepIdx + 1);
                 // Mark completed steps
@@ -1165,30 +1090,18 @@
             // Initial state
             updateProgress(0);
 
-            document.getElementById('toStep2').addEventListener('click', function() {
-                step2.show();
-                updateProgress(1);
-            });
-            document.getElementById('backToStep1').addEventListener('click', function() {
-                step1.show();
-                updateProgress(0);
-            });
             document.getElementById('toStep3').addEventListener('click', function() {
                 step3.show();
-                updateProgress(2);
+                updateProgress(1);
             });
             document.getElementById('backToStep2').addEventListener('click', function() {
                 step2.show();
-                updateProgress(1);
-            });
-            document.getElementById('toStep4').addEventListener('click', function() {
-                step4.show();
-                updateProgress(3);
+                updateProgress(0);
             });
 
             // Also update on nav click (if user clicks step directly)
-            [step1, step2, step3, step4].forEach((tab, idx) => {
-                document.getElementById('step' + (idx + 1) + '-tab').addEventListener('shown.bs.tab',
+            [step2, step3].forEach((tab, idx) => {
+                document.getElementById('step' + (idx + 2) + '-tab').addEventListener('shown.bs.tab',
                     function() {
                         updateProgress(idx);
                     });

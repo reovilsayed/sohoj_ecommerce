@@ -9,19 +9,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VendorOrderPlacedMail extends Mailable implements ShouldQueue
+class VendorOrderSuccessMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    protected $order;
     public $childOrder;
-    public function __construct($order, $childOrder )
+    public function __construct($childOrder)
     {
-        $this->order = $order;
-        $this->childOrder = $childOrder;
+            $this->childOrder = $childOrder;
     }
 
     /**
@@ -30,7 +28,7 @@ class VendorOrderPlacedMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Vendor Order Placed Mail',
+            subject: 'Vendor Order Success Mail',
         );
     }
 
@@ -40,9 +38,8 @@ class VendorOrderPlacedMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'emails.vendorOrder_placed',
+            view: 'emails.order.vendorOrderSuccess_mail',
             with: [
-                'order' => $this->order,
                 'childOrder' => $this->childOrder,
             ],
         );

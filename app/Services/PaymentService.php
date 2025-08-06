@@ -93,13 +93,14 @@ class PaymentService
                 'quantity' => 1,
             ];
         }
+        
 
         $session = StripeSession::create([
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'customer_email' => $this->order->shipping ? json_decode($this->order->shipping)->email : null,
-            'success_url' => route('thankyou'),
+            'customer_email' => $this->order->shipping['email'] ?? null,
+            'success_url' => route('payment.handle',$this->order),
             'cancel_url' => route('payment.cancel'),
             'metadata' => [
                 'order_id' => $this->order->id,

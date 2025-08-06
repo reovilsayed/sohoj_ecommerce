@@ -414,7 +414,7 @@
                             </span>
                         </div>
 
-                        <div class="summary-row">
+                        {{-- <div class="summary-row">
                             <span class="summary-label">Tax</span>
                             <span class="summary-value">
                                 @if (Sohoj::price(Sohoj::tax()) == 0)
@@ -423,7 +423,7 @@
                                     {{ Sohoj::price(Sohoj::tax()) }}
                                 @endif
                             </span>
-                        </div>
+                        </div> --}}
 
                         <div class="summary-row">
                             <span class="summary-label">Discount</span>
@@ -432,10 +432,10 @@
                                 {{ Sohoj::price(Sohoj::discount()) }}</ @else 0 @endif
                             </span>
                         </div>
-
+                        {{-- @dd(Cart::total()) --}}
                         <div class="summary-total">
                             <span>Total:</span>
-                            <span>{{ Sohoj::price(Sohoj::newSubtotal()) }}</span>
+                            <span>{{ Sohoj::price(Sohoj::newTotal()) }}</span>
                         </div>
                         <a href="{{ route('checkout') }}" class="btn Whoops w-100"
                             style="background: var(--accent-color); color: var(--text-light);">Proceed To Checkout</a>

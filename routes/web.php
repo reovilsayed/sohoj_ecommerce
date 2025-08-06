@@ -202,7 +202,14 @@ Route::post('contact', [PageController::class, 'contactStore'])->name('contact.s
 Route::get('payment/cancel', [PageController::class, 'paymentCancel'])->name('payment.cancel');
 Route::get('why-sell-on-afrikart', [PageController::class, 'whySellOnAfrikart'])->name('why.sell.on.afrikart');
 Route::get('sellers-helps', [PageController::class, 'sellersHelps'])->name('sellers.helps');
+Route::get('/stripe/handle/{order}', [CheckoutController::class, 'handle'])->name('payment.handle');
 
+Route::get('email', function () {
+    return view('emails.order.adminOrderSuccess_mail', [
+        'order' => Order::find(491),
+        'childOrder' => Order::find(492),
+    ]);
+});
 // API Documentation Route
 Route::get('/api-docs', function () {
     return view('pages.api-docs');

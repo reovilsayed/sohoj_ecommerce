@@ -625,15 +625,7 @@
 </head>
 
 <body>
-    @php
-        $prices = Cart::subtotalFloat();
-        $shipping = Sohoj::shipping();
-        $flatCharge = Sohoj::flatCommision($prices);
-        $discount = Sohoj::discount();
-        $tax = Sohoj::tax();
 
-        $total = $prices + $shipping + $flatCharge - $discount + $tax;
-    @endphp
     <div class="email-container">
         <!-- Header -->
         <div class="header" style="background: #F5A623; color: #2C2C2C;">
@@ -658,23 +650,23 @@
                 <div style="flex: 1 1 220px; min-width: 220px;">
                     <h3 style="font-size: 18px; color: #222; margin-bottom: 10px;">Order Info</h3>
                     <div style="font-size: 15px; color: #444; margin-bottom: 6px;">
-                        <strong>Order #{{ $order->id }}</strong>
+                        <strong>Order #{{ $childOrder->id }}</strong>
                     </div>
                     <div style="font-size: 14px; color: #888; margin-bottom: 6px;">
-                        Placed: {{ $order->created_at->format('M d, Y') }}
+                        Placed: {{ $childOrder->created_at->format('M d, Y') }}
                     </div>
                     <div style="font-size: 15px; color: #222; margin-bottom: 6px;">
                         Status: <span
-                            style="color: #10b981; font-weight: 600;">{{ ucfirst($order->status ?? 'pending') }}</span>
+                            style="color: #10b981; font-weight: 600;">{{ ucfirst($childOrder->status == 0 ? 'pending' : ($childOrder->status == 1 ? 'processing' : 'completed')) }}</span>
                     </div>
                     <div style="font-size: 16px; color: #F5A623; font-weight: 700;">
-                        Total: {{ Sohoj::price($total) }}
+                        Total: {{ Sohoj::price($childOrder->total) }}
                     </div>
                 </div>
                 <div style="flex: 1 1 220px; min-width: 220px;">
                     <h3 style="font-size: 18px; color: #222; margin-bottom: 10px;">Shipping To</h3>
                     @php
-                        $shipping = $order->shipping;
+                        $shipping = $childOrder->shipping;
                         if (is_string($shipping)) {
                             $shipping = json_decode($shipping, true);
                         } elseif (!is_array($shipping)) {
@@ -704,55 +696,32 @@
             <div class="items-section">
                 <h2 class="items-title">Your item in this order</h2>
                 <div class="order-number">Order number: #{{ $order->id }}</div>
+              
 
                 <div class="items-container">
-                    @if ($order->childs && $order->childs->count() > 0)
-                        @foreach ($order->childs as $item)
-                            <div class="item">
-                                @if ($item->product && $item->product->image)
-                                    <img src="{{ asset('storage/' . $item->product->image) }}"
-                                        alt="{{ $item->product->name }}" class="item-image">
-                                @else
-                                    <div class="item-image no-image-placeholder">No Image</div>
-                                @endif
-                                <div class="item-details">
-                                    <div class="item-name">{{ $item->product->name ?? 'Product' }}</div>
-                                    <div class="item-meta">
-                                        <span class="item-quantity">Qty: {{ $item->quantity ?? 1 }}</span>
-                                        <span class="item-shop">{{ $item->shop->name ?? 'N/A' }}</span>
-                                    </div>
-                                    @if ($item->variation)
-                                        <div class="item-description">{{ $item->variation }}</div>
-                                    @else
-                                        <div class="item-description">Premium quality, handcrafted item</div>
-                                    @endif
-                                    <div class="item-price">${{ number_format($item->product_price, 2) }}</div>
-                                </div>
-                            </div>
-                        @endforeach
-                    @elseif($order->product)
+              
                         <div class="item">
-                            @if ($order->product->image)
-                                <img src="{{ asset('storage/' . $order->product->image) }}"
-                                    alt="{{ $order->product->name }}" class="item-image">
+                            @if ($childOrder->product->image)
+                                <img src="{{ asset('storage/' . $childOrder->product->image) }}"
+                                    alt="{{ $childOrder->product->name }}" class="item-image">
                             @else
                                 <div class="item-image no-image-placeholder">No Image</div>
                             @endif
                             <div class="item-details">
-                                <div class="item-name">{{ $order->product->name }}</div>
+                                <div class="item-name">{{ $childOrder->product->name }}</div>
                                 <div class="item-meta">
-                                    <span class="item-quantity">Qty: {{ $order->quantity ?? 1 }}</span>
-                                    <span class="item-shop">{{ $order->shop->name ?? 'N/A' }}</span>
+                                    <span class="item-quantity">Qty: {{ $childOrder->quantity ?? 1 }}</span>
+                                    <span class="item-shop">{{ $childOrder->shop->name ?? 'N/A' }}</span>
                                 </div>
-                                @if ($order->variation)
-                                    <div class="item-description">{{ $order->variation }}</div>
+                                @if ($childOrder->variation)
+                                    <div class="item-description">{{ $childOrder->variation }}</div>
                                 @else
                                     <div class="item-description">Premium quality, handcrafted item</div>
                                 @endif
-                                <div class="item-price">${{ number_format($order->product_price, 2) }}</div>
+                                <div class="item-price">${{ number_format($childOrder->product_price, 2) }}</div>
                             </div>
                         </div>
-                    @endif
+                    {{-- @endif --}}
                 </div>
 
                 <!-- Totals -->
@@ -761,14 +730,14 @@
                         <tr>
                             <td style="padding: 6px 0;">Subtotal</td>
                             <td style="padding: 6px 0; text-align: right;">
-                                {{ Sohoj::price($prices) }}
+                                {{ Sohoj::price($childOrder->subtotal) }}
                             </td>
                         </tr>
                         {{-- @if ($order->discount_amount > 0) --}}
-                        <tr>
+                        {{-- <tr>
                             <td style="padding: 6px 0; color: #10b981;">Platform fee</td>
                             <td style="padding: 6px 0; text-align: right; color: #10b981;">
-                                {{ Sohoj::price($flatCharge) }}
+                                {{ Sohoj::price($o) }}
                             </td>
                         </tr>
                         <tr>
@@ -776,12 +745,12 @@
                             <td style="padding: 6px 0; text-align: right; color: #10b981;">
                                 {{ Sohoj::price(Sohoj::tax()) }}
                             </td>
-                        </tr>
+                        </tr> --}}
                         @if (session()->has('discount'))
                             <tr>
                                 <td style="padding: 6px 0; color: #10b981;">Discount</td>
                                 <td style="padding: 6px 0; text-align: right; color: #10b981;">
-                                    {{ Sohoj::price(Sohoj::discount()) }}
+                                    {{ Sohoj::price($childOrder->discount) }}
                                 </td>
                             </tr>
                         @endif
@@ -789,14 +758,14 @@
                         <tr>
                             <td style="padding: 6px 0;">Shipping</td>
                             <td style="padding: 6px 0; text-align: right;">
-                                {{ Sohoj::price($shipping) }}
+                                {{ Sohoj::price($childOrder->shipping_total) }}
                             </td>
                         </tr>
                         <tr>
                             <td style="padding: 10px 0; font-weight: bold; border-top: 2px solid #222;">Total</td>
                             <td
                                 style="padding: 10px 0; text-align: right; font-weight: bold; border-top: 2px solid #222;">
-                                {{ Sohoj::price($total) }}
+                                {{ Sohoj::price($childOrder->total) }}
                             </td>
                         </tr>
                     </table>

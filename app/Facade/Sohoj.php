@@ -18,6 +18,7 @@ class Sohoj
     }
     public function tax()
     {
+        return 0;
         $subtotal = floatval(str_replace(',', '', Cart::subtotal()));
         $total = $subtotal - $this->discount();
         $taxRate = (float) Settings::setting('admin_tax');
@@ -76,7 +77,7 @@ class Sohoj
 
     public function newTotal()
     {
-        return ($this->newSubtotal());
+        return ($this->newItemTotal() - $this->discount()+ $this->shipping());
         // return ($this->newSubtotal() + $this->shipping());
     }
     public function round_num($price)
@@ -115,4 +116,22 @@ class Sohoj
             return ($price - $sixPercent);
         }
     }
+    public function vendorCommission()
+    {
+        return 0.10;
+    }
+
+        
+    public function taxCalculation($price)
+    {
+       
+        $total = $price - $this->discount();
+        $taxRate = (float) Settings::setting('admin_tax');
+
+        if ($taxRate > 0) {
+            return ($taxRate * $total) / 100;
+        }
+        return 0;
+    }
+
 }

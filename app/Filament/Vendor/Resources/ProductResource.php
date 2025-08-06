@@ -2,6 +2,7 @@
 
 namespace App\Filament\Vendor\Resources;
 
+use App\Facade\Sohoj;
 use App\Filament\Vendor\Resources\ProductResource\Pages;
 use App\Filament\Vendor\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
@@ -33,6 +34,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+
 
 class ProductResource extends Resource
 {
@@ -218,7 +220,7 @@ class ProductResource extends Resource
                                                 //                 if (!$primaryCategory) {
                                                 //                     return [];
                                                 //                 }
-                                                                
+
                                                 //                 return \App\Models\Prodcat::query()
                                                 //                     ->where('parent_id', $primaryCategory)
                                                 //                     ->orderBy('name')
@@ -243,7 +245,7 @@ class ProductResource extends Resource
                                 Forms\Components\Section::make('Pricing Information')
                                     ->description('Set product prices and manage inventory.')
                                     ->schema([
-                                        Forms\Components\Grid::make(2)
+                                        Forms\Components\Grid::make(3)
                                             ->schema([
                                                 TextInput::make('price')
                                                     ->label('Regular Price')
@@ -251,7 +253,18 @@ class ProductResource extends Resource
                                                     ->prefix('$')
                                                     ->maxValue(999999.99)
                                                     ->required()
-                                                    ->helperText('Set the standard selling price for this product. This is the main price customers will see.')
+                                                    ->helperText('Set the standard selling price for this product.')
+                                                    ->reactive()
+                                                    ->afterStateUpdated(function (callable $set, callable $get) {
+                                                        $price = floatval($get('price'));
+                                                        $salePrice = $get('sale_price');
+
+                                                        // Use sale price if it's not null, else fallback to price
+                                                        $basePrice = (!is_null($salePrice) && $salePrice !== '') ? floatval($salePrice) : $price;
+
+                                                        $vendorPrice = $basePrice - ($basePrice * \Sohoj::vendorCommission());
+                                                        $set('vendor_price', round($vendorPrice, 2));
+                                                    })
                                                     ->columnSpan(1),
 
                                                 TextInput::make('sale_price')
@@ -260,18 +273,36 @@ class ProductResource extends Resource
                                                     ->prefix('$')
                                                     ->maxValue(999999.99)
                                                     ->nullable()
+                                                    ->reactive()
+                                                    ->afterStateUpdated(function (callable $set, callable $get, $state) {
+                                                        $price = floatval($get('price'));
+
+                                                        // If sale price is null or empty, fallback to price
+                                                        $basePrice = (!is_null($state) && $state !== '') ? floatval($state) : $price;
+
+                                                        $vendorPrice = $basePrice - ($basePrice * \Sohoj::vendorCommission());
+                                                        $set('vendor_price', round($vendorPrice, 2));
+                                                    })
                                                     ->rules([
                                                         fn(callable $get) => function (string $attribute, $value, callable $fail) use ($get) {
-                                                            $price = $get('price');
-                                                            if ($value && $price && floatval($value) > floatval($price)) {
+                                                            $price = floatval($get('price'));
+                                                            if ($value && floatval($value) > $price) {
                                                                 $fail('Sale price must be less than or equal to regular price.');
                                                             }
                                                         },
                                                     ])
-                                                    ->helperText('Optional. Set a discounted price to show this product as on sale. Must be lower than regular price.')
+                                                    ->helperText('Optional. Discounted price. Must be lower than regular price.')
+                                                    ->columnSpan(1),
+
+                                                TextInput::make('vendor_price')
+                                                    ->label('Vendor Price')
+                                                    ->numeric()
+                                                    ->prefix('$')
+                                                    ->readOnly()
+                                                    ->required()
+                                                    ->helperText('Auto-calculated as 10% less than sale/regular price.')
                                                     ->columnSpan(1),
                                             ]),
-
                                         Forms\Components\Grid::make(2)
                                             ->schema([
                                                 Toggle::make('manage_stock')
@@ -354,7 +385,7 @@ class ProductResource extends Resource
                                                     ->maxFiles(10)
                                                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
                                                     ->helperText('Upload additional product images (max 10). Show different angles, details, or variations of your product.')
-                                                    ->dehydrateStateUsing(fn ($state) => is_array($state) ? $state : [])
+                                                    ->dehydrateStateUsing(fn($state) => is_array($state) ? $state : [])
                                                     ->columnSpan(1),
                                             ]),
                                     ]),
@@ -831,7 +862,7 @@ class ProductResource extends Resource
                             $replica->name = $replica->name . ' (Copy)';
                             $replica->slug = Str::slug($replica->name);
                             $replica->sku = null; // Clear SKU to avoid conflicts
-                            
+
                             // Ensure shop_id is set to current user's shop
                             $user = Auth::user();
                             if ($user && $user->shop) {
