@@ -302,7 +302,7 @@
             <div class="categories-grid">
                 <div class="row g-4">
                     <!-- Category 1 - Enhanced -->
-                    <div class="col-md-6 col-lg-4" data-category="beginner">
+                    <div class="col-md-6 col-lg-4 mb-3" data-category="beginner">
                         <div class="help-category-card h-100 position-relative animate-slide-up animation-delay-100" data-tilt>
                             <!-- Card Background Effects -->
                             <div class="category-glow category-glow-orange"></div>
@@ -372,7 +372,7 @@
                     </div>
 
                     <!-- Category 2 - Enhanced -->
-                    <div class="col-md-6 col-lg-4" data-category="intermediate">
+                    <div class="col-md-6 col-lg-4 mb-3" data-category="intermediate">
                         <div class="help-category-card h-100 position-relative animate-slide-up animation-delay-200" data-tilt>
                             <div class="category-glow category-glow-blue"></div>
                             <div class="category-mesh category-mesh-blue"></div>
@@ -436,7 +436,7 @@
                     </div>
 
                     <!-- Category 3 - Enhanced -->
-                    <div class="col-md-6 col-lg-4" data-category="intermediate">
+                    <div class="col-md-6 col-lg-4 mb-3" data-category="intermediate">
                         <div class="help-category-card h-100 position-relative animate-slide-up animation-delay-300" data-tilt>
                             <div class="category-glow category-glow-green"></div>
                             <div class="category-mesh category-mesh-green"></div>
@@ -755,7 +755,7 @@
             </div>
             
             <div class="row g-4">
-                <div class="col-lg-6">
+                <div class="col-lg-6 mb-3">
                     <div class="popular-article-card d-flex p-4 rounded-4 h-100">
                         <div class="article-number me-4">
                             <span class="badge badge-number">1</span>
@@ -771,7 +771,7 @@
                     </div>
                 </div>
                 
-                <div class="col-lg-6">
+                <div class="col-lg-6 mb-3">
                     <div class="popular-article-card d-flex p-4 rounded-4 h-100">
                         <div class="article-number me-4">
                             <span class="badge badge-number">2</span>
@@ -821,371 +821,1397 @@
             </div>
             
             <div class="text-center mt-5">
-                <a href="#" class="btn btn-outline-primary btn-lg">View All Articles</a>
+                <a href="{{ route('faqs')}}" class="btn btn-lg text-light" style="background: var(--amber-500)">View All Articles</a>
             </div>
         </div>
     </section>
 
-    <!-- Contact Support Section -->
-    <section class="contact-support-section py-5 bg-white position-relative">
-        <!-- Background Decoration -->
+    <!-- Enhanced Contact Support Section -->
+    <section class="contact-support-section py-5 bg-gradient-to-br from-gray-50 to-blue-50 position-relative overflow-hidden">
+        <!-- Advanced Background Decorations -->
         <div class="support-decoration support-decoration-1"></div>
         <div class="support-decoration support-decoration-2"></div>
+        <div class="support-decoration support-decoration-3"></div>
+        <div class="support-floating-shapes">
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+            <div class="floating-shape shape-3"></div>
+            <div class="floating-shape shape-4"></div>
+            <div class="floating-shape shape-5"></div>
+        </div>
         
-        <div class="container">
+        <!-- Animated Grid Background -->
+        <div class="support-grid-background">
+            <div class="grid-line grid-line-vertical" style="left: 20%"></div>
+            <div class="grid-line grid-line-vertical" style="left: 40%"></div>
+            <div class="grid-line grid-line-vertical" style="left: 60%"></div>
+            <div class="grid-line grid-line-vertical" style="left: 80%"></div>
+            <div class="grid-line grid-line-horizontal" style="top: 20%"></div>
+            <div class="grid-line grid-line-horizontal" style="top: 40%"></div>
+            <div class="grid-line grid-line-horizontal" style="top: 60%"></div>
+            <div class="grid-line grid-line-horizontal" style="top: 80%"></div>
+        </div>
+        
+        <div class="container position-relative">
             <div class="row justify-content-center">
-                <div class="col-lg-8 text-center">
-                    <h2 class="display-6 fw-bold text-dark mb-4 animate-fade-in">
-                        Still Need Help?
-                        <span class="help-heart">💝</span>
-                    </h2>
-                    <p class="fs-5 text-muted mb-5 animate-fade-in animation-delay-200">
-                        Our support team is here to help you succeed. 
-                        <span class="text-orange fw-semibold">We're just one click away!</span>
-                    </p>
+                <div class="col-lg-10 text-center">
+                    <!-- Enhanced Header Section -->
+                    <div class="support-header mb-5">
+                        <div class="support-badge-wrapper mb-4">
+                            <span class="support-main-badge d-inline-flex align-items-center px-4 py-3 animate-fade-in">
+                                <div class="support-status-pulse me-3"></div>
+                                <svg class="me-2" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                </svg>
+                                <span class="fw-bold">24/7 Premium Support Available</span>
+                                <div class="badge-shine"></div>
+                            </span>
+                        </div>
+                        
+                        <h2 class="support-title display-4 fw-black mb-4 animate-fade-in position-relative">
+                            Still Need Help?
+                            <span class="help-heart position-relative">
+                                💝
+                                <div class="heart-glow"></div>
+                            </span>
+                            <div class="title-decoration"></div>
+                        </h2>
+                        
+                        <p class="support-subtitle fs-4 text-muted mb-5 animate-fade-in animation-delay-200 position-relative">
+                            Our dedicated support team is here to help you succeed every step of the way.
+                            <br><span class="text-gradient fw-bold">We're just one click away from solving your problems!</span>
+                        </p>
+                    </div>
                     
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div class="support-option p-4 rounded-4 h-100 text-center animate-slide-up animation-delay-300">
-                                <div class="support-glow support-glow-chat"></div>
-                                <div class="support-icon support-icon-chat d-flex align-items-center justify-content-center mx-auto mb-3 position-relative">
-                                    <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                    </svg>
-                                    <div class="support-indicator support-indicator-online"></div>
-                                </div>
-                                <h3 class="h5 fw-bold text-dark mb-2">Live Chat</h3>
-                                <p class="text-muted small mb-3">Chat with our support team in real-time</p>
-                                <div class="support-status mb-3">
-                                    <span class="badge bg-success-subtle text-success">
-                                        <span class="online-dot"></span>
-                                        3 agents online
-                                    </span>
-                                </div>
-                                <button class="btn btn-primary-custom btn-sm support-btn" data-bs-toggle="modal" data-bs-target="#chatModal">
-                                    <span class="btn-text">Start Chat</span>
-                                    <div class="btn-loading d-none">
-                                        <div class="spinner-border spinner-border-sm" role="status"></div>
+                    <!-- Enhanced Support Options Grid -->
+                    <div class="support-options-grid">
+                        <div class="row g-4 justify-content-center">
+                            <!-- Live Chat Option - Enhanced -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="support-option-card support-chat h-100 text-center animate-slide-up animation-delay-300 position-relative" data-tilt>
+                                    <!-- Card Effects -->
+                                    <div class="card-glow card-glow-chat"></div>
+                                    <div class="card-mesh card-mesh-chat"></div>
+                                    <div class="card-shine"></div>
+                                    <div class="card-border"></div>
+                                    
+                                    <!-- Card Content -->
+                                    <div class="card-content p-5">
+                                        <!-- Status Indicator -->
+                                        <div class="support-status-indicator mb-3">
+                                            <div class="status-dot status-online"></div>
+                                            <span class="status-text">Online Now</span>
+                                        </div>
+                                        
+                                        <!-- Icon Section -->
+                                        <div class="support-icon-wrapper mb-4 position-relative">
+                                            <div class="support-icon support-icon-chat d-flex align-items-center justify-content-center mx-auto position-relative">
+                                                <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                                </svg>
+                                                <div class="icon-pulse"></div>
+                                            </div>
+                                            <div class="floating-dots">
+                                                <span class="dot dot-1"></span>
+                                                <span class="dot dot-2"></span>
+                                                <span class="dot dot-3"></span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Content -->
+                                        <h3 class="support-card-title h4 fw-bold text-dark mb-3">Live Chat Support</h3>
+                                        <p class="support-card-description text-muted mb-4">
+                                            Get instant help from our expert support team. 
+                                            <strong>Average response time: 30 seconds</strong>
+                                        </p>
+                                        
+                                        <!-- Features List -->
+                                        <ul class="support-features-list list-unstyled mb-4">
+                                            <li class="d-flex align-items-center justify-content-between mb-2">
+                                                <svg class="feature-icon me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span class="small text-muted">Instant responses</span>
+                                            </li>
+                                            <li class="d-flex align-items-center mb-2">
+                                                <svg class="feature-icon  justify-content-between me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span class="small text-muted">Screen sharing available</span>
+                                            </li>
+                                            <li class="d-flex align-items-center">
+                                                <svg class="feature-icon justify-content-between me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span class="small text-muted">File sharing support</span>
+                                            </li>
+                                        </ul>
+                                        
+                                        <!-- Status Badge -->
+                                        <div class="support-status-badge mb-4">
+                                            <span class="badge bg-success-subtle text-success px-3 py-2">
+                                                <span class="online-indicator"></span>
+                                                <strong>5 agents online</strong>
+                                            </span>
+                                        </div>
+                                        
+                                        <!-- Action Button -->
+                                        <button class="btn btn-chat-primary support-btn w-100 position-relative" data-bs-toggle="modal" data-bs-target="#chatModal">
+                                            <span class="btn-content">
+                                                <svg class="me-2" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                                </svg>
+                                                Start Live Chat
+                                            </span>
+                                            <div class="btn-loading d-none">
+                                                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                                Connecting...
+                                            </div>
+                                            <div class="btn-ripple"></div>
+                                        </button>
                                     </div>
-                                </button>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="col-md-4">
-                            <div class="support-option p-4 rounded-4 h-100 text-center animate-slide-up animation-delay-400">
-                                <div class="support-glow support-glow-email"></div>
-                                <div class="support-icon support-icon-email d-flex align-items-center justify-content-center mx-auto mb-3 position-relative">
-                                    <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                    </svg>
-                                    <div class="support-indicator support-indicator-email"></div>
-                                </div>
-                                <h3 class="h5 fw-bold text-dark mb-2">Email Support</h3>
-                                <p class="text-muted small mb-3">Send us an email and we'll respond within 24 hours</p>
-                                <div class="support-status mb-3">
-                                    <span class="badge bg-info-subtle text-info">
-                                        <svg class="me-1" width="12" height="12" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
-                                        </svg>
-                                        ~2h response time
-                                    </span>
-                                </div>
-                                <button class="btn btn-outline-primary btn-sm support-btn" data-bs-toggle="modal" data-bs-target="#emailModal">
-                                    <span class="btn-text">Send Email</span>
-                                    <div class="btn-loading d-none">
-                                        <div class="spinner-border spinner-border-sm" role="status"></div>
+                            
+                            <!-- Email Support Option - Enhanced -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="support-option-card support-email h-100 text-center animate-slide-up animation-delay-400 position-relative" data-tilt>
+                                    <div class="card-glow card-glow-email"></div>
+                                    <div class="card-mesh card-mesh-email"></div>
+                                    <div class="card-shine"></div>
+                                    <div class="card-border"></div>
+                                    
+                                    <div class="card-content p-5">
+                                        <div class="support-status-indicator mb-3">
+                                            <div class="status-dot status-email"></div>
+                                            <span class="status-text">Always Available</span>
+                                        </div>
+                                        
+                                        <div class="support-icon-wrapper mb-4 position-relative">
+                                            <div class="support-icon support-icon-email d-flex align-items-center justify-content-center mx-auto position-relative">
+                                                <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                                </svg>
+                                                <div class="icon-pulse"></div>
+                                            </div>
+                                            <div class="floating-envelope">
+                                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        
+                                        <h3 class="support-card-title h4 fw-bold text-dark mb-3">Email Support</h3>
+                                        <p class="support-card-description text-muted mb-4">
+                                            Send detailed inquiries and get comprehensive responses.
+                                            <strong>Response within 4 hours</strong>
+                                        </p>
+                                        
+                                        <ul class="support-features-list list-unstyled mb-4">
+                                            <li class="d-flex align-items-center mb-2">
+                                                <svg class="feature-icon me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span class="small text-muted">Detailed explanations</span>
+                                            </li>
+                                            <li class="d-flex align-items-center mb-2">
+                                                <svg class="feature-icon me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span class="small text-muted">Attachment support</span>
+                                            </li>
+                                            <li class="d-flex align-items-center">
+                                                <svg class="feature-icon me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span class="small text-muted">Priority queue available</span>
+                                            </li>
+                                        </ul>
+                                        
+                                        <div class="support-status-badge mb-4">
+                                            <span class="badge bg-info-subtle text-info px-3 py-2">
+                                                <span class="email-indicator"></span>
+                                                <strong>Avg 4hr response</strong>
+                                            </span>
+                                        </div>
+                                        
+                                        <button class="btn btn-email-primary support-btn w-100 position-relative" data-bs-toggle="modal" data-bs-target="#emailModal">
+                                            <span class="btn-content">
+                                                <svg class="me-2" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                                </svg>
+                                                Send Email
+                                            </span>
+                                            <div class="btn-loading d-none">
+                                                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                                Preparing...
+                                            </div>
+                                            <div class="btn-ripple"></div>
+                                        </button>
                                     </div>
-                                </button>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="col-md-4">
-                            <div class="support-option p-4 rounded-4 h-100 text-center animate-slide-up animation-delay-500">
-                                <div class="support-glow support-glow-phone"></div>
-                                <div class="support-icon support-icon-phone d-flex align-items-center justify-content-center mx-auto mb-3 position-relative">
-                                    <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                                    </svg>
-                                    <div class="support-indicator support-indicator-phone"></div>
-                                </div>
-                                <h3 class="h5 fw-bold text-dark mb-2">Phone Support</h3>
-                                <p class="text-muted small mb-3">Call us for urgent issues (Mon-Fri, 9AM-6PM)</p>
-                                <div class="support-status mb-3">
-                                    <span class="badge bg-warning-subtle text-warning">
-                                        <svg class="me-1" width="12" height="12" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zM8 6a2 2 0 114 0v1H8V6z" clip-rule="evenodd"/>
-                                        </svg>
-                                        Premium feature
-                                    </span>
-                                </div>
-                                <button class="btn btn-outline-primary btn-sm support-btn" onclick="showPhoneNumber()">
-                                    <span class="btn-text">Call Now</span>
-                                    <div class="btn-loading d-none">
-                                        <div class="spinner-border spinner-border-sm" role="status"></div>
+                            
+                            <!-- Phone Support Option - Enhanced -->
+                            <div class="col-lg-4 col-md-6">
+                                <div class="support-option-card support-phone h-100 text-center animate-slide-up animation-delay-500 position-relative" data-tilt>
+                                    <div class="card-glow card-glow-phone"></div>
+                                    <div class="card-mesh card-mesh-phone"></div>
+                                    <div class="card-shine"></div>
+                                    <div class="card-border"></div>
+                                    
+                                    <div class="card-content p-5">
+                                        <div class="support-status-indicator mb-3">
+                                            <div class="status-dot status-phone"></div>
+                                            <span class="status-text">Business Hours</span>
+                                        </div>
+                                        
+                                        <div class="support-icon-wrapper mb-4 position-relative">
+                                            <div class="support-icon support-icon-phone d-flex align-items-center justify-content-center mx-auto position-relative">
+                                                <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                                </svg>
+                                                <div class="icon-pulse"></div>
+                                            </div>
+                                            <div class="floating-signal">
+                                                <div class="signal-wave signal-wave-1"></div>
+                                                <div class="signal-wave signal-wave-2"></div>
+                                                <div class="signal-wave signal-wave-3"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <h3 class="support-card-title h4 fw-bold text-dark mb-3">Phone Support</h3>
+                                        <p class="support-card-description text-muted mb-4">
+                                            Speak directly with our experts for urgent matters.
+                                            <strong>Available Mon-Fri, 9AM-6PM EST</strong>
+                                        </p>
+                                        
+                                        <ul class="support-features-list list-unstyled mb-4">
+                                            <li class="d-flex align-items-center mb-2">
+                                                <svg class="feature-icon me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span class="small text-muted">Direct conversation</span>
+                                            </li>
+                                            <li class="d-flex align-items-center mb-2">
+                                                <svg class="feature-icon me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span class="small text-muted">Complex issue resolution</span>
+                                            </li>
+                                            <li class="d-flex align-items-center">
+                                                <svg class="feature-icon me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span class="small text-muted">Escalation support</span>
+                                            </li>
+                                        </ul>
+                                        
+                                        <div class="support-status-badge mb-4">
+                                            <span class="badge bg-warning-subtle text-warning px-3 py-2">
+                                                <span class="phone-indicator"></span>
+                                                <strong>Next: 2:30 PM EST</strong>
+                                            </span>
+                                        </div>
+                                        
+                                        <button class="btn btn-phone-primary support-btn w-100 position-relative" onclick="showPhoneNumber()">
+                                            <span class="btn-content">
+                                                <svg class="me-2" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                                </svg>
+                                                Call Now
+                                            </span>
+                                            <div class="btn-loading d-none">
+                                                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                                Dialing...
+                                            </div>
+                                            <div class="btn-ripple"></div>
+                                        </button>
                                     </div>
-                                </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Support Stats -->
-                    <div class="support-stats mt-5 pt-4 border-top animate-fade-in animation-delay-600">
+                    <!-- Enhanced Support Statistics -->
+                    <div class="support-stats-section mt-5 pt-5 border-top animate-fade-in animation-delay-600">
+                        <div class="stats-header text-center mb-4">
+                            <h3 class="h5 fw-bold text-dark mb-2">Our Support Performance</h3>
+                            <p class="text-muted small">Real-time statistics from our support team</p>
+                        </div>
+                        
                         <div class="row text-center g-4">
-                            <div class="col-md-3">
-                                <div class="stat-number fw-bold text-primary mb-1">98%</div>
-                                <div class="stat-label text-muted small">Satisfaction Rate</div>
+                            <div class="col-md-3 col-6">
+                                <div class="stat-card-enhanced h-100 p-4">
+                                    <div class="stat-icon-wrapper mb-3">
+                                        <div class="stat-icon stat-icon-satisfaction">
+                                            <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="stat-number fw-bold text-primary mb-1 position-relative">
+                                        <span class="counter" data-target="98">0</span>%
+                                        <div class="number-glow"></div>
+                                    </div>
+                                    <div class="stat-label text-muted small fw-medium">Satisfaction Rate</div>
+                                    <div class="stat-trend">
+                                        <span class="trend-up">↗ +2.5%</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="stat-number fw-bold text-success mb-1">&lt;2h</div>
-                                <div class="stat-label text-muted small">Avg Response Time</div>
+                            
+                            <div class="col-md-3 col-6">
+                                <div class="stat-card-enhanced h-100 p-4">
+                                    <div class="stat-icon-wrapper mb-3">
+                                        <div class="stat-icon stat-icon-response">
+                                            <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="stat-number fw-bold text-success mb-1 position-relative">
+                                        <span class="counter" data-target="2">0</span>h
+                                        <div class="number-glow"></div>
+                                    </div>
+                                    <div class="stat-label text-muted small fw-medium">Avg Response Time</div>
+                                    <div class="stat-trend">
+                                        <span class="trend-down">↘ -30min</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="stat-number fw-bold text-info mb-1">24/7</div>
-                                <div class="stat-label text-muted small">Live Chat Available</div>
+                            
+                            <div class="col-md-3 col-6">
+                                <div class="stat-card-enhanced h-100 p-4">
+                                    <div class="stat-icon-wrapper mb-3">
+                                        <div class="stat-icon stat-icon-availability">
+                                            <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="stat-number fw-bold text-info mb-1 position-relative">
+                                        24/7
+                                        <div class="number-glow"></div>
+                                    </div>
+                                    <div class="stat-label text-muted small fw-medium">Live Chat Available</div>
+                                    <div class="stat-trend">
+                                        <span class="trend-up">Always Online</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="stat-number fw-bold text-warning mb-1">5★</div>
-                                <div class="stat-label text-muted small">Support Rating</div>
+                            
+                            <div class="col-md-3 col-6">
+                                <div class="stat-card-enhanced h-100 p-4">
+                                    <div class="stat-icon-wrapper mb-3">
+                                        <div class="stat-icon stat-icon-rating">
+                                            <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="stat-number fw-bold text-warning mb-1 position-relative">
+                                        <span class="counter" data-target="5">0</span>★
+                                        <div class="number-glow"></div>
+                                    </div>
+                                    <div class="stat-label text-muted small fw-medium">Support Rating</div>
+                                    <div class="stat-trend">
+                                        <span class="trend-up">Excellent</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <!-- Floating Action Button for Quick Support -->
+        <div class="floating-support-btn d-none d-lg-block">
+            <button class="btn-floating" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick Support">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div class="floating-pulse"></div>
+            </button>
+        </div>
     </section>
 
-    <!-- FAQ Section -->
+    <!-- Enhanced FAQ Section -->
     <section class="faq-section py-5 position-relative overflow-hidden">
-        <!-- Background Elements -->
+        <!-- Advanced Background Elements -->
         <div class="faq-decoration faq-decoration-1"></div>
         <div class="faq-decoration faq-decoration-2"></div>
         <div class="faq-decoration faq-decoration-3"></div>
+        <div class="faq-floating-elements">
+            <div class="floating-question floating-question-1">❓</div>
+            <div class="floating-question floating-question-2">💡</div>
+            <div class="floating-question floating-question-3">🔍</div>
+            <div class="floating-question floating-question-4">📋</div>
+        </div>
         
-        <div class="container">
+        <!-- Animated Pattern Background -->
+        <div class="faq-pattern-background">
+            <div class="pattern-circle pattern-circle-1"></div>
+            <div class="pattern-circle pattern-circle-2"></div>
+            <div class="pattern-circle pattern-circle-3"></div>
+            <div class="pattern-circle pattern-circle-4"></div>
+            <div class="pattern-circle pattern-circle-5"></div>
+        </div>
+        
+        <div class="container position-relative">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center mb-5">
-                    <h2 class="display-6 fw-bold text-dark mb-3 animate-fade-in">
+                    <!-- Enhanced Header -->
+                    <div class="faq-header-badge mb-4">
+                        <span class="faq-main-badge d-inline-flex align-items-center px-4 py-3 animate-fade-in">
+                            <div class="faq-status-pulse me-3"></div>
+                            <svg class="me-2" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span class="fw-bold">Instant Answers Available</span>
+                            <div class="badge-shimmer"></div>
+                        </span>
+                    </div>
+                    
+                    <h2 class="faq-title display-4 fw-black text-dark mb-4 animate-fade-in position-relative">
                         Frequently Asked Questions
-                        <span class="faq-icon">🤔</span>
+                        <span class="faq-icon position-relative">
+                            🤔
+                            <div class="icon-bounce"></div>
+                        </span>
+                        <div class="faq-title-decoration"></div>
                     </h2>
-                    <p class="fs-5 text-muted animate-fade-in animation-delay-200">
-                        Quick answers to common questions from sellers
+                    
+                    <p class="faq-subtitle fs-4 text-muted mb-5 animate-fade-in animation-delay-200">
+                        Get instant answers to the most common seller questions.
+                        <br><span class="text-gradient fw-bold">Everything you need to know in one place!</span>
                     </p>
+                    
+                    <!-- FAQ Search Bar -->
+                    <div class="faq-search-container mb-5 animate-slide-up animation-delay-300">
+                        <div class="faq-search-wrapper position-relative">
+                            <div class="search-icon-faq position-absolute">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                            </div>
+                            <input type="text" class="faq-search-input form-control" placeholder="Search frequently asked questions..." id="faqSearch">
+                            <div class="search-clear-faq position-absolute d-none" id="faqSearchClear">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="search-suggestions mt-2">
+                            <span class="suggestion-tag" data-search="product listing">Product Listing</span>
+                            <span class="suggestion-tag" data-search="payment fees">Payment & Fees</span>
+                            <span class="suggestion-tag" data-search="shipping">Shipping</span>
+                            <span class="suggestion-tag" data-search="returns">Returns</span>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Categories Filter -->
+                    <div class="faq-categories mb-5 animate-slide-up animation-delay-400">
+                        <div class="category-filters d-flex justify-content-center flex-wrap gap-2">
+                            <button class="faq-filter-btn active" data-category="all">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="me-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                                </svg>
+                                All Questions
+                            </button>
+                            <button class="faq-filter-btn" data-category="getting-started">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="me-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Getting Started
+                            </button>
+                            <button class="faq-filter-btn" data-category="payments">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="me-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                                </svg>
+                                Payments
+                            </button>
+                            <button class="faq-filter-btn" data-category="shipping">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="me-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                                </svg>
+                                Shipping
+                            </button>
+                            <button class="faq-filter-btn" data-category="policies">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="me-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                                Policies
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="faq-container">
-                        <!-- FAQ Item 1 -->
-                        <div class="faq-item animate-slide-up animation-delay-100">
-                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false">
-                                <div class="faq-icon-wrapper">
-                                    <svg class="faq-plus" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                    </svg>
-                                    <svg class="faq-minus d-none" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
-                                    </svg>
-                                </div>
-                                <h3 class="faq-title">How do I create my first product listing?</h3>
-                                <span class="faq-badge">Popular</span>
-                            </div>
-                            <div class="collapse faq-answer" id="faq1">
-                                <div class="faq-content">
-                                    <p>Creating your first product listing is easy! Follow these steps:</p>
-                                    <ol class="faq-list">
-                                        <li>Navigate to your seller dashboard</li>
-                                        <li>Click on "Add New Product"</li>
-                                        <li>Fill in product details including title, description, and price</li>
-                                        <li>Upload high-quality product images</li>
-                                        <li>Set your shipping and inventory information</li>
-                                        <li>Preview and publish your listing</li>
-                                    </ol>
-                                    <div class="faq-helpful mt-3">
-                                        <span class="text-muted me-3">Was this helpful?</span>
-                                        <button class="btn btn-sm btn-outline-success me-2" onclick="markHelpful(this, true)">
-                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
+                    <!-- FAQ Container with Enhanced Design -->
+                    <div class="faq-container-enhanced">
+                        <!-- FAQ Item 1 - Enhanced -->
+                        <div class="faq-item-enhanced animate-slide-up animation-delay-100 mb-3" data-category="getting-started">
+                            <div class="faq-card">
+                                <div class="faq-question-header" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false">
+                                    <div class="question-left">
+                                        <div class="faq-icon-wrapper-enhanced">
+                                            <svg class="faq-plus-enhanced" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                             </svg>
-                                            Yes
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" onclick="markHelpful(this, false)">
-                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M18 9.5a1.5 1.5 0 11-3 0v-6a1.5 1.5 0 013 0v6zM14 9.667v-5.43a2 2 0 00-1.106-1.79l-.05-.025A4 4 0 0011.055 2H5.64a2 2 0 00-1.962 1.608l-1.2 6A2 2 0 004.44 12H8v4a2 2 0 002 2 1 1 0 001-1v-.667a4 4 0 01.8-2.4l1.4-1.866a4 4 0 00.8-2.4z"/>
+                                            <svg class="faq-minus-enhanced d-none" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
                                             </svg>
-                                            No
-                                        </button>
+                                            <div class="icon-background"></div>
+                                        </div>
+                                        <h3 class="faq-title-enhanced">How do I create my first product listing?</h3>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FAQ Item 2 -->
-                        <div class="faq-item animate-slide-up animation-delay-200">
-                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false">
-                                <div class="faq-icon-wrapper">
-                                    <svg class="faq-plus" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                    </svg>
-                                    <svg class="faq-minus d-none" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
-                                    </svg>
-                                </div>
-                                <h3 class="faq-title">What are the seller fees on AfrikArt?</h3>
-                                <span class="faq-badge bg-info-subtle text-info">Important</span>
-                            </div>
-                            <div class="collapse faq-answer" id="faq2">
-                                <div class="faq-content">
-                                    <p>AfrikArt has a transparent fee structure:</p>
-                                    <div class="fee-breakdown">
-                                        <div class="fee-item">
-                                            <span class="fee-label">Transaction Fee:</span>
-                                            <span class="fee-value">2.9% + $0.30</span>
-                                        </div>
-                                        <div class="fee-item">
-                                            <span class="fee-label">Listing Fee:</span>
-                                            <span class="fee-value">Free</span>
-                                        </div>
-                                        <div class="fee-item">
-                                            <span class="fee-label">Monthly Fee:</span>
-                                            <span class="fee-value">$0</span>
+                                    <div class="question-right">
+                                        <span class="faq-badge-enhanced faq-badge-popular">
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20" class="me-1">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                            Popular
+                                        </span>
+                                        <div class="view-count">
+                                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20" class="me-1">
+                                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            1.2k views
                                         </div>
                                     </div>
-                                    <div class="alert alert-info mt-3">
-                                        <svg class="me-2" width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                                        </svg>
-                                        No hidden fees! You only pay when you make a sale.
-                                    </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- FAQ Item 3 -->
-                        <div class="faq-item animate-slide-up animation-delay-300">
-                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false">
-                                <div class="faq-icon-wrapper">
-                                    <svg class="faq-plus" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                    </svg>
-                                    <svg class="faq-minus d-none" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
-                                    </svg>
-                                </div>
-                                <h3 class="faq-title">How long does it take to get paid?</h3>
-                                <span class="faq-badge bg-success-subtle text-success">Quick Answer</span>
-                            </div>
-                            <div class="collapse faq-answer" id="faq3">
-                                <div class="faq-content">
-                                    <div class="payment-timeline">
-                                        <div class="timeline-item">
-                                            <div class="timeline-icon">1</div>
-                                            <div class="timeline-content">
-                                                <h4>Order Completion</h4>
-                                                <p>Customer receives and confirms the order</p>
+                                
+                                <div class="collapse faq-answer-enhanced" id="faq1">
+                                    <div class="faq-content-enhanced">
+                                        <div class="content-header">
+                                            <p class="content-intro">Creating your first product listing is simple! Follow our step-by-step guide:</p>
+                                        </div>
+                                        
+                                        <div class="step-by-step-guide">
+                                            <div class="step-item-enhanced">
+                                                <div class="step-number-enhanced">1</div>
+                                                <div class="step-content-enhanced">
+                                                    <h4>Navigate to Dashboard</h4>
+                                                    <p>Go to your seller dashboard and click "Add New Product"</p>
+                                                </div>
+                                                <div class="step-icon">
+                                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="step-item-enhanced">
+                                                <div class="step-number-enhanced">2</div>
+                                                <div class="step-content-enhanced">
+                                                    <h4>Product Details</h4>
+                                                    <p>Fill in title, description, price, and category information</p>
+                                                </div>
+                                                <div class="step-icon">
+                                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="step-item-enhanced">
+                                                <div class="step-number-enhanced">3</div>
+                                                <div class="step-content-enhanced">
+                                                    <h4>Upload Images</h4>
+                                                    <p>Add high-quality photos showcasing your product</p>
+                                                </div>
+                                                <div class="step-icon">
+                                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="step-item-enhanced">
+                                                <div class="step-number-enhanced">4</div>
+                                                <div class="step-content-enhanced">
+                                                    <h4>Set Shipping</h4>
+                                                    <p>Configure shipping options and inventory settings</p>
+                                                </div>
+                                                <div class="step-icon">
+                                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
+                                                        <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707L16 7.586A1 1 0 0015.414 7H14z"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="step-item-enhanced">
+                                                <div class="step-number-enhanced">5</div>
+                                                <div class="step-content-enhanced">
+                                                    <h4>Publish Listing</h4>
+                                                    <p>Preview and publish your product to start selling</p>
+                                                </div>
+                                                <div class="step-icon">
+                                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"/>
+                                                    </svg>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="timeline-item">
-                                            <div class="timeline-icon">2</div>
-                                            <div class="timeline-content">
-                                                <h4>Processing Period</h4>
-                                                <p>2-3 business days for payment processing</p>
+                                        
+                                        <div class="content-footer">
+                                            <div class="pro-tip">
+                                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20" class="me-2">
+                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <strong>Pro Tip:</strong> Use multiple high-quality images and detailed descriptions to increase your sales!
                                             </div>
-                                        </div>
-                                        <div class="timeline-item">
-                                            <div class="timeline-icon">3</div>
-                                            <div class="timeline-content">
-                                                <h4>Payment Transfer</h4>
-                                                <p>Funds transferred to your linked account</p>
+                                            
+                                            <div class="faq-actions">
+                                                <div class="helpful-section">
+                                                    <span class="helpful-text">Was this helpful?</span>
+                                                    <div class="helpful-buttons">
+                                                        <button class="btn-helpful btn-helpful-yes" onclick="markHelpful(this, true)">
+                                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
+                                                            </svg>
+                                                            <span class="helpful-count">256</span>
+                                                        </button>
+                                                        <button class="btn-helpful btn-helpful-no" onclick="markHelpful(this, false)">
+                                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M18 9.5a1.5 1.5 0 11-3 0v-6a1.5 1.5 0 013 0v6zM14 9.667v-5.43a2 2 0 00-1.106-1.79l-.05-.025A4 4 0 0011.055 2H5.64a2 2 0 00-1.962 1.608l-1.2 6A2 2 0 004.44 12H8v4a2 2 0 002 2 1 1 0 001-1v-.667a4 4 0 01.8-2.4l1.4-1.866a4 4 0 00.8-2.4z"/>
+                                                            </svg>
+                                                            <span class="helpful-count">12</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="related-links">
+                                                    <a href="#" class="related-link">
+                                                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                                        </svg>
+                                                        Product Listing Guide
+                                                    </a>
+                                                    <a href="#" class="related-link">
+                                                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                                        </svg>
+                                                        Video Tutorial
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FAQ Item 4 -->
-                        <div class="faq-item animate-slide-up animation-delay-400">
-                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false">
-                                <div class="faq-icon-wrapper">
-                                    <svg class="faq-plus" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                    </svg>
-                                    <svg class="faq-minus d-none" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
-                                    </svg>
-                                </div>
-                                <h3 class="faq-title">Can I sell internationally?</h3>
-                                <span class="faq-badge bg-warning-subtle text-warning">New</span>
-                            </div>
-                            <div class="collapse faq-answer" id="faq4">
-                                <div class="faq-content">
-                                    <p>Yes! AfrikArt supports international selling with these features:</p>
-                                    <div class="feature-grid">
-                                        <div class="feature-card">
-                                            <svg class="feature-icon" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            </svg>
-                                            <h4>Global Shipping</h4>
-                                            <p>Ship to 195+ countries</p>
-                                        </div>
-                                        <div class="feature-card">
-                                            <svg class="feature-icon" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-                                            </svg>
-                                            <h4>Multi-Currency</h4>
-                                            <p>Accept 20+ currencies</p>
-                                        </div>
-                                        <div class="feature-card">
-                                            <svg class="feature-icon" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                            </svg>
-                                            <h4>Customs Support</h4>
-                                            <p>Automated customs forms</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- FAQ Item 5 -->
-                        <div class="faq-item animate-slide-up animation-delay-500">
-                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false">
-                                <div class="faq-icon-wrapper">
-                                    <svg class="faq-plus" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                    </svg>
-                                    <svg class="faq-minus d-none" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
-                                    </svg>
+                        
+                        <!-- FAQ Item 2 - Enhanced -->
+                        <div class="faq-item-enhanced animate-slide-up animation-delay-200 mb-3" data-category="payments">
+                            <div class="faq-card">
+                                <div class="faq-question-header" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false">
+                                    <div class="question-left">
+                                        <div class="faq-icon-wrapper-enhanced">
+                                            <svg class="faq-plus-enhanced" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                            </svg>
+                                            <svg class="faq-minus-enhanced d-none" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
+                                            </svg>
+                                            <div class="icon-background"></div>
+                                        </div>
+                                        <h3 class="faq-title-enhanced">What are the seller fees on AfrikArt?</h3>
+                                    </div>
+                                    <div class="question-right">
+                                        <span class="faq-badge-enhanced faq-badge-important">
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20" class="me-1">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Important
+                                        </span>
+                                        <div class="view-count">
+                                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20" class="me-1">
+                                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            987 views
+                                        </div>
+                                    </div>
                                 </div>
-                                <h3 class="faq-title">How do I handle returns and refunds?</h3>
-                                <span class="faq-badge bg-purple-subtle text-purple">Policy</span>
+                                
+                                <div class="collapse faq-answer-enhanced" id="faq2">
+                                    <div class="faq-content-enhanced">
+                                        <div class="content-header">
+                                            <p class="content-intro">AfrikArt maintains a transparent and competitive fee structure:</p>
+                                        </div>
+                                        
+                                        <div class="fee-breakdown-enhanced">
+                                            <div class="fee-card">
+                                                <div class="fee-icon">
+                                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="fee-details">
+                                                    <h4 class="fee-title">Transaction Fee</h4>
+                                                    <div class="fee-amount">2.9% + $0.30</div>
+                                                    <p class="fee-description">Per successful transaction</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="fee-card">
+                                                <div class="fee-icon">
+                                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="fee-details">
+                                                    <h4 class="fee-title">Listing Fee</h4>
+                                                    <div class="fee-amount free">FREE</div>
+                                                    <p class="fee-description">No cost to list products</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="fee-card">
+                                                <div class="fee-icon">
+                                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h2a2 2 0 012 2v1m-6 0h6m-6 0l-.757.757a2 2 0 01-1.414.586H4a2 2 0 01-2-2v-4a2 2 0 012-2h2.343a2 2 0 011.414.586L8 7zm0 0v1a2 2 0 002 2h4a2 2 0 002-2V7m-6 0h6"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="fee-details">
+                                                    <h4 class="fee-title">Monthly Fee</h4>
+                                                    <div class="fee-amount free">$0</div>
+                                                    <p class="fee-description">No monthly subscription</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="fee-calculator">
+                                            <h4>Fee Calculator</h4>
+                                            <div class="calculator-input">
+                                                <label>Sale Amount ($)</label>
+                                                <input type="number" class="form-control" placeholder="100.00" id="saleAmount">
+                                            </div>
+                                            <div class="calculator-result">
+                                                <div class="result-row">
+                                                    <span>Transaction Fee:</span>
+                                                    <span id="transactionFee">$3.20</span>
+                                                </div>
+                                                <div class="result-row total">
+                                                    <span>You Receive:</span>
+                                                    <span id="youReceive">$96.80</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="content-footer">
+                                            <div class="highlight-box">
+                                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20" class="me-2">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <strong>No Hidden Fees:</strong> You only pay when you make a sale. No setup costs, no monthly fees!
+                                            </div>
+                                            
+                                            <div class="faq-actions">
+                                                <div class="helpful-section">
+                                                    <span class="helpful-text">Was this helpful?</span>
+                                                    <div class="helpful-buttons">
+                                                        <button class="btn-helpful btn-helpful-yes" onclick="markHelpful(this, true)">
+                                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
+                                                            </svg>
+                                                            <span class="helpful-count">198</span>
+                                                        </button>
+                                                        <button class="btn-helpful btn-helpful-no" onclick="markHelpful(this, false)">
+                                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M18 9.5a1.5 1.5 0 11-3 0v-6a1.5 1.5 0 013 0v6zM14 9.667v-5.43a2 2 0 00-1.106-1.79l-.05-.025A4 4 0 0011.055 2H5.64a2 2 0 00-1.962 1.608l-1.2 6A2 2 0 004.44 12H8v4a2 2 0 002 2 1 1 0 001-1v-.667a4 4 0 01.8-2.4l1.4-1.866a4 4 0 00.8-2.4z"/>
+                                                            </svg>
+                                                            <span class="helpful-count">8</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="collapse faq-answer" id="faq5">
-                                <div class="faq-content">
-                                    <p>Our return policy is seller-friendly while protecting buyers:</p>
-                                    <div class="policy-steps">
-                                        <div class="step-item">
-                                            <div class="step-number">1</div>
-                                            <div class="step-content">
-                                                <h4>Set Your Policy</h4>
-                                                <p>Define your return window (7-30 days) and conditions</p>
+                        </div>
+
+                        <!-- FAQ Item 3 - Enhanced -->
+                        <div class="faq-item-enhanced animate-slide-up animation-delay-300 mb-3" data-category="payments">
+                            <div class="faq-card">
+                                <div class="faq-question-header" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false">
+                                    <div class="question-left">
+                                        <div class="faq-icon-wrapper-enhanced">
+                                            <svg class="faq-plus-enhanced" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                            </svg>
+                                            <svg class="faq-minus-enhanced d-none" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
+                                            </svg>
+                                            <div class="icon-background"></div>
+                                        </div>
+                                        <h3 class="faq-title-enhanced">How long does it take to get paid?</h3>
+                                    </div>
+                                    <div class="question-right">
+                                        <span class="faq-badge-enhanced faq-badge-quick">
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20" class="me-1">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Quick Answer
+                                        </span>
+                                        <div class="view-count">
+                                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20" class="me-1">
+                                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            756 views
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="collapse faq-answer-enhanced" id="faq3">
+                                    <div class="faq-content-enhanced">
+                                        <div class="content-header">
+                                            <p class="content-intro">Payment processing is fast and reliable. Here's the timeline:</p>
+                                        </div>
+                                        
+                                        <div class="payment-timeline-enhanced">
+                                            <div class="timeline-item-enhanced">
+                                                <div class="timeline-number">1</div>
+                                                <div class="timeline-connector"></div>
+                                                <div class="timeline-content">
+                                                    <div class="timeline-icon">
+                                                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <h4>Order Completion</h4>
+                                                    <p>Customer receives and confirms the order</p>
+                                                    <span class="timeline-badge">Immediate</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="timeline-item-enhanced">
+                                                <div class="timeline-number">2</div>
+                                                <div class="timeline-connector"></div>
+                                                <div class="timeline-content">
+                                                    <div class="timeline-icon">
+                                                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <h4>Processing Period</h4>
+                                                    <p>Payment verification and processing</p>
+                                                    <span class="timeline-badge">2-3 business days</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="timeline-item-enhanced">
+                                                <div class="timeline-number">3</div>
+                                                <div class="timeline-content">
+                                                    <div class="timeline-icon">
+                                                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                                                        </svg>
+                                                    </div>
+                                                    <h4>Payment Transfer</h4>
+                                                    <p>Funds transferred to your linked account</p>
+                                                    <span class="timeline-badge">Same day</span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="step-item">
-                                            <div class="step-number">2</div>
-                                            <div class="step-content">
-                                                <h4>Customer Request</h4>
-                                                <p>Buyers initiate returns through our platform</p>
+                                        
+                                        <div class="payment-methods">
+                                            <h4>Supported Payment Methods</h4>
+                                            <div class="payment-options">
+                                                <div class="payment-option">
+                                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                                                    </svg>
+                                                    <span>Bank Transfer</span>
+                                                </div>
+                                                <div class="payment-option">
+                                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                                    </svg>
+                                                    <span>PayPal</span>
+                                                </div>
+                                                <div class="payment-option">
+                                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                                    </svg>
+                                                    <span>Stripe</span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="step-item">
-                                            <div class="step-number">3</div>
-                                            <div class="step-content">
-                                                <h4>Review & Approve</h4>
-                                                <p>You review and decide on each return request</p>
+                                        
+                                        <div class="content-footer">
+                                            <div class="faq-actions">
+                                                <div class="helpful-section">
+                                                    <span class="helpful-text">Was this helpful?</span>
+                                                    <div class="helpful-buttons">
+                                                        <button class="btn-helpful btn-helpful-yes" onclick="markHelpful(this, true)">
+                                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
+                                                            </svg>
+                                                            <span class="helpful-count">142</span>
+                                                        </button>
+                                                        <button class="btn-helpful btn-helpful-no" onclick="markHelpful(this, false)">
+                                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M18 9.5a1.5 1.5 0 11-3 0v-6a1.5 1.5 0 013 0v6zM14 9.667v-5.43a2 2 0 00-1.106-1.79l-.05-.025A4 4 0 0011.055 2H5.64a2 2 0 00-1.962 1.608l-1.2 6A2 2 0 004.44 12H8v4a2 2 0 002 2 1 1 0 001-1v-.667a4 4 0 01.8-2.4l1.4-1.866a4 4 0 00.8-2.4z"/>
+                                                            </svg>
+                                                            <span class="helpful-count">6</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 4 - Enhanced -->
+                        <div class="faq-item-enhanced animate-slide-up animation-delay-400 mb-3" data-category="selling">
+                            <div class="faq-card">
+                                <div class="faq-question-header" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false">
+                                    <div class="question-left">
+                                        <div class="faq-icon-wrapper-enhanced">
+                                            <svg class="faq-plus-enhanced" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                            </svg>
+                                            <svg class="faq-minus-enhanced d-none" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
+                                            </svg>
+                                            <div class="icon-background"></div>
+                                        </div>
+                                        <h3 class="faq-title-enhanced">Can I sell internationally?</h3>
+                                    </div>
+                                    <div class="question-right">
+                                        <span class="faq-badge-enhanced faq-badge-new">
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20" class="me-1">
+                                                <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+                                            </svg>
+                                            New Feature
+                                        </span>
+                                        <div class="view-count">
+                                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20" class="me-1">
+                                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            892 views
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="collapse faq-answer-enhanced" id="faq4">
+                                    <div class="faq-content-enhanced">
+                                        <div class="content-header">
+                                            <p class="content-intro">Yes! AfrikArt supports international selling with comprehensive global commerce features:</p>
+                                        </div>
+                                        
+                                        <div class="international-features">
+                                            <div class="feature-grid-enhanced">
+                                                <div class="feature-card-enhanced highlight">
+                                                    <div class="feature-icon">
+                                                        <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <h4>Global Reach</h4>
+                                                    <div class="feature-stats">
+                                                        <span class="stat-number">195+</span>
+                                                        <span class="stat-label">Countries</span>
+                                                    </div>
+                                                    <p>Ship to customers worldwide with integrated shipping solutions</p>
+                                                    <div class="feature-badge">Most Popular</div>
+                                                </div>
+                                                
+                                                <div class="feature-card-enhanced">
+                                                    <div class="feature-icon">
+                                                        <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                                                        </svg>
+                                                    </div>
+                                                    <h4>Multi-Currency</h4>
+                                                    <div class="feature-stats">
+                                                        <span class="stat-number">25+</span>
+                                                        <span class="stat-label">Currencies</span>
+                                                    </div>
+                                                    <p>Accept payments in local currencies with real-time conversion</p>
+                                                </div>
+                                                
+                                                <div class="feature-card-enhanced">
+                                                    <div class="feature-icon">
+                                                        <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <h4>Customs Made Easy</h4>
+                                                    <div class="feature-stats">
+                                                        <span class="stat-number">100%</span>
+                                                        <span class="stat-label">Automated</span>
+                                                    </div>
+                                                    <p>Auto-generated customs forms and duty calculations</p>
+                                                </div>
+                                                
+                                                <div class="feature-card-enhanced">
+                                                    <div class="feature-icon">
+                                                        <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <h4>Multilingual Support</h4>
+                                                    <div class="feature-stats">
+                                                        <span class="stat-number">15+</span>
+                                                        <span class="stat-label">Languages</span>
+                                                    </div>
+                                                    <p>Customer support in multiple languages and time zones</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="shipping-zones">
+                                            <h4>Popular Shipping Destinations</h4>
+                                            <div class="zones-map">
+                                                <div class="zone-item">
+                                                    <div class="zone-flag">🇺🇸</div>
+                                                    <div class="zone-details">
+                                                        <h5>United States</h5>
+                                                        <span class="zone-time">3-7 days</span>
+                                                        <span class="zone-cost">From $12</span>
+                                                    </div>
+                                                    <div class="zone-volume">High Volume</div>
+                                                </div>
+                                                <div class="zone-item">
+                                                    <div class="zone-flag">🇬🇧</div>
+                                                    <div class="zone-details">
+                                                        <h5>United Kingdom</h5>
+                                                        <span class="zone-time">5-10 days</span>
+                                                        <span class="zone-cost">From $15</span>
+                                                    </div>
+                                                    <div class="zone-volume">High Volume</div>
+                                                </div>
+                                                <div class="zone-item">
+                                                    <div class="zone-flag">🇨🇦</div>
+                                                    <div class="zone-details">
+                                                        <h5>Canada</h5>
+                                                        <span class="zone-time">4-8 days</span>
+                                                        <span class="zone-cost">From $14</span>
+                                                    </div>
+                                                    <div class="zone-volume">Medium Volume</div>
+                                                </div>
+                                                <div class="zone-item">
+                                                    <div class="zone-flag">🇦🇺</div>
+                                                    <div class="zone-details">
+                                                        <h5>Australia</h5>
+                                                        <span class="zone-time">7-14 days</span>
+                                                        <span class="zone-cost">From $18</span>
+                                                    </div>
+                                                    <div class="zone-volume">Growing</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="content-footer">
+                                            <div class="quick-setup">
+                                                <h5>Quick Setup Guide:</h5>
+                                                <div class="setup-steps">
+                                                    <div class="setup-step">
+                                                        <span class="step-number">1</span>
+                                                        <span class="step-text">Enable international shipping in settings</span>
+                                                    </div>
+                                                    <div class="setup-step">
+                                                        <span class="step-number">2</span>
+                                                        <span class="step-text">Set shipping rates for different zones</span>
+                                                    </div>
+                                                    <div class="setup-step">
+                                                        <span class="step-number">3</span>
+                                                        <span class="step-text">Configure customs information</span>
+                                                    </div>
+                                                    <div class="setup-step">
+                                                        <span class="step-number">4</span>
+                                                        <span class="step-text">Start selling globally!</span>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-primary btn-sm mt-3">
+                                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                    </svg>
+                                                    Configure International Settings
+                                                </button>
+                                            </div>
+                                            
+                                            <div class="faq-actions">
+                                                <div class="helpful-section">
+                                                    <span class="helpful-text">Was this helpful?</span>
+                                                    <div class="helpful-buttons">
+                                                        <button class="btn-helpful btn-helpful-yes" onclick="markHelpful(this, true)">
+                                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
+                                                            </svg>
+                                                            <span class="helpful-count">167</span>
+                                                        </button>
+                                                        <button class="btn-helpful btn-helpful-no" onclick="markHelpful(this, false)">
+                                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M18 9.5a1.5 1.5 0 11-3 0v-6a1.5 1.5 0 013 0v6zM14 9.667v-5.43a2 2 0 00-1.106-1.79l-.05-.025A4 4 0 0011.055 2H5.64a2 2 0 00-1.962 1.608l-1.2 6A2 2 0 004.44 12H8v4a2 2 0 002 2 1 1 0 001-1v-.667a4 4 0 01.8-2.4l1.4-1.866a4 4 0 00.8-2.4z"/>
+                                                            </svg>
+                                                            <span class="helpful-count">5</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 5 - Enhanced -->
+                        <div class="faq-item-enhanced animate-slide-up animation-delay-500 mb-3" data-category="account">
+                            <div class="faq-card">
+                                <div class="faq-question-header" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false">
+                                    <div class="question-left">
+                                        <div class="faq-icon-wrapper-enhanced">
+                                            <svg class="faq-plus-enhanced" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                            </svg>
+                                            <svg class="faq-minus-enhanced d-none" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"/>
+                                            </svg>
+                                            <div class="icon-background"></div>
+                                        </div>
+                                        <h3 class="faq-title-enhanced">How do I handle returns and refunds?</h3>
+                                    </div>
+                                    <div class="question-right">
+                                        <span class="faq-badge-enhanced faq-badge-policy">
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20" class="me-1">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Policy Guide
+                                        </span>
+                                        <div class="view-count">
+                                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20" class="me-1">
+                                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            723 views
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="collapse faq-answer-enhanced" id="faq5">
+                                    <div class="faq-content-enhanced">
+                                        <div class="content-header">
+                                            <p class="content-intro">Our comprehensive return policy is designed to be fair for both sellers and buyers. Here's your complete guide:</p>
+                                        </div>
+                                        
+                                        <div class="return-policy-overview">
+                                            <div class="policy-highlight">
+                                                <div class="policy-icon">
+                                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="policy-content">
+                                                    <h4>Seller Protection First</h4>
+                                                    <p>You have full control over your return policy while AfrikArt provides dispute resolution support</p>
+                                                    <div class="policy-badge">Protected Returns</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="return-process-enhanced">
+                                            <h4>Step-by-Step Return Process</h4>
+                                            <div class="process-flow">
+                                                <div class="process-step">
+                                                    <div class="step-indicator">
+                                                        <div class="step-number">1</div>
+                                                        <div class="step-connector"></div>
+                                                    </div>
+                                                    <div class="step-content">
+                                                        <h5>Policy Setup</h5>
+                                                        <p>Define your return window (7-30 days) and specific conditions</p>
+                                                        <div class="step-options">
+                                                            <span class="option-tag">Return Window</span>
+                                                            <span class="option-tag">Conditions</span>
+                                                            <span class="option-tag">Exceptions</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="process-step">
+                                                    <div class="step-indicator">
+                                                        <div class="step-number">2</div>
+                                                        <div class="step-connector"></div>
+                                                    </div>
+                                                    <div class="step-content">
+                                                        <h5>Customer Initiates</h5>
+                                                        <p>Buyers request returns through our secure platform with required information</p>
+                                                        <div class="step-requirements">
+                                                            <div class="requirement">
+                                                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                                </svg>
+                                                                Valid reason required
+                                                            </div>
+                                                            <div class="requirement">
+                                                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                                </svg>
+                                                                Photo evidence (if applicable)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="process-step">
+                                                    <div class="step-indicator">
+                                                        <div class="step-number">3</div>
+                                                        <div class="step-connector"></div>
+                                                    </div>
+                                                    <div class="step-content">
+                                                        <h5>Your Decision</h5>
+                                                        <p>Review the request and make an informed decision within 48 hours</p>
+                                                        <div class="decision-options">
+                                                            <div class="decision-card approve">
+                                                                <div class="decision-icon">✓</div>
+                                                                <h6>Approve Return</h6>
+                                                                <p>Provide return shipping address</p>
+                                                            </div>
+                                                            <div class="decision-card decline">
+                                                                <div class="decision-icon">✗</div>
+                                                                <h6>Decline Return</h6>
+                                                                <p>Provide clear justification</p>
+                                                            </div>
+                                                            <div class="decision-card negotiate">
+                                                                <div class="decision-icon">💬</div>
+                                                                <h6>Negotiate</h6>
+                                                                <p>Offer partial refund or exchange</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="process-step">
+                                                    <div class="step-indicator">
+                                                        <div class="step-number">4</div>
+                                                    </div>
+                                                    <div class="step-content">
+                                                        <h5>Completion</h5>
+                                                        <p>Once item is returned, inspect and process refund within 2 business days</p>
+                                                        <div class="completion-checklist">
+                                                            <div class="checklist-item">
+                                                                <span class="check-icon">📦</span>
+                                                                <span>Inspect returned item</span>
+                                                            </div>
+                                                            <div class="checklist-item">
+                                                                <span class="check-icon">💰</span>
+                                                                <span>Process appropriate refund</span>
+                                                            </div>
+                                                            <div class="checklist-item">
+                                                                <span class="check-icon">📧</span>
+                                                                <span>Notify customer of completion</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="return-scenarios">
+                                            <h4>Common Return Scenarios</h4>
+                                            <div class="scenarios-grid">
+                                                <div class="scenario-card valid">
+                                                    <div class="scenario-status">
+                                                        <span class="status-icon">✓</span>
+                                                        <span class="status-text">Valid Return</span>
+                                                    </div>
+                                                    <h5>Item Not as Described</h5>
+                                                    <p>Product significantly differs from listing description or photos</p>
+                                                    <div class="scenario-action">Full refund + return shipping paid by seller</div>
+                                                </div>
+                                                
+                                                <div class="scenario-card valid">
+                                                    <div class="scenario-status">
+                                                        <span class="status-icon">✓</span>
+                                                        <span class="status-text">Valid Return</span>
+                                                    </div>
+                                                    <h5>Damaged in Transit</h5>
+                                                    <p>Item arrived broken, cracked, or otherwise damaged during shipping</p>
+                                                    <div class="scenario-action">Full refund + insurance claim assistance</div>
+                                                </div>
+                                                
+                                                <div class="scenario-card conditional">
+                                                    <div class="scenario-status">
+                                                        <span class="status-icon">?</span>
+                                                        <span class="status-text">Your Choice</span>
+                                                    </div>
+                                                    <h5>Wrong Size/Color</h5>
+                                                    <p>Customer ordered incorrect size or color variant</p>
+                                                    <div class="scenario-action">Seller discretion - customer pays return shipping</div>
+                                                </div>
+                                                
+                                                <div class="scenario-card invalid">
+                                                    <div class="scenario-status">
+                                                        <span class="status-icon">✗</span>
+                                                        <span class="status-text">Invalid Return</span>
+                                                    </div>
+                                                    <h5>Changed Mind</h5>
+                                                    <p>Customer simply doesn't want the item anymore (buyer's remorse)</p>
+                                                    <div class="scenario-action">Not covered - seller can decline</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="content-footer">
+                                            <div class="policy-tips">
+                                                <h5>Pro Tips for Return Management:</h5>
+                                                <div class="tips-list">
+                                                    <div class="tip-item">
+                                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                        <span>Set clear return conditions in your listings</span>
+                                                    </div>
+                                                    <div class="tip-item">
+                                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                        <span>Respond to return requests promptly</span>
+                                                    </div>
+                                                    <div class="tip-item">
+                                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                        <span>Good customer service builds repeat business</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="faq-actions">
+                                                <div class="helpful-section">
+                                                    <span class="helpful-text">Was this helpful?</span>
+                                                    <div class="helpful-buttons">
+                                                        <button class="btn-helpful btn-helpful-yes" onclick="markHelpful(this, true)">
+                                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
+                                                            </svg>
+                                                            <span class="helpful-count">134</span>
+                                                        </button>
+                                                        <button class="btn-helpful btn-helpful-no" onclick="markHelpful(this, false)">
+                                                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M18 9.5a1.5 1.5 0 11-3 0v-6a1.5 1.5 0 013 0v6zM14 9.667v-5.43a2 2 0 00-1.106-1.79l-.05-.025A4 4 0 0011.055 2H5.64a2 2 0 00-1.962 1.608l-1.2 6A2 2 0 004.44 12H8v4a2 2 0 002 2 1 1 0 001-1v-.667a4 4 0 01.8-2.4l1.4-1.866a4 4 0 00.8-2.4z"/>
+                                                            </svg>
+                                                            <span class="helpful-count">7</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1205,7 +2231,7 @@
                                 </svg>
                                 Ask Support
                             </button>
-                            <a href="#" class="btn btn-outline-primary">
+                            <a href="#" class="btn btn-primary">
                                 <svg class="me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                                 </svg>
@@ -1670,7 +2696,6 @@
             background: linear-gradient(45deg, var(--orange-500), var(--amber-500));
             border: none;
             color: white;
-            padding: 1.2rem 2.5rem;
             font-weight: 700;
             border-radius: 1rem;
             transition: all 0.3s ease;
@@ -3371,6 +4396,2251 @@
 
             .stat-card {
                 margin-bottom: 1rem;
+            }
+        }
+
+        /* ===== ENHANCED CONTACT SUPPORT SECTION STYLES ===== */
+        
+        /* Background Enhancements */
+        .contact-support-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 100%);
+            position: relative;
+        }
+        
+        .support-floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float-random 20s ease-in-out infinite;
+        }
+        
+        .shape-1 {
+            width: 80px;
+            height: 80px;
+            background: var(--orange-500);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .shape-2 {
+            width: 120px;
+            height: 120px;
+            background: var(--blue-500);
+            top: 20%;
+            right: 15%;
+            animation-delay: -5s;
+        }
+        
+        .shape-3 {
+            width: 60px;
+            height: 60px;
+            background: var(--green-500);
+            bottom: 30%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+        
+        .shape-4 {
+            width: 100px;
+            height: 100px;
+            background: var(--purple-500);
+            bottom: 20%;
+            right: 25%;
+            animation-delay: -15s;
+        }
+        
+        .shape-5 {
+            width: 70px;
+            height: 70px;
+            background: var(--pink-500);
+            top: 50%;
+            left: 50%;
+            animation-delay: -7s;
+        }
+        
+        /* Grid Background */
+        .support-grid-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        
+        .grid-line {
+            position: absolute;
+            background: #1e293b;
+        }
+        
+        .grid-line-vertical {
+            width: 1px;
+            height: 100%;
+            animation: grid-pulse-vertical 8s ease-in-out infinite;
+        }
+        
+        .grid-line-horizontal {
+            height: 1px;
+            width: 100%;
+            animation: grid-pulse-horizontal 8s ease-in-out infinite;
+        }
+        
+        /* Header Enhancements */
+        .support-main-badge {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(249, 115, 22, 0.2);
+            border-radius: 50px;
+            color: var(--orange-600);
+            font-size: 0.95rem;
+            box-shadow: 0 10px 40px rgba(249, 115, 22, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .support-status-pulse {
+            width: 10px;
+            height: 10px;
+            background: var(--green-500);
+            border-radius: 50%;
+            animation: pulse-glow 2s infinite;
+            position: relative;
+        }
+        
+        .support-status-pulse::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid var(--green-500);
+            border-radius: 50%;
+            animation: pulse-ring 2s infinite;
+        }
+        
+        .badge-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: badge-shine 3s ease-in-out infinite;
+        }
+        
+        .support-title {
+            font-size: 3.5rem;
+            color: #1e293b;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .help-heart {
+            font-size: 2rem;
+            animation: heart-beat 2s ease-in-out infinite;
+        }
+        
+        .heart-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.3), transparent);
+            border-radius: 50%;
+            animation: heart-glow 2s ease-in-out infinite;
+        }
+        
+        .title-decoration {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(45deg, var(--orange-500), var(--amber-500));
+            border-radius: 2px;
+            animation: title-decoration-expand 1s ease-out 0.5s forwards;
+            transform-origin: center;
+            scale: 0;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(45deg, var(--orange-500), var(--amber-500), var(--yellow-500));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+        }
+        
+        /* Card Enhancements */
+        .support-option-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .support-option-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        
+        .card-glow-chat {
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15), transparent);
+        }
+        
+        .card-glow-email {
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15), transparent);
+        }
+        
+        .card-glow-phone {
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent);
+        }
+        
+        .support-option-card:hover .card-glow {
+            opacity: 1;
+        }
+        
+        .card-mesh {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        
+        .card-mesh-chat {
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+        }
+        
+        .card-mesh-email {
+            background: 
+                radial-gradient(circle at 30% 70%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+        }
+        
+        .card-mesh-phone {
+            background: 
+                radial-gradient(circle at 40% 60%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 40%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        }
+        
+        .support-option-card:hover .card-mesh {
+            opacity: 1;
+        }
+        
+        .card-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+            pointer-events: none;
+        }
+        
+        .support-option-card:hover .card-shine {
+            left: 100%;
+        }
+        
+        .card-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 24px;
+            padding: 1px;
+            background: linear-gradient(45deg, rgba(249, 115, 22, 0.3), rgba(59, 130, 246, 0.3), rgba(16, 185, 129, 0.3));
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: subtract;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .support-option-card:hover .card-border {
+            opacity: 1;
+        }
+        
+        /* Status Indicators */
+        .support-status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: status-pulse 2s infinite;
+        }
+        
+        .status-online {
+            background: var(--green-500);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+        
+        .status-email {
+            background: var(--blue-500);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+        
+        .status-phone {
+            background: var(--orange-500);
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+        }
+        
+        .status-text {
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+        
+        /* Icon Enhancements */
+        .support-icon-wrapper {
+            position: relative;
+        }
+        
+        .support-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            color: white;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .support-icon-chat {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        
+        .support-icon-email {
+            background: linear-gradient(135deg, #10b981, #047857);
+        }
+        
+        .support-icon-phone {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        }
+        
+        .support-option-card:hover .support-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .icon-pulse {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid currentColor;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: icon-pulse 2s infinite;
+        }
+        
+        .floating-dots {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+        }
+        
+        .dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--orange-500);
+            border-radius: 50%;
+            animation: floating-dots 3s ease-in-out infinite;
+        }
+        
+        .dot-1 { animation-delay: 0s; }
+        .dot-2 { animation-delay: 0.5s; left: 10px; }
+        .dot-3 { animation-delay: 1s; left: 5px; top: 10px; }
+        
+        .floating-envelope {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            color: var(--green-500);
+            animation: floating-envelope 4s ease-in-out infinite;
+        }
+        
+        .floating-signal {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+        }
+        
+        .signal-wave {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--purple-500);
+            border-radius: 50%;
+            animation: signal-wave 2s ease-in-out infinite;
+        }
+        
+        .signal-wave-1 { animation-delay: 0s; }
+        .signal-wave-2 { animation-delay: 0.3s; transform: scale(1.2); }
+        .signal-wave-3 { animation-delay: 0.6s; transform: scale(1.4); }
+        
+        /* Features List */
+        .support-features-list {
+            text-align: left;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+        
+        .feature-icon {
+            color: var(--green-500);
+            flex-shrink: 0;
+        }
+        
+        /* Enhanced Buttons */
+        .btn-chat-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-email-primary {
+            background: linear-gradient(135deg, #10b981, #047857);
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-phone-primary {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .support-btn:hover {
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-ripple {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+        
+        .support-btn:active .btn-ripple {
+            width: 200px;
+            height: 200px;
+        }
+        
+        /* Enhanced Statistics */
+        .stat-card-enhanced {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card-enhanced:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon-wrapper {
+            position: relative;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-icon-satisfaction {
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color: white;
+        }
+        
+        .stat-icon-response {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .stat-icon-availability {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+        }
+        
+        .stat-icon-rating {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        
+        .stat-card-enhanced:hover .stat-icon {
+            transform: scale(1.1) rotate(10deg);
+        }
+        
+        .counter {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .number-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.2), transparent);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .stat-card-enhanced:hover .number-glow {
+            opacity: 1;
+        }
+        
+        .stat-trend {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+        }
+        
+        .trend-up {
+            color: var(--green-500);
+        }
+        
+        .trend-down {
+            color: var(--blue-500);
+        }
+        
+        /* Floating Action Button */
+        .floating-support-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .btn-floating {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+        
+        /* Enhanced FAQ Section Styles */
+        .faq-section-enhanced {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .faq-container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .faq-header-enhanced {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .faq-pattern-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #3b82f6 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, #8b5cf6 2px, transparent 2px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+        
+        .faq-floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+        
+        .faq-floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float-gentle 6s ease-in-out infinite;
+        }
+        
+        .faq-floating-shape:nth-child(1) {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            top: 20%;
+            right: 10%;
+            animation-delay: -2s;
+        }
+        
+        .faq-floating-shape:nth-child(2) {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+            top: 60%;
+            left: 5%;
+            animation-delay: -4s;
+        }
+        
+        .faq-floating-shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #f59e0b, #ef4444);
+            bottom: 10%;
+            right: 20%;
+            animation-delay: -1s;
+        }
+        
+        .faq-title-enhanced {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e293b, #3730a3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            position: relative;
+            line-height: 1.2;
+        }
+        
+        .faq-subtitle-enhanced {
+            font-size: 1.25rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .faq-search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+        
+        .faq-search-wrapper {
+            position: relative;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .faq-search-input {
+            width: 100%;
+            padding: 1rem 1.5rem 1rem 3.5rem;
+            border: none;
+            outline: none;
+            font-size: 1.1rem;
+            background: transparent;
+        }
+        
+        .faq-search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            z-index: 2;
+        }
+        
+        .faq-categories-enhanced {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .faq-category-btn {
+            padding: 0.5rem 1.25rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            color: #64748b;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .faq-category-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+        }
+        
+        .faq-category-btn.active {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .faq-items-enhanced {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .faq-item-enhanced {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .faq-item-enhanced.animate-slide-up {
+            animation: slideUpFade 0.6s ease forwards;
+        }
+        
+        .faq-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid transparent;
+        }
+        
+        .faq-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            border-color: #e2e8f0;
+        }
+        
+        .faq-question-header {
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .faq-question-header:hover {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        
+        .question-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+        
+        .question-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .faq-icon-wrapper-enhanced {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-icon-wrapper-enhanced:hover {
+            transform: rotate(90deg);
+        }
+        
+        .faq-plus-enhanced,
+        .faq-minus-enhanced {
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .icon-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .faq-icon-wrapper-enhanced:hover .icon-background {
+            opacity: 1;
+        }
+        
+        .faq-title-enhanced {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+            line-height: 1.4;
+        }
+        
+        .faq-badge-enhanced {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .faq-badge-popular {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .faq-badge-important {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+        
+        .faq-badge-quick {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+        
+        .faq-badge-guide {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+        
+        .faq-badge-new {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+        }
+        
+        .faq-badge-policy {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+        }
+        
+        .view-count {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .faq-answer-enhanced {
+            border-top: 1px solid #f1f5f9;
+        }
+        
+        .faq-content-enhanced {
+            padding: 2rem;
+        }
+        
+        .content-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .content-intro {
+            font-size: 1.1rem;
+            color: #475569;
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        /* Step-by-step Guide Styles */
+        .setup-steps-enhanced {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .setup-step-enhanced {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 16px;
+            border-left: 4px solid #3b82f6;
+            transition: all 0.3s ease;
+        }
+        
+        .setup-step-enhanced:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .step-number-enhanced {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content-enhanced {
+            flex: 1;
+        }
+        
+        .step-title-enhanced {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .step-description-enhanced {
+            color: #64748b;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .step-tips {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .step-tip-label {
+            font-weight: 600;
+            color: #3b82f6;
+            font-size: 0.9rem;
+        }
+        
+        .step-tip-text {
+            color: #475569;
+            font-size: 0.9rem;
+            margin: 0.25rem 0 0 0;
+        }
+        
+        /* Fee Breakdown Enhanced Styles */
+        .fee-breakdown-enhanced {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .fee-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .fee-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .fee-card:hover::before {
+            left: 100%;
+        }
+        
+        .fee-card:hover {
+            transform: translateY(-5px);
+            border-color: #3b82f6;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+        
+        .fee-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+        }
+        
+        .fee-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .fee-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin: 0.5rem 0;
+        }
+        
+        .fee-amount.free {
+            color: #10b981;
+        }
+        
+        .fee-description {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        /* Fee Calculator Styles */
+        .fee-calculator {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .fee-calculator h4 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .calculator-input {
+            margin-bottom: 1rem;
+        }
+        
+        .calculator-input label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .calculator-result {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .result-row:last-child {
+            border-bottom: none;
+        }
+        
+        .result-row.total {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #3b82f6;
+            border-top: 2px solid #e2e8f0;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+        }
+        
+        /* Payment Timeline Enhanced Styles */
+        .payment-timeline-enhanced {
+            position: relative;
+            margin: 2rem 0;
+        }
+        
+        .timeline-item-enhanced {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .timeline-item-enhanced:last-child .timeline-connector {
+            display: none;
+        }
+        
+        .timeline-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .timeline-connector {
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+            opacity: 0.3;
+        }
+        
+        .timeline-content {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .timeline-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
+        
+        .timeline-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .timeline-content p {
+            color: #64748b;
+            margin: 0 0 0.75rem 0;
+            line-height: 1.5;
+        }
+        
+        .timeline-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* Payment Methods Styles */
+        .payment-methods {
+            margin: 2rem 0;
+        }
+        
+        .payment-methods h4 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            color: #374151;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-option:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+        }
+        
+        /* Optimization Checklist Styles */
+        .optimization-checklist {
+            margin: 2rem 0;
+        }
+        
+        .checklist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .checklist-header h4 {
+            color: #1e293b;
+            margin: 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checklist-progress {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .checklist-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .checklist-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .checklist-item.completed {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+        }
+        
+        .checklist-item.pending {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+        }
+        
+        .checklist-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item-checkbox {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .checklist-item.completed .item-checkbox {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .checkbox-pending {
+            width: 16px;
+            height: 16px;
+            border: 3px solid #f59e0b;
+            border-radius: 50%;
+            background: white;
+        }
+        
+        .item-content {
+            flex: 1;
+        }
+        
+        .item-content h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .item-content p {
+            color: #64748b;
+            margin: 0 0 0.75rem 0;
+            line-height: 1.5;
+        }
+        
+        .item-tip {
+            background: rgba(59, 130, 246, 0.1);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+        
+        .tip-label {
+            font-weight: 600;
+            color: #3b82f6;
+            font-size: 0.85rem;
+        }
+        
+        .item-example {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+        
+        .example-label {
+            font-weight: 600;
+            color: #10b981;
+            font-size: 0.85rem;
+        }
+        
+        .item-action {
+            margin-top: 0.75rem;
+        }
+        
+        /* Optimization Stats Styles */
+        .optimization-stats {
+            margin: 2rem 0;
+        }
+        
+        .optimization-stats h4 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #3b82f6;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #10b981;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        /* International Features Styles */
+        .international-features {
+            margin: 2rem 0;
+        }
+        
+        .feature-grid-enhanced {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .feature-card-enhanced {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card-enhanced.highlight {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #ffffff 0%, #dbeafe 100%);
+        }
+        
+        .feature-card-enhanced::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .feature-card-enhanced:hover::before {
+            left: 100%;
+        }
+        
+        .feature-card-enhanced:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+        }
+        
+        .feature-card-enhanced h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 1rem 0;
+        }
+        
+        .feature-stats {
+            margin: 1rem 0;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            display: block;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .feature-card-enhanced p {
+            color: #64748b;
+            margin: 0 0 1rem 0;
+            line-height: 1.5;
+        }
+        
+        .feature-badge {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+        
+        /* Shipping Zones Styles */
+        .shipping-zones {
+            margin: 2rem 0;
+        }
+        
+        .shipping-zones h4 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .zones-map {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        
+        .zone-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .zone-item:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+        }
+        
+        .zone-flag {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+        
+        .zone-details {
+            flex: 1;
+        }
+        
+        .zone-details h5 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .zone-time,
+        .zone-cost {
+            display: block;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        
+        .zone-volume {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* Return Process Enhanced Styles */
+        .return-process-enhanced {
+            margin: 2rem 0;
+        }
+        
+        .return-process-enhanced h4 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .process-flow {
+            position: relative;
+        }
+        
+        .process-step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .process-step:last-child .step-connector {
+            display: none;
+        }
+        
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .step-connector {
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+            opacity: 0.3;
+            margin-top: 1rem;
+        }
+        
+        .step-content {
+            flex: 1;
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .step-content:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .step-content h5 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 0.75rem 0;
+        }
+        
+        .step-content p {
+            color: #64748b;
+            margin: 0 0 1rem 0;
+            line-height: 1.5;
+        }
+        
+        .step-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+        
+        .option-tag {
+            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+            color: #475569;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .step-requirements {
+            margin-top: 1rem;
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: #10b981;
+            font-size: 0.9rem;
+        }
+        
+        .decision-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .decision-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .decision-card.approve {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+        }
+        
+        .decision-card.decline {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+        }
+        
+        .decision-card.negotiate {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+        }
+        
+        .decision-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .decision-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .decision-card h6 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .decision-card p {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin: 0;
+        }
+        
+        .completion-checklist {
+            margin-top: 1rem;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 8px;
+        }
+        
+        .check-icon {
+            font-size: 1.2rem;
+        }
+        
+        /* Return Scenarios Styles */
+        .return-scenarios {
+            margin: 2rem 0;
+        }
+        
+        .return-scenarios h4 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        
+        .scenario-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .scenario-card.valid {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+        }
+        
+        .scenario-card.conditional {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+        }
+        
+        .scenario-card.invalid {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+        }
+        
+        .scenario-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scenario-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .scenario-card.valid .status-icon {
+            background: #10b981;
+            color: white;
+        }
+        
+        .scenario-card.conditional .status-icon {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .scenario-card.invalid .status-icon {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .status-text {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .scenario-card.valid .status-text {
+            color: #10b981;
+        }
+        
+        .scenario-card.conditional .status-text {
+            color: #f59e0b;
+        }
+        
+        .scenario-card.invalid .status-text {
+            color: #ef4444;
+        }
+        
+        .scenario-card h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 0.75rem 0;
+        }
+        
+        .scenario-card p {
+            color: #64748b;
+            margin: 0 0 1rem 0;
+            line-height: 1.5;
+        }
+        
+        .scenario-action {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        /* Content Footer Styles */
+        .content-footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #f1f5f9;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            color: #1e40af;
+        }
+        
+        .related-links {
+            margin-bottom: 1.5rem;
+        }
+        
+        .related-links h5 {
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .related-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            color: #3b82f6;
+            text-decoration: none;
+            margin-right: 0.75rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .related-link:hover {
+            border-color: #3b82f6;
+            background: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+        }
+        
+        .quick-actions {
+            margin-bottom: 1.5rem;
+        }
+        
+        .quick-actions h5 {
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        
+        .quick-setup {
+            margin-bottom: 1.5rem;
+        }
+        
+        .quick-setup h5 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .setup-steps {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .setup-step {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .setup-step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .setup-step .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+        
+        .setup-step .step-text {
+            color: #374151;
+            font-size: 0.9rem;
+        }
+        
+        .policy-tips {
+            margin-bottom: 1.5rem;
+        }
+        
+        .policy-tips h5 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .tips-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 8px;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+        
+        /* FAQ Actions Styles */
+        .faq-actions {
+            border-top: 1px solid #f1f5f9;
+            padding-top: 1.5rem;
+        }
+        
+        .helpful-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .helpful-text {
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .helpful-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-helpful {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .btn-helpful:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-helpful-yes:hover {
+            border-color: #10b981;
+            color: #10b981;
+            background: #f0fdf4;
+        }
+        
+        .btn-helpful-no:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+            background: #fef2f2;
+        }
+        
+        .helpful-count {
+            font-weight: 600;
+        }
+        
+        /* Enhanced Animations */
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float-gentle {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+        
+        /* Animation Delays */
+        .animation-delay-100 { animation-delay: 0.1s; }
+        .animation-delay-200 { animation-delay: 0.2s; }
+        .animation-delay-300 { animation-delay: 0.3s; }
+        .animation-delay-400 { animation-delay: 0.4s; }
+        .animation-delay-500 { animation-delay: 0.5s; }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .faq-title-enhanced {
+                font-size: 2.5rem;
+            }
+            
+            .faq-categories-enhanced {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+            
+            .faq-category-btn {
+                white-space: nowrap;
+            }
+            
+            .question-right {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 0.5rem;
+            }
+            
+            .fee-breakdown-enhanced {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-options {
+                flex-direction: column;
+            }
+            
+            .feature-grid-enhanced {
+                grid-template-columns: 1fr;
+            }
+            
+            .zones-map {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .scenarios-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .decision-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .helpful-section {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .faq-question-header {
+                padding: 1rem 1.5rem;
+            }
+            
+            .faq-content-enhanced {
+                padding: 1.5rem;
+            }
+            
+            .setup-step {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+            
+            .timeline-item-enhanced {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .timeline-connector {
+                display: none;
+            }
+            
+            .process-step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-connector {
+                display: none;
             }
         }
     </style>
