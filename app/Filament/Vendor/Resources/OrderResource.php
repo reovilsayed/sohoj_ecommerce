@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
-    
+
     protected static ?string $navigationIcon = 'heroicon-o-arrow-right-circle';
 
     protected static ?string $navigationGroup = 'Orders';
@@ -130,9 +130,20 @@ class OrderResource extends Resource
                         default => 'gray',
                     })
                     ->toggleable(),
+                BadgeColumn::make('payment_status')
+                    ->label('Payment Status')
+                    ->formatStateUsing(fn($state) => match ($state) {
+                        0 => 'Pending',
+                        1 => 'Paid',
+                    })
+                    ->color(fn($state) => match ($state) {
+                        0 => 'danger',
+                        1 => 'success',
+                    })
+                    ->toggleable(),
                 TextColumn::make('total')->money('USD')->sortable()->toggleable(),
-                BooleanColumn::make('seen')->toggleable(),
-                BooleanColumn::make('order_accept')->label('Accepted')->toggleable(),
+                // BooleanColumn::make('seen')->toggleable(),
+                // BooleanColumn::make('order_accept')->label('Accepted')->toggleable(),
                 TextColumn::make('created_at')->dateTime('F j, Y')->toggleable(),
             ])
             ->filters([
@@ -152,7 +163,7 @@ class OrderResource extends Resource
                     ->label('Accepted')
                     ->query(fn(Builder $query) => $query->where('order_accept', true)),
             ])
-             ->actions([
+            ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     // Tables\Actions\EditAction::make(),
@@ -192,13 +203,13 @@ class OrderResource extends Resource
     {
         // TEMPORARILY DISABLED FOR DEBUGGING
         return null;
-        
+
         try {
             $user = Auth::user();
             if (!$user || !$user->shop) {
                 return null;
             }
-            
+
             // DIRECT QUERY - DON'T USE getEloquentQuery()
             $count = \App\Models\Order::where('shop_id', $user->shop->id)->count();
             return $count > 0 ? (string) $count : null;

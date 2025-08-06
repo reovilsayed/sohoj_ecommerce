@@ -172,20 +172,31 @@ class OrderResource extends Resource
                         default => 'heroicon-o-question-mark-circle',
                     })
                     ->toggleable(),
+                BadgeColumn::make('payment_status')
+                    ->label('Payment Status')
+                    ->formatStateUsing(fn($state) => match ($state) {
+                        0 => 'Pending',
+                        1 => 'Paid',
+                    })
+                    ->color(fn($state) => match ($state) {
+                        0 => 'danger',
+                        1 => 'success',
+                    })
+                    ->toggleable(),
                 TextColumn::make('total')
                     ->label('Total')
                     ->money('USD')
                     ->sortable()
                     ->color('success')
                     ->toggleable(),
-                BooleanColumn::make('seen')
-                    ->label('Seen')
-                    ->icon('heroicon-o-eye')
-                    ->toggleable(),
-                BooleanColumn::make('order_accept')
-                    ->label('Accepted')
-                    ->icon('heroicon-o-check')
-                    ->toggleable(),
+                // BooleanColumn::make('seen')
+                //     ->label('Seen')
+                //     ->icon('heroicon-o-eye')
+                //     ->toggleable(),
+                // BooleanColumn::make('order_accept')
+                //     ->label('Accepted')
+                //     ->icon('heroicon-o-check')
+                //     ->toggleable(),
                 TextColumn::make('created_at')
                     ->label('Created At')
                     ->dateTime('F j, Y')
