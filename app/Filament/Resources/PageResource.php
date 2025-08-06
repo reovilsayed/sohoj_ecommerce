@@ -50,17 +50,21 @@ class PageResource extends Resource
                                         Forms\Components\Hidden::make('author_id')
                                             ->default(function () {
                                                 $user = \Illuminate\Support\Facades\Auth::user();
-                                                    return $user ? $user->id : null;}),
+                                                return $user ? $user->id : null;
+                                            }),
 
                                         Forms\Components\TextInput::make('title')
                                             ->required()
                                             ->maxLength(255)
                                             ->live(onBlur: true)
-                                            ->afterStateUpdated(fn (string $context, $state, callable $set) =>
-                                                $context === 'create' ? $set('slug', Str::slug($state)) : null
-                                            ),
+                                            ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
 
-                                        Forms\Components\TextInput::make('slug'),
+                                        Forms\Components\TextInput::make('slug')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->unique(Page::class, 'slug', ignoreRecord: true)
+                                            ->rules(['alpha_dash'])
+                                        ,
                                     ])->columns(2),
 
                                 Section::make('Post Content')
@@ -68,16 +72,17 @@ class PageResource extends Resource
                                     ->schema([
                                         Forms\Components\Textarea::make('excerpt')
                                             ->columnSpanFull(),
-                                        Forms\Components\Textarea::make('body')
+                                        Forms\Components\RichEditor::make('body')
                                             ->columnSpanFull(),
 
                                         Forms\Components\FileUpload::make('image')
                                             ->image()
                                             ->directory('image')
-                                            ->required()
-                                            ->maxSize(4048) ,
+                                            // ->required()
+                                            ->maxSize(4048),
 
                                         Select::make('status')
+                                            ->required()
                                             ->options([
                                                 'ACTIVE' => 'Active',
                                                 'INACTIVE' => 'Inactive',
@@ -130,12 +135,12 @@ class PageResource extends Resource
 
                 Tables\Columns\TextColumn::make('body')
                     ->label('Body')
-                    ->formatStateUsing(fn ($state) => Str::words($state, 3))
+                    ->formatStateUsing(fn($state) => Str::words($state, 3))
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('meta_description')
                     ->label('Meta Description')
-                    ->formatStateUsing(fn ($state) => Str::words($state, 7))
+                    ->formatStateUsing(fn($state) => Str::words($state, 7))
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('meta_keywords')
@@ -190,8 +195,8 @@ class PageResource extends Resource
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
-                            ->when($data['from'], fn ($query) => $query->whereDate('created_at', '>=', $data['from']))
-                            ->when($data['until'], fn ($query) => $query->whereDate('created_at', '<=', $data['until']));
+                            ->when($data['from'], fn($query) => $query->whereDate('created_at', '>=', $data['from']))
+                            ->when($data['until'], fn($query) => $query->whereDate('created_at', '<=', $data['until']));
                     }),
             ])
 
@@ -217,12 +222,13 @@ class PageResource extends Resource
                                 ]),
                         ])
 
-                        ->action(fn ($record, array $data) =>
+                        ->action(
+                            fn($record, array $data) =>
                             $record->update(['status' => $data['status']])
                         ),
 
 
-                   
+
                 ])->tooltip('Actions')
 
             ])

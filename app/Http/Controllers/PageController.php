@@ -202,8 +202,7 @@ class PageController extends Controller
     }
     public function getPage($slug = null)
     {
-        $page = Page::where('slug', $slug)->where('status', 'active');
-        $page = $page->firstOrFail();
+        $page = Page::where('slug', 'about')->where('status', 'active')->first();
         return view('pages.page')->with('page', $page);
     }
     public function followShops()
@@ -445,12 +444,14 @@ class PageController extends Controller
 
     public function faqs()
     {
-        return view('pages.faq');
+        $faqs = Page::where('slug', 'frequently-asked-questions')->where('status', 'ACTIVE')->first();
+        return view('pages.faq', compact('faqs'));
     }
 
     public function privacyPolicy()
     {
-        return view('pages.privacy-policy');
+        $privacyPolicy = Page::where('slug', 'privacy-policy')->where('status', 'ACTIVE')->first();
+        return view('pages.privacy-policy', compact('privacyPolicy'));
     }
 
     public function contact()
@@ -480,11 +481,13 @@ class PageController extends Controller
 
     public function whySellOnAfrikart()
     {
-        return view('pages.Why_sell_on_AfrikArtt');
+        $whySell = Page::where('slug', 'why-sell-on-afrikartt')->where('status', 'ACTIVE')->first();
+        return view('pages.why_sell_on_afrikart', compact('whySell'));
     }
 
     public function sellersHelps()
     {
-        return view('pages.sellers_helps');
+        $sellersHelps = Page::where('slug', 'sellers-helps')->where('status', 'ACTIVE')->first();
+        return view('pages.sellers_helps', compact('sellersHelps'));
     }
 }

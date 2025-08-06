@@ -7,9 +7,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
-                    <h1 class="privacy-hero-title">Privacy Policy</h1>
-                    <p class="privacy-hero-subtitle text-dark">Your privacy is important to us. Learn how AfrikArtt.com collects, uses,
-                        and protects your personal information on our African art marketplace connecting authentic artists worldwide.</p>
+                    <h1 class="privacy-hero-title">{{ $privacyPolicy->title }}</h1>
+                    <p class="privacy-hero-subtitle text-dark">{{ $privacyPolicy->excerpt }}</p>
                     <div class="last-updated mt-3">
                         {{-- <span class="badge bg-primary">Last Updated: {{ date('F d, Y') }}</span> --}}
                     </div>
@@ -21,7 +20,7 @@
     <!-- Privacy Policy Content Section -->
     <div class="privacy-content-section">
         <div class="container">
-            <div class="row">
+            {{-- <div class="row">
                 <!-- Privacy Policy Navigation Sidebar -->
                 <div class="col-lg-3 mb-4">
                     <div class="privacy-navigation">
@@ -512,7 +511,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
+            {!! $privacyPolicy->body !!}
         </div>
     </div>
 
@@ -990,7 +990,7 @@
     </style>
 
     <!-- Privacy Policy JavaScript -->
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Smooth scrolling for navigation links
             const navLinks = document.querySelectorAll('.privacy-nav-list a');
@@ -1045,5 +1045,5 @@
             // Initialize active nav
             updateActiveNav();
         });
-    </script>
+    </script> --}}
 @endsection
