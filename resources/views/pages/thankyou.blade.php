@@ -17,14 +17,14 @@
 
         .thankyou-icon {
             font-size: 5rem;
-            color: #198754;
+            color: #DE991B;
             margin-bottom: 1.5rem;
         }
 
         .thankyou-title {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #198754;
+            color: #DE991B;
             margin-bottom: 0.5rem;
         }
 
@@ -41,13 +41,13 @@
         .btn-green,
         .btn-green:active,
         .btn-green:focus {
-            background: #198754;
+            background: #DE991B;
             color: #fff;
             border: none;
         }
 
         .btn-green:hover {
-            background: #146c43;
+            background: #c2841a;
             color: #fff;
         }
 
@@ -56,7 +56,7 @@
         }
 
         .new-arrivals-title {
-            color: #198754;
+            color: #DE991B;
             font-weight: 700;
             font-size: 2rem;
         }
