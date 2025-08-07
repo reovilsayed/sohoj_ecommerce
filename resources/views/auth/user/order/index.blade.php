@@ -178,9 +178,9 @@
                     <button class="btn btn-green btn-sm dropdown-toggle d-flex align-items-center rounded-pill" type="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         @if (request()->status === '0')
-                            Pending order
+                            Pending Order
                         @elseif (request()->status === '1')
-                            Paid
+                            Paid Order
                         @elseif(request()->status === '2')
                             On the way
                         @elseif(request()->status === '3')
@@ -191,7 +191,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('user.ordersIndex') }}">All</a></li>
-                        <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 1]) }}">Paid</a></li>
+                        <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 1]) }}">Paid Order</a></li>
                         <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 0]) }}">Pending order</a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('user.ordersIndex', ['status' => 2]) }}">On the way</a></li>
@@ -222,33 +222,28 @@
                                         class="order-meta-value">{{ Sohoj::price($order->subtotal) }}</span></div>
                             </div>
                             <div class="col-md-2 text-center">
-                                <div class="order-status-badge">
-                                    @if ($order->status == 0)
-                                        Pending
-                                    @elseif ($order->status == 1)
-                                        Processing
-                                    @elseif ($order->status == 2)
-                                        On the way
-                                    @elseif ($order->status == 3)
-                                        Canceled
-                                    @elseif ($order->status == 4)
-                                        Delivered
-                                    @elseif ($order->status == 5)
-                                        Cancelled
-                                    @endif
+                                <div class="order-status-badge" style="background: #DE991B; color: #ffffff;">
+                                    {{ $order->created_at->format('M-d-Y') }}
                                 </div>
-                                <div class="order-date mt-2">{{ $order->created_at->format('M-d-Y') }}</div>
                             </div>
                             <div class="col-md-4 order-action-btns">
                                 <div class="mb-2">
                                     <span class="order-meta-label">Order ID:</span> <span
-                                        class="order-meta-value">{{ $order->id }}</span>
+                                    class="order-meta-value">{{ $order->id }}</span>
                                 </div>
                                 <div class="mb-2">
+                                    <span class="order-meta-label">Order Status:</span> <span
+                                    class="order-meta-value">{{ $order->status == 0 ? 'Pending' : ($order->status == 1 ? 'Paid' : ($order->status == 2 ? 'On the Way' : ($order->status == 3 ? 'Canceled' : 'Delivered'))) }}</span>
+                                </div>
+                                <div class="my-2">
+                                    <span class="order-meta-label">Payment Status:</span> <span
+                                        class="order-meta-value">{{ $order->payment_status == 1 ? 'Paid' : 'Unpaid' }}</span>
+                                </div>
+                                {{-- <div class="mb-2">
                                     <span class="order-meta-label">Tracking Info:</span>
                                     <input type="text" value="{{ $order->shipping_url }}"
                                         class="form-control d-inline-block w-100  ">
-                                </div>
+                                </div> --}}
                                 @if ($order->shipping_url)
                                     @if ($order->shipping_method == 'DHL')
                                         <a class="btn btn-green w-100 mb-2" target="_blank"

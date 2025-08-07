@@ -95,7 +95,7 @@
         }
 
         .invoice-table th {
-            background-color: #2c3e50;
+            background-color: #DE991B;
             color: white;
             padding: 12px;
             text-align: left;
