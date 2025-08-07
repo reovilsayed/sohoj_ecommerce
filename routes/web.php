@@ -203,6 +203,7 @@ Route::get('payment/cancel', [PageController::class, 'paymentCancel'])->name('pa
 Route::get('why-sell-on-afrikart', [PageController::class, 'whySellOnAfrikart'])->name('why.sell.on.afrikart');
 Route::get('sellers-helps', [PageController::class, 'sellersHelps'])->name('sellers.helps');
 Route::get('/stripe/handle/{order}', [CheckoutController::class, 'handle'])->name('payment.handle');
+Route::get('payment/handle/paypal/{order}', [CheckoutController::class, 'handlePaypal'])->name('payment.handle.paypal');
 
 Route::get('email', function () {
     return view('emails.order.adminOrderSuccess_mail', [

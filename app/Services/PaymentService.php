@@ -63,11 +63,11 @@ class PaymentService
                         'product_data' => [
                             'name' => $this->order->Product->name,
                         ],
-                        'unit_amount' => intval(($this->order->product_price / $this->order->quantity) * 100),
+                        'unit_amount' => intval(($this->order->product->sale_price ?? $this->order->product->price / $this->order->quantity) * 100),
                     ],
                     'quantity' => $this->order->quantity,
                 ];
-                $totalAmount = $this->order->product_price ;
+                $totalAmount = $this->order->total ;
             }
         }
 
@@ -100,7 +100,7 @@ class PaymentService
             'line_items' => $lineItems,
             'mode' => 'payment',
             'customer_email' => $this->order->shipping['email'] ?? null,
-            'success_url' => route('payment.handle',$this->order),
+            'success_url' => route('payment.handle', $this->order) . '?payment_intent={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('payment.cancel'),
             'metadata' => [
                 'order_id' => $this->order->id,
@@ -154,8 +154,7 @@ class PaymentService
 
     public function createPayPalCheckoutLink()
     {
-        $client_id = 'ASEIeZ0uWYy1q8iGe-LJvFjRqVAK4wg5WtW5dFpKucIhhNFeutYGtiKV2M1kiLoGMb2T5CLmbXpN6Fgz';
-        $secret_id = 'EN3248ng0HkjmIjwW3iEfxhQL8ll_YeHBoJsYzk-VgXKYgg6c-z8taDRJfn2OohnKdVK3o5m3cRGnM30';
+
         $endpoint = env('APP_ENV') === 'production'
             ? 'https://api-m.paypal.com/v2/checkout/orders'
             : 'https://api.sandbox.paypal.com/v2/checkout/orders';
@@ -170,8 +169,8 @@ class PaymentService
                 'description' => 'Order #' . $this->order->id,
             ]],
             'application_context' => [
-                'return_url' => route('thankyou'),
-                'cancel_url' => route('thankyou'),
+                'return_url' => route('payment.handle.paypal', $this->order),
+                'cancel_url' =>  route('payment.cancel'),
             ],
         ];
         $response = Http::withToken($token)

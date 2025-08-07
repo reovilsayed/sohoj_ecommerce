@@ -2,32 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\OrderRequest;
 use App\Mail\AdminOrderPlacedMail;
 use App\Mail\AdminOrderSuccessMail;
 use App\Mail\CustomarOrderPlacedMail;
 use App\Mail\CustomerOrderSuccessMail;
-use App\Mail\OrderPlaced;
 use App\Mail\VendorOrderPlacedMail;
 use App\Mail\VendorOrderSuccessMail;
 use App\Models\Address;
 use App\Models\Notification;
-// Use the Sohoj facade alias registered in config/app.php
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
-use App\Models\Setting;
-use App\Models\User;
 use App\Services\PaymentService;
 use App\Setting\Settings;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Error;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Voyager;
+use Illuminate\Support\Facades\Http;
+
 
 class CheckoutController extends Controller
 {
@@ -44,11 +38,6 @@ class CheckoutController extends Controller
         ], [
             'prevoius_address.required' => 'You need to set a address first  by clicking "Add Address" bellow'
         ]);
-
-        //  auth()->user()->createOrGetStripeCustomer();
-
-        // auth()->user()->addPaymentMethod($request->payment_method[0]);
-        // $address = Address::find($request->prevoius_address);
 
         $shipping = [
             'first_name' => $request->first_name,
@@ -123,7 +112,7 @@ class CheckoutController extends Controller
                 'shipping' => json_encode($shipping),
                 'aptment' => $request->aptment,
                 'subtotal' => floatval(str_replace(',', '', $item->price * $item->qty)),
-                'discount' => null,
+                'discount' => \Sohoj::discount(),
                 'discount_code' => null,
                 'tax' => null,
                 'shipping_total' => floatval(str_replace(',', '', $shipping_cost)),
@@ -146,96 +135,25 @@ class CheckoutController extends Controller
                 'variation' => $item->model->variations,
                 'shop_id' => $item->model->shop_id,
             ]);
-            
+
             $shipping = json_decode($childOrder->shipping, true);
             // dd($shipping);
             if ($shipping['email']) {
                 Mail::to($shipping['email'])->send(new CustomarOrderPlacedMail($order, $childOrder));
             }
             if (optional($childOrder->shop)->email) {
-                Mail::to(optional($childOrder->shop)->email)->send(new VendorOrderPlacedMail( $order,$childOrder));
+                Mail::to(optional($childOrder->shop)->email)->send(new VendorOrderPlacedMail($order, $childOrder));
             }
             if (Settings::setting('admin_email')) {
                 Mail::to(Settings::setting('admin_email'))->send(new AdminOrderPlacedMail($order, $childOrder));
             }
-            // dd('hello');
         }
-
-
-        // return redirect('/thankyou')->with('thank', 'Order Created successfully!');
         $paymentService = new PaymentService($order);
         $url = $paymentService->getPaymentRedirectUrl();
-
-
         Cart::destroy();
+        session()->forget('discount');
+        session()->forget('discount_code');
         return redirect($url);
-
-
-        // $payment = auth()->user()->charge(($order->total * 100), $request->payment_method[0]);
-        // if ($payment->status == 'succeeded') {
-        //     $order->transaction_id = $payment->id;
-        //     $order->status = 1;
-        //     $order->save();
-        //     $childOrders = $order->childs;
-        //     foreach ($childOrders as $childOrder) {
-        //         $childOrder->update(['status' => 1]);
-        //         Mail::to($childOrder->shop->email)->send(new OrderPlaced($childOrder));
-        //     }
-        //     Mail::to($order->user->email)->send(new OrderPlaced($order));
-        //     $this->decreaseQuantities();
-        //     DB::commit();
-        //     Cart::clear();
-        //     session()->forget('discount');
-        //     session()->forget('discount_code');
-        //     return redirect('/thankyou')->with('thank', 'Order Created successfully!');
-        // } else {
-        //     throw (new Exception('Something wrong with payment method'));
-        // }
-        // if ($parent) {
-
-        //     $data['parent_id'] = $parent->id;
-        //     $order = Order::create($data);
-        //     $orderProduct['order_id'] = $order->id;
-        //     OrderProduct::create($orderProduct);
-        //     Mail::to($request->email)->send(new OrderPlaced($order));
-        //     $this->notification(auth()->user() ? auth()->user()->id : null, $data['shop_id']);
-        // } else {
-
-        //     $parent = Order::create($data);
-        //     $orderProduct['order_id'] = $parent->id;
-
-        //     OrderProduct::create($orderProduct);
-        //     $this->notification(auth()->user() ? auth()->user()->id : null, $parent->shop->id);
-        //     Mail::to($request->email)->send(new OrderPlaced($parent));
-        // }
-
-
-
-
-        // foreach (Cart::getContent() as $item) {
-
-        // }
-        // $payment = auth()->user()->charge(($parent->total * 100), $request->payment_method[0]);
-        // if ($payment->status == 'succeeded') {
-        //     $parent->transaction_id = $payment->id;
-        //     $parent->status = 1;
-        //     $parent->save();
-        //     $this->decreaseQuantities();
-        //     DB::commit();
-        //     Cart::clear();
-        //     session()->forget('discount');
-        //     session()->forget('discount_code');
-        //     return redirect('/thankyou')->with('thank', 'Order Created successfully!');
-        // } else {
-        //     throw (new Exception('Something wrong with payment method'));
-        // }
-        // } catch (Exception $e) {
-        //     DB::rollBack();
-        //     return redirect()->back()->withErrors($e->getMessage());
-        // } catch (Error $e) {
-        //     DB::rollBack();
-        //     return redirect()->back()->withErrors($e->getMessage());
-        // }
     }
 
     protected function decreaseQuantities()
@@ -280,15 +198,50 @@ class CheckoutController extends Controller
         return redirect()->back()->with('success_msg', 'Address create successfull ');
     }
 
-    public function handle(Order $order)
+    public function handle(Order $order, Request $request)
     {
-        // dd($order->childs);
+        $transactionId = $request->get('payment_intent');
         $order->update([
             'payment_status' => 1,
+            'transaction_id' => $transactionId,
         ]);
 
         foreach ($order->childs as $childOrder) {
-            $childOrder->update(['payment_status' => 1]);
+            $childOrder->update(['payment_status' => 1, 'transaction_id' => $transactionId]);
+            Mail::to($childOrder->shop->email)->send(new VendorOrderSuccessMail($childOrder));
+        }
+
+        Mail::to($order->user->email)->send(new CustomerOrderSuccessMail($order));
+        if (Settings::setting('admin_email')) {
+            Mail::to(Settings::setting('admin_email'))->send(new AdminOrderSuccessMail($order));
+        }
+        return redirect('/thankyou')->with('thank', 'Order Created successfully!');
+    }
+
+    public function handlePaypal(Order $order, Request $request)
+    {
+        $paypalOrderId = $request->query('token');
+        $token = \App\Services\Payouts::token();
+
+        $captureResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+            'Content-Type'  => 'application/json',
+        ])
+            ->withBody('{}', 'application/json')
+            ->post('https://api-m.sandbox.paypal.com/v2/checkout/orders/' . $paypalOrderId . '/capture');
+
+        $paypalData = $captureResponse->json();
+
+        $transactionId = $paypalData['purchase_units'][0]['payments']['captures'][0]['id'] ?? null;
+
+
+        // Step 3: Save to DB
+        $order->update([
+            'payment_status' => 1,
+            'transaction_id' => $transactionId,
+        ]);
+        foreach ($order->childs as $childOrder) {
+            $childOrder->update(['payment_status' => 1, 'transaction_id' => $transactionId]);
             Mail::to($childOrder->shop->email)->send(new VendorOrderSuccessMail($childOrder));
         }
 
@@ -297,8 +250,6 @@ class CheckoutController extends Controller
             Mail::to(Settings::setting('admin_email'))->send(new AdminOrderSuccessMail($order));
         }
 
-        session()->forget('discount');
-        session()->forget('discount_code');
-        return redirect('/thankyou')->with('thank', 'Order Created successfully!');
-    }                   
+        return redirect('/thankyou')->with('thank', 'Order created and payment completed successfully!');
+    }
 }
