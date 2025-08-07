@@ -16,7 +16,7 @@ class Payouts
         $endpoint = ['local' => 'https://api.sandbox.paypal.com/v1/oauth2/token', 'production' => 'https://api-m.paypal.com/v1/oauth2/token'];
         $res = Http::withBasicAuth($client_id, $secret_id)
             ->asForm()
-            ->post($endpoint[env('APP_ENV')], ['grant_type' => 'client_credentials']);
+            ->post($endpoint[env('PAYPAL_MODE')], ['grant_type' => 'client_credentials']);
             // dd($res->body());
         return (json_decode($res->body())->access_token);
     }
