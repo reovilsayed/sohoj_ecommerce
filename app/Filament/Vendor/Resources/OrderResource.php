@@ -141,7 +141,7 @@ class OrderResource extends Resource
                         1 => 'success',
                     })
                     ->toggleable(),
-                TextColumn::make('total')->money('USD')->sortable()->toggleable(),
+                TextColumn::make('vendor_total')->money('USD')->sortable()->toggleable(),
                 // BooleanColumn::make('seen')->toggleable(),
                 // BooleanColumn::make('order_accept')->label('Accepted')->toggleable(),
                 TextColumn::make('created_at')->dateTime('F j, Y')->toggleable(),
