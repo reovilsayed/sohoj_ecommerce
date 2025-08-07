@@ -155,7 +155,9 @@ class PaymentService
     public function createPayPalCheckoutLink()
     {
 
-        $endpoint = ['local' => 'https://api.sandbox.paypal.com/v1/oauth2/token', 'production' => 'https://api-m.paypal.com/v1/oauth2/token'];
+        $endpoint = env('PAYPAL_MODE') === 'production'
+            ? 'https://api-m.paypal.com/v2/checkout/orders'
+            : 'https://api.sandbox.paypal.com/v2/checkout/orders';
         $token = \App\Services\Payouts::token();
         $body = [
             'intent' => 'CAPTURE',
