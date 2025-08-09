@@ -15,6 +15,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\Return_;
 use Stripe\Price;
 use Stripe\Product;
@@ -75,6 +76,7 @@ class HomeController extends Controller
     {
 
 
+
         $data = $request->validate(
             [
                 "payment_method" => "required",
@@ -91,11 +93,20 @@ class HomeController extends Controller
                 "govt_id_front" => "required|image|mimes:jpeg,png",
                 "paypal_email" => "required",
                 'paypal_email_confirmation' => 'required|same:paypal_email',
-
+                // 'signature' => 'required|string',
             ]
 
 
         );
+
+
+        $signatureData = $request->signature;
+        $signatureData = str_replace('data:image/png;base64,', '', $signatureData);
+        $signatureData = str_replace(' ', '+', $signatureData);
+        $signatureImage = base64_decode($signatureData);
+        $fileName = 'signature_' . time() . '.png';
+        $filePath = storage_path('app/public/signatures/' . $fileName);
+        file_put_contents($filePath, $signatureImage);
 
         auth()->user()->createOrGetStripeCustomer();
         auth()->user()->addPaymentMethod($data['payment_method']);
@@ -129,6 +140,8 @@ class HomeController extends Controller
             'address' => $request->address,
             'paypal_email' => $request->paypal_email,
             'ismonthly_charge' => $request->ismonthly_charge,
+            'signature' => 'signatures/' . $fileName,
+            'terms' => $request->terms
         ]);
 
         Address::create([
@@ -216,5 +229,4 @@ class HomeController extends Controller
             ]);
         }
     }
-
 }

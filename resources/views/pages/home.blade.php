@@ -1105,6 +1105,7 @@
         });
     @endphp
     <x-app.header />
+    {{-- <img src="{{Storage::url(auth()->user()->verification->signature)}}" alt="hello"> --}}
     <section class="hero">
         <div class="container">
             <div class="row mt-4">

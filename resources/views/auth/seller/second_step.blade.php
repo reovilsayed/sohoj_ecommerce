@@ -381,18 +381,113 @@
                                         <i class="fas fa-lock me-2"></i> Verify
                                     </button>
                                 </div>
-                                <div class="d-flex align-items-center mb-3">
-                                    <input type="checkbox" required
-                                        class="form-check-input me-2 @error('terms') is-invalid @enderror" id="terms"
-                                        style="width: 25px;" value="1" name="terms">
-                                    <label for="terms" class="form-label mb-0 text-uppercase fw-bold"
-                                        style="font-size: 0.85rem; color: var(--accent-color);">I have read and agree to
-                                        the <span class="text-primary">Terms &amp; Conditions</span></label>
-                                    @error('terms')
-                                        <span class="invalid-feedback ms-2"
+
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold"
+                                        style="font-size: 1rem; color: var(--accent-color);">
+                                        Signature <span class="text-danger">*</span>
+                                    </label>
+                                    <div id="signature-pad"
+                                        style="border:2px dashed var(--accent-color); border-radius:0; background:#fafdff; padding:16px; width:100%; min-height:180px; position:relative;">
+                                        <canvas id="signature-canvas" style="width:100%; height:150px;"></canvas>
+                                        <button type="button" id="clear-signature"
+                                            class="btn btn-sm btn-secondary position-absolute end-0 bottom-0 m-2">Clear</button>
+                                    </div>
+                                    <input type="hidden" name="signature" id="signature-input" required>
+                                    @error('signature')
+                                        <span class="invalid-feedback"
                                             role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const canvas = document.getElementById('signature-canvas');
+                                        const input = document.getElementById('signature-input');
+                                        const clearBtn = document.getElementById('clear-signature');
+                                        let drawing = false;
+                                        let ctx = canvas.getContext('2d');
+
+                                        function resizeCanvas() {
+                                            canvas.width = canvas.offsetWidth;
+                                            canvas.height = 150;
+                                        }
+                                        resizeCanvas();
+
+                                        function getPosition(e) {
+                                            const rect = canvas.getBoundingClientRect();
+                                            if (e.touches) {
+                                                return {
+                                                    x: e.touches[0].clientX - rect.left,
+                                                    y: e.touches[0].clientY - rect.top
+                                                };
+                                            }
+                                            return {
+                                                x: e.clientX - rect.left,
+                                                y: e.clientY - rect.top
+                                            };
+                                        }
+
+                                        function startDraw(e) {
+                                            drawing = true;
+                                            const pos = getPosition(e);
+                                            ctx.beginPath();
+                                            ctx.moveTo(pos.x, pos.y);
+                                        }
+
+                                        function draw(e) {
+                                            if (!drawing) return;
+                                            const pos = getPosition(e);
+                                            ctx.lineTo(pos.x, pos.y);
+                                            ctx.strokeStyle = "#FF0000";
+                                            ctx.lineWidth = 2;
+                                            ctx.stroke();
+                                        }
+
+                                        function endDraw() {
+                                            drawing = false;
+                                            input.value = canvas.toDataURL('image/png');
+                                        }
+
+                                        canvas.addEventListener('mousedown', startDraw);
+                                        canvas.addEventListener('mousemove', draw);
+                                        canvas.addEventListener('mouseup', endDraw);
+                                        canvas.addEventListener('mouseleave', endDraw);
+
+                                        canvas.addEventListener('touchstart', startDraw);
+                                        canvas.addEventListener('touchmove', function(e) {
+                                            draw(e);
+                                            e.preventDefault();
+                                        });
+                                        canvas.addEventListener('touchend', endDraw);
+
+                                        clearBtn.addEventListener('click', function() {
+                                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                            input.value = '';
+                                        });
+
+                                        window.addEventListener('resize', resizeCanvas);
+                                    });
+                                </script>
+
+                                <!-- Checkbox -->
+                                <div class="d-flex align-items-center mb-3">
+                                    <input type="checkbox" required
+                                        class="form-check-input me-2 @error('terms') is-invalid @enderror"
+                                        id="termsCheckbox" style="width: 25px;" value="1" name="terms">
+
+                                    <label for="termsCheckbox" class="form-label mb-0 text-uppercase fw-bold"
+                                        style="font-size: 0.85rem; color: var(--accent-color); cursor: pointer;">
+                                        I have read and agree to the
+                                        <span class="text-primary">Terms &amp; Conditions</span>
+                                    </label>
+
+                                    @error('terms')
+                                        <span class="invalid-feedback ms-2" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
                                 <div class="d-grid">
                                     <button type="submit" id="submit" disabled class="btn fw-bold shadow"
                                         style="background-color:#FF0000;color:white; transition:transform 0.2s; font-size:1.1rem;"
@@ -408,6 +503,25 @@
             </div>
         </div>
     </section>
+
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-fullscreen-xxl-down modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Terms & Conditions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {!! Settings::setting('admin_terms_conditions') !!}
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="agreeBtn" class="btn btn-primary" data-bs-dismiss="modal">I
+                        Agree</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('js')
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -528,6 +642,35 @@
                 });
 
                 stateSelect.disabled = false;
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const termsCheckbox = document.getElementById('termsCheckbox');
+            const termsLink = document.querySelector('[data-bs-target="#termsModal"]');
+            const agreeBtn = document.getElementById('agreeBtn');
+
+            // Prevent checkbox from being checked directly
+            termsCheckbox.addEventListener('click', function(e) {
+                e.preventDefault();
+                const modal = new bootstrap.Modal(document.getElementById('termsModal'));
+                modal.show();
+            });
+
+            // Check the box when user agrees in modal
+            agreeBtn.addEventListener('click', function() {
+                termsCheckbox.checked = true;
+                // Trigger change event in case any listeners are watching
+                const event = new Event('change');
+                termsCheckbox.dispatchEvent(event);
+            });
+
+            // Uncheck if user clicks the terms link again (optional)
+            termsLink.addEventListener('click', function() {
+                if (!termsCheckbox.checked) return;
+                termsCheckbox.checked = false;
             });
         });
     </script>
