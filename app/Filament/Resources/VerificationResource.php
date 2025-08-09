@@ -150,6 +150,10 @@ class VerificationResource extends Resource
                 //     ->sortable()
                 //     ->searchable()
                 //     ->toggleable(),
+                ImageColumn::make('signature')
+                    ->label('signature')
+                    ->size(48)
+                    ->toggleable(),
                 ImageColumn::make('govt_id_front')
                     ->label('Govt. ID Front')
                     ->size(48)
