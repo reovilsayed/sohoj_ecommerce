@@ -135,7 +135,7 @@ class HomeController extends Controller
             'paypal_email' => $request->paypal_email,
             'ismonthly_charge' => $request->ismonthly_charge,
             'signature' => 'signatures/' . $fileName,
-            'terms' => $request->terms
+            // 'terms' => $request->terms
         ]);
 
         Address::create([
