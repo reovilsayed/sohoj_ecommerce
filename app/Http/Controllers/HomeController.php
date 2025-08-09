@@ -74,9 +74,6 @@ class HomeController extends Controller
     }
     public function vendorSecondStepStore(Request $request)
     {
-
-
-
         $data = $request->validate(
             [
                 "payment_method" => "required",
@@ -95,8 +92,6 @@ class HomeController extends Controller
                 'paypal_email_confirmation' => 'required|same:paypal_email',
                 // 'signature' => 'required|string',
             ]
-
-
         );
 
 
@@ -107,7 +102,6 @@ class HomeController extends Controller
         $fileName = 'signature_' . time() . '.png';
         $filePath = storage_path('app/public/signatures/' . $fileName);
         file_put_contents($filePath, $signatureImage);
-
         auth()->user()->createOrGetStripeCustomer();
         auth()->user()->addPaymentMethod($data['payment_method']);
         Stripe::setApiKey(env('STRIPE_SECRET'));

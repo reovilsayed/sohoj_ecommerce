@@ -489,7 +489,7 @@
                                             @enderror
                                         </div>
                                         <button id="card-button" type="button" class="btn mb-2 fw-bold shadow"
-                                            style="background-color:#FF0000;color:white; transition:transform 0.2s; font-size:1.1rem;"
+                                            style="background-color:#FF0000 !important;color:white; transition:transform 0.2s; font-size:1.1rem;"
                                             onmouseover="this.style.transform='translateY(-2px) scale(1.03)'"
                                             onmouseout="this.style.transform='scale(1)'"
                                             data-secret="{{ $intent->client_secret }}">
@@ -504,7 +504,7 @@
                                         </label>
                                         <div id="signature-pad"
                                             style="border:2px dashed var(--accent-color); border-radius:0; background:#fafdff; padding:16px; width:100%; min-height:180px; position:relative;">
-                                            <canvas id="signature-canvas" style="width:100%; height:150px;"></canvas>
+                                            <canvas id="signature-canvas" width="800" height="150" style="width:100%; height:150px; border: 1px solid #ccc;"></canvas>
                                             <button type="button" id="clear-signature"
                                                 class="btn btn-sm btn-secondary position-absolute end-0 bottom-0 m-2">Clear</button>
                                         </div>
@@ -516,71 +516,114 @@
                                     </div>
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function() {
+                                            console.log('Starting signature pad initialization...');
+                                            
                                             const canvas = document.getElementById('signature-canvas');
                                             const input = document.getElementById('signature-input');
                                             const clearBtn = document.getElementById('clear-signature');
-                                            let drawing = false;
-                                            let ctx = canvas.getContext('2d');
-
-                                            function resizeCanvas() {
-                                                canvas.width = canvas.offsetWidth;
-                                                canvas.height = 150;
+                                            
+                                            if (!canvas) {
+                                                console.error('Canvas not found!');
+                                                return;
                                             }
-                                            resizeCanvas();
-
-                                            function getPosition(e) {
+                                            
+                                            const ctx = canvas.getContext('2d');
+                                            let isDrawing = false;
+                                            let lastX = 0;
+                                            let lastY = 0;
+                                            
+                                            // Set up canvas properties
+                                            ctx.strokeStyle = '#FF0000';
+                                            ctx.lineWidth = 2;
+                                            ctx.lineCap = 'round';
+                                            ctx.lineJoin = 'round';
+                                            
+                                            console.log('Canvas setup complete');
+                                            
+                                            function getMousePos(e) {
                                                 const rect = canvas.getBoundingClientRect();
-                                                if (e.touches) {
-                                                    return {
-                                                        x: e.touches[0].clientX - rect.left,
-                                                        y: e.touches[0].clientY - rect.top
-                                                    };
-                                                }
+                                                const scaleX = canvas.width / rect.width;
+                                                const scaleY = canvas.height / rect.height;
+                                                
                                                 return {
-                                                    x: e.clientX - rect.left,
-                                                    y: e.clientY - rect.top
+                                                    x: (e.clientX - rect.left) * scaleX,
+                                                    y: (e.clientY - rect.top) * scaleY
                                                 };
                                             }
-
-                                            function startDraw(e) {
-                                                drawing = true;
-                                                const pos = getPosition(e);
-                                                ctx.beginPath();
-                                                ctx.moveTo(pos.x, pos.y);
+                                            
+                                            function getTouchPos(e) {
+                                                const rect = canvas.getBoundingClientRect();
+                                                const scaleX = canvas.width / rect.width;
+                                                const scaleY = canvas.height / rect.height;
+                                                
+                                                return {
+                                                    x: (e.touches[0].clientX - rect.left) * scaleX,
+                                                    y: (e.touches[0].clientY - rect.top) * scaleY
+                                                };
                                             }
-
+                                            
+                                            function startDrawing(e) {
+                                                isDrawing = true;
+                                                const pos = e.type.includes('touch') ? getTouchPos(e) : getMousePos(e);
+                                                lastX = pos.x;
+                                                lastY = pos.y;
+                                                console.log('Started drawing at:', pos);
+                                            }
+                                            
                                             function draw(e) {
-                                                if (!drawing) return;
-                                                const pos = getPosition(e);
-                                                ctx.lineTo(pos.x, pos.y);
-                                                ctx.strokeStyle = "#FF0000";
-                                                ctx.lineWidth = 2;
-                                                ctx.stroke();
-                                            }
-
-                                            function endDraw() {
-                                                drawing = false;
-                                                input.value = canvas.toDataURL('image/png');
-                                            }
-
-                                            canvas.addEventListener('mousedown', startDraw);
-                                            canvas.addEventListener('mousemove', draw);
-                                            canvas.addEventListener('mouseup', endDraw);
-                                            canvas.addEventListener('mouseleave', endDraw);
-
-                                            canvas.addEventListener('touchstart', startDraw);
-                                            canvas.addEventListener('touchmove', function(e) {
-                                                draw(e);
+                                                if (!isDrawing) return;
+                                                
                                                 e.preventDefault();
+                                                const pos = e.type.includes('touch') ? getTouchPos(e) : getMousePos(e);
+                                                
+                                                ctx.beginPath();
+                                                ctx.moveTo(lastX, lastY);
+                                                ctx.lineTo(pos.x, pos.y);
+                                                ctx.stroke();
+                                                
+                                                lastX = pos.x;
+                                                lastY = pos.y;
+                                            }
+                                            
+                                            function stopDrawing() {
+                                                if (isDrawing) {
+                                                    isDrawing = false;
+                                                    // Save the signature
+                                                    input.value = canvas.toDataURL('image/png');
+                                                    console.log('Signature saved');
+                                                }
+                                            }
+                                            
+                                            // Mouse events
+                                            canvas.addEventListener('mousedown', startDrawing);
+                                            canvas.addEventListener('mousemove', draw);
+                                            canvas.addEventListener('mouseup', stopDrawing);
+                                            canvas.addEventListener('mouseout', stopDrawing);
+                                            
+                                            // Touch events
+                                            canvas.addEventListener('touchstart', function(e) {
+                                                e.preventDefault();
+                                                startDrawing(e);
                                             });
-                                            canvas.addEventListener('touchend', endDraw);
-
+                                            
+                                            canvas.addEventListener('touchmove', function(e) {
+                                                e.preventDefault();
+                                                draw(e);
+                                            });
+                                            
+                                            canvas.addEventListener('touchend', function(e) {
+                                                e.preventDefault();
+                                                stopDrawing();
+                                            });
+                                            
+                                            // Clear button
                                             clearBtn.addEventListener('click', function() {
                                                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                                                 input.value = '';
+                                                console.log('Canvas cleared');
                                             });
-
-                                            window.addEventListener('resize', resizeCanvas);
+                                            
+                                            console.log('Signature pad fully initialized!');
                                         });
                                     </script>
 
@@ -666,6 +709,28 @@
 
         .step-indicator {
             animation: slideIn 0.6s ease-out;
+        }
+
+        /* Signature pad styles */
+        #signature-canvas {
+            cursor: crosshair;
+            touch-action: none;
+            display: block;
+            border: none;
+            outline: none;
+        }
+
+        #signature-pad {
+            position: relative;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        #signature-pad:hover {
+            border-color: var(--accent-color) !important;
+            box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.1);
         }
 
         /* Responsive adjustments */
