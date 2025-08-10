@@ -14,8 +14,10 @@
                                     style="width: 42px; height: 42px; background: var(--accent-color); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; box-shadow:0 3px 12px rgba(var(--accent-color-rgb), 0.25); transition: all 0.3s ease;">
                                     <i class="fas fa-check"></i>
                                 </div>
-                                <span class="mt-2 small text-secondary fw-medium fw-bold" style="color: var(--accent-color) !important;;">Step 1</span>
-                                <span class="small text-muted" style="font-size: 0.75rem; color: var(--accent-color) !important;;">Basic Info</span>
+                                <span class="mt-2 small text-secondary fw-medium fw-bold"
+                                    style="color: var(--accent-color) !important;;">Step 1</span>
+                                <span class="small text-muted"
+                                    style="font-size: 0.75rem; color: var(--accent-color) !important;;">Basic Info</span>
                             </div>
 
                             <!-- Progress Bar 1-2 -->
@@ -94,38 +96,221 @@
                                     style="width: 80px; height: 4px; background: var(--accent-color); border-radius: 2px; margin-bottom: 1.5rem;">
                                 </div>
 
-                                <div class="shadow-sm"
-                                    style="background:#fafdff; border-left:4px solid var(--accent-color); padding:32px 24px; border-radius: 0; max-height: 500px; overflow-y: auto;">
-                                    <div class="terms-content">
-                                        {!! Settings::setting('admin_terms_conditions') !!}
-                                    </div>
-                                    <div class="d-flex align-items-center mb-3">
-                                        <input type="checkbox" required
-                                            class="form-check-input me-2 @error('terms') is-invalid @enderror"
-                                            id="TermsConditions" style="width: 25px;">
+                                <form id="signature-form" action="#" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
 
-                                        <label for="TermsConditions" class="form-label mb-0 text-uppercase fw-bold"
-                                            style="font-size: 0.85rem; color: var(--accent-color); cursor: pointer;">
-                                            I have read and agree to the
-                                            <span class="text-primary">Terms &amp; Conditions</span>
-                                        </label>
-                                        @error('terms')
-                                            <span class="invalid-feedback ms-2" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
+                                    <div class="shadow-sm"
+                                        style="background:#fafdff; border-left:4px solid var(--accent-color); padding:32px 24px; border-radius: 0; max-height: 500px; overflow-y: auto;">
+                                        <div class="terms-content">
+                                            {!! Settings::setting('admin_terms_conditions') !!}
+                                        </div>
 
-                                <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" id="continueBtn" class="btn fw-bold shadow" disabled
-                                        style="background-color: #6c757d; color: white; cursor: not-allowed;"
-                                        onclick="proceedToVerification()">
-                                        <i class="fas fa-arrow-right me-2"></i> Continue to Verification
-                                    </button>
-                                </div>
+                                        <div class="mb-4">
+                                            <label class="form-label fw-bold"
+                                                style="font-size: 1rem; color: var(--accent-color);">
+                                                Signature <span class="text-danger">*</span>
+                                            </label>
+                                            <div id="signature-pad"
+                                                style="border:2px dashed var(--accent-color); border-radius:0; background:#fafdff; padding:16px; width:100%; min-height:180px; position:relative;">
+                                                <canvas id="signature-canvas" width="800" height="150"
+                                                    style="width:100%; height:150px; border: 1px solid #ccc;"></canvas>
+                                                <button type="button" id="clear-signature"
+                                                    class="btn btn-sm btn-secondary position-absolute end-0 bottom-0 m-2">Clear</button>
+                                            </div>
+                                            <input type="hidden" name="signature" id="signature-input" required>
+                                            @error('signature')
+                                                <span class="invalid-feedback"
+                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+                                        </div>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                console.log('Starting signature pad initialization...');
+
+                                                const canvas = document.getElementById('signature-canvas');
+                                                const input = document.getElementById('signature-input');
+                                                const clearBtn = document.getElementById('clear-signature');
+
+                                                if (!canvas) {
+                                                    console.error('Canvas not found!');
+                                                    return;
+                                                }
+
+                                                const ctx = canvas.getContext('2d');
+                                                let isDrawing = false;
+                                                let lastX = 0;
+                                                let lastY = 0;
+
+                                                // Set up canvas properties
+                                                ctx.strokeStyle = '#FF0000';
+                                                ctx.lineWidth = 2;
+                                                ctx.lineCap = 'round';
+                                                ctx.lineJoin = 'round';
+
+                                                console.log('Canvas setup complete');
+
+                                                function getMousePos(e) {
+                                                    const rect = canvas.getBoundingClientRect();
+                                                    const scaleX = canvas.width / rect.width;
+                                                    const scaleY = canvas.height / rect.height;
+
+                                                    return {
+                                                        x: (e.clientX - rect.left) * scaleX,
+                                                        y: (e.clientY - rect.top) * scaleY
+                                                    };
+                                                }
+
+                                                function getTouchPos(e) {
+                                                    const rect = canvas.getBoundingClientRect();
+                                                    const scaleX = canvas.width / rect.width;
+                                                    const scaleY = canvas.height / rect.height;
+
+                                                    return {
+                                                        x: (e.touches[0].clientX - rect.left) * scaleX,
+                                                        y: (e.touches[0].clientY - rect.top) * scaleY
+                                                    };
+                                                }
+
+                                                function startDrawing(e) {
+                                                    isDrawing = true;
+                                                    const pos = e.type.includes('touch') ? getTouchPos(e) : getMousePos(e);
+                                                    lastX = pos.x;
+                                                    lastY = pos.y;
+                                                    console.log('Started drawing at:', pos);
+                                                }
+
+                                                function draw(e) {
+                                                    if (!isDrawing) return;
+
+                                                    e.preventDefault();
+                                                    const pos = e.type.includes('touch') ? getTouchPos(e) : getMousePos(e);
+
+                                                    ctx.beginPath();
+                                                    ctx.moveTo(lastX, lastY);
+                                                    ctx.lineTo(pos.x, pos.y);
+                                                    ctx.stroke();
+
+                                                    lastX = pos.x;
+                                                    lastY = pos.y;
+                                                }
+
+                                                function stopDrawing() {
+                                                    if (isDrawing) {
+                                                        isDrawing = false;
+                                                        // Save the signature
+                                                        input.value = canvas.toDataURL('image/png');
+                                                        console.log('Signature saved');
+                                                    }
+                                                }
+
+                                                // Mouse events
+                                                canvas.addEventListener('mousedown', startDrawing);
+                                                canvas.addEventListener('mousemove', draw);
+                                                canvas.addEventListener('mouseup', stopDrawing);
+                                                canvas.addEventListener('mouseout', stopDrawing);
+
+                                                // Touch events
+                                                canvas.addEventListener('touchstart', function(e) {
+                                                    e.preventDefault();
+                                                    startDrawing(e);
+                                                });
+
+                                                canvas.addEventListener('touchmove', function(e) {
+                                                    e.preventDefault();
+                                                    draw(e);
+                                                });
+
+                                                canvas.addEventListener('touchend', function(e) {
+                                                    e.preventDefault();
+                                                    stopDrawing();
+                                                });
+
+                                                // Clear button
+                                                clearBtn.addEventListener('click', function() {
+                                                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                                    input.value = '';
+                                                    console.log('Canvas cleared');
+                                                });
+
+                                                console.log('Signature pad fully initialized!');
+                                            });
+                                        </script>
+
+                                        <script>
+                                            // Handle form submission - Store signature and proceed to next step
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                const signatureForm = document.getElementById('signature-form');
+                                                const continueBtn = document.getElementById('continueBtn');
+                                                
+                                                if (signatureForm) {
+                                                    signatureForm.addEventListener('submit', function(e) {
+                                                        e.preventDefault();
+                                                        
+                                                        // Check if signature is provided
+                                                        const signatureInput = document.getElementById('signature-input');
+                                                        if (!signatureInput.value) {
+                                                            if (typeof toastr !== 'undefined') {
+                                                                toastr.error('Please provide your signature before continuing.');
+                                                            } else {
+                                                                alert('Please provide your signature before continuing.');
+                                                            }
+                                                            return;
+                                                        }
+                                                        
+                                                        // Show loading state
+                                                        const originalText = continueBtn.innerHTML;
+                                                        continueBtn.disabled = true;
+                                                        continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
+                                                        
+                                                        // Store signature in localStorage for later submission
+                                                        localStorage.setItem('vendor_signature', signatureInput.value);
+                                                        
+                                                        // Show success message
+                                                        if (typeof toastr !== 'undefined') {
+                                                            toastr.success('Signature saved! Proceeding to verification...');
+                                                        }
+                                                        
+                                                        // Reset button
+                                                        continueBtn.innerHTML = originalText;
+                                                        
+                                                        // Proceed to verification step
+                                                        setTimeout(() => {
+                                                            showSection('verification');
+                                                        }, 800);
+                                                    });
+                                                }
+                                            });
+                                        </script>
+
+                                        <div class="d-flex align-items-center mb-3">
+                                            <input type="checkbox" required
+                                                class="form-check-input me-2 @error('terms') is-invalid @enderror"
+                                                id="TermsConditions" style="width: 25px;">
+
+                                            <label for="TermsConditions" class="form-label mb-0 text-uppercase fw-bold"
+                                                style="font-size: 0.85rem; color: var(--accent-color); cursor: pointer;">
+                                                I have read and agree to the
+                                                <span class="text-primary">Terms &amp; Conditions</span>
+                                            </label>
+                                            @error('terms')
+                                                <span class="invalid-feedback ms-2" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 d-flex justify-content-end">
+                                        <button type="submit" id="continueBtn" class="btn fw-bold shadow" disabled
+                                            style="background-color: #6c757d; color: white; cursor: not-allowed;">
+                                            <i class="fas fa-arrow-right me-2"></i> Continue to Verification
+                                        </button>
+                                    </div>
+                                </form>
+
                             </div>
-
+                            {{-- @dd(session()->get('')) --}}
                             <!-- Vendor Verification Section -->
                             <div id="verification-section" style="display: none;">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -143,8 +328,12 @@
                                 </div>
 
                                 <form method="POST" action="{{ route('vendor.second.step.store') }}"
-                                    enctype="multipart/form-data">
+                                    enctype="multipart/form-data" id="verification-form">
                                     @csrf
+                                    
+                                    <!-- Hidden field for signature -->
+                                    <input type="hidden" name="signature" id="verification-signature-input">
+                                    
                                     <h4 class="fw-bold text-dark mb-2 d-flex align-items-center"
                                         style="letter-spacing: 1px;">
                                         <i class="fas fa-user me-2" style="color: var(--accent-color);"></i> Personal Info
@@ -497,136 +686,6 @@
                                         </button>
                                     </div>
 
-                                    <div class="mb-4">
-                                        <label class="form-label fw-bold"
-                                            style="font-size: 1rem; color: var(--accent-color);">
-                                            Signature <span class="text-danger">*</span>
-                                        </label>
-                                        <div id="signature-pad"
-                                            style="border:2px dashed var(--accent-color); border-radius:0; background:#fafdff; padding:16px; width:100%; min-height:180px; position:relative;">
-                                            <canvas id="signature-canvas" width="800" height="150" style="width:100%; height:150px; border: 1px solid #ccc;"></canvas>
-                                            <button type="button" id="clear-signature"
-                                                class="btn btn-sm btn-secondary position-absolute end-0 bottom-0 m-2">Clear</button>
-                                        </div>
-                                        <input type="hidden" name="signature" id="signature-input" required>
-                                        @error('signature')
-                                            <span class="invalid-feedback"
-                                                role="alert"><strong>{{ $message }}</strong></span>
-                                        @enderror
-                                    </div>
-                                    <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                            console.log('Starting signature pad initialization...');
-                                            
-                                            const canvas = document.getElementById('signature-canvas');
-                                            const input = document.getElementById('signature-input');
-                                            const clearBtn = document.getElementById('clear-signature');
-                                            
-                                            if (!canvas) {
-                                                console.error('Canvas not found!');
-                                                return;
-                                            }
-                                            
-                                            const ctx = canvas.getContext('2d');
-                                            let isDrawing = false;
-                                            let lastX = 0;
-                                            let lastY = 0;
-                                            
-                                            // Set up canvas properties
-                                            ctx.strokeStyle = '#FF0000';
-                                            ctx.lineWidth = 2;
-                                            ctx.lineCap = 'round';
-                                            ctx.lineJoin = 'round';
-                                            
-                                            console.log('Canvas setup complete');
-                                            
-                                            function getMousePos(e) {
-                                                const rect = canvas.getBoundingClientRect();
-                                                const scaleX = canvas.width / rect.width;
-                                                const scaleY = canvas.height / rect.height;
-                                                
-                                                return {
-                                                    x: (e.clientX - rect.left) * scaleX,
-                                                    y: (e.clientY - rect.top) * scaleY
-                                                };
-                                            }
-                                            
-                                            function getTouchPos(e) {
-                                                const rect = canvas.getBoundingClientRect();
-                                                const scaleX = canvas.width / rect.width;
-                                                const scaleY = canvas.height / rect.height;
-                                                
-                                                return {
-                                                    x: (e.touches[0].clientX - rect.left) * scaleX,
-                                                    y: (e.touches[0].clientY - rect.top) * scaleY
-                                                };
-                                            }
-                                            
-                                            function startDrawing(e) {
-                                                isDrawing = true;
-                                                const pos = e.type.includes('touch') ? getTouchPos(e) : getMousePos(e);
-                                                lastX = pos.x;
-                                                lastY = pos.y;
-                                                console.log('Started drawing at:', pos);
-                                            }
-                                            
-                                            function draw(e) {
-                                                if (!isDrawing) return;
-                                                
-                                                e.preventDefault();
-                                                const pos = e.type.includes('touch') ? getTouchPos(e) : getMousePos(e);
-                                                
-                                                ctx.beginPath();
-                                                ctx.moveTo(lastX, lastY);
-                                                ctx.lineTo(pos.x, pos.y);
-                                                ctx.stroke();
-                                                
-                                                lastX = pos.x;
-                                                lastY = pos.y;
-                                            }
-                                            
-                                            function stopDrawing() {
-                                                if (isDrawing) {
-                                                    isDrawing = false;
-                                                    // Save the signature
-                                                    input.value = canvas.toDataURL('image/png');
-                                                    console.log('Signature saved');
-                                                }
-                                            }
-                                            
-                                            // Mouse events
-                                            canvas.addEventListener('mousedown', startDrawing);
-                                            canvas.addEventListener('mousemove', draw);
-                                            canvas.addEventListener('mouseup', stopDrawing);
-                                            canvas.addEventListener('mouseout', stopDrawing);
-                                            
-                                            // Touch events
-                                            canvas.addEventListener('touchstart', function(e) {
-                                                e.preventDefault();
-                                                startDrawing(e);
-                                            });
-                                            
-                                            canvas.addEventListener('touchmove', function(e) {
-                                                e.preventDefault();
-                                                draw(e);
-                                            });
-                                            
-                                            canvas.addEventListener('touchend', function(e) {
-                                                e.preventDefault();
-                                                stopDrawing();
-                                            });
-                                            
-                                            // Clear button
-                                            clearBtn.addEventListener('click', function() {
-                                                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                                                input.value = '';
-                                                console.log('Canvas cleared');
-                                            });
-                                            
-                                            console.log('Signature pad fully initialized!');
-                                        });
-                                    </script>
-
                                     <!-- Checkbox -->
                                     <div class="d-flex align-items-center mb-3">
                                         <input type="checkbox" required
@@ -657,7 +716,8 @@
                                         </div>
 
                                         <div class="">
-                                            <button type="button" class="btn btn-sm" style="background: var(--accent-color); color: #ffffff;"
+                                            <button type="button" class="btn btn-sm"
+                                                style="background: var(--accent-color); color: #ffffff;"
                                                 onclick="showSection('terms')">
                                                 <i class="fas fa-file-contract me-1"></i> View Terms
                                             </button>
@@ -924,6 +984,15 @@
             } else if (section === 'verification') {
                 document.getElementById('verification-section').style.display = 'block';
                 currentSection = 'verification';
+
+                // Populate signature from localStorage
+                const storedSignature = localStorage.getItem('vendor_signature');
+                if (storedSignature) {
+                    const verificationSignatureInput = document.getElementById('verification-signature-input');
+                    if (verificationSignatureInput) {
+                        verificationSignatureInput.value = storedSignature;
+                    }
+                }
 
                 // Update step 3 to active
                 step3Circle.style.background = 'var(--accent-color)';

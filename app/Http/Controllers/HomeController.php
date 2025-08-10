@@ -74,6 +74,7 @@ class HomeController extends Controller
     }
     public function vendorSecondStepStore(Request $request)
     {
+        // dd($request->all());
         $data = $request->validate(
             [
                 "payment_method" => "required",

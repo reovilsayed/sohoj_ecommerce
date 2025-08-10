@@ -205,6 +205,8 @@ Route::get('sellers-helps', [PageController::class, 'sellersHelps'])->name('sell
 Route::get('/stripe/handle/{order}', [CheckoutController::class, 'handle'])->name('payment.handle');
 Route::get('payment/handle/paypal/{order}', [CheckoutController::class, 'handlePaypal'])->name('payment.handle.paypal');
 
+Route::post('vendor/signature', [SellerPagesController::class, 'signatureStore'])->name('vendor.signature');
+
 Route::get('email', function () {
     return view('emails.order.adminOrderSuccess_mail', [
         'order' => Order::find(491),

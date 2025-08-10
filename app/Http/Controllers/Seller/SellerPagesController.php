@@ -217,7 +217,7 @@ class SellerPagesController extends Controller
     }
     public function shopPolicyStore(Request $request)
     {
-      
+
         $shopPolicy = ShopPolicy::updateOrCreate([
             'shop_id' => auth()->user()->shop->id,
         ], [
@@ -570,5 +570,24 @@ class SellerPagesController extends Controller
         $user->save();
 
         return back()->with('success_msg', 'Password updated successfully!');
+    }
+
+
+    public function signatureStore(Request $request)
+    {
+        $request->validate([
+            'signature' => 'required',
+        ]);
+
+        $signatureData = $request->signature;
+        $signatureData = str_replace('data:image/png;base64,', '', $signatureData);
+        $signatureData = str_replace(' ', '+', $signatureData);
+        $signatureImage = base64_decode($signatureData);
+        $fileName = 'signature_' . time() . '.png';
+        $filePath = storage_path('app/public/signatures/' . $fileName);
+        file_put_contents($filePath, $signatureImage);
+
+        Session::put('signature_path', 'signatures/' . $fileName);
+        return back()->with('success_msg', 'Signature uploaded successfully!');
     }
 }
