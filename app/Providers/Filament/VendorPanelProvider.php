@@ -35,6 +35,7 @@ class VendorPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->darkMode(false)
             ->login()
             ->brandName('Vendor Dashboard')
             // ->databaseNotifications()
