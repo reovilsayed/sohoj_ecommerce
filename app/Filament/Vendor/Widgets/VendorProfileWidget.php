@@ -19,7 +19,7 @@ class VendorProfileWidget extends Widget
         if ($user->role_id !== 3) {
             return false;
         }
-        
-        return $user->shop &&  $user->shop->status == 0 && empty($user->shop->name) && empty($user->shop->slug) && empty($user->shop->email);
+        // dd($user->shop);
+        return $user->shop == null;
     }
 }
