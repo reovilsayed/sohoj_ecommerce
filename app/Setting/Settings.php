@@ -2,7 +2,7 @@
 
 namespace App\Setting;
 
-use App\Models\Setting;
+use App\Models\Setting as ModelsSetting;
 use Illuminate\Support\Facades\Storage;
 
 class Settings
@@ -10,7 +10,7 @@ class Settings
     public static function setting($key, $default = null)
     {
         $settings = cache()->remember('all_settings', 360, function () {
-            return Setting::all()->keyBy('key');
+            return ModelsSetting::all()->keyBy('key');
         });
 
         $setting = $settings[$key] ?? null;
