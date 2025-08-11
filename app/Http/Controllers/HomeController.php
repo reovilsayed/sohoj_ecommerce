@@ -105,7 +105,7 @@ class HomeController extends Controller
         file_put_contents($filePath, $signatureImage);
         auth()->user()->createOrGetStripeCustomer();
         auth()->user()->addPaymentMethod($data['payment_method']);
-        Stripe::setApiKey(Settings::setting('stripe_secret'));
+        Stripe::setApiKey(\App\Setting\Settings::setting('stripe_secret'));
         $product = Product::create([
             'name' => 'Basic Plan',
         ]);
