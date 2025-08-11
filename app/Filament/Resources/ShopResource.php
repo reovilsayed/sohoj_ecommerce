@@ -24,6 +24,7 @@ use Filament\Tables\Table;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\HtmlString;
 
@@ -254,6 +255,7 @@ class ShopResource extends Resource
                         ->action(function ($record) {
                             $record->status = $record->status ? 0 : 1;
                             $record->save();
+                            // Mail::to($record->user->email)->send(new ShopStatusUpdated($record));
                         })
                         ->requiresConfirmation(),
                     Tables\Actions\Action::make('Verification')->icon('heroicon-o-eye')->url(fn($record) => route('filament.admin.resources.verifications.show', $record->user->verification))
