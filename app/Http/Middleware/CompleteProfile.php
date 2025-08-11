@@ -16,7 +16,7 @@ class CompleteProfile
     public function handle(Request $request, Closure $next): Response
     {
 
-        if(auth()->check() && auth()->user()->verification->country != null){
+        if(auth()->check() && auth()->user()->verification->paypal_email != null){
             return $next($request);
         }
 
