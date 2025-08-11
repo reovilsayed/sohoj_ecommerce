@@ -82,7 +82,7 @@ class HomeController extends Controller
                 "dob"  => "required",
                 "tax_no" =>  "nullable",
                 "address" => "required",
-                "terms" => "required",
+                // "terms" => "required",
                 "country" => "required",
                 "state" => "required",
                 "city" => "required",

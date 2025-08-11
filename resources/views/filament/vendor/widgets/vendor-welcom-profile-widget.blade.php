@@ -27,7 +27,6 @@
                 tag="a" 
                 href="{{ route('filament.vendor.pages.dashboard') }}"
                 size="sm"
-                class="w-full"
             >
                 Go to Dashboard
             </x-filament::button>

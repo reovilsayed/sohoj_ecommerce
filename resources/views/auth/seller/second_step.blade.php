@@ -28,8 +28,7 @@
                             </div>
 
                             <!-- Step 2 -->
-                            <div class="d-flex flex-column align-items-center" style="cursor: pointer;"
-                                onclick="navigateToTerms()">
+                            <div class="d-flex flex-column align-items-center" style="cursor: pointer;">
                                 <div id="step2-circle"
                                     style="width: 42px; height: 42px; background: var(--accent-color); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; box-shadow:0 3px 12px rgba(var(--accent-color-rgb), 0.25); animation: pulse 2s infinite;">
                                     2
@@ -47,8 +46,7 @@
                             </div>
 
                             <!-- Step 3 -->
-                            <div class="d-flex flex-column align-items-center" style="cursor: pointer;"
-                                onclick="navigateToVerification()">
+                            <div class="d-flex flex-column align-items-center" style="cursor: pointer;">
                                 <div id="step3-circle"
                                     style="width: 42px; height: 42px; background: #e5e7eb; color: #9ca3af; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; box-shadow:0 3px 12px rgba(0,0,0, 0.1); transition: all 0.3s ease;">
                                     3
@@ -687,7 +685,7 @@
                                     </div>
 
                                     <!-- Checkbox -->
-                                    <div class="d-flex align-items-center mb-3">
+                                    {{-- <div class="d-flex align-items-center mb-3">
                                         <input type="checkbox" required
                                             class="form-check-input me-2 @error('terms') is-invalid @enderror"
                                             id="termsCheckbox" style="width: 25px;" value="1" name="terms">
@@ -703,7 +701,7 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                    </div>
+                                    </div> --}}
 
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="">
@@ -715,13 +713,13 @@
                                             </button>
                                         </div>
 
-                                        <div class="">
+                                        {{-- <div class="">
                                             <button type="button" class="btn btn-sm"
                                                 style="background: var(--accent-color); color: #ffffff;"
                                                 onclick="showSection('terms')">
                                                 <i class="fas fa-file-contract me-1"></i> View Terms
                                             </button>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </form>
                             </div> <!-- End Verification Section -->
