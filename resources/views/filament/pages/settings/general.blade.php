@@ -263,26 +263,6 @@
         placeholder="Enter shop info">{{ old('site_shop_settings_info', $settings['site_shop_settings_info'] ?? '') }}</textarea>
 </x-filament-forms::field-wrapper>
 
-{{-- PayPal Client ID --}}
-<x-filament-forms::field-wrapper label="PayPal Client ID" statePath="site_client_id"
-    hint="Enter your PayPal client ID">
-    <input type="text" id="site_client_id" name="site_client_id"
-        class="w-full rounded-lg border-gray-300 bg-white text-gray-900 shadow-sm 
-                   focus:border-primary-500 focus:ring-1 focus:ring-primary-500
-                   dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500"
-        placeholder="Your PayPal Client ID" value="{{ old('site_client_id', $settings['site_client_id'] ?? '') }}" />
-</x-filament-forms::field-wrapper>
-
-{{-- PayPal Secret ID --}}
-<x-filament-forms::field-wrapper label="PayPal Secret ID" statePath="site_paypal_secret_id"
-    hint="Enter your PayPal secret">
-    <input type="text" id="site_paypal_secret_id" name="site_paypal_secret_id"
-        class="w-full rounded-lg border-gray-300 bg-white text-gray-900 shadow-sm 
-                   focus:border-primary-500 focus:ring-1 focus:ring-primary-500
-                   dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500"
-        placeholder="Your PayPal Secret ID"
-        value="{{ old('site_paypal_secret_id', $settings['site_paypal_secret_id'] ?? '') }}" />
-</x-filament-forms::field-wrapper>
 
 {{-- Site Phone --}}
 <x-filament-forms::field-wrapper label="Phone" statePath="site_phone" hint="Customer support number">

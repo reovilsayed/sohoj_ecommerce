@@ -181,6 +181,7 @@ class ShopResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('name')
                     ->label('Store Name')
@@ -193,7 +194,7 @@ class ShopResource extends Resource
                     ->label('Owner')
                     ->icon('heroicon-o-user')
                     ->toggleable(),
-               
+
                 TextColumn::make('email')
                     ->label('Email')
                     ->icon('heroicon-o-envelope')
@@ -202,7 +203,7 @@ class ShopResource extends Resource
                     ->label('Phone')
                     ->icon('heroicon-o-phone')
                     ->toggleable(),
-                
+
                 BooleanColumn::make('status')
                     ->label('Active')
                     ->icon('heroicon-o-check-circle')
@@ -247,14 +248,15 @@ class ShopResource extends Resource
                         ->label('Delete')
                         ->icon('heroicon-o-trash'),
                     Tables\Actions\Action::make('toggleStatus')
-                        ->label(fn ($record) => $record->status ? 'Deactivate' : 'Activate')
-                        ->icon(fn ($record) => $record->status ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
-                        ->color(fn ($record) => $record->status ? 'danger' : 'success')
+                        ->label(fn($record) => $record->status ? 'Deactivate' : 'Activate')
+                        ->icon(fn($record) => $record->status ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
+                        ->color(fn($record) => $record->status ? 'danger' : 'success')
                         ->action(function ($record) {
                             $record->status = $record->status ? 0 : 1;
                             $record->save();
                         })
                         ->requiresConfirmation(),
+                    Tables\Actions\Action::make('Verification')->icon('heroicon-o-eye')->url(fn($record) => route('filament.admin.resources.verifications.show', $record->user->verification))
                 ])->iconButton(),
             ])
             ->bulkActions([
@@ -285,7 +287,7 @@ class ShopResource extends Resource
     {
         // TEMPORARILY DISABLED FOR DEBUGGING
         return null;
-        
+
         return static::$model::count();
     }
 }

@@ -22,6 +22,15 @@
                         General
                     </button>
                     <button
+                        @click="tab = 'payment'"
+                        :class="tab === 'payment' 
+                            ? 'bg-primary-600 text-white shadow-lg font-bold scale-105' 
+                            : 'text-gray-700 dark:text-gray-300 hover:bg-primary-50 dark:hover:bg-primary-900 hover:text-primary-700'"
+                        class="px-6 py-2 rounded-lg transition-all duration-200 focus:outline-none"
+                    >
+                        Payment
+                    </button>
+                    <button
                         @click="tab = 'admin'"
                         :class="tab === 'admin' 
                             ? 'bg-primary-600 text-white shadow-lg font-bold scale-105' 
@@ -57,6 +66,9 @@
                 {{-- General Tab --}}
                 <div x-show="tab === 'general'" x-cloak class="space-y-6 mt-6">
                     @include('filament.pages.settings.general', ['settings' => $settings])
+                </div>
+                <div x-show="tab === 'payment'" x-cloak class="space-y-6 mt-6">
+                    @include('filament.pages.settings.payment', ['settings' => $settings])
                 </div>
 
                 {{-- Admin Tab --}}

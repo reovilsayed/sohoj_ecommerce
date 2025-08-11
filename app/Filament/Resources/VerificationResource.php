@@ -219,7 +219,11 @@ class VerificationResource extends Resource
             )
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make()->icon('heroicon-o-eye')->label('View Verification'),
+                    Tables\Actions\ViewAction::make()
+                        ->icon('heroicon-o-eye')
+                        ->label('View Verification')
+                        ->url(fn (Verification $record): string => static::getUrl('show', ['record' => $record]))
+                        ->openUrlInNewTab(false),
                     Tables\Actions\EditAction::make()->icon('heroicon-o-pencil')->label('Edit Verification'),
                     Tables\Actions\DeleteAction::make()->icon('heroicon-o-trash')->label('Delete Verification'),
                 ])->iconButton(),
@@ -244,6 +248,7 @@ class VerificationResource extends Resource
             'index' => Pages\ListVerifications::route('/'),
             'create' => Pages\CreateVerification::route('/create'),
             'edit' => Pages\EditVerification::route('/{record}/edit'),
+            'show' => Pages\ShowVerification::route('/{record}'),
         ];
     }
     public static function getNavigationBadge(): ?string

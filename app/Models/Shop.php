@@ -126,6 +126,10 @@ class Shop extends Model
             ->orderBy('created_at', 'desc');
     }
 
+    public function verification()
+    {
+        return $this->hasOne(Verification::class);
+    }
     public function followers()
     {
         return $this->belongsToMany(User::class, 'shop_user', 'shop_id', 'user_id')->withTimestamps();
