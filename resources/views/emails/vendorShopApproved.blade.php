@@ -368,31 +368,31 @@
         </div>
 
         <div class="content">
-            <p class="welcome-text">Dear <strong>Alex Johnson</strong>,</p>
+            <p class="welcome-text">Dear <strong>{{ $shop->user->name }}</strong>,</p>
 
             <div class="highlight-card">
                 <div class="highlight-title">Congratulations! 🎉</div>
-                <p>Your shop <strong>"TechGadgets Pro"</strong> has been successfully approved and is now visible to our
+                <p>Your shop <strong>"{{ $shop->name }}"</strong> has been successfully approved and is now visible to our
                     community of buyers. This is just the beginning of your success journey with us.</p>
             </div>
 
             <div class="details-grid">
                 <div class="detail-card">
                     <span class="detail-label">Shop Name</span>
-                    <span class="detail-value">TechGadgets Pro</span>
+                    <span class="detail-value">{{ $shop->name }}</span>
                 </div>
                 <div class="detail-card">
                     <span class="detail-label">Shop URL</span>
-                    <span class="detail-value"><a href="#"
-                            style="color: var(--primary); text-decoration: none;">marketplace.com/techgadgets</a></span>
+                    <span class="detail-value"><a href="{{ route('shop.show', $shop->id) }}"
+                            style="color: var(--primary); text-decoration: none;">{{ $shop->name }}</a></span>
                 </div>
                 <div class="detail-card">
                     <span class="detail-label">Vendor ID</span>
-                    <span class="detail-value">VD2023-78945</span>
+                    <span class="detail-value">{{ $shop->user->id }}</span>
                 </div>
                 <div class="detail-card">
                     <span class="detail-label">Approval Date</span>
-                    <span class="detail-value">August 15, 2023</span>
+                    <span class="detail-value">{{ $shop->created_at->format('F d, Y') }}</span>
                 </div>
             </div>
 
@@ -424,33 +424,33 @@
 
         <div class="cta-section">
             <div class="cta-title">Ready to start your selling journey?</div>
-            <a href="#" class="btn btn-primary">Go to Vendor Dashboard</a>
-            <a href="#" class="btn btn-secondary">View Your Shop</a>
+            <a href="{{ route('filament.vendor.resources.shops.index') }}" class="btn btn-primary">Go to Vendor Dashboard</a>
+            <a href="{{ route('shop.show', $shop->id) }}" class="btn btn-secondary">View Your Shop</a>
         </div>
 
         <div class="footer">
             <div class="footer-links">
-                <a href="#" class="footer-link">Vendor Guide</a>
-                <a href="#" class="footer-link">Policies</a>
-                <a href="#" class="footer-link">Support Center</a>
-                <a href="#" class="footer-link">Community Forum</a>
+                <a href="{{ route('filament.vendor.resources.shops.index') }}" class="footer-link">Vendor Guide</a>
+                <a href="{{ route('filament.vendor.resources.shops.index') }}" class="footer-link">Policies</a>
+                <a href="{{ route('filament.vendor.resources.shops.index') }}" class="footer-link">Support Center</a>
+                <a href="{{ route('filament.vendor.resources.shops.index') }}" class="footer-link">Community Forum</a>
             </div>
 
             <p>Our vendor support team is available 24/7 to help you succeed</p>
-            <p>✉️ <a href="mailto:vendors@marketplace.com"
-                    style="color: var(--primary); text-decoration: none;">vendors@marketplace.com</a> | 📞 +1 (800)
+            <p>✉️ <a href="mailto:{{ $shop->user->email }}"
+                    style="color: var(--primary); text-decoration: none;">{{ $shop->user->email }}</a> | 📞 +1 (800)
                 123-4567</p>
 
             <div class="social-links">
-                <a href="#" class="social-link">f</a>
-                <a href="#" class="social-link">in</a>
-                <a href="#" class="social-link">ig</a>
-                <a href="#" class="social-link">tw</a>
+                <a href="{{ $shop->user->facebook }}" class="social-link">f</a>
+                <a href="{{ $shop->user->instagram }}" class="social-link">in</a>
+                <a href="{{ $shop->user->twitter }}" class="social-link">ig</a>
+                <a href="{{ $shop->user->youtube }}" class="social-link">tw</a>
                 <a href="#" class="social-link">yt</a>
             </div>
 
-            <p>© 2023 Marketplace Name. All rights reserved.<br>
-                123 Business Ave, San Francisco, CA 94107</p>
+            <p>© 2025 AfrikArtt. All rights reserved.<br>
+                {{ $shop->user->verification->address }}</p>
         </div>
     </div>
 </body>
