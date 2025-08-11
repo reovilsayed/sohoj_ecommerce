@@ -7,6 +7,7 @@ use Stripe\Checkout\Session as StripeSession;
 use Illuminate\Support\Facades\Http;
 use Exception;
 
+
 class PaymentService
 {
     public $order;
@@ -32,7 +33,7 @@ class PaymentService
 
     public function createStripeCheckoutLink()
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(Settings::setting('stripe_secret'));
 
         $lineItems = [];
         $totalAmount = 0;
@@ -67,7 +68,7 @@ class PaymentService
                     ],
                     'quantity' => $this->order->quantity,
                 ];
-                $totalAmount = $this->order->total ;
+                $totalAmount = $this->order->total;
             }
         }
 
@@ -93,7 +94,7 @@ class PaymentService
                 'quantity' => 1,
             ];
         }
-        
+
 
         $session = StripeSession::create([
             'payment_method_types' => ['card'],
@@ -155,7 +156,7 @@ class PaymentService
     public function createPayPalCheckoutLink()
     {
 
-        $endpoint = env('PAYPAL_MODE') === 'production'
+        $endpoint = Settings::setting('paypal_sandbox') === '0'
             ? 'https://api-m.paypal.com/v2/checkout/orders'
             : 'https://api.sandbox.paypal.com/v2/checkout/orders';
         $token = \App\Services\Payouts::token();

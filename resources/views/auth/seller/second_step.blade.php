@@ -832,7 +832,7 @@
 
     <script>
         var verified = false;
-        const stripe = Stripe("{{ env('STRIPE_KEY') }}");
+        const stripe = Stripe("{{ Settings::setting('stripe_key') }}");
 
         const elements = stripe.elements();
         const cardElement = elements.create('card');

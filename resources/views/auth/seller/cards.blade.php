@@ -172,7 +172,7 @@
     <script src="https://js.stripe.com/v3/"></script>
 
     <script>
-        const stripe = Stripe("{{ env('STRIPE_KEY') }}");
+        const stripe = Stripe("{{ Settings::setting('stripe_key') }}");
 
         const elements = stripe.elements();
         const cardElement = elements.create('card');

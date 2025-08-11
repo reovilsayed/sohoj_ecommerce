@@ -23,24 +23,24 @@
                 <label for="site_client_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     PayPal Client ID
                 </label>
-                <input type="text" id="site_client_id" name="site_client_id"
+                <input type="text" id="paypal_client_id" name="paypal_client_id"
                     class="w-full rounded-lg border-gray-300 bg-white text-gray-900 shadow-sm 
                                focus:border-primary-500 focus:ring-1 focus:ring-primary-500
                                dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500"
-                    placeholder="Your PayPal Client ID" value="{{ old('site_client_id', $settings['site_client_id'] ?? '') }}" />
+                    placeholder="Your PayPal Client ID" value="{{ old('paypal_client_id', $settings['paypal_client_id'] ?? '') }}" />
                 <p class="text-xs text-gray-500 dark:text-gray-400">Enter your PayPal client ID</p>
             </div>
 
             <div class="space-y-2">
-                <label for="site_paypal_secret_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label for="paypal_secret_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     PayPal Secret ID
                 </label>
-                <input type="text" id="site_paypal_secret_id" name="site_paypal_secret_id"
+                <input type="text" id="paypal_secret_id" name="paypal_secret_id"
                     class="w-full rounded-lg border-gray-300 bg-white text-gray-900 shadow-sm 
                                focus:border-primary-500 focus:ring-1 focus:ring-primary-500
                                dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500"
                     placeholder="Your PayPal Secret ID"
-                    value="{{ old('site_paypal_secret_id', $settings['site_paypal_secret_id'] ?? '') }}" />
+                    value="{{ old('paypal_secret_id', $settings['paypal_secret_id'] ?? '') }}" />
                 <p class="text-xs text-gray-500 dark:text-gray-400">Enter your PayPal secret</p>
             </div>
 
@@ -85,23 +85,23 @@
                 <label for="stripe_publishable_key" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Stripe Publishable Key
                 </label>
-                <input type="text" id="stripe_publishable_key" name="stripe_publishable_key"
+                <input type="text" id="stripe_key" name="stripe_key"
                     class="w-full rounded-lg border-gray-300 bg-white text-gray-900 shadow-sm 
                                focus:border-primary-500 focus:ring-1 focus:ring-primary-500
                                dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500"
-                    placeholder="pk_test_..." value="{{ old('stripe_publishable_key', $settings['stripe_publishable_key'] ?? '') }}" />
+                    placeholder="pk_test_..." value="{{ old('stripe_key', $settings['stripe_key'] ?? '') }}" />
                 <p class="text-xs text-gray-500 dark:text-gray-400">Enter your Stripe publishable key</p>
             </div>
 
             <div class="space-y-2">
-                <label for="stripe_secret_key" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label for="stripe_secret" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Stripe Secret Key
                 </label>
-                <input type="text" id="stripe_secret_key" name="stripe_secret_key"
+                <input type="text" id="stripe_secret" name="stripe_secret"
                     class="w-full rounded-lg border-gray-300 bg-white text-gray-900 shadow-sm 
                                focus:border-primary-500 focus:ring-1 focus:ring-primary-500
                                dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500"
-                    placeholder="sk_test_..." value="{{ old('stripe_secret_key', $settings['stripe_secret_key'] ?? '') }}" />
+                    placeholder="sk_test_..." value="{{ old('stripe_secret', $settings['stripe_secret'] ?? '') }}" />
                 <p class="text-xs text-gray-500 dark:text-gray-400">Enter your Stripe secret key</p>
             </div>
 
@@ -110,12 +110,12 @@
                     <label for="stripe_sandbox" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Stripe Mode
                     </label>
-                    <select name="stripe_sandbox" id="stripe_sandbox"
+                    <select name="stripe_mode" id="stripe_mode"
                         class="w-32 rounded-lg border-gray-300 bg-white text-gray-900 shadow-sm 
                                focus:border-primary-500 focus:ring-1 focus:ring-primary-500
                                dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100">
-                        <option value="1" {{ old('stripe_sandbox', $settings['stripe_sandbox'] ?? 1) == 1 ? 'selected' : '' }}>Test</option>
-                        <option value="0" {{ old('stripe_sandbox', $settings['stripe_sandbox'] ?? 1) == 0 ? 'selected' : '' }}>Live</option>
+                        <option value="1" {{ old('stripe_mode', $settings['stripe_mode'] ?? 1) == 1 ? 'selected' : '' }}>Test</option>
+                        <option value="0" {{ old('stripe_mode', $settings['stripe_mode'] ?? 1) == 0 ? 'selected' : '' }}>Live</option>
                     </select>
                 </div>
                 <span class="text-xs text-gray-500 dark:text-gray-400">Test for development, Live for production</span>

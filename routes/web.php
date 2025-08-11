@@ -188,7 +188,7 @@ Route::post('/admin/shops/{shop}/toggle-status', [AdminController::class, 'toggl
 
 Route::post('/status-update/{shop}', [PageController::class, 'shop_status_update'])->name('shop_status_update');
 
-Route::post('settings/update', [PageController::class, 'settingsUpdate'])->name('settings.update');
+Route::post('settings/update', [PageController::class, 'settingsUpdate'])->middleware(['auth', 'role:admin'])->name('settings.update');
 
 
 // Route::get('test',function(){
@@ -217,3 +217,7 @@ Route::get('email', function () {
 Route::get('/api-docs', function () {
     return view('pages.api-docs');
 })->name('api.docs');
+
+Route::get('test', function () {
+    return Settings::setting('stripe_secret');
+});

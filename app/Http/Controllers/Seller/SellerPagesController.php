@@ -462,7 +462,7 @@ class SellerPagesController extends Controller
 
         try {
 
-            Stripe::setApiKey(env('STRIPE_SECRET'));
+            Stripe::setApiKey(Settings::setting('stripe_secret'));
             $product = StripeProduct::create([
                 'name' => 'Basic Plan',
             ]);
