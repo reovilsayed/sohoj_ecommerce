@@ -420,7 +420,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M5 13l4 4L19 7"></path>
                                     </svg>
-                                    Save Changes
+                                    Save Shop Information
                                 </button>
                             </div>
                         </form>
@@ -450,18 +450,18 @@
                                             value="{{ $user->email }}">
                                     </div>
                                     <div>
-                                        <label class="block mb-1">Phone</label>
+                                        <label class="block mb-1">Photo</label>
                                         <input type="file" name="avatar"
                                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
                                     </div>
                                     {{-- @dd($user->avatar) --}}
-                                    @if ($user->avatar)
+                                    {{-- @if ($user->avatar)
                                         <div class="col-span-1 md:col-span-2">
                                         <label class="block mb-1">Avatar</label>
                                         <img src="{{ Storage::url($user->avatar) }}" alt="User Avatar"
                                             class="w-20 h-20 object-cover mt-2 border border-gray-300 shadow" />
                                     </div>
-                                    @endif
+                                    @endif --}}
                                 </div>
                                 <div class="flex justify-end mt-6">
                                     <button type="submit"
@@ -471,7 +471,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M5 13l4 4L19 7"></path>
                                         </svg>
-                                        Save Changes
+                                        Save Personal Information
                                     </button>
                                 </div>
                             </form>

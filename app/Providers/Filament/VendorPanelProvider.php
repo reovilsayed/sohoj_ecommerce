@@ -4,6 +4,8 @@ namespace App\Providers\Filament;
 
 use App\Filament\Vendor\Resources\OrderResource\Widgets\VendorOrdersChart;
 use App\Filament\Vendor\Resources\VendorResource\Widgets\VendorStats;
+use App\Filament\Vendor\Widgets\VendorProfileWidget;
+use App\Filament\Vendor\Widgets\VendorWelcomProfileWidget;
 use App\Http\Middleware\RoleMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -67,8 +69,8 @@ class VendorPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Vendor/Widgets'), for: 'App\\Filament\\Vendor\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\AccountWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -91,6 +93,8 @@ class VendorPanelProvider extends PanelProvider
                 // TEMPORARILY DISABLED FOR DEBUGGING
                 // VendorStats::class, // Custom widget for vendor stats
                 // VendorOrdersChart::class,
+                // VendorProfileWidget::class,
+                // VendorWelcomProfileWidget::class,
             ])
             ->pages([
                 ViewInvoice::class,
