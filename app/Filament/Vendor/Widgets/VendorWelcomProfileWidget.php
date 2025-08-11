@@ -14,6 +14,7 @@ class VendorWelcomProfileWidget extends Widget
 
     public static function canView(): bool
     {
+        
         $user = auth()->user();
 
         if ($user->role_id !== 3) {
