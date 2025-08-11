@@ -337,7 +337,7 @@ class SellerPagesController extends Controller
                 }
             }
             Shop::updateOrCreate(['user_id' => auth()->user()->id], [
-                'logo' => $request->logo->store("logos"),
+                'logo' => $request->logo->store("logo"),
             ]);
             return back()->with('success_msg', 'Logo upload successfully');
         }
