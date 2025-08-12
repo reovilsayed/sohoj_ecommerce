@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ShopResource\Pages;
 use App\Filament\Resources\ShopResource\RelationManagers;
+use App\Mail\ShopCreatedEmail;
 use App\Models\Shop;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -255,7 +256,7 @@ class ShopResource extends Resource
                         ->action(function ($record) {
                             $record->status = $record->status ? 0 : 1;
                             $record->save();
-                            // Mail::to($record->user->email)->send(new ShopStatusUpdated($record));
+                            Mail::to($record->user->email)->send(new ShopCreatedEmail($record));
                         })
                         ->requiresConfirmation(),
                     Tables\Actions\Action::make('Verification')->icon('heroicon-o-eye')->url(fn($record) => route('filament.admin.resources.verifications.show', $record->user->verification))

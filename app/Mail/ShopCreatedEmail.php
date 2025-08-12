@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Models\Shop;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,15 +9,14 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ShopStatusUpdated extends Mailable
+class ShopCreatedEmail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-
-    public Shop $shop;
 
     /**
      * Create a new message instance.
      */
+    public $shop;
     public function __construct($shop)
     {
         $this->shop = $shop;
@@ -30,7 +28,7 @@ class ShopStatusUpdated extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Shop Status Updated',
+            subject: 'Your Shop is Live on Afrikart',
         );
     }
 
@@ -40,7 +38,7 @@ class ShopStatusUpdated extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.vendorShopApproved',
+            view: 'emails.shop_create_success_mail',
             with: [
                 'shop' => $this->shop,
             ],

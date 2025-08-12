@@ -19,6 +19,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\EmailVerified;
 use App\Mail\OfferEmail;
 use App\Mail\OrderPlaced;
+use App\Mail\ShopCreatedEmail;
 use App\Mail\TicketPlaced;
 use App\Mail\VerifyEmail;
 use App\Models\Offer;
@@ -208,10 +209,7 @@ Route::get('payment/handle/paypal/{order}', [CheckoutController::class, 'handleP
 Route::post('vendor/signature', [SellerPagesController::class, 'signatureStore'])->name('vendor.signature');
 
 Route::get('email', function () {
-    return view('emails.VendorVerificationSuccess', [
-        'shop' => Shop::find(24),
-        // 'childOrder' => Order::find(492),
-    ]);
+    return new ShopCreatedEmail(Shop::latest()->first());
 });
 // API Documentation Route
 Route::get('/api-docs', function () {
