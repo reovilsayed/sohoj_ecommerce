@@ -60,7 +60,7 @@ class VendorProfilePage extends Page
                 'phone' => $shop->phone ?? '',
                 'company_registration' => $shop->company_registration ?? '',
                 'email' => $shop->email ?? '',
-                'country' => $shop->country ?? '', // This will use the magic method from HasMeta
+                'country' => $shop->country ?? '',
                 'post_code' => $shop->post_code ?? '',
                 'city' => $shop->city ?? '',
                 'state' => $shop->state ?? '',

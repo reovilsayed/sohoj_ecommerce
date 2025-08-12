@@ -358,99 +358,115 @@
 </head>
 
 <body>
+    {{-- resources/views/vendor/shop-approved.blade.php --}}
     <div class="container">
-        <div class="header">
-            <img src="https://via.placeholder.com/180x50/DE991B/FFFFFF?text=Marketplace" alt="Marketplace Logo"
-                class="logo">
+        {{-- Header --}}
+        <div class="header text-center mb-4">
+            <img src="{{ asset(Settings::setting('site_logo')) }}" alt="Marketplace Logo" class="logo mb-3"
+                style="max-height: 80px;">
             <h1>Your Shop Is Now Live!</h1>
             <div class="subheader">Welcome to our marketplace family. Start selling to thousands of customers today!
             </div>
         </div>
 
+        {{-- Welcome Message --}}
         <div class="content">
             <p class="welcome-text">Dear <strong>{{ $shop->user->name }}</strong>,</p>
 
-            <div class="highlight-card">
-                <div class="highlight-title">Congratulations! 🎉</div>
-                <p>Your shop <strong>"{{ $shop->name }}"</strong> has been successfully approved and is now visible to our
+            <div class="highlight-card p-3 border rounded mb-4">
+                <div class="highlight-title fw-bold mb-2">Congratulations! 🎉</div>
+                <p>Your shop <strong>"{{ $shop->name }}"</strong> has been successfully approved and is now visible to
+                    our
                     community of buyers. This is just the beginning of your success journey with us.</p>
             </div>
 
-            <div class="details-grid">
-                <div class="detail-card">
-                    <span class="detail-label">Shop Name</span>
+            {{-- Shop Details --}}
+            <div class="details-grid row g-3">
+                <div class="detail-card col-md-6">
+                    <span class="detail-label fw-bold">Shop Name</span><br>
                     <span class="detail-value">{{ $shop->name }}</span>
                 </div>
-                <div class="detail-card">
-                    <span class="detail-label">Shop URL</span>
-                    <span class="detail-value"><a href="{{ route('shop.show', $shop->id) }}"
-                            style="color: var(--primary); text-decoration: none;">{{ $shop->name }}</a></span>
+                <div class="detail-card col-md-6">
+                    <span class="detail-label fw-bold">Shop URL</span><br>
+                    <span class="detail-value">
+                        <a href="{{ route('store_front', $shop->slug) }}"
+                            class="text-primary">{{ route('store_front', $shop->slug) }}</a>
+                    </span>
                 </div>
-                <div class="detail-card">
-                    <span class="detail-label">Vendor ID</span>
+                <div class="detail-card col-md-6">
+                    <span class="detail-label fw-bold">Vendor ID</span><br>
                     <span class="detail-value">{{ $shop->user->id }}</span>
                 </div>
-                <div class="detail-card">
-                    <span class="detail-label">Approval Date</span>
+                <div class="detail-card col-md-6">
+                    <span class="detail-label fw-bold">Approval Date</span><br>
                     <span class="detail-value">{{ $shop->created_at->format('F d, Y') }}</span>
                 </div>
             </div>
 
-            <h3 class="features-title">Get Started With These Features</h3>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📦</div>
-                    <div class="feature-title">Add Products</div>
-                    <div class="feature-desc">Upload your product catalog with images, descriptions and pricing</div>
+            {{-- Features --}}
+            <h3 class="features-title mt-5">Get Started With These Features</h3>
+            <div class="features-grid row g-3">
+                <div class="feature-card col-md-3 text-center p-3 border rounded">
+                    <div class="feature-icon fs-3">📦</div>
+                    <div class="feature-title fw-bold mt-2">Add Products</div>
+                    <div class="feature-desc">Upload your products with images, descriptions, and prices.</div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎨</div>
-                    <div class="feature-title">Customize Shop</div>
-                    <div class="feature-desc">Design your shop with logo, banners and color themes</div>
+                <div class="feature-card col-md-3 text-center p-3 border rounded">
+                    <div class="feature-icon fs-3">🎨</div>
+                    <div class="feature-title fw-bold mt-2">Customize Shop</div>
+                    <div class="feature-desc">Add your logo, banners, and brand colors.</div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <div class="feature-title">Dashboard</div>
-                    <div class="feature-desc">Track sales, orders and customer analytics</div>
+                <div class="feature-card col-md-3 text-center p-3 border rounded">
+                    <div class="feature-icon fs-3">📊</div>
+                    <div class="feature-title fw-bold mt-2">Dashboard</div>
+                    <div class="feature-desc">Track sales, orders, and customers.</div>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💰</div>
-                    <div class="feature-title">Earnings</div>
-                    <div class="feature-desc">Set up payout methods and withdraw your earnings</div>
+                <div class="feature-card col-md-3 text-center p-3 border rounded">
+                    <div class="feature-icon fs-3">💰</div>
+                    <div class="feature-title fw-bold mt-2">Earnings</div>
+                    <div class="feature-desc">Set up payouts and withdraw your balance.</div>
                 </div>
             </div>
         </div>
 
-        <div class="cta-section">
-            <div class="cta-title">Ready to start your selling journey?</div>
-            <a href="{{ route('filament.vendor.resources.shops.index') }}" class="btn btn-primary">Go to Vendor Dashboard</a>
-            <a href="{{ route('shop.show', $shop->id) }}" class="btn btn-secondary">View Your Shop</a>
+        {{-- Call To Action --}}
+        <div class="cta-section text-center mt-5">
+            <div class="cta-title mb-3 fw-bold">Ready to start your selling journey?</div>
+            <a href="/vendor" class="btn btn-primary me-2">Go to Vendor Dashboard</a>
+            <a href="{{ route('store_front', $shop->slug) }}" class="btn btn-secondary">View Your Shop</a>
         </div>
 
-        <div class="footer">
-            <div class="footer-links">
-                <a href="{{ route('filament.vendor.resources.shops.index') }}" class="footer-link">Vendor Guide</a>
-                <a href="{{ route('filament.vendor.resources.shops.index') }}" class="footer-link">Policies</a>
-                <a href="{{ route('filament.vendor.resources.shops.index') }}" class="footer-link">Support Center</a>
-                <a href="{{ route('filament.vendor.resources.shops.index') }}" class="footer-link">Community Forum</a>
+        {{-- Footer --}}
+        <div class="footer mt-5 text-center">
+            <div class="footer-links mb-3">
+                <a href="/vendor" class="footer-link me-3">Vendor Dashboard</a>
+                <a href="{{ url('/privacy-policy') }}" class="footer-link me-3">Policies</a>
+                <a href="{{ url('/contact') }}" class="footer-link me-3">Support Center</a>
+                <a href="{{ url('/contact') }}" class="footer-link">Community Forum</a>
             </div>
 
             <p>Our vendor support team is available 24/7 to help you succeed</p>
-            <p>✉️ <a href="mailto:{{ $shop->user->email }}"
-                    style="color: var(--primary); text-decoration: none;">{{ $shop->user->email }}</a> | 📞 +1 (800)
-                123-4567</p>
+            <p>✉️ <a href="mailto:{{ $shop->user->email }}" class="text-primary">{{ $shop->user->email }}</a>
+                | 📞 {{ $shop->phone ?? '+1 (800) 123-4567' }}</p>
 
-            <div class="social-links">
-                <a href="{{ $shop->user->facebook }}" class="social-link">f</a>
-                <a href="{{ $shop->user->instagram }}" class="social-link">in</a>
-                <a href="{{ $shop->user->twitter }}" class="social-link">ig</a>
-                <a href="{{ $shop->user->youtube }}" class="social-link">tw</a>
-                <a href="#" class="social-link">yt</a>
+            {{-- Social Links --}}
+            <div class="social-links mb-3">
+                @if ($shop->user->facebook)
+                    <a href="{{ $shop->user->facebook }}" class="social-link me-2">Facebook</a>
+                @endif
+                @if ($shop->user->instagram)
+                    <a href="{{ $shop->user->instagram }}" class="social-link me-2">Instagram</a>
+                @endif
+                @if ($shop->user->twitter)
+                    <a href="{{ $shop->user->twitter }}" class="social-link me-2">Twitter</a>
+                @endif
+                @if ($shop->user->youtube)
+                    <a href="{{ $shop->user->youtube }}" class="social-link">YouTube</a>
+                @endif
             </div>
 
-            <p>© 2025 AfrikArtt. All rights reserved.<br>
-                {{ $shop->user->verification->address }}</p>
+            <p>© {{ date('Y') }} AfrikArtt. All rights reserved.<br>
+                {{ $shop->user->verification->address ?? $shop->company_registration }}</p>
         </div>
     </div>
 </body>
