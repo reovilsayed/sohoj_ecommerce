@@ -129,16 +129,7 @@ class SellerPagesController extends Controller
 
         ]);
 
-        // if ($request->file('logo')) {
-        //     $logo = $request->logo->store("logos");
-        // } else {
-        //     $logo = auth()->user()->shop ? auth()->user()->shop->logo : null;
-        // }
-        // if ($request->file('banner')) {
-        //     $banner = $request->banner->store("banners");
-        // } else {
-        //     $banner = auth()->user()->shop ? auth()->user()->shop->banner : null;
-        // }
+     
 
 
         $shop = Shop::updateOrCreate([
@@ -337,7 +328,7 @@ class SellerPagesController extends Controller
                 }
             }
             Shop::updateOrCreate(['user_id' => auth()->user()->id], [
-                'logo' => $request->logo->store("logos"),
+                'logo' => $request->logo->store("logo"),
             ]);
             return back()->with('success_msg', 'Logo upload successfully');
         }

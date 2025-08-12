@@ -2,11 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Settings;
 use App\Filament\Resources\DashboardResource\Widgets\DashboardChart;
 use App\Filament\Resources\PolarChartDashboardResource\Widgets\DashboardChart as WidgetsDashboardChart;
 use App\Filament\Resources\StatsOverViewResource\Widgets\StatsOverview as WidgetsStatsOverview;
 use App\Filament\Widgets\ListLatestShops;
-use App\Filament\Widgets\RecentOrders;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -15,21 +15,15 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use App\View\Components\Layouts\FilamentApp;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
-use App\Filament\Widgets\StatsOverview;
-use Illuminate\Database\Eloquent\Model;
-use App\Filament\Pages\DynamicSettingsPage;
-use App\Filament\Pages\Settings\Settings;
+
 use Filament\Navigation\NavigationGroup;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Http\Middleware\QueryLoggerMiddleware;
-use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -91,6 +85,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                Settings::class
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             // ->widgets([
@@ -113,12 +108,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
                 \App\Http\Middleware\RoleMiddleware::class . ':admin',
             ])
-            ->plugins([
-                FilamentSettingsPlugin::make()
-                    ->pages([
-                        // Add your own setting pages here
-                    ])
-            ])
+           
             ->widgets([
                 WidgetsStatsOverview::class,
                 DashboardChart::class,
@@ -150,12 +140,7 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Content')
                     ->icon('heroicon-o-rectangle-group'),
             ])
-            ->plugins([
-                FilamentSettingsPlugin::make()
-                    ->pages([
-                        Settings::class,
-                    ])
-            ])
+           
             ->globalSearch(true)
             ->globalSearchDebounce('500ms')
             ->globalSearchFieldKeyBindingSuffix();
