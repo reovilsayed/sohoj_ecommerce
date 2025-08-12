@@ -214,6 +214,34 @@
     <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+            <!-- Success Alert Box -->
+            @if(session('success_msg'))
+                <div class="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-green-800">
+                                {{ session('success_msg') }}
+                            </p>
+                        </div>
+                        <div class="ml-auto pl-3">
+                            <div class="-mx-1.5 -my-1.5">
+                                <button type="button" onclick="this.parentElement.parentElement.parentElement.parentElement.remove()" class="inline-flex bg-green-50 text-green-500 rounded-full p-1.5 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600">
+                                    <span class="sr-only">Dismiss</span>
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <!-- Enhanced Header Section -->
             <form method="post" action="{{ route('vendor.logo.cover') }}" enctype="multipart/form-data">
                 @csrf
@@ -516,53 +544,7 @@
 
                             </div>
 
-                            <!-- Two-Factor Authentication -->
-                            {{-- <div class="bg-gray-50 rounded-lg p-6">
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">Two-Factor Authentication</h3>
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm text-gray-600">Add an extra layer of security to your account
-                                        </p>
-                                        <p class="text-xs text-gray-500 mt-1">Currently disabled</p>
-                                    </div>
-                                    <button
-                                        class="inline-flex items-center px-4 py-2 bg-secondary-600 text-dark rounded-md hover:bg-secondary-700 transition-colors">
-                                        Enable 2FA
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Privacy Settings -->
-                            <div class="bg-gray-50 rounded-lg p-6">
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">Privacy Settings</h3>
-                                <div class="space-y-4">
-                                    <div class="flex items-center justify-between">
-                                        <div>
-                                            <p class="text-sm font-medium text-gray-900">Email Notifications</p>
-                                            <p class="text-xs text-gray-500">Receive email updates about your account
-                                            </p>
-                                        </div>
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" class="sr-only peer" checked>
-                                            <div
-                                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600">
-                                            </div>
-                                        </label>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <div>
-                                            <p class="text-sm font-medium text-gray-900">SMS Notifications</p>
-                                            <p class="text-xs text-gray-500">Receive SMS updates about your account</p>
-                                        </div>
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" class="sr-only peer">
-                                            <div
-                                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600">
-                                            </div>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div> --}}
+                        
                         </div>
                     </div>
                 </div>
