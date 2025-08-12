@@ -83,12 +83,12 @@
                                         <i class="fas fa-file-contract me-2" style="color: var(--accent-color);"></i>
                                         Terms & Conditions
                                     </h4>
-                                    <div class="d-flex gap-2">
+                                    {{-- <div class="d-flex gap-2">
                                         <button type="button" class="btn btn-outline-secondary btn-sm"
                                             onclick="navigateToVerification()">
                                             <i class="fas fa-arrow-right me-1"></i> Next
                                         </button>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div
                                     style="width: 80px; height: 4px; background: var(--accent-color); border-radius: 2px; margin-bottom: 1.5rem;">

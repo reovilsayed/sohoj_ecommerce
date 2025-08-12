@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VendorVerificationSuccess;
 use App\Mail\VerifyEmail;
 use App\Models\Address;
 use App\Models\Notification;
@@ -10,6 +11,7 @@ use App\Models\User;
 use App\Models\Product as ProductModel;
 use App\Models\Shop;
 use App\Models\Verification;
+use App\Setting\Settings;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -74,7 +76,6 @@ class HomeController extends Controller
     }
     public function vendorSecondStepStore(Request $request)
     {
-        // dd($request->all());
         $data = $request->validate(
             [
                 "payment_method" => "required",
@@ -127,7 +128,7 @@ class HomeController extends Controller
         }
 
         $sub->create($data['payment_method']);
-        Verification::create([
+        $verification = Verification::create([
             'user_id' => auth()->id(),
             'phone' => $request->phone,
             'govt_id_front' => $request->file('govt_id_front') ? $request->file('govt_id_front')->storeAs('verifications', $request->file('govt_id_front')->hashName(), 'public') : null,
@@ -148,7 +149,7 @@ class HomeController extends Controller
             'address_1' => $request->address,
             'phone' => $request->phone,
         ]);
-        // return redirect()->route('vendor.shop')->with('success_msg', 'Thanks for your informations');
+        Mail::to(Settings::setting('admin_email'))->send(new VendorVerificationSuccess($user, $verification));
         return redirect('/vendor')->with('success_msg', 'Thanks for your informations');
     }
     public function offer(ProductModel $product, Request $request)
