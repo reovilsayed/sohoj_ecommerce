@@ -208,9 +208,11 @@ Route::get('payment/handle/paypal/{order}', [CheckoutController::class, 'handleP
 
 Route::post('vendor/signature', [SellerPagesController::class, 'signatureStore'])->name('vendor.signature');
 
-Route::get('email', function () {
-    return new ShopCreatedEmail(Shop::latest()->first());
-});
+// Route::get('email', function () {
+//     $order = Order::find(504);
+//     $childOrder = $order->children()->first();
+//     return view('emails.order_confirmation', compact('order', 'childOrder'));
+// });
 // API Documentation Route
 Route::get('/api-docs', function () {
     return view('pages.api-docs');

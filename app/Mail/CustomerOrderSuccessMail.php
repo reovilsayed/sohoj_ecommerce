@@ -29,7 +29,7 @@ class CustomerOrderSuccessMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Customer Order Success Mail',
+            subject: 'Thank You! Your Order Has Been Successfully Processed',
         );
     }
 

@@ -28,7 +28,7 @@ class VendorOrderSuccessMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Vendor Order Success Mail',
+            subject: 'Great News! Your Customer’s Order Has Been Processed Successfully',
         );
     }
 

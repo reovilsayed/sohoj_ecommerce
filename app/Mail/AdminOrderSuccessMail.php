@@ -29,7 +29,7 @@ class AdminOrderSuccessMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Admin Order Success Mail',
+            subject: 'Order Completion Alert – Please Review the Final Details',
         );
     }
 

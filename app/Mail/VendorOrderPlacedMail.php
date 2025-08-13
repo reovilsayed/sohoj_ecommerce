@@ -30,7 +30,7 @@ class VendorOrderPlacedMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Vendor Order Placed Mail',
+            subject: 'Vendor Alert – A New Order Is Waiting for You',
         );
     }
 
