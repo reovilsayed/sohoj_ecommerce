@@ -218,10 +218,79 @@
             color: #000;
         }
 
-        .variation-select-btn.active {
-            background-color: #ffc107;
-            border-color: #ffc107;
-            color: #000;
+        .variation-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .variation-card:hover {
+            border-color: #28a745;
+            background: #f8fff9;
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .variation-card.selected {
+            border-color: #28a745;
+            background: #f8fff9;
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .selection-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .selection-indicator i {
+            transition: opacity 0.3s ease;
+        }
+
+        .variation-card.selected .selection-indicator i {
+            opacity: 1 !important;
+        }
+
+        /* Focus styles for accessibility */
+        .variation-card:focus {
+            outline: 2px solid #28a745;
+            outline-offset: 2px;
+        }
+
+        /* Active state for click feedback */
+        .variation-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Disabled state for out-of-stock variations */
+        .variation-card.out-of-stock {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .variation-card.out-of-stock:hover {
+            transform: none;
+            border-color: #dee2e6;
+            background: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .selection-indicator .badge {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+        }
+
+        .stock-info .badge {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+        }
+
+        .sku-info {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 4px;
         }
 
         .price-tag {
@@ -292,13 +361,8 @@
             $fullStars = floor($averageRating);
             $hasHalfStar = $averageRating - $fullStars >= 0.5;
             
-            // Process variations data
-            $variations = [];
-            if ($product->variations && is_string($product->variations)) {
-                $variations = json_decode($product->variations, true) ?? [];
-            } elseif ($product->variations && is_array($product->variations)) {
-                $variations = $product->variations;
-            }
+            // Process variations data - now they are Varient objects
+            $variations = $product->variations ?? [];
         @endphp
         <!-- Sart Single product -->
         <section class="ec-page-content section-space-p product_details-body">
@@ -382,21 +446,37 @@
                                                 </div>
 
                                                 {{-- Product Variations Display --}}
-                                                @if ($product->is_variable_product && !empty($variations))
+                                                @if ($product->is_variable_product && $variations && count($variations) > 0)
                                                     <div class="product-variations-section mt-4 mb-4">
                                                         <h4 class="variations-title mb-3" style="font-weight: 600; color: #2c3e50;">Available Variations</h4>
-                                                        
                                                         <div class="variations-container">
                                                             @foreach ($variations as $index => $variation)
-                                                                <div class="variation-card border rounded-lg p-3 mb-3" style="border: 1px solid #dee2e6; background: #f8f9fa;">
+                                                                @php
+                                                                    $isOutOfStock = $variation->track_quantity && $variation->stock <= 0;
+                                                                    $cardClasses = 'variation-card border rounded-lg p-3 mb-3';
+                                                                    if ($isOutOfStock) {
+                                                                        $cardClasses .= ' out-of-stock';
+                                                                    }
+                                                                @endphp
+                                                                <div class="{{ $cardClasses }}" 
+                                                                     style="border: 1px solid #dee2e6; background: #f8f9fa; transition: all 0.3s ease;"
+                                                                     data-variation-index="{{ $index }}"
+                                                                     data-variation-sku="{{ $variation->sku ?? '' }}"
+                                                                     data-variation-price="{{ $variation->price ?? 0 }}"
+                                                                     data-variation-compare-price="{{ $variation->compare_at_price ?? 0 }}"
+                                                                     data-variation-stock="{{ $variation->stock ?? 0 }}"
+                                                                     data-variation-track-quantity="{{ $variation->track_quantity ?? false }}"
+                                                                     data-variation-image="{{ $variation->variant_image ? Storage::url($variation->variant_image) : '' }}"
+                                                                     @if($isOutOfStock) data-out-of-stock="true" @endif>
                                                                     <div class="row align-items-center">
                                                                         {{-- Variation Image --}}
                                                                         <div class="col-md-2 col-sm-3">
-                                                                            @if (isset($variation['variant_image']) && $variation['variant_image'])
-                                                                                <img src="{{ Storage::url($variation['variant_image']) }}" 
+                                                                            @if ($variation->variant_image)
+                                                                                <img src="{{ Storage::url($variation->variant_image) }}" 
                                                                                      alt="Variation {{ $index + 1 }}" 
-                                                                                     class="img-fluid rounded" 
-                                                                                     style="width: 80px; height: 80px; object-fit: cover;">
+                                                                                     class="img-fluid rounded variation-image" 
+                                                                                     style="width: 80px; height: 80px; object-fit: cover;"
+                                                                                     data-variation-index="{{ $index }}">
                                                                             @else
                                                                                 <div class="placeholder-img d-flex align-items-center justify-content-center rounded" 
                                                                                      style="width: 80px; height: 80px; background: #e9ecef; color: #6c757d;">
@@ -406,14 +486,14 @@
                                                                         </div>
 
                                                                         {{-- Variation Details --}}
-                                                                        <div class="col-md-10 col-sm-9">
+                                                                        <div class="col-md-8 col-sm-6">
                                                                             <div class="row">
                                                                                 {{-- Attributes --}}
                                                                                 <div class="col-md-4">
                                                                                     <h6 class="mb-2" style="font-weight: 600; color: #495057;">Attributes</h6>
-                                                                                    @if (isset($variation['attributes']) && is_array($variation['attributes']))
+                                                                                    @if ($variation->attributes && is_array($variation->attributes))
                                                                                         <div class="attributes-list">
-                                                                                            @foreach ($variation['attributes'] as $attr)
+                                                                                            @foreach ($variation->attributes as $attr)
                                                                                                 <div class="attribute-item d-flex align-items-center mb-1">
                                                                                                     <span class="attribute-name me-2" style="font-size: 0.85rem; color: #6c757d;">{{ $attr['attribute'] ?? 'N/A' }}:</span>
                                                                                                     @if (isset($attr['value']) && str_starts_with($attr['value'], '#'))
@@ -428,86 +508,57 @@
                                                                                 </div>
 
                                                                                 {{-- Pricing --}}
-                                                                                <div class="col-md-3">
+                                                                                <div class="col-md-4">
                                                                                     <h6 class="mb-2" style="font-weight: 600; color: #495057;">Pricing</h6>
                                                                                     <div class="price-info">
                                                                                         <div class="current-price" style="font-size: 1.1rem; font-weight: 700; color: #28a745;">
-                                                                                            ${{ number_format($variation['price'] ?? 0, 2) }}
+                                                                                            ${{ number_format($variation->price ?? 0, 2) }}
                                                                                         </div>
-                                                                                        @if (isset($variation['compare_at_price']) && $variation['compare_at_price'] > 0 && $variation['compare_at_price'] > $variation['price'])
+                                                                                        @if ($variation->compare_at_price && $variation->compare_at_price > 0 && $variation->compare_at_price > $variation->price)
                                                                                             <div class="compare-price" style="font-size: 0.9rem; color: #6c757d; text-decoration: line-through;">
-                                                                                                ${{ number_format($variation['compare_at_price'], 2) }}
+                                                                                                ${{ number_format($variation->compare_at_price, 2) }}
                                                                                             </div>
                                                                                         @endif
-                                                                                        @if (isset($variation['cost_per_item']) && $variation['cost_per_item'] > 0)
+                                                                                        @if ($variation->cost_per_item && $variation->cost_per_item > 0)
                                                                                             <div class="cost-price" style="font-size: 0.8rem; color: #6c757d;">
-                                                                                                Cost: ${{ number_format($variation['cost_per_item'], 2) }}
+                                                                                                Cost: ${{ number_format($variation->cost_per_item, 2) }}
                                                                                             </div>
                                                                                         @endif
                                                                                     </div>
                                                                                 </div>
 
-                                                                                {{-- Stock & Inventory --}}
-                                                                                <div class="col-md-3">
+                                                                                {{-- Stock Information --}}
+                                                                                <div class="col-md-4">
                                                                                     <h6 class="mb-2" style="font-weight: 600; color: #495057;">Stock</h6>
                                                                                     <div class="stock-info">
-                                                                                        @if (isset($variation['track_quantity']) && $variation['track_quantity'])
-                                                                                            <div class="stock-quantity">
-                                                                                                <span class="badge {{ ($variation['stock'] ?? 0) > 10 ? 'bg-success' : (($variation['stock'] ?? 0) > 0 ? 'bg-warning' : 'bg-danger') }}">
-                                                                                                    {{ $variation['stock'] ?? 0 }} in stock
-                                                                                                </span>
-                                                                                            </div>
-                                                                                        @else
-                                                                                            <span class="badge bg-info">Unlimited</span>
-                                                                                        @endif
-                                                                                        @if (isset($variation['sku']) && $variation['sku'])
+                                                                                        <div class="stock-quantity">
+                                                                                            <span class="badge {{ $variation->getStockBadgeClass() }}">
+                                                                                                {{ $variation->getStockDisplayText() }}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        @if ($variation->sku)
                                                                                             <div class="sku-info mt-1" style="font-size: 0.8rem; color: #6c757d;">
-                                                                                                SKU: {{ $variation['sku'] }}
+                                                                                                SKU: {{ $variation->sku }}
                                                                                             </div>
-                                                                                        @endif
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                {{-- Dimensions --}}
-                                                                                <div class="col-md-2">
-                                                                                    <h6 class="mb-2" style="font-weight: 600; color: #495057;">Dimensions</h6>
-                                                                                    <div class="dimensions-info" style="font-size: 0.8rem; color: #6c757d;">
-                                                                                        @if (isset($variation['weight']) && $variation['weight'])
-                                                                                            <div>Weight: {{ $variation['weight'] }}g</div>
-                                                                                        @endif
-                                                                                        @if (isset($variation['length'], $variation['width'], $variation['height']))
-                                                                                            <div>{{ $variation['length'] }} × {{ $variation['width'] }} × {{ $variation['height'] }} cm</div>
                                                                                         @endif
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+
+                                                                        {{-- Selection Indicator --}}
+                                                                        <div class="col-md-2 col-sm-3 text-end">
+                                                                            <div class="selection-indicator">
+                                                                                @if($isOutOfStock)
+                                                                                    <span class="badge bg-danger">Out of Stock</span>
+                                                                                @else
+                                                                                    <i class="fas fa-check-circle text-success" style="font-size: 1.2rem; opacity: 0;"></i>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             @endforeach
-                                                        </div>
-
-                                                        {{-- Quick Selection Buttons --}}
-                                                        <div class="variation-quick-select mt-3">
-                                                            <h6 class="mb-2" style="font-weight: 600; color: #495057;">Quick Select:</h6>
-                                                            <div class="btn-group-toggle" data-toggle="buttons">
-                                                                @foreach ($variations as $index => $variation)
-                                                                    <label class="btn btn-outline-primary btn-sm me-2 mb-2 variation-select-btn" 
-                                                                           data-variation="{{ json_encode($variation) }}"
-                                                                           data-index="{{ $index }}">
-                                                                        <input type="radio" name="selected_variation" value="{{ $index }}">
-                                                                        @if (isset($variation['attributes']) && is_array($variation['attributes']))
-                                                                            @foreach ($variation['attributes'] as $attr)
-                                                                                {{ $attr['attribute'] }}: {{ $attr['value'] }}
-                                                                                @if (!$loop->last) | @endif
-                                                                            @endforeach
-                                                                        @else
-                                                                            Variation {{ $index + 1 }}
-                                                                        @endif
-                                                                        <span class="price-tag ms-2 text-success">${{ number_format($variation['price'] ?? 0, 2) }}</span>
-                                                                    </label>
-                                                                @endforeach
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 @endif
@@ -515,7 +566,7 @@
 
                                             <div class="mb-5">
                                                 <div class="stock product_details-body">
-                                                    <span>Availability: <span
+                                                    <span>Availability: <span id="stock-display"
                                                             style="color: #D81919E5">{{ $product->quantity }}</span> in
                                                         Stock
                                                     </span>
@@ -593,7 +644,7 @@
                                                             </div>
                                                             <!-- Modal -->
                                                         </div>
-                                                        <p>Sku: <span>{{ $product->sku }}</p>
+                                                        <p>Sku: <span class="product-sku-info">{{ $product->sku }}</p>
                                                     </div>
                                                 </div>
 
@@ -623,6 +674,15 @@
                                                         </div>
                                                     @endforeach
                                                 @endif
+                                                
+                                                {{-- Hidden input for selected variant SKU --}}
+                                                <input type="hidden" name="selected_variant_sku" id="selected_variant_sku" value="" />
+                                                
+                                                {{-- Selected variant info display --}}
+                                                <div id="selected-variant-info" class="alert alert-info mt-3" style="display: none;">
+                                                    <strong>Selected Variant:</strong> <span id="selected-variant-details"></span>
+                                                </div>
+                                                
                                                 <div class="ec-single-qty align-items-center">
 
                                                     <div class="ec-single-cart ">
@@ -638,7 +698,7 @@
                                                             </div>
 
                                                             <div class="ec-single-cart ">
-                                                                <button class="btn btn-sm btn-dark" type="submit">Buy
+                                                                <button class="btn btn-sm btn-dark" type="submit" id="buy-now-btn">Buy
                                                                     Now</button>
                                                             </div>
                                                             <div class="ec-single-cart ">
@@ -866,67 +926,140 @@
 
         // Product Variations Functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const variationBtns = document.querySelectorAll('.variation-select-btn');
+            const variationCards = document.querySelectorAll('.variation-card');
             const priceElement = document.querySelector('.new-price');
             const oldPriceElement = document.querySelector('.old-price');
-            const stockElement = document.querySelector('.stock span');
+            const stockElement = document.getElementById('stock-display');
+            const productSku = document.querySelector('.product-sku-info');
+            const selectedSkuInput = document.getElementById('selected_variant_sku');
+            const buyNowBtn = document.getElementById('buy-now-btn');
+            const mainProductImage = document.querySelector('.single-product-cover .single-slide img');
+            const selectedVariantInfo = document.getElementById('selected-variant-info');
+            const selectedVariantDetails = document.getElementById('selected-variant-details');
             
-            variationBtns.forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    // Remove active class from all buttons
-                    variationBtns.forEach(b => b.classList.remove('active'));
+            // Store original product data
+            const originalPrice = '{{ Sohoj::price($product->sale_price ?? $product->price) }}';
+            const originalOldPrice = '{{ $product->sale_price ? Sohoj::price($product->price) : "" }}';
+            const originalStock = '{{ $product->quantity }}';
+            const originalImage = '{{ Storage::url($product->image) }}';
+            
+            variationCards.forEach(function(card) {
+                card.addEventListener('click', function() {
+                    // Check if variation is out of stock
+                    if (this.dataset.outOfStock === 'true') {
+                        return; // Don't allow selection of out-of-stock variations
+                    }
                     
-                    // Add active class to clicked button
-                    this.classList.add('active');
+                    // Remove active class from all cards
+                    variationCards.forEach(c => c.classList.remove('selected'));
                     
-                    // Get variation data
-                    const variationData = JSON.parse(this.dataset.variation);
+                    // Add active class to clicked card
+                    this.classList.add('selected');
+                    
+                    // Get variation data from data attributes
+                    const sku = this.dataset.variationSku;
+                    const price = parseFloat(this.dataset.variationPrice);
+                    const comparePrice = parseFloat(this.dataset.variationComparePrice);
+                    const stock = parseInt(this.dataset.variationStock);
+                    const trackQuantity = this.dataset.variationTrackQuantity === '1';
+              
+                    const variantImage = this.dataset.variationImage;
                     
                     // Update price
-                    if (priceElement && variationData.price) {
-                        priceElement.textContent = '$' + parseFloat(variationData.price).toFixed(2);
+                    if (priceElement && price > 0) {
+                        priceElement.textContent = '$' + price.toFixed(2);
                     }
                     
                     // Update compare price
-                    if (oldPriceElement && variationData.compare_at_price) {
-                        if (parseFloat(variationData.compare_at_price) > parseFloat(variationData.price)) {
-                            oldPriceElement.textContent = '$' + parseFloat(variationData.compare_at_price).toFixed(2);
-                            oldPriceElement.parentElement.style.display = 'inline';
-                        } else {
-                            oldPriceElement.parentElement.style.display = 'none';
-                        }
+                    if (oldPriceElement && comparePrice > 0 && comparePrice > price) {
+                        oldPriceElement.textContent = '$' + comparePrice.toFixed(2);
+                        oldPriceElement.parentElement.style.display = 'inline';
+                    } else {
+                        oldPriceElement.parentElement.style.display = 'none';
                     }
                     
                     // Update stock
-                    if (stockElement && variationData.stock !== undefined) {
-                        if (variationData.track_quantity) {
-                            stockElement.textContent = variationData.stock;
+                    if (stockElement) {
+                        if (trackQuantity == 1) {
+                            stockElement.textContent = stock;
                         } else {
                             stockElement.textContent = 'Unlimited';
                         }
                     }
+                    productSku.textContent = sku;
+                    
+                    // Update main product image if variant has image
+                    if (variantImage && mainProductImage) {
+                        mainProductImage.src = variantImage;
+                        mainProductImage.alt = 'Selected variant image';
+                    }
+                    
+                    // Update selected SKU
+                    if (selectedSkuInput) {
+                        selectedSkuInput.value = sku;
+                    }
+                    
+                    // Show selected variant info
+                    if (selectedVariantInfo && selectedVariantDetails) {
+                        const attributes = this.querySelectorAll('.attribute-value');
+                        const attributeText = Array.from(attributes).map(attr => attr.textContent.trim()).join(', ');
+                        selectedVariantDetails.textContent = `${attributeText} - $${price.toFixed(2)}`;
+                        selectedVariantInfo.style.display = 'block';
+                    }
+                    
+                    // Enable buy now button
+                    if (buyNowBtn) {
+                        buyNowBtn.disabled = false;
+                        buyNowBtn.textContent = 'Buy Now';
+                    }
+                    
+                    // Show selection indicator
+                    const selectionIndicator = this.querySelector('.selection-indicator i');
+                    if (selectionIndicator) {
+                        selectionIndicator.style.opacity = '1';
+                    }
                     
                     // Add visual feedback
-                    this.style.transform = 'scale(0.95)';
+                    this.style.transform = 'scale(0.98)';
                     setTimeout(() => {
                         this.style.transform = 'scale(1)';
                     }, 150);
                 });
             });
             
-            // Add hover effects to variation cards
-            const variationCards = document.querySelectorAll('.variation-card');
+            // Add keyboard navigation support
             variationCards.forEach(function(card) {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-3px)';
-                    this.style.boxShadow = '0 6px 12px rgba(0,0,0,0.15)';
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
                 });
                 
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                    this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
-                });
+                // Make cards focusable for accessibility
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('role', 'button');
+                card.setAttribute('aria-label', 'Select variation');
             });
+            
+            // Form validation - require variant selection for variable products
+            const cartForm = document.querySelector('form[action*="cart.boynow"]');
+            if (cartForm && {{ $product->is_variable_product ? 'true' : 'false' }}) {
+                cartForm.addEventListener('submit', function(e) {
+                    const selectedSku = selectedSkuInput.value;
+                    if (!selectedSku) {
+                        e.preventDefault();
+                        alert('Please select a variant before adding to cart.');
+                        return false;
+                    }
+                });
+            }
+            
+            // Initially disable buy now button for variable products
+            if ({{ $product->is_variable_product ? 'true' : 'false' }} && buyNowBtn) {
+                buyNowBtn.disabled = true;
+                buyNowBtn.textContent = 'Select a variant first';
+            }
         });
     </script>
 @endsection
