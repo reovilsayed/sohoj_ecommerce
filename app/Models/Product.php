@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Casts\ProductVarient;
+use App\Casts\ProductVarient\Varient;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
@@ -13,11 +15,15 @@ class Product extends Model
 
     protected $casts = [
         'images' => 'array',
-        'variations' => 'array',
+        'variations' => ProductVarient::class,
     ];
 
     public $with = ['ratings'];
 
+    public function getVariationBySku($sku)
+    {
+     return Varient::bySku($this, $sku);
+    }
     
     public function shop()
     {
@@ -133,4 +139,39 @@ class Product extends Model
     {
         return $value ? json_decode($value, true) : [];
     }
+
+    /**
+     * Get a specific variation by index
+     */
+    public function getVariation($index)
+    {
+        if (isset($this->variations[$index])) {
+            return $this->variations[$index];
+        }
+        return null;
+    }
+
+    /**
+     * Update a specific variation and save
+     */
+    public function updateVariation($index, $data)
+    {
+        if (isset($this->variations[$index])) {
+            $variation = $this->variations[$index];
+            foreach ($data as $key => $value) {
+                $variation->$key = $value;
+            }
+            $this->save();
+            return true;
+        }
+        return false;
+    }
+
+
+
+    public function getPrice()
+    {
+        return $this->sale_price ?? $this->price;
+    }
+
 }

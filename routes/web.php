@@ -1,5 +1,6 @@
 <?php
 
+use App\Casts\ProductVarient\Varient;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VendorRegisterController;
@@ -25,6 +26,7 @@ use App\Mail\VerifyEmail;
 use App\Models\Offer;
 use App\Models\Order;
 use App\Models\Page;
+use App\Models\Product as ModelsProduct;
 use App\Models\Shop;
 use App\Models\Ticket;
 use App\Models\User;
@@ -218,6 +220,9 @@ Route::get('/api-docs', function () {
     return view('pages.api-docs');
 })->name('api.docs');
 
-Route::get('test', function () {
-    return Settings::setting('stripe_secret');
-});
+// Route::get('test', function () {
+//     $product = ModelsProduct::find(213);
+//     $varient = Varient::bySku($product, '123456');
+//     $varient->decreaseStock(1);
+//     dd(Varient::bySku($product, '123456'));
+// });

@@ -45,7 +45,7 @@ class CartController extends Controller
 	// }
 	public function update(Request $request)
 	{
-		
+
 		$rowId = $request->input('rowId');
 		$qty = $request->input('qty');
 
@@ -109,23 +109,17 @@ class CartController extends Controller
 
 	private function cart($request)
 	{
-		if ($request->variable_attribute) {
-			// Make sure it's encoded as JSON correctly
-			$variation = json_encode($request->variable_attribute);
-
-			$product = DB::table('products')
-				->where('parent_id', $request->product_id)
-				->whereRaw("JSON_CONTAINS(variations, ?)", [$variation])
-				->first();
-
-			if (!$product) {
-				return response()->json(['error' => 'Sorry! This variation is no longer available'], 404);
-			}
-		} else {
-			$product = Product::find($request->product_id);
+		$variation = null;
+		if ($request->filled('selected_variant_sku')) {
+			$variation = Product::find($request->product_id)->getVariationBySku($request->selected_variant_sku);
 		}
 
-		$price = $product->sale_price ?? $product->price;
+
+
+		$product = Product::find($request->product_id);
+
+
+		$price = $variation ? $variation->price : $product->getPrice();
 
 		Cart::add([
 			'id'      => $product->id,
@@ -135,7 +129,7 @@ class CartController extends Controller
 			'weight'  => 0,
 			'options' => [
 				'offer'     => 'no_offer',
-				'variation' => $request->variable_attribute ?? null,
+				'variation' => $variation ? $variation->getSku() : null,
 			]
 		])->associate('App\Models\Product');
 

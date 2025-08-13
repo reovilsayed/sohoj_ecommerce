@@ -84,6 +84,12 @@ class CheckoutController extends Controller
             'payment_method' => $request->payment_method,
         ]);
         foreach (Cart::Content() as $item) {
+            $varient = null;
+            if (@$item->options['variation']) {
+                $varient = $item->model->getVariationBySku($item->options['variation']);
+            }
+
+
             $vendor_price = $item->model->vendor_price;
             $shipping_cost = $item->model->shipping_cost;
 
@@ -101,7 +107,7 @@ class CheckoutController extends Controller
                 'product_id' => $item->model->id,
                 'price' => $item->price,
                 'total_price' => $item->price * $item->qty,
-                'variation' => $item->model->variations,
+                'variation' => $varient ? json_encode($varient->toArray()) : null,
                 'shop_id' => $item->model->shop_id,
             ]);
             $childOrder = Order::create([
@@ -132,7 +138,7 @@ class CheckoutController extends Controller
                 'product_id' => $item->model->id,
                 'price' => $item->price,
                 'total_price' => $item->price * $item->qty,
-                'variation' => $item->model->variations,
+                'variation' => $varient ? json_encode($varient->toArray()) : null,
                 'shop_id' => $item->model->shop_id,
             ]);
 
@@ -159,9 +165,19 @@ class CheckoutController extends Controller
     protected function decreaseQuantities()
     {
         foreach (Cart::getContent() as $item) {
-            $product = Product::find($item->model->id);
-            $product->increment('total_sale');
-            $product->update(['quantity' => $product->quantity - $item->qty]);
+            $varient = null;
+            if (@$item->options['variation']) {
+                $varient = $item->model->getVariationBySku($item->options['variation']);
+            }
+
+            if ($varient) {
+                $varient->decreaseStock($item->qty);
+            } else {
+
+                $product = Product::find($item->model->id);
+                $product->increment('total_sale');
+                $product->update(['quantity' => $product->quantity - $item->qty]);
+            }
         }
     }
     protected function notification($user, $shop)
