@@ -699,10 +699,10 @@
                             <td>
                                 <span class="quantity-badge">{{ $childOrder->quantity ?? 1 }}</span>
                             </td>
-                            <td>${{ number_format($childOrder->product->sale_price ?? $item->product->price, 2) }}</td>
+                            <td>${{ number_format($childOrder->product->sale_price ?? $childOrder->product->price, 2) }}</td>
                             <td class="earnings-cell">
                                 <div class="earnings-amount">
-                                    ${{ number_format(($childOrder->product->sale_price ?? $item->product->price) * ($childOrder->quantity ?? 1), 2) }}
+                                    ${{ number_format(($childOrder->product->sale_price ?? $childOrder->product->price) * ($childOrder->quantity ?? 1), 2) }}
                                 </div>
                             </td>
                         </tr>
