@@ -218,9 +218,3 @@ Route::get('/api-docs', function () {
     return view('pages.api-docs');
 })->name('api.docs');
 
-// Route::get('test', function () {
-//     $product = ModelsProduct::find(213);
-//     $varient = Varient::bySku($product, '123456');
-//     $varient->decreaseStock(1);
-//     dd(Varient::bySku($product, '123456'));
-// });

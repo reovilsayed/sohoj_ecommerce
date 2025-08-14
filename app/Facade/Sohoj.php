@@ -19,7 +19,7 @@ class Sohoj
     public function tax()
     {
         return 0;
-        $subtotal = floatval(str_replace(',', '', Cart::subtotal()));
+        $subtotal = Cart::subtotalFloat();
         $total = $subtotal - $this->discount();
         $taxRate = (float) Settings::setting('admin_tax');
 
@@ -67,11 +67,11 @@ class Sohoj
     }
     public function newItemTotal()
     {
-        return Cart::subtotal();
+        return Cart::subtotalFloat();
     }
     public function newSubtotal()
     {
-        $subtotal = floatval(str_replace(',', '', Cart::subtotal()));
+        $subtotal = Cart::subtotalFloat();
         return ($subtotal + $this->tax() + $this->shipping()) - $this->discount();
     }
 

@@ -60,7 +60,7 @@ class CheckoutController extends Controller
         }
         // try {
         // DB::beginTransaction();
-        $cartSubtotal = Cart::SubTotal() ?? 0;
+        $cartSubtotal = Cart::subtotalFloat() ?? 0;
         $platform_fee = \Sohoj::flatCommision($cartSubtotal) ?? 0;
         $shipping_cost = \Sohoj::shipping() ?? 0;
         $discount = (float) (\Sohoj::discount() ?? 0);

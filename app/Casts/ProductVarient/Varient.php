@@ -82,6 +82,7 @@ class Varient
     public function setStock($stock)
     {
         $this->stock = $stock;
+        $this->product->save();
     }
 
     public function getAttributes()
