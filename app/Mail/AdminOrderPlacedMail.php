@@ -39,7 +39,7 @@ class AdminOrderPlacedMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Admin Order Placed Mail',
+            subject: 'New Order Received – Please Review Details',
         );
     }
 

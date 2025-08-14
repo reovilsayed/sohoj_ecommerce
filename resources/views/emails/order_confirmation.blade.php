@@ -710,7 +710,7 @@
                 </div>
             </div>
         </div>
-
+        
         <!-- Zigzag Border -->
         <div class="zigzag-border" style="transform: rotate(180deg);"></div>
 

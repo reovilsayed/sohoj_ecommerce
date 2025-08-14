@@ -229,8 +229,8 @@
         }
 
         .item-image {
-            width: 90px;
-            height: 90px;
+            width: 65px;
+            height: 65px;
             border-radius: 12px;
             object-fit: cover;
             margin-right: 25px;
