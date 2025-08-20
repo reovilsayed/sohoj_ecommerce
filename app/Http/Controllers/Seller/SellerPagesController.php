@@ -581,4 +581,11 @@ class SellerPagesController extends Controller
         Session::put('signature_path', 'signatures/' . $fileName);
         return back()->with('success_msg', 'Signature uploaded successfully!');
     }
+
+
+
+    public function verificationPending()
+    {
+        return view('pages.verification_pending');
+    }
 }

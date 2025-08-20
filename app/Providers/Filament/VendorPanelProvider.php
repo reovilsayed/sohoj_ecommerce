@@ -115,6 +115,9 @@ class VendorPanelProvider extends PanelProvider
                     ->label('Profile')
                     ->icon('heroicon-o-user-circle'),
                 NavigationGroup::make()
+                    ->label('Financial')
+                    ->icon('heroicon-o-banknotes'),
+                NavigationGroup::make()
                     ->label('Support')
                     ->icon('heroicon-o-lifebuoy'),
                 NavigationGroup::make()

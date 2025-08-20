@@ -176,6 +176,17 @@ public function canAccessPanel(Panel $panel): bool
     {
         return $this->hasmany(Notification::class, 'user_id');
     }
+
+    public function bankAccounts()
+    {
+        return $this->hasMany(BankAccount::class, 'user_id');
+    }
+
+    public function defaultBankAccount()
+    {
+        return $this->hasOne(BankAccount::class, 'user_id')->where('is_default', true);
+    }
+
     public function isFollowingShop($shopId)
     {
         return $this->followedShops()->where('shop_id', $shopId)->exists();

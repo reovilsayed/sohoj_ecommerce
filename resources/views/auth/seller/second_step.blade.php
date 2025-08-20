@@ -1,4 +1,9 @@
 @extends('layouts.app')
+@section('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+@endsection
 @section('content')
     <x-app.header />
     <section class="ec-page-content section-space-p" style="background: #f4fbfd; min-height: 100vh; padding: 48px 0;">
@@ -94,8 +99,7 @@
                                     style="width: 80px; height: 4px; background: var(--accent-color); border-radius: 2px; margin-bottom: 1.5rem;">
                                 </div>
 
-                                <form id="signature-form" action="#" method="POST"
-                                    enctype="multipart/form-data">
+                                <form id="signature-form" action="#" method="POST" enctype="multipart/form-data">
                                     @csrf
 
                                     <div class="shadow-sm"
@@ -240,11 +244,11 @@
                                             document.addEventListener('DOMContentLoaded', function() {
                                                 const signatureForm = document.getElementById('signature-form');
                                                 const continueBtn = document.getElementById('continueBtn');
-                                                
+
                                                 if (signatureForm) {
                                                     signatureForm.addEventListener('submit', function(e) {
                                                         e.preventDefault();
-                                                        
+
                                                         // Check if signature is provided
                                                         const signatureInput = document.getElementById('signature-input');
                                                         if (!signatureInput.value) {
@@ -255,23 +259,23 @@
                                                             }
                                                             return;
                                                         }
-                                                        
+
                                                         // Show loading state
                                                         const originalText = continueBtn.innerHTML;
                                                         continueBtn.disabled = true;
                                                         continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
-                                                        
+
                                                         // Store signature in localStorage for later submission
                                                         localStorage.setItem('vendor_signature', signatureInput.value);
-                                                        
+
                                                         // Show success message
                                                         if (typeof toastr !== 'undefined') {
                                                             toastr.success('Signature saved! Proceeding to verification...');
                                                         }
-                                                        
+
                                                         // Reset button
                                                         continueBtn.innerHTML = originalText;
-                                                        
+
                                                         // Proceed to verification step
                                                         setTimeout(() => {
                                                             showSection('verification');
@@ -328,10 +332,10 @@
                                 <form method="POST" action="{{ route('vendor.second.step.store') }}"
                                     enctype="multipart/form-data" id="verification-form">
                                     @csrf
-                                    
+
                                     <!-- Hidden field for signature -->
                                     <input type="hidden" name="signature" id="verification-signature-input">
-                                    
+
                                     <h4 class="fw-bold text-dark mb-2 d-flex align-items-center"
                                         style="letter-spacing: 1px;">
                                         <i class="fas fa-user me-2" style="color: var(--accent-color);"></i> Personal Info
@@ -543,15 +547,7 @@
                                                 <select
                                                     class="bg-light form-select form-control mx-0 border @error('country') is-invalid @enderror"
                                                     name="country" id="country" required>
-                                                    <option value="">Choose Country</option>
-                                                    <option value="nigeria">Nigeria</option>
-                                                    <option value="kenya">Kenya</option>
-                                                    <option value="south_africa">South Africa</option>
-                                                    <option value="egypt">Egypt</option>
-                                                    <option value="ghana">Ghana</option>
-                                                    <option value="ethiopia">Ethiopia</option>
-                                                    <option value="morocco">Morocco</option>
-                                                    <option value="uganda">Uganda</option>
+                                                    <option value="">Loading countries...</option>
                                                 </select>
                                                 @error('country')
                                                     <span class="invalid-feedback"
@@ -630,7 +626,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <h4 class="fw-bold text-dark mb-2 d-flex align-items-center"
+                                    {{-- <h4 class="fw-bold text-dark mb-2 d-flex align-items-center"
                                         style="letter-spacing: 1px;">
                                         <i class="fas fa-credit-card me-2" style="color: var(--accent-color);"></i>
                                         Credit/Debit Card
@@ -682,7 +678,7 @@
                                             data-secret="{{ $intent->client_secret }}">
                                             <i class="fas fa-lock me-2"></i> Verify
                                         </button>
-                                    </div>
+                                    </div> --}}
 
                                     <!-- Checkbox -->
                                     {{-- <div class="d-flex align-items-center mb-3">
@@ -705,7 +701,7 @@
 
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="">
-                                            <button type="submit" id="submit" disabled class="btn fw-bold shadow"
+                                            <button type="submit" id="submit" class="btn fw-bold shadow"
                                                 style="background-color:#FF0000;color:white; transition:transform 0.2s; font-size:1.1rem;"
                                                 onmouseover="this.style.transform='translateY(-2px) scale(1.03)'"
                                                 onmouseout="this.style.transform='scale(1)'">
@@ -736,6 +732,31 @@
 
     <!-- Custom Step Indicator Styles -->
     <style>
+        /* Select2 dropdown custom style */
+        .select2-container--default .select2-selection--single {
+            height: 45px;
+            border-radius: 0px;
+            border: 1px solid #ced4da;
+            padding: 8px 12px;
+            background-color: #f8f9fa;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: 15px;
+            color: #495057;
+            line-height: 28px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            top: 9px;
+            right: 10px;
+        }
+
+        .select2-container--default .select2-results__option--highlighted {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
         @keyframes pulse {
             0% {
                 box-shadow: 0 3px 12px rgba(var(--accent-color-rgb), 0.25);
@@ -869,7 +890,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             const stateData = {
                 nigeria: [
@@ -940,6 +961,65 @@
                 });
 
                 stateSelect.disabled = false;
+            });
+        });
+    </script> --}}
+
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2
+            $(document).ready(function() {
+                $('#country').select2({
+                    placeholder: "Select a country",
+                    allowClear: true,
+                    width: '100%'
+                });
+
+                $('#state').select2({
+                    placeholder: "Select a state",
+                    allowClear: true,
+                    width: '100%'
+                });
+            });
+
+            // Load countries
+            $.get("https://countriesnow.space/api/v0.1/countries/positions", function(res) {
+                $('#country').empty().append('<option value="">Select Country</option>');
+                res.data.forEach(function(country) {
+                    $('#country').append(new Option(country.name, country.name));
+                });
+            });
+
+            // Load states when country changes
+            $('#country').on('change', function() {
+                const selectedCountry = $(this).val();
+                $('#state').empty().append('<option value="">Loading...</option>').trigger('change');
+                $('#state').prop('disabled', true);
+
+                if (!selectedCountry) {
+                    $('#state').empty().append('<option value="">Select Country First</option>');
+                    return;
+                }
+
+                $.ajax({
+                    url: "https://countriesnow.space/api/v0.1/countries/states",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        country: selectedCountry
+                    }),
+                    success: function(res) {
+                        $('#state').empty().append('<option value="">Select State</option>');
+                        if (res.data && res.data.states.length > 0) {
+                            res.data.states.forEach(function(st) {
+                                $('#state').append(new Option(st.name, st.name));
+                            });
+                            $('#state').prop('disabled', false);
+                        } else {
+                            $('#state').append('<option value="">No states found</option>');
+                        }
+                    }
+                });
             });
         });
     </script>

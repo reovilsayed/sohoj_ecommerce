@@ -1,6 +1,5 @@
 <?php
 
-use App\Casts\ProductVarient\Varient;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VendorRegisterController;
@@ -26,7 +25,6 @@ use App\Mail\VerifyEmail;
 use App\Models\Offer;
 use App\Models\Order;
 use App\Models\Page;
-use App\Models\Product as ModelsProduct;
 use App\Models\Shop;
 use App\Models\Ticket;
 use App\Models\User;
@@ -210,13 +208,14 @@ Route::get('payment/handle/paypal/{order}', [CheckoutController::class, 'handleP
 
 Route::post('vendor/signature', [SellerPagesController::class, 'signatureStore'])->name('vendor.signature');
 
-// Route::get('email', function () {
-//     $order = Order::find(504);
-//     $childOrder = $order->children()->first();
-//     return view('emails.order_confirmation', compact('order', 'childOrder'));
-// });
+Route::get('email', function () {
+    return new ShopCreatedEmail(Shop::latest()->first());
+});
 // API Documentation Route
 Route::get('/api-docs', function () {
     return view('pages.api-docs');
 })->name('api.docs');
 
+Route::get('test', function () {
+    return Settings::setting('stripe_secret');
+});

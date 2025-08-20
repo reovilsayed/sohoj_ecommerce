@@ -78,7 +78,7 @@ class HomeController extends Controller
     {
         $data = $request->validate(
             [
-                "payment_method" => "required",
+                // "payment_method" => "required",
                 "phone" => "required",
                 "dob"  => "required",
                 "tax_no" =>  "nullable",
@@ -104,8 +104,8 @@ class HomeController extends Controller
         $fileName = 'signature_' . time() . '.png';
         $filePath = storage_path('app/public/signatures/' . $fileName);
         file_put_contents($filePath, $signatureImage);
-        auth()->user()->createOrGetStripeCustomer();
-        auth()->user()->addPaymentMethod($data['payment_method']);
+        // auth()->user()->createOrGetStripeCustomer();
+        // auth()->user()->addPaymentMethod($data['payment_method']);
         Stripe::setApiKey(\App\Setting\Settings::setting('stripe_secret'));
         $product = Product::create([
             'name' => 'Basic Plan',
@@ -127,7 +127,7 @@ class HomeController extends Controller
             $sub->trialUntil(Carbon::now()->addDays(30));
         }
 
-        $sub->create($data['payment_method']);
+        // $sub->create($data['payment_method']);
         $verification = Verification::create([
             'user_id' => auth()->id(),
             'phone' => $request->phone,
