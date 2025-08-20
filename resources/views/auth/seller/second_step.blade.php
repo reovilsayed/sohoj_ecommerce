@@ -468,59 +468,266 @@
                                     </div>
                                     <h4 class="fw-bold text-dark mb-2 d-flex align-items-center"
                                         style="letter-spacing: 1px;">
-                                        <i class="fas fa-university me-2" style="color: var(--accent-color);"></i> Bank
-                                        Info
+                                        <i class="fas fa-university me-2" style="color: var(--accent-color);"></i> Payment
+                                        Information
                                     </h4>
                                     <div
                                         style="width: 60px; height: 4px; background: var(--accent-color); border-radius: 2px; margin-bottom: 0.5rem;">
                                     </div>
                                     <div class="mb-3 text-secondary small" style="margin-bottom: 1.5rem !important;">
-                                        <i class="fas fa-info-circle me-1"></i> This information is used to send your sales
-                                        earnings securely.
+                                        <i class="fas fa-info-circle me-1"></i> Choose your preferred payment method to receive sales earnings securely.
                                     </div>
-                                    <div class="shadow-sm mb-4"
-                                        style="background:#fafdff; border-left:4px solid var(--accent-color); padding:32px 24px 24px 24px; border-radius: 0;">
-                                        <div class="row g-4">
-                                            <div class="col-md-12">
-                                                <label for="paypal_email" class="form-label fw-bold"
-                                                    style="font-size: 1rem; color: var(--accent-color);">Paypal Email<span
-                                                        class="text-danger">*</span></label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-white border-1"
-                                                        style="border-radius:0;"><i class="fas fa-envelope"
-                                                            style="color: var(--accent-color);"></i></span>
-                                                    <input id="paypal_email" type="text"
-                                                        placeholder="Enter your Paypal email address"
-                                                        class="form-control bg-white border-1 px-4 py-2 @error('paypal_email') is-invalid @enderror"
-                                                        name="paypal_email" value="{{ old('paypal_email') ?? '' }}"
-                                                        required autocomplete="paypal_email" autofocus
-                                                        style="box-shadow:none; border-radius:0;">
+
+                                    <!-- Payment Method Tabs -->
+                                    <div class="mb-4">
+                                        <div class="d-flex gap-2 mb-3">
+                                            <button type="button" id="bank-tab" class="btn fw-bold flex-fill payment-tab active-tab"
+                                                onclick="switchPaymentMethod('bank')"
+                                                style="background: var(--accent-color); color: white; border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;">
+                                                <i class="fas fa-university me-2"></i> Bank Account 
+                                            </button>
+                                            <button type="button" id="paypal-tab" class="btn fw-bold flex-fill payment-tab inactive-tab"
+                                                onclick="switchPaymentMethod('paypal')"
+                                                style="background: transparent; color: var(--accent-color); border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;">
+                                                <i class="fab fa-paypal me-2"></i> PayPal
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hidden field to track selected payment method -->
+                                    <input type="hidden" name="payment_method_type" id="payment_method_type" value="bank">
+
+                                    <!-- Bank Account Form -->
+                                    <div id="bank-form" class="payment-form active-form">
+                                        <div class="shadow-sm mb-4"
+                                            style="background:#fafdff; border-left:4px solid var(--accent-color); padding:32px 24px 24px 24px; border-radius: 0;">
+                                            <div class="row g-4">
+                                                <div class="col-md-6">
+                                                    <label for="bank_name" class="form-label fw-bold"
+                                                        style="font-size: 1rem; color: var(--accent-color);">Bank Name<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-white border-1"
+                                                            style="border-radius:0;"><i class="fas fa-university"
+                                                                style="color: var(--accent-color);"></i></span>
+                                                        <input id="bank_name" type="text"
+                                                            placeholder="Enter your bank name"
+                                                            class="form-control bg-white border-1 px-4 py-2 @error('bank_name') is-invalid @enderror"
+                                                            name="bank_name" value="{{ old('bank_name') ?? '' }}"
+                                                            autocomplete="bank_name"
+                                                            style="box-shadow:none; border-radius:0;">
+                                                    </div>
+                                                    @error('bank_name')
+                                                        <span class="invalid-feedback"
+                                                            role="alert"><strong>{{ $message }}</strong></span>
+                                                    @enderror
                                                 </div>
-                                                @error('paypal_email')
-                                                    <span class="invalid-feedback"
-                                                        role="alert"><strong>{{ $message }}</strong></span>
-                                                @enderror
+                                                <div class="col-md-6">
+                                                    <label for="account_holder" class="form-label fw-bold"
+                                                        style="font-size: 1rem; color: var(--accent-color);">Account Holder Name<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-white border-1"
+                                                            style="border-radius:0;"><i class="fas fa-user"
+                                                                style="color: var(--accent-color);"></i></span>
+                                                        <input id="account_holder" type="text"
+                                                            placeholder="Full name as appears on account"
+                                                            class="form-control bg-white border-1 px-4 py-2 @error('account_holder') is-invalid @enderror"
+                                                            name="account_holder" value="{{ old('account_holder') ?? auth()->user()->name }}"
+                                                            autocomplete="account_holder"
+                                                            style="box-shadow:none; border-radius:0;">
+                                                    </div>
+                                                    @error('account_holder')
+                                                        <span class="invalid-feedback"
+                                                            role="alert"><strong>{{ $message }}</strong></span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="account_number" class="form-label fw-bold"
+                                                        style="font-size: 1rem; color: var(--accent-color);">Account Number<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-white border-1"
+                                                            style="border-radius:0;"><i class="fas fa-hashtag"
+                                                                style="color: var(--accent-color);"></i></span>
+                                                        <input id="account_number" type="text"
+                                                            placeholder="Enter your account number"
+                                                            class="form-control bg-white border-1 px-4 py-2 @error('account_number') is-invalid @enderror"
+                                                            name="account_number" value="{{ old('account_number') ?? '' }}"
+                                                            autocomplete="account_number"
+                                                            style="box-shadow:none; border-radius:0;">
+                                                    </div>
+                                                    @error('account_number')
+                                                        <span class="invalid-feedback"
+                                                            role="alert"><strong>{{ $message }}</strong></span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="routing_number" class="form-label fw-bold"
+                                                        style="font-size: 1rem; color: var(--accent-color);">Routing Number<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-white border-1"
+                                                            style="border-radius:0;"><i class="fas fa-route"
+                                                                style="color: var(--accent-color);"></i></span>
+                                                        <input id="routing_number" type="text"
+                                                            placeholder="9-digit routing number"
+                                                            class="form-control bg-white border-1 px-4 py-2 @error('routing_number') is-invalid @enderror"
+                                                            name="routing_number" value="{{ old('routing_number') ?? '' }}"
+                                                            autocomplete="routing_number"
+                                                            style="box-shadow:none; border-radius:0;">
+                                                    </div>
+                                                    @error('routing_number')
+                                                        <span class="invalid-feedback"
+                                                            role="alert"><strong>{{ $message }}</strong></span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="account_type" class="form-label fw-bold"
+                                                        style="font-size: 1rem; color: var(--accent-color);">Account Type<span
+                                                            class="text-danger">*</span></label>
+                                                    <select
+                                                        class="bg-light form-select form-control mx-0 border @error('account_type') is-invalid @enderror"
+                                                        name="account_type" id="account_type">
+                                                        <option value="">Select Account Type</option>
+                                                        <option value="Checking" {{ old('account_type') == 'Checking' ? 'selected' : '' }}>Checking</option>
+                                                        <option value="Savings" {{ old('account_type') == 'Savings' ? 'selected' : '' }}>Savings</option>
+                                                    </select>
+                                                    @error('account_type')
+                                                        <span class="invalid-feedback"
+                                                            role="alert"><strong>{{ $message }}</strong></span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="currency" class="form-label fw-bold"
+                                                        style="font-size: 1rem; color: var(--accent-color);">Currency<span
+                                                            class="text-danger">*</span></label>
+                                                    <select
+                                                        class="bg-light form-select form-control mx-0 border @error('currency') is-invalid @enderror"
+                                                        name="currency" id="currency">
+                                                        <option value="">Select Currency</option>
+                                                        <option value="USD" {{ old('currency') == 'USD' ? 'selected' : 'selected' }}>US Dollar (USD)</option>
+                                                        <option value="EUR" {{ old('currency') == 'EUR' ? 'selected' : '' }}>Euro (EUR)</option>
+                                                        <option value="GBP" {{ old('currency') == 'GBP' ? 'selected' : '' }}>British Pound (GBP)</option>
+                                                        <option value="CAD" {{ old('currency') == 'CAD' ? 'selected' : '' }}>Canadian Dollar (CAD)</option>
+                                                        <option value="AUD" {{ old('currency') == 'AUD' ? 'selected' : '' }}>Australian Dollar (AUD)</option>
+                                                        <option value="BDT" {{ old('currency') == 'BDT' ? 'selected' : '' }}>Bangladeshi Taka (BDT)</option>
+                                                    </select>
+                                                    @error('currency')
+                                                        <span class="invalid-feedback"
+                                                            role="alert"><strong>{{ $message }}</strong></span>
+                                                    @enderror
+                                                </div>
+                                                <!-- Optional Fields -->
+                                                <div class="col-md-12">
+                                                    <div class="row g-3">
+                                                        <div class="col-md-6">
+                                                            <label for="swift_code" class="form-label fw-bold"
+                                                                style="font-size: 1rem; color: var(--accent-color);">SWIFT Code 
+                                                                <small class="text-muted">(Optional)</small></label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-white border-1"
+                                                                    style="border-radius:0;"><i class="fas fa-globe"
+                                                                        style="color: var(--accent-color);"></i></span>
+                                                                <input id="swift_code" type="text"
+                                                                    placeholder="8 or 11 character SWIFT/BIC code"
+                                                                    class="form-control bg-white border-1 px-4 py-2 @error('swift_code') is-invalid @enderror"
+                                                                    name="swift_code" value="{{ old('swift_code') ?? '' }}"
+                                                                    style="box-shadow:none; border-radius:0;">
+                                                            </div>
+                                                            @error('swift_code')
+                                                                <span class="invalid-feedback"
+                                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="iban" class="form-label fw-bold"
+                                                                style="font-size: 1rem; color: var(--accent-color);">IBAN 
+                                                                <small class="text-muted">(Optional)</small></label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-white border-1"
+                                                                    style="border-radius:0;"><i class="fas fa-credit-card"
+                                                                        style="color: var(--accent-color);"></i></span>
+                                                                <input id="iban" type="text"
+                                                                    placeholder="International Bank Account Number"
+                                                                    class="form-control bg-white border-1 px-4 py-2 @error('iban') is-invalid @enderror"
+                                                                    name="iban" value="{{ old('iban') ?? '' }}"
+                                                                    style="box-shadow:none; border-radius:0;">
+                                                            </div>
+                                                            @error('iban')
+                                                                <span class="invalid-feedback"
+                                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label for="bank_address" class="form-label fw-bold"
+                                                        style="font-size: 1rem; color: var(--accent-color);">Bank Address 
+                                                        <small class="text-muted">(Optional)</small></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-white border-1"
+                                                            style="border-radius:0;"><i class="fas fa-map-marker-alt"
+                                                                style="color: var(--accent-color);"></i></span>
+                                                        <textarea id="bank_address" placeholder="Bank branch address"
+                                                            class="form-control bg-white border-1 px-4 py-2 @error('bank_address') is-invalid @enderror" 
+                                                            name="bank_address" style="box-shadow:none; border-radius:0; min-height: 48px;">{{ old('bank_address') ?? '' }}</textarea>
+                                                    </div>
+                                                    @error('bank_address')
+                                                        <span class="invalid-feedback"
+                                                            role="alert"><strong>{{ $message }}</strong></span>
+                                                    @enderror
+                                                </div>
                                             </div>
-                                            <div class="col-md-12">
-                                                <label for="paypal_email_confirmation" class="form-label fw-bold"
-                                                    style="font-size: 1rem; color: var(--accent-color);">Confirm Paypal
-                                                    Email<span class="text-danger">*</span></label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-white border-1"
-                                                        style="border-radius:0;"><i class="fas fa-envelope-open"
-                                                            style="color: var(--accent-color);"></i></span>
-                                                    <input id="paypal_email_confirmation" type="text"
-                                                        placeholder="Re-enter your Paypal email address"
-                                                        class="form-control bg-white border-1 px-4 py-2 @error('paypal_email_confirmation') is-invalid @enderror"
-                                                        name="paypal_email_confirmation"
-                                                        value="{{ old('paypal_email_confirmation') ?? '' }}" required
-                                                        autocomplete="paypal_email_confirmation" autofocus
-                                                        style="box-shadow:none; border-radius:0;">
+                                        </div>
+                                    </div>
+
+                                    <!-- PayPal Form -->
+                                    <div id="paypal-form" class="payment-form inactive-form" style="display: none;">
+                                        <div class="shadow-sm mb-4"
+                                            style="background:#fafdff; border-left:4px solid var(--accent-color); padding:32px 24px 24px 24px; border-radius: 0;">
+                                            <div class="row g-4">
+                                                <div class="col-md-12">
+                                                    <label for="paypal_email" class="form-label fw-bold"
+                                                        style="font-size: 1rem; color: var(--accent-color);">PayPal Email<span
+                                                            class="text-danger">*</span></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-white border-1"
+                                                            style="border-radius:0;"><i class="fab fa-paypal"
+                                                                style="color: var(--accent-color);"></i></span>
+                                                        <input id="paypal_email" type="email"
+                                                            placeholder="Enter your PayPal email address"
+                                                            class="form-control bg-white border-1 px-4 py-2 @error('paypal_email') is-invalid @enderror"
+                                                            name="paypal_email" value="{{ old('paypal_email') ?? '' }}"
+                                                            autocomplete="paypal_email"
+                                                            style="box-shadow:none; border-radius:0;">
+                                                    </div>
+                                                    @error('paypal_email')
+                                                        <span class="invalid-feedback"
+                                                            role="alert"><strong>{{ $message }}</strong></span>
+                                                    @enderror
                                                 </div>
-                                                @error('paypal_email_confirmation')
-                                                    <span class="invalid-feedback"
-                                                        role="alert"><strong>{{ $message }}</strong></span>
-                                                @enderror
+                                                <div class="col-md-12">
+                                                    <label for="paypal_email_confirmation" class="form-label fw-bold"
+                                                        style="font-size: 1rem; color: var(--accent-color);">Confirm PayPal
+                                                        Email<span class="text-danger">*</span></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text bg-white border-1"
+                                                            style="border-radius:0;"><i class="fas fa-envelope-open"
+                                                                style="color: var(--accent-color);"></i></span>
+                                                        <input id="paypal_email_confirmation" type="email"
+                                                            placeholder="Re-enter your PayPal email address"
+                                                            class="form-control bg-white border-1 px-4 py-2 @error('paypal_email_confirmation') is-invalid @enderror"
+                                                            name="paypal_email_confirmation"
+                                                            value="{{ old('paypal_email_confirmation') ?? '' }}"
+                                                            autocomplete="paypal_email_confirmation"
+                                                            style="box-shadow:none; border-radius:0;">
+                                                    </div>
+                                                    @error('paypal_email_confirmation')
+                                                        <span class="invalid-feedback"
+                                                            role="alert"><strong>{{ $message }}</strong></span>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -844,6 +1051,112 @@
                 width: 25px !important;
             }
         }
+
+        /* Payment Method Tab Styles */
+        .payment-tab {
+            position: relative;
+            overflow: hidden;
+            font-weight: 600 !important;
+            letter-spacing: 0.5px;
+            border: 2px solid var(--accent-color) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        .payment-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .payment-tab:hover::before {
+            left: 100%;
+        }
+
+        .payment-tab.active-tab {
+            background: var(--accent-color) !important;
+            color: white !important;
+            box-shadow: 0 4px 20px rgba(var(--accent-color-rgb), 0.4);
+            transform: translateY(-2px);
+        }
+
+        .payment-tab.inactive-tab {
+            background: transparent !important;
+            color: var(--accent-color) !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .payment-tab.inactive-tab:hover {
+            background: rgba(var(--accent-color-rgb), 0.1) !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        /* Payment Form Styles */
+        .payment-form {
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .payment-form.active-form {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .payment-form.inactive-form {
+            opacity: 0;
+            transform: translateY(-20px);
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Enhanced Input Styling for Payment Forms */
+        .payment-form .form-control,
+        .payment-form .form-select {
+            transition: all 0.3s ease;
+            border-radius: 0 !important;
+        }
+
+        .payment-form .form-control:focus,
+        .payment-form .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(var(--accent-color-rgb), 0.25);
+        }
+
+        .payment-form .form-control:disabled,
+        .payment-form .form-select:disabled {
+            background-color: #f8f9fa !important;
+            opacity: 0.6;
+            cursor: not-allowed !important;
+            border-color: #dee2e6 !important;
+        }
+
+        /* Payment Method Icons */
+        .payment-tab i {
+            font-size: 1.1rem;
+            margin-right: 8px;
+        }
+
+        /* Success/Info Animation */
+        @keyframes slideInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .payment-form.active-form {
+            animation: slideInFromTop 0.4s ease-out;
+        }
     </style>
 
     <script src="https://js.stripe.com/v3/"></script>
@@ -889,81 +1202,6 @@
             }
         });
     </script>
-
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const stateData = {
-                nigeria: [
-                    "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno",
-                    "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Gombe", "Imo", "Jigawa",
-                    "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger",
-                    "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe",
-                    "Zamfara",
-                    "FCT (Abuja)"
-                ],
-                kenya: [
-                    "Baringo", "Bomet", "Bungoma", "Busia", "Elgeyo-Marakwet", "Embu", "Garissa",
-                    "Homa Bay", "Isiolo", "Kajiado", "Kakamega", "Kericho", "Kiambu", "Kilifi",
-                    "Kirinyaga", "Kisii", "Kisumu", "Kitui", "Kwale", "Laikipia", "Lamu",
-                    "Machakos", "Makueni", "Mandera", "Marsabit", "Meru", "Migori", "Mombasa",
-                    "Murang'a", "Nairobi", "Nakuru", "Nandi", "Narok", "Nyamira", "Nyandarua",
-                    "Nyeri", "Samburu", "Siaya", "Taita-Taveta", "Tana River", "Tharaka-Nithi",
-                    "Trans Nzoia", "Turkana", "Uasin Gishu", "Vihiga", "Wajir", "West Pokot"
-                ],
-                south_africa: [
-                    "Eastern Cape", "Free State", "Gauteng", "KwaZulu-Natal",
-                    "Limpopo", "Mpumalanga", "North West", "Northern Cape", "Western Cape"
-                ],
-                egypt: [
-                    "Cairo", "Giza", "Alexandria", "Aswan", "Asyut", "Beheira", "Beni Suef",
-                    "Dakahlia", "Damietta", "Faiyum", "Gharbia", "Ismailia", "Kafr El Sheikh",
-                    "Luxor", "Matrouh", "Minya", "Monufia", "New Valley", "North Sinai",
-                    "Port Said", "Qalyubia", "Qena", "Red Sea", "Sharqia", "Sohag", "South Sinai", "Suez"
-                ],
-                ghana: [
-                    "Ashanti", "Brong-Ahafo", "Central", "Eastern", "Greater Accra",
-                    "Northern", "Upper East", "Upper West", "Volta", "Western", "Bono", "Ahafo", "Oti",
-                    "North East", "Savannah", "Western North"
-                ],
-                ethiopia: [
-                    "Addis Ababa", "Afar", "Amhara", "Benishangul-Gumuz", "Dire Dawa",
-                    "Gambela", "Harari", "Oromia", "Sidama", "Somali", "South West", "Southern Nations"
-                ],
-                morocco: [
-                    "Casablanca-Settat", "Fès-Meknès", "Rabat-Salé-Kénitra", "Marrakesh-Safi",
-                    "Tangier-Tetouan-Al Hoceima", "Souss-Massa", "Oriental", "Béni Mellal-Khénifra",
-                    "Drâa-Tafilalet", "Guelmim-Oued Noun", "Laâyoune-Sakia El Hamra", "Dakhla-Oued Ed-Dahab"
-                ],
-                uganda: [
-                    "Central", "Eastern", "Northern", "Western", "Kampala", "Karamoja",
-                    "Acholi", "Lango", "Buganda", "Bukedi", "Bunyoro", "Busoga", "Teso", "West Nile"
-                ]
-            };
-
-            const countrySelect = document.getElementById('country');
-            const stateSelect = document.getElementById('state');
-
-            countrySelect.addEventListener('change', function() {
-                const selectedCountry = this.value;
-
-                stateSelect.innerHTML = '<option value="">Select State</option>';
-
-                if (!selectedCountry || !stateData[selectedCountry]) {
-                    stateSelect.disabled = true;
-                    return;
-                }
-
-                stateData[selectedCountry].forEach(function(state) {
-                    const option = document.createElement('option');
-                    option.value = state;
-                    option.textContent = state;
-                    stateSelect.appendChild(option);
-                });
-
-                stateSelect.disabled = false;
-            });
-        });
-    </script> --}}
 
     <script>
         $(document).ready(function() {
@@ -1145,6 +1383,163 @@
                 // Initialize button state
                 handleTermsCheckbox();
             }
+        });
+    </script>
+
+    <!-- Payment Method Switching Script -->
+    <script>
+        // Payment method switching functionality
+        function switchPaymentMethod(method) {
+            const bankTab = document.getElementById('bank-tab');
+            const paypalTab = document.getElementById('paypal-tab');
+            const bankForm = document.getElementById('bank-form');
+            const paypalForm = document.getElementById('paypal-form');
+            const paymentMethodType = document.getElementById('payment_method_type');
+            
+            if (method === 'bank') {
+                // Activate bank tab
+                bankTab.className = 'btn fw-bold flex-fill payment-tab active-tab';
+                bankTab.style.cssText = 'background: var(--accent-color); color: white; border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
+                
+                // Deactivate paypal tab
+                paypalTab.className = 'btn fw-bold flex-fill payment-tab inactive-tab';
+                paypalTab.style.cssText = 'background: transparent; color: var(--accent-color); border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
+                
+                // Show bank form, hide paypal form
+                bankForm.style.display = 'block';
+                bankForm.className = 'payment-form active-form';
+                paypalForm.style.display = 'none';
+                paypalForm.className = 'payment-form inactive-form';
+                
+                // Enable bank fields, disable paypal fields
+                toggleFormFields('bank', true);
+                toggleFormFields('paypal', false);
+                
+                // Set payment method type
+                paymentMethodType.value = 'bank';
+                
+                // Show success message
+                if (typeof toastr !== 'undefined') {
+                    toastr.info('Bank Account payment method selected');
+                }
+                
+            } else if (method === 'paypal') {
+                // Activate paypal tab
+                paypalTab.className = 'btn fw-bold flex-fill payment-tab active-tab';
+                paypalTab.style.cssText = 'background: var(--accent-color); color: white; border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
+                
+                // Deactivate bank tab
+                bankTab.className = 'btn fw-bold flex-fill payment-tab inactive-tab';
+                bankTab.style.cssText = 'background: transparent; color: var(--accent-color); border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
+                
+                // Show paypal form, hide bank form
+                paypalForm.style.display = 'block';
+                paypalForm.className = 'payment-form active-form';
+                bankForm.style.display = 'none';
+                bankForm.className = 'payment-form inactive-form';
+                
+                // Enable paypal fields, disable bank fields
+                toggleFormFields('paypal', true);
+                toggleFormFields('bank', false);
+                
+                // Set payment method type
+                paymentMethodType.value = 'paypal';
+                
+                // Show success message
+                if (typeof toastr !== 'undefined') {
+                    toastr.info('PayPal payment method selected');
+                }
+            }
+        }
+        
+        // Function to enable/disable form fields
+        function toggleFormFields(formType, enabled) {
+            let fieldNames = [];
+            
+            if (formType === 'bank') {
+                fieldNames = [
+                    'bank_name', 'account_holder', 'account_number', 'routing_number', 
+                    'account_type', 'currency', 'swift_code', 'iban', 'bank_address'
+                ];
+            } else if (formType === 'paypal') {
+                fieldNames = ['paypal_email', 'paypal_email_confirmation'];
+            }
+            
+            fieldNames.forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                if (field) {
+                    field.disabled = !enabled;
+                    
+                    // Remove required attribute when disabled
+                    if (!enabled) {
+                        field.removeAttribute('required');
+                        field.value = ''; // Clear the value
+                    } else {
+                        // Add required attribute back for essential fields
+                        if (['bank_name', 'account_holder', 'account_number', 'routing_number', 'account_type', 'currency', 'paypal_email', 'paypal_email_confirmation'].includes(fieldName)) {
+                            field.setAttribute('required', 'required');
+                        }
+                    }
+                    
+                    // Visual feedback
+                    if (!enabled) {
+                        field.style.backgroundColor = '#f8f9fa';
+                        field.style.color = '#6c757d';
+                        field.style.cursor = 'not-allowed';
+                    } else {
+                        field.style.backgroundColor = '#ffffff';
+                        field.style.color = '#212529';
+                        field.style.cursor = 'text';
+                    }
+                }
+            });
+        }
+        
+        // Enhanced initialization for payment methods
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial state (bank method selected by default)
+            setTimeout(() => {
+                switchPaymentMethod('bank');
+            }, 100);
+            
+            // Add smooth transition animations
+            const style = document.createElement('style');
+            style.textContent = `
+                .payment-form {
+                    transition: all 0.3s ease-in-out;
+                    opacity: 1;
+                }
+                .payment-form.inactive-form {
+                    opacity: 0.5;
+                    transform: translateY(-5px);
+                }
+                .payment-form.active-form {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                .payment-tab {
+                    transition: all 0.3s ease !important;
+                    transform: scale(1);
+                }
+                .payment-tab:hover {
+                    transform: scale(1.02);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                }
+                .payment-tab.active-tab {
+                    box-shadow: 0 4px 16px rgba(var(--accent-color-rgb), 0.3);
+                }
+                .form-control:disabled {
+                    background-color: #f8f9fa !important;
+                    opacity: 0.6;
+                    cursor: not-allowed !important;
+                }
+                .form-select:disabled {
+                    background-color: #f8f9fa !important;
+                    opacity: 0.6;
+                    cursor: not-allowed !important;
+                }
+            `;
+            document.head.appendChild(style);
         });
     </script>
 @endsection

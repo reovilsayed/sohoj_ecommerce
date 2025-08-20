@@ -208,6 +208,8 @@ Route::get('payment/handle/paypal/{order}', [CheckoutController::class, 'handleP
 
 Route::post('vendor/signature', [SellerPagesController::class, 'signatureStore'])->name('vendor.signature');
 
+Route::get('vendor/verification-pending', [SellerPagesController::class, 'verificationPending'])->name('vendor.verification');
+
 Route::get('email', function () {
     return new ShopCreatedEmail(Shop::latest()->first());
 });

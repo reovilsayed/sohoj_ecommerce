@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\VendorVerificationSuccess;
 use App\Mail\VerifyEmail;
 use App\Models\Address;
+use App\Models\BankAccount;
 use App\Models\Notification;
 use App\Models\Offer;
 use App\Models\User;
@@ -76,27 +77,44 @@ class HomeController extends Controller
     }
     public function vendorSecondStepStore(Request $request)
     {
-        $data = $request->validate(
-            [
-                // "payment_method" => "required",
-                "phone" => "required",
-                "dob"  => "required",
-                "tax_no" =>  "nullable",
-                "address" => "required",
-                // "terms" => "required",
-                "country" => "required",
-                "state" => "required",
-                "city" => "required",
-                "post_code" => "required",
-                "govt_id_back" => "required|image|mimes:jpeg,png",
-                "govt_id_front" => "required|image|mimes:jpeg,png",
-                "paypal_email" => "required",
+        // Validate basic fields
+        $validationRules = [
+            "phone" => "required",
+            "dob"  => "required",
+            "tax_no" =>  "nullable",
+            "address" => "required",
+            "country" => "required",
+            "state" => "required",
+            "city" => "required",
+            "post_code" => "required",
+            "govt_id_back" => "required|image|mimes:jpeg,png",
+            "govt_id_front" => "required|image|mimes:jpeg,png",
+            // "payment_method_type" => "required|in:bank_account,paypal",
+        ];
+        // dd($request->payment_method_type);
+        // Add validation rules based on payment method type
+        if ($request->payment_method_type == 'bank') {
+            $validationRules = array_merge($validationRules, [
+                'bank_name' => 'required|string|max:255',
+                'account_holder' => 'required|string|max:255',
+                'account_number' => 'required|string|max:50',
+                'routing_number' => 'required|string|max:50',
+                'account_type' => 'required|in:Checking,Savings',
+                'currency' => 'required|string|max:3',
+                'bank_address' => 'nullable|string|max:500',
+                'swift_code' => 'nullable|string|max:11',
+                'iban' => 'nullable|string|max:34',
+            ]);
+        } elseif ($request->payment_method_type == 'paypal') {
+            $validationRules = array_merge($validationRules, [
+                'paypal_email' => 'required|email|max:255',
                 'paypal_email_confirmation' => 'required|same:paypal_email',
-                // 'signature' => 'required|string',
-            ]
-        );
+            ]);
+        }
 
+        $data = $request->validate($validationRules);
 
+        // Handle signature
         $signatureData = $request->signature;
         $signatureData = str_replace('data:image/png;base64,', '', $signatureData);
         $signatureData = str_replace(' ', '+', $signatureData);
@@ -104,8 +122,14 @@ class HomeController extends Controller
         $fileName = 'signature_' . time() . '.png';
         $filePath = storage_path('app/public/signatures/' . $fileName);
         file_put_contents($filePath, $signatureImage);
-        // auth()->user()->createOrGetStripeCustomer();
-        // auth()->user()->addPaymentMethod($data['payment_method']);
+
+        // Stripe setup (if using Stripe)
+        if ($request->has('payment_method')) {
+            auth()->user()->createOrGetStripeCustomer();
+            auth()->user()->addPaymentMethod($data['payment_method']);
+        }
+
+        // Create Stripe subscription if needed
         Stripe::setApiKey(\App\Setting\Settings::setting('stripe_secret'));
         $product = Product::create([
             'name' => 'Basic Plan',
@@ -128,18 +152,43 @@ class HomeController extends Controller
         }
 
         // $sub->create($data['payment_method']);
-        $verification = Verification::create([
+        // Store bank account data if bank account method is selected
+        if ($request->payment_method_type == 'bank') {
+            BankAccount::create([
+                'user_id' => auth()->id(),
+                'bank_name' => $request->bank_name,
+                'account_holder' => $request->account_holder,
+                'account_number' => $request->account_number,
+                'routing_number' => $request->routing_number,
+                'account_type' => $request->account_type,
+                'currency' => $request->currency,
+                'bank_address' => $request->bank_address,
+                'swift_code' => $request->swift_code,
+                'iban' => $request->iban,
+                'is_default' => true, // First bank account is default
+                'status' => 'active',
+            ]);
+        }
+
+        // Create verification record
+        $verificationData = [
             'user_id' => auth()->id(),
             'phone' => $request->phone,
             'govt_id_front' => $request->file('govt_id_front') ? $request->file('govt_id_front')->storeAs('verifications', $request->file('govt_id_front')->hashName(), 'public') : null,
             'govt_id_back' => $request->file('govt_id_back') ? $request->file('govt_id_back')->storeAs('verifications', $request->file('govt_id_back')->hashName(), 'public') : null,
             'address' => $request->address,
-            'paypal_email' => $request->paypal_email,
             'ismonthly_charge' => $request->ismonthly_charge,
             'signature' => 'signatures/' . $fileName,
-            // 'terms' => $request->terms
-        ]);
+        ];
 
+        // Add payment method specific data to verification
+        if ($request->payment_method_type == 'paypal') {
+            $verificationData['paypal_email'] = $request->paypal_email;
+        }
+
+        $verification = Verification::create($verificationData);
+
+        // Create address
         Address::create([
             'country' => $request->country,
             'state' => $request->state,
@@ -149,8 +198,11 @@ class HomeController extends Controller
             'address_1' => $request->address,
             'phone' => $request->phone,
         ]);
+
+        // Send notification email
         Mail::to(Settings::setting('admin_email'))->send(new VendorVerificationSuccess($user, $verification));
-        return redirect('/vendor')->with('success_msg', 'Thanks for your informations');
+        
+        return redirect('/vendor')->with('success_msg', 'Thanks for your information. Your ' . ($request->payment_method_type === 'bank_account' ? 'bank account' : 'PayPal') . ' details have been saved successfully.');
     }
     public function offer(ProductModel $product, Request $request)
     {
