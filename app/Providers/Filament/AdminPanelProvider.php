@@ -108,7 +108,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
                 \App\Http\Middleware\RoleMiddleware::class . ':admin',
             ])
-           
+
             ->widgets([
                 WidgetsStatsOverview::class,
                 DashboardChart::class,
@@ -121,6 +121,9 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Inventory')
                     ->icon('heroicon-o-cube')
                     ->collapsible(),
+                NavigationGroup::make()
+                    ->label('Financial')
+                    ->icon('heroicon-o-banknotes'),
                 NavigationGroup::make()
                     ->label('Orders')
                     ->icon('heroicon-o-receipt-refund'),
@@ -140,10 +143,9 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Content')
                     ->icon('heroicon-o-rectangle-group'),
             ])
-           
+
             ->globalSearch(true)
             ->globalSearchDebounce('500ms')
             ->globalSearchFieldKeyBindingSuffix();
-            
     }
 }
