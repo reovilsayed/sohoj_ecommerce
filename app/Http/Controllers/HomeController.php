@@ -103,7 +103,7 @@ class HomeController extends Controller
                 'account_type' => 'required|in:Checking,Savings',
                 'currency' => 'required|string|max:3',
                 'bank_address' => 'nullable|string|max:500',
-                'swift_code' => 'nullable|string|max:11',
+                'swift_code' => 'nullable|string|max:50',
                 'iban' => 'nullable|string|max:34',
             ]);
         } 
