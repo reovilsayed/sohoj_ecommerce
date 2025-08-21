@@ -40,6 +40,7 @@ use Illuminate\Support\Str;
 class ProductResource extends Resource
 {
     protected static ?string $model = FilamentProduct::class;
+    protected static ?string $navigationLabel = 'Products';
     protected static ?string $navigationGroup = 'Inventory';
     protected static ?string $navigationIcon = 'heroicon-o-cube';
     public static function canCreate(): bool
@@ -682,9 +683,9 @@ class ProductResource extends Resource
                     ->toggleable(),
 
                 // Simplified category display to prevent memory issues
-                TextColumn::make('categories_count')
+                TextColumn::make('prodcats_count')
                     ->label('Categories')
-                    ->getStateUsing(function (Product $record): string {
+                    ->getStateUsing(function (FilamentProduct $record): string {
                         try {
                             $count = $record->prodcats()->count();
                             return $count > 0 ? "{$count} categories" : 'No categories';
