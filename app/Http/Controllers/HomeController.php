@@ -77,6 +77,7 @@ class HomeController extends Controller
     }
     public function vendorSecondStepStore(Request $request)
     {
+        // dd($request->all());
         // Validate basic fields
         $validationRules = [
             "phone" => "required",
@@ -91,9 +92,9 @@ class HomeController extends Controller
             "govt_id_front" => "required|image|mimes:jpeg,png",
             // "payment_method_type" => "required|in:bank_account,paypal",
         ];
-        // dd($request->payment_method_type);
+        
         // Add validation rules based on payment method type
-        if ($request->payment_method_type == 'bank') {
+        if ($request->payment_method_type === 'bank') {
             $validationRules = array_merge($validationRules, [
                 'bank_name' => 'required|string|max:255',
                 'account_holder' => 'required|string|max:255',
@@ -105,12 +106,14 @@ class HomeController extends Controller
                 'swift_code' => 'nullable|string|max:11',
                 'iban' => 'nullable|string|max:34',
             ]);
-        } elseif ($request->payment_method_type == 'paypal') {
+        } 
+        if ($request->payment_method_type === 'paypal') {
             $validationRules = array_merge($validationRules, [
                 'paypal_email' => 'required|email|max:255',
                 'paypal_email_confirmation' => 'required|same:paypal_email',
             ]);
         }
+        // dd($request->payment_method_type === 'bank');
 
         $data = $request->validate($validationRules);
 
@@ -124,10 +127,10 @@ class HomeController extends Controller
         file_put_contents($filePath, $signatureImage);
 
         // Stripe setup (if using Stripe)
-        if ($request->has('payment_method')) {
-            auth()->user()->createOrGetStripeCustomer();
-            auth()->user()->addPaymentMethod($data['payment_method']);
-        }
+        // if ($request->has('payment_method')) {
+        //     auth()->user()->createOrGetStripeCustomer();
+        //     auth()->user()->addPaymentMethod($data['payment_method']);
+        // }
 
         // Create Stripe subscription if needed
         Stripe::setApiKey(\App\Setting\Settings::setting('stripe_secret'));
@@ -153,7 +156,8 @@ class HomeController extends Controller
 
         // $sub->create($data['payment_method']);
         // Store bank account data if bank account method is selected
-        if ($request->payment_method_type == 'bank') {
+        dd($request->payment_method_type === 'bank');
+        if ($request->payment_method_type === 'bank') {
             BankAccount::create([
                 'user_id' => auth()->id(),
                 'bank_name' => $request->bank_name,
@@ -202,7 +206,7 @@ class HomeController extends Controller
         // Send notification email
         Mail::to(Settings::setting('admin_email'))->send(new VendorVerificationSuccess($user, $verification));
         
-        return redirect('/vendor')->with('success_msg', 'Thanks for your information. Your ' . ($request->payment_method_type === 'bank_account' ? 'bank account' : 'PayPal') . ' details have been saved successfully.');
+        return redirect('/store-profile-setup')->with('success_msg', 'Thanks for your information. Your ' . ($request->payment_method_type === 'bank_account' ? 'bank account' : 'PayPal') . ' details have been saved successfully.');
     }
     public function offer(ProductModel $product, Request $request)
     {
@@ -273,6 +277,104 @@ class HomeController extends Controller
         } catch (Exception $e) {
             return back()->with([
                 'message'    => $e->getMessage(),
+                'alert-type' => 'error',
+            ]);
+        }
+    }
+
+    /**
+     * Show the store profile setup form
+     */
+    public function storeProfileSetup()
+    {
+        return view('auth.seller.store_profile');
+    }
+
+    /**
+     * Store the store profile data
+     */
+    public function storeProfileStore(Request $request)
+    {
+        // Validate the form data
+        $validationRules = [
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'short_description' => 'required|string|max:250',
+            'description' => 'required|string|max:1000',
+            'company_name' => 'required|string|max:150',
+            'company_registration' => 'nullable|string|max:50',
+            'country' => 'required|string|max:100',
+            'state' => 'required|string|max:100',
+            'city' => 'required|string|max:100',
+            'post_code' => 'required|string|max:20',
+        ];
+
+        $data = $request->validate($validationRules);
+
+        try {
+            // Handle file uploads
+            $logoPath = null;
+            $bannerPath = null;
+
+            if ($request->hasFile('logo')) {
+                $logoPath = $request->file('logo')->store('logos', 'public');
+            }
+
+            if ($request->hasFile('banner')) {
+                $bannerPath = $request->file('banner')->store('banners', 'public');
+            }
+
+            // Check if user already has a shop
+            $user = Auth::user();
+            $shop = $user->shop;
+
+            if ($shop) {
+                // Update existing shop
+                $shop->update([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'short_description' => $data['short_description'],
+                    'description' => $data['description'],
+                    'company_name' => $data['company_name'],
+                    'company_registration' => $data['company_registration'],
+                    'logo' => $logoPath ?: $shop->logo,
+                    'banner' => $bannerPath ?: $shop->banner,
+                    'country' => $data['country'],
+                    'state' => $data['state'],
+                    'city' => $data['city'],
+                    'post_code' => $data['post_code'],
+                ]);
+            } else {
+                // Create new shop
+                $shop = Shop::create([
+                    'user_id' => Auth::id(),
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'short_description' => $data['short_description'],
+                    'description' => $data['description'],
+                    'company_name' => $data['company_name'],
+                    'company_registration' => $data['company_registration'],
+                    'logo' => $logoPath,
+                    'banner' => $bannerPath,
+                    'country' => $data['country'],
+                    'state' => $data['state'],
+                    'city' => $data['city'],
+                    'post_code' => $data['post_code'],
+                    'status' => 'pending', // Set initial status
+                ]);
+            }
+
+            return redirect()->route('vendor.verification')->with([
+                'message' => 'Store profile created successfully! Your store is now under review.',
+                'alert-type' => 'success',
+            ]);
+
+        } catch (Exception $e) {
+            return back()->withInput()->with([
+                'message' => 'Error creating store profile: ' . $e->getMessage(),
                 'alert-type' => 'error',
             ]);
         }

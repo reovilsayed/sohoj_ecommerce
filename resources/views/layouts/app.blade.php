@@ -47,7 +47,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/star-rating.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/product-cards.css') }}">
-    <link rel="stylesheet" href="cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 
 
     <link
@@ -329,7 +329,7 @@
     <!-- <script src="{{ asset('assets/js/filter.js') }}"></script> -->
     <script src="{{ asset('assets/frontend-assets/js/vendor/index.js') }}"></script>
     <script src="{{ asset('assets/js/star-rating.js') }}"></script>
-    <script src="cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
         function cartQnty() {

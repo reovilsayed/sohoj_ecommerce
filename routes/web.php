@@ -134,6 +134,10 @@ Route::post('/vendor-store', [VendorRegisterController::class, 'register'])->nam
 Route::get('/vendor-register-2nd-step', [HomeController::class, 'vendorSecondStep'])->name('vendor.second.step');
 Route::post('/2nd-step-store', [HomeController::class, 'vendorSecondStepStore'])->name('vendor.second.step.store');
 
+// Store Profile Setup Routes
+Route::get('/store-profile-setup', [HomeController::class, 'storeProfileSetup'])->name('store.profile.setup')->middleware(['auth']);
+Route::post('/store-profile-store', [HomeController::class, 'storeProfileStore'])->name('store.profile.store')->middleware(['auth']);
+
 Route::get('/shop', [SellerPagesController::class, 'shop'])->name('vendor.shop')->middleware(['auth', 'verifiedEmail', 'second']);
 Route::post('/store-shop', [SellerPagesController::class, 'shopStore'])->middleware('auth', 'verifiedEmail', 'second')->name('vendor.store');
 
