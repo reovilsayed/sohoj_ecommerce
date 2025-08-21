@@ -6,7 +6,9 @@ use App\Filament\Vendor\Resources\OrderResource\Widgets\VendorOrdersChart;
 use App\Filament\Vendor\Resources\VendorResource\Widgets\VendorStats;
 use App\Filament\Vendor\Widgets\VendorProfileWidget;
 use App\Filament\Vendor\Widgets\VendorWelcomProfileWidget;
+use App\Http\Middleware\CheckShopStatus;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Middleware\Verified;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -83,9 +85,8 @@ class VendorPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                // RoleMiddleware::class . ':vendor',
-                // TEMPORARILY DISABLED FOR DEBUGGING
-                // QueryLoggerMiddleware::class,
+
+                Verified::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

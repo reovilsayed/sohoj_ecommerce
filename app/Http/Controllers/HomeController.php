@@ -208,45 +208,26 @@ class HomeController extends Controller
             'phone' => $request->phone,
         ]);
 
-        // Check if user already has a shop
-        $user = Auth::user();
-        $shop = $user->shop;
+        Shop::create([
+            'user_id' => Auth::id(),
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'email' => $request->store_email,
+            'phone' => $request->phone,
+            'company_name' => $request->company_name,
+            'company_registration' => $request->company_registration,
+            'country' => $Address->country,
+            'state' => $Address->state,
+            'city' => $Address->city,
+            'post_code' => $Address->post_code,
+            'status' => 0,
+        ]);
 
-        if ($shop) {
-            // Update existing shop
-            $shop->update([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'company_name' => $request->company_name,
-                'company_registration' => $request->company_registration,
-                'country' => $Address->country,
-                'state' => $Address->state,
-                'city' => $Address->city,
-                'post_code' => $Address->post_code,
-            ]);
-        } else {
-            // Create new shop
-            $shop = Shop::create([
-                'user_id' => Auth::id(),
-                'name' => $request->name,
-                'slug' => Str::slug($request->name),
-                'email' => $request->store_email,
-                'phone' => $request->phone,
-                'company_name' => $request->company_name,
-                'company_registration' => $request->company_registration,
-                'country' => $Address->country,
-                'state' => $Address->state,
-                'city' => $Address->city,
-                'post_code' => $Address->post_code,
-                'status' => 0,
-            ]);
-        }
 
         // Send notification email
         Mail::to(Settings::setting('admin_email'))->send(new VendorVerificationSuccess($user, $verification));
 
-        return redirect('/vendor/verification-pending')->with('success_msg', 'Thanks for your information. Your ' . ($request->payment_method_type === 'bank_account' ? 'bank account' : 'PayPal') . ' details have been saved successfully.');
+        return redirect('/vendor')->with('success_msg', 'Thanks for your information. Your payment details have been saved successfully.');
     }
     public function offer(ProductModel $product, Request $request)
     {

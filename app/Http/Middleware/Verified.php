@@ -22,6 +22,6 @@ class Verified
                 return $next($request);
             }
         }
-        return redirect()->route('vendor.shop');
+        return redirect()->route('vendor.verification');
     }
 }
