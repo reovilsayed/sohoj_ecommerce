@@ -156,7 +156,7 @@ class HomeController extends Controller
 
         // $sub->create($data['payment_method']);
         // Store bank account data if bank account method is selected
-        dd($request->payment_method_type === 'bank');
+        // dd($request->payment_method_type === 'bank');
         if ($request->payment_method_type === 'bank') {
             BankAccount::create([
                 'user_id' => auth()->id(),
@@ -206,7 +206,7 @@ class HomeController extends Controller
         // Send notification email
         Mail::to(Settings::setting('admin_email'))->send(new VendorVerificationSuccess($user, $verification));
         
-        return redirect('/store-profile-setup')->with('success_msg', 'Thanks for your information. Your ' . ($request->payment_method_type === 'bank_account' ? 'bank account' : 'PayPal') . ' details have been saved successfully.');
+        return redirect('/vendor')->with('success_msg', 'Thanks for your information. Your ' . ($request->payment_method_type === 'bank_account' ? 'bank account' : 'PayPal') . ' details have been saved successfully.');
     }
     public function offer(ProductModel $product, Request $request)
     {
