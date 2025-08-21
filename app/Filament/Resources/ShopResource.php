@@ -259,7 +259,13 @@ class ShopResource extends Resource
                             Mail::to($record->user->email)->send(new ShopCreatedEmail($record));
                         })
                         ->requiresConfirmation(),
-                    Tables\Actions\Action::make('Verification')->icon('heroicon-o-eye')->url(fn($record) => route('filament.admin.resources.verifications.show', $record->user->verification))
+                    Tables\Actions\Action::make('Verification')
+                        ->icon('heroicon-o-eye')
+                        ->url(fn($record) => $record->user->verification 
+                            ? route('filament.admin.resources.verifications.show', $record->user->verification)
+                            : null
+                        )
+                        ->visible(fn($record) => $record->user->verification !== null)
                 ])->iconButton(),
             ])
             ->bulkActions([
