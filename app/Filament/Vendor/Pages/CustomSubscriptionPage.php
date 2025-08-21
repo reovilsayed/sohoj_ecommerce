@@ -25,13 +25,15 @@ class CustomSubscriptionPage extends Page
 
     public static function getNavigationItems(): array
     {
-        return [
-            NavigationItem::make('Subscriptions')
-                ->url(fn() => route('filament.vendor.pages.custom-subscription-page'))
-                ->icon('heroicon-o-photo')
-                ->group('Marketing')
-                ->sort(5),
-        ];
+        // return [
+        //     NavigationItem::make('Subscriptions')
+        //         ->url(fn() => route('filament.vendor.pages.custom-subscription-page'))
+        //         ->icon('heroicon-o-photo')
+        //         ->group('Marketing')
+        //         ->sort(5),
+        // ];
+
+        return [];
     }
 
     public static function shouldRegisterNavigation(): bool
