@@ -475,18 +475,21 @@
                                         style="width: 60px; height: 4px; background: var(--accent-color); border-radius: 2px; margin-bottom: 0.5rem;">
                                     </div>
                                     <div class="mb-3 text-secondary small" style="margin-bottom: 1.5rem !important;">
-                                        <i class="fas fa-info-circle me-1"></i> Choose your preferred payment method to receive sales earnings securely.
+                                        <i class="fas fa-info-circle me-1"></i> Choose your preferred payment method to
+                                        receive sales earnings securely.
                                     </div>
 
                                     <!-- Payment Method Tabs -->
                                     <div class="mb-4">
                                         <div class="d-flex gap-2 mb-3">
-                                            <button type="button" id="bank-tab" class="btn fw-bold flex-fill payment-tab active-tab"
+                                            <button type="button" id="bank-tab"
+                                                class="btn fw-bold flex-fill payment-tab active-tab"
                                                 onclick="switchPaymentMethod('bank')"
                                                 style="background: var(--accent-color); color: white; border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;">
-                                                <i class="fas fa-university me-2"></i> Bank Account 
+                                                <i class="fas fa-university me-2"></i> Bank Account
                                             </button>
-                                            <button type="button" id="paypal-tab" class="btn fw-bold flex-fill payment-tab inactive-tab"
+                                            <button type="button" id="paypal-tab"
+                                                class="btn fw-bold flex-fill payment-tab inactive-tab"
                                                 onclick="switchPaymentMethod('paypal')"
                                                 style="background: transparent; color: var(--accent-color); border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;">
                                                 <i class="fab fa-paypal me-2"></i> PayPal
@@ -495,7 +498,8 @@
                                     </div>
 
                                     <!-- Hidden field to track selected payment method -->
-                                    <input type="hidden" name="payment_method_type" id="payment_method_type" value="bank">
+                                    <input type="hidden" name="payment_method_type" id="payment_method_type"
+                                        value="bank">
 
                                     <!-- Bank Account Form -->
                                     <div id="bank-form" class="payment-form active-form">
@@ -524,8 +528,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="account_holder" class="form-label fw-bold"
-                                                        style="font-size: 1rem; color: var(--accent-color);">Account Holder Name<span
-                                                            class="text-danger">*</span></label>
+                                                        style="font-size: 1rem; color: var(--accent-color);">Account Holder
+                                                        Name<span class="text-danger">*</span></label>
                                                     <div class="input-group">
                                                         <span class="input-group-text bg-white border-1"
                                                             style="border-radius:0;"><i class="fas fa-user"
@@ -533,7 +537,8 @@
                                                         <input id="account_holder" type="text"
                                                             placeholder="Full name as appears on account"
                                                             class="form-control bg-white border-1 px-4 py-2 @error('account_holder') is-invalid @enderror"
-                                                            name="account_holder" value="{{ old('account_holder') ?? auth()->user()->name }}"
+                                                            name="account_holder"
+                                                            value="{{ old('account_holder') ?? auth()->user()->name }}"
                                                             autocomplete="account_holder"
                                                             style="box-shadow:none; border-radius:0;">
                                                     </div>
@@ -544,8 +549,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="account_number" class="form-label fw-bold"
-                                                        style="font-size: 1rem; color: var(--accent-color);">Account Number<span
-                                                            class="text-danger">*</span></label>
+                                                        style="font-size: 1rem; color: var(--accent-color);">Account
+                                                        Number<span class="text-danger">*</span></label>
                                                     <div class="input-group">
                                                         <span class="input-group-text bg-white border-1"
                                                             style="border-radius:0;"><i class="fas fa-hashtag"
@@ -553,7 +558,8 @@
                                                         <input id="account_number" type="text"
                                                             placeholder="Enter your account number"
                                                             class="form-control bg-white border-1 px-4 py-2 @error('account_number') is-invalid @enderror"
-                                                            name="account_number" value="{{ old('account_number') ?? '' }}"
+                                                            name="account_number"
+                                                            value="{{ old('account_number') ?? '' }}"
                                                             autocomplete="account_number"
                                                             style="box-shadow:none; border-radius:0;">
                                                     </div>
@@ -564,8 +570,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="routing_number" class="form-label fw-bold"
-                                                        style="font-size: 1rem; color: var(--accent-color);">Routing Number<span
-                                                            class="text-danger">*</span></label>
+                                                        style="font-size: 1rem; color: var(--accent-color);">Routing
+                                                        Number<span class="text-danger">*</span></label>
                                                     <div class="input-group">
                                                         <span class="input-group-text bg-white border-1"
                                                             style="border-radius:0;"><i class="fas fa-route"
@@ -573,7 +579,8 @@
                                                         <input id="routing_number" type="text"
                                                             placeholder="9-digit routing number"
                                                             class="form-control bg-white border-1 px-4 py-2 @error('routing_number') is-invalid @enderror"
-                                                            name="routing_number" value="{{ old('routing_number') ?? '' }}"
+                                                            name="routing_number"
+                                                            value="{{ old('routing_number') ?? '' }}"
                                                             autocomplete="routing_number"
                                                             style="box-shadow:none; border-radius:0;">
                                                     </div>
@@ -584,14 +591,18 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="account_type" class="form-label fw-bold"
-                                                        style="font-size: 1rem; color: var(--accent-color);">Account Type<span
-                                                            class="text-danger">*</span></label>
+                                                        style="font-size: 1rem; color: var(--accent-color);">Account
+                                                        Type<span class="text-danger">*</span></label>
                                                     <select
                                                         class="bg-light form-select form-control mx-0 border @error('account_type') is-invalid @enderror"
                                                         name="account_type" id="account_type">
                                                         <option value="">Select Account Type</option>
-                                                        <option value="Checking" {{ old('account_type') == 'Checking' ? 'selected' : '' }}>Checking</option>
-                                                        <option value="Savings" {{ old('account_type') == 'Savings' ? 'selected' : '' }}>Savings</option>
+                                                        <option value="Checking"
+                                                            {{ old('account_type') == 'Checking' ? 'selected' : '' }}>
+                                                            Checking</option>
+                                                        <option value="Savings"
+                                                            {{ old('account_type') == 'Savings' ? 'selected' : '' }}>
+                                                            Savings</option>
                                                     </select>
                                                     @error('account_type')
                                                         <span class="invalid-feedback"
@@ -606,12 +617,24 @@
                                                         class="bg-light form-select form-control mx-0 border @error('currency') is-invalid @enderror"
                                                         name="currency" id="currency">
                                                         <option value="">Select Currency</option>
-                                                        <option value="USD" {{ old('currency') == 'USD' ? 'selected' : 'selected' }}>US Dollar (USD)</option>
-                                                        <option value="EUR" {{ old('currency') == 'EUR' ? 'selected' : '' }}>Euro (EUR)</option>
-                                                        <option value="GBP" {{ old('currency') == 'GBP' ? 'selected' : '' }}>British Pound (GBP)</option>
-                                                        <option value="CAD" {{ old('currency') == 'CAD' ? 'selected' : '' }}>Canadian Dollar (CAD)</option>
-                                                        <option value="AUD" {{ old('currency') == 'AUD' ? 'selected' : '' }}>Australian Dollar (AUD)</option>
-                                                        <option value="BDT" {{ old('currency') == 'BDT' ? 'selected' : '' }}>Bangladeshi Taka (BDT)</option>
+                                                        <option value="USD"
+                                                            {{ old('currency') == 'USD' ? 'selected' : 'selected' }}>US
+                                                            Dollar (USD)</option>
+                                                        <option value="EUR"
+                                                            {{ old('currency') == 'EUR' ? 'selected' : '' }}>Euro (EUR)
+                                                        </option>
+                                                        <option value="GBP"
+                                                            {{ old('currency') == 'GBP' ? 'selected' : '' }}>British Pound
+                                                            (GBP)</option>
+                                                        <option value="CAD"
+                                                            {{ old('currency') == 'CAD' ? 'selected' : '' }}>Canadian
+                                                            Dollar (CAD)</option>
+                                                        <option value="AUD"
+                                                            {{ old('currency') == 'AUD' ? 'selected' : '' }}>Australian
+                                                            Dollar (AUD)</option>
+                                                        <option value="BDT"
+                                                            {{ old('currency') == 'BDT' ? 'selected' : '' }}>Bangladeshi
+                                                            Taka (BDT)</option>
                                                     </select>
                                                     @error('currency')
                                                         <span class="invalid-feedback"
@@ -623,7 +646,8 @@
                                                     <div class="row g-3">
                                                         <div class="col-md-6">
                                                             <label for="swift_code" class="form-label fw-bold"
-                                                                style="font-size: 1rem; color: var(--accent-color);">SWIFT Code 
+                                                                style="font-size: 1rem; color: var(--accent-color);">SWIFT
+                                                                Code
                                                                 <small class="text-muted">(Optional)</small></label>
                                                             <div class="input-group">
                                                                 <span class="input-group-text bg-white border-1"
@@ -632,7 +656,8 @@
                                                                 <input id="swift_code" type="text"
                                                                     placeholder="8 or 11 character SWIFT/BIC code"
                                                                     class="form-control bg-white border-1 px-4 py-2 @error('swift_code') is-invalid @enderror"
-                                                                    name="swift_code" value="{{ old('swift_code') ?? '' }}"
+                                                                    name="swift_code"
+                                                                    value="{{ old('swift_code') ?? '' }}"
                                                                     style="box-shadow:none; border-radius:0;">
                                                             </div>
                                                             @error('swift_code')
@@ -642,7 +667,7 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <label for="iban" class="form-label fw-bold"
-                                                                style="font-size: 1rem; color: var(--accent-color);">IBAN 
+                                                                style="font-size: 1rem; color: var(--accent-color);">IBAN
                                                                 <small class="text-muted">(Optional)</small></label>
                                                             <div class="input-group">
                                                                 <span class="input-group-text bg-white border-1"
@@ -663,15 +688,15 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <label for="bank_address" class="form-label fw-bold"
-                                                        style="font-size: 1rem; color: var(--accent-color);">Bank Address 
+                                                        style="font-size: 1rem; color: var(--accent-color);">Bank Address
                                                         <small class="text-muted">(Optional)</small></label>
                                                     <div class="input-group">
                                                         <span class="input-group-text bg-white border-1"
                                                             style="border-radius:0;"><i class="fas fa-map-marker-alt"
                                                                 style="color: var(--accent-color);"></i></span>
                                                         <textarea id="bank_address" placeholder="Bank branch address"
-                                                            class="form-control bg-white border-1 px-4 py-2 @error('bank_address') is-invalid @enderror" 
-                                                            name="bank_address" style="box-shadow:none; border-radius:0; min-height: 48px;">{{ old('bank_address') ?? '' }}</textarea>
+                                                            class="form-control bg-white border-1 px-4 py-2 @error('bank_address') is-invalid @enderror" name="bank_address"
+                                                            style="box-shadow:none; border-radius:0; min-height: 48px;">{{ old('bank_address') ?? '' }}</textarea>
                                                     </div>
                                                     @error('bank_address')
                                                         <span class="invalid-feedback"
@@ -689,8 +714,8 @@
                                             <div class="row g-4">
                                                 <div class="col-md-12">
                                                     <label for="paypal_email" class="form-label fw-bold"
-                                                        style="font-size: 1rem; color: var(--accent-color);">PayPal Email<span
-                                                            class="text-danger">*</span></label>
+                                                        style="font-size: 1rem; color: var(--accent-color);">PayPal
+                                                        Email<span class="text-danger">*</span></label>
                                                     <div class="input-group">
                                                         <span class="input-group-text bg-white border-1"
                                                             style="border-radius:0;"><i class="fab fa-paypal"
@@ -747,93 +772,170 @@
                                         style="background:#fafdff; border-left:4px solid var(--accent-color); padding:32px 24px 24px 24px; border-radius: 0;">
                                         <div class="row g-4">
                                             <div class="col-md-6">
-                                                <label for="country" class="form-label fw-bold"
+                                                <label for="store_name" class="form-label fw-bold"
                                                     style="font-size: 1rem; color: var(--accent-color);">
-                                                    Country<span class="text-danger">*</span>
+                                                    Store Name<span class="text-danger">*</span>
                                                 </label>
-                                                <select
-                                                    class="bg-light form-select form-control mx-0 border @error('country') is-invalid @enderror"
-                                                    name="country" id="country" required>
-                                                    <option value="">Loading countries...</option>
-                                                </select>
-                                                @error('country')
+                                                <input type="text" name="name" id="name"
+                                                    class="bg-light form-control mx-0 border @error('name') is-invalid @enderror"
+                                                    value="{{ old('name') ?? '' }}" required>
+                                                @error('name')
                                                     <span class="invalid-feedback"
                                                         role="alert"><strong>{{ $message }}</strong></span>
                                                 @enderror
                                             </div>
+                                            </select>
+                                            @error('name')
+                                                <span class="invalid-feedback"
+                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+                                        
                                             <div class="col-md-6">
-                                                <label for="state" class="form-label fw-bold"
+                                                <label for="store_email" class="form-label fw-bold"
                                                     style="font-size: 1rem; color: var(--accent-color);">
-                                                    State<span class="text-danger">*</span>
+                                                    Store Email<span class="text-danger">*</span>
                                                 </label>
-                                                <select
-                                                    class="bg-light form-select form-control mx-0 border @error('state') is-invalid @enderror"
-                                                    name="state" id="state" required>
-                                                    <option value="">Select State</option>
-                                                </select>
-                                                @error('state')
+                                                <input type="email" name="store_email" id="store_email"
+                                                    class="bg-light form-control mx-0 border @error('store_email') is-invalid @enderror"
+                                                    value="{{ old('store_email') ?? '' }}" required>
+                                                @error('store_email')
                                                     <span class="invalid-feedback"
                                                         role="alert"><strong>{{ $message }}</strong></span>
                                                 @enderror
                                             </div>
+                                            </select>
+                                            @error('name')
+                                                <span class="invalid-feedback"
+                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+                                        
                                             <div class="col-md-6">
-                                                <label for="city" class="form-label fw-bold"
-                                                    style="font-size: 1rem; color: var(--accent-color);">City<span
-                                                        class="text-danger">*</span></label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-white border-1"
-                                                        style="border-radius:0;"><i class="fas fa-map-marker-alt"
-                                                            style="color: var(--accent-color);"></i></span>
-                                                    <input type="text"
-                                                        class="form-control bg-white border-1 px-4 py-2 @error('city') is-invalid @enderror"
-                                                        value="{{ auth()->user()->shop ? auth()->user()->shop->city : ' ' }}"
-                                                        name="city" id="city" required
-                                                        style="box-shadow:none; border-radius:0;"
-                                                        placeholder="Enter your city">
-                                                </div>
-                                                @error('city')
+                                                <label for="company_name" class="form-label fw-bold"
+                                                    style="font-size: 1rem; color: var(--accent-color);">
+                                                    Company Name<span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" name="company_name" id="company_name"
+                                                    class="bg-light form-control mx-0 border @error('company_name') is-invalid @enderror"
+                                                    value="{{ old('company_name') ?? '' }}" required>
+                                                @error('company_name')
                                                     <span class="invalid-feedback"
                                                         role="alert"><strong>{{ $message }}</strong></span>
                                                 @enderror
                                             </div>
+                                            </select>
+                                            @error('name')
+                                                <span class="invalid-feedback"
+                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+                                        
                                             <div class="col-md-6">
-                                                <label for="post_code" class="form-label fw-bold"
-                                                    style="font-size: 1rem; color: var(--accent-color);">Zip</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-white border-1"
-                                                        style="border-radius:0;"><i class="fas fa-map-pin"
-                                                            style="color: var(--accent-color);"></i></span>
-                                                    <input type="text" placeholder="Enter your postal/zip code"
-                                                        class="form-control bg-white border-1 px-4 py-2 @error('post_code') is-invalid @enderror"
-                                                        value="{{ auth()->user()->shop ? auth()->user()->shop->post_code : ' ' }}"
-                                                        name="post_code" id="post_code" required
-                                                        style="box-shadow:none; border-radius:0;">
-                                                </div>
-                                                @error('post_code')
+                                                <label for="company_registration" class="form-label fw-bold"
+                                                    style="font-size: 1rem; color: var(--accent-color);">
+                                                    Company Registration<span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" name="company_registration" id="company_registration"
+                                                    class="bg-light form-control mx-0 border @error('company_registration') is-invalid @enderror"
+                                                    value="{{ old('company_registration') ?? '' }}" required>
+                                                @error('company_registration')
                                                     <span class="invalid-feedback"
                                                         role="alert"><strong>{{ $message }}</strong></span>
                                                 @enderror
                                             </div>
-                                            <div class="col-md-12">
-                                                <label for="address" class="form-label fw-bold"
-                                                    style="font-size: 1rem; color: var(--accent-color);">Street
-                                                    address<span class="text-danger">*</span></label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-white border-1"
-                                                        style="border-radius:0;"><i class="fas fa-home"
-                                                            style="color: var(--accent-color);"></i></span>
-                                                    <textarea id="address" placeholder="Enter your shop's street address"
-                                                        class="form-control bg-white border-1 px-4 py-2 @error('address') is-invalid @enderror" name="address" required
-                                                        style="box-shadow:none; border-radius:0; min-height: 48px;">{{ old('address') ?? '' }}</textarea>
-                                                </div>
-                                                @error('address')
-                                                    <span class="invalid-feedback"
-                                                        role="alert"><strong>{{ $message }}</strong></span>
-                                                @enderror
+                                            </select>
+                                            @error('name')
+                                                <span class="invalid-feedback"
+                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+                                        
+
+                                        <div class="col-md-6">
+                                            <label for="country" class="form-label fw-bold"
+                                                style="font-size: 1rem; color: var(--accent-color);">
+                                                Country<span class="text-danger">*</span>
+                                            </label>
+                                            <select
+                                                class="bg-light form-select form-control mx-0 border @error('country') is-invalid @enderror"
+                                                name="country" id="country" required>
+                                                <option value="">Loading countries...</option>
+                                            </select>
+                                            @error('country')
+                                                <span class="invalid-feedback"
+                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="state" class="form-label fw-bold"
+                                                style="font-size: 1rem; color: var(--accent-color);">
+                                                State<span class="text-danger">*</span>
+                                            </label>
+                                            <select
+                                                class="bg-light form-select form-control mx-0 border @error('state') is-invalid @enderror"
+                                                name="state" id="state" required>
+                                                <option value="">Select State</option>
+                                            </select>
+                                            @error('state')
+                                                <span class="invalid-feedback"
+                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="city" class="form-label fw-bold"
+                                                style="font-size: 1rem; color: var(--accent-color);">City<span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-1"
+                                                    style="border-radius:0;"><i class="fas fa-map-marker-alt"
+                                                        style="color: var(--accent-color);"></i></span>
+                                                <input type="text"
+                                                    class="form-control bg-white border-1 px-4 py-2 @error('city') is-invalid @enderror"
+                                                    value="{{ auth()->user()->shop ? auth()->user()->shop->city : ' ' }}"
+                                                    name="city" id="city" required
+                                                    style="box-shadow:none; border-radius:0;"
+                                                    placeholder="Enter your city">
                                             </div>
+                                            @error('city')
+                                                <span class="invalid-feedback"
+                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="post_code" class="form-label fw-bold"
+                                                style="font-size: 1rem; color: var(--accent-color);">Zip</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-1"
+                                                    style="border-radius:0;"><i class="fas fa-map-pin"
+                                                        style="color: var(--accent-color);"></i></span>
+                                                <input type="text" placeholder="Enter your postal/zip code"
+                                                    class="form-control bg-white border-1 px-4 py-2 @error('post_code') is-invalid @enderror"
+                                                    value="{{ auth()->user()->shop ? auth()->user()->shop->post_code : ' ' }}"
+                                                    name="post_code" id="post_code" required
+                                                    style="box-shadow:none; border-radius:0;">
+                                            </div>
+                                            @error('post_code')
+                                                <span class="invalid-feedback"
+                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label for="address" class="form-label fw-bold"
+                                                style="font-size: 1rem; color: var(--accent-color);">Street
+                                                address<span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-1"
+                                                    style="border-radius:0;"><i class="fas fa-home"
+                                                        style="color: var(--accent-color);"></i></span>
+                                                <textarea id="address" placeholder="Enter your shop's street address"
+                                                    class="form-control bg-white border-1 px-4 py-2 @error('address') is-invalid @enderror" name="address" required
+                                                    style="box-shadow:none; border-radius:0; min-height: 48px;">{{ old('address') ?? '' }}</textarea>
+                                            </div>
+                                            @error('address')
+                                                <span class="invalid-feedback"
+                                                    role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
                                         </div>
                                     </div>
-                                    {{-- <h4 class="fw-bold text-dark mb-2 d-flex align-items-center"
+                            </div>
+                            {{-- <h4 class="fw-bold text-dark mb-2 d-flex align-items-center"
                                         style="letter-spacing: 1px;">
                                         <i class="fas fa-credit-card me-2" style="color: var(--accent-color);"></i>
                                         Credit/Debit Card
@@ -887,8 +989,8 @@
                                         </button>
                                     </div> --}}
 
-                                    <!-- Checkbox -->
-                                    {{-- <div class="d-flex align-items-center mb-3">
+                            <!-- Checkbox -->
+                            {{-- <div class="d-flex align-items-center mb-3">
                                         <input type="checkbox" required
                                             class="form-check-input me-2 @error('terms') is-invalid @enderror"
                                             id="termsCheckbox" style="width: 25px;" value="1" name="terms">
@@ -906,30 +1008,30 @@
                                         @enderror
                                     </div> --}}
 
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="">
-                                            <button type="submit" id="submit" class="btn fw-bold shadow"
-                                                style="background-color:#FF0000;color:white; transition:transform 0.2s; font-size:1.1rem;"
-                                                onmouseover="this.style.transform='translateY(-2px) scale(1.03)'"
-                                                onmouseout="this.style.transform='scale(1)'">
-                                                Submit
-                                            </button>
-                                        </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="">
+                                    <button type="submit" id="submit" class="btn fw-bold shadow"
+                                        style="background-color:#FF0000;color:white; transition:transform 0.2s; font-size:1.1rem;"
+                                        onmouseover="this.style.transform='translateY(-2px) scale(1.03)'"
+                                        onmouseout="this.style.transform='scale(1)'">
+                                        Submit
+                                    </button>
+                                </div>
 
-                                        {{-- <div class="">
+                                {{-- <div class="">
                                             <button type="button" class="btn btn-sm"
                                                 style="background: var(--accent-color); color: #ffffff;"
                                                 onclick="showSection('terms')">
                                                 <i class="fas fa-file-contract me-1"></i> View Terms
                                             </button>
                                         </div> --}}
-                                    </div>
-                                </form>
-                            </div> <!-- End Verification Section -->
-                        </div>
+                            </div>
+                            </form>
+                        </div> <!-- End Verification Section -->
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 @endsection
@@ -1069,7 +1171,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: left 0.5s;
         }
 
@@ -1087,13 +1189,13 @@
         .payment-tab.inactive-tab {
             background: transparent !important;
             color: var(--accent-color) !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .payment-tab.inactive-tab:hover {
             background: rgba(var(--accent-color-rgb), 0.1) !important;
             transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
         /* Payment Form Styles */
@@ -1148,6 +1250,7 @@
                 opacity: 0;
                 transform: translateY(-30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -1395,92 +1498,98 @@
             const bankForm = document.getElementById('bank-form');
             const paypalForm = document.getElementById('paypal-form');
             const paymentMethodType = document.getElementById('payment_method_type');
-            
+
             if (method === 'bank') {
                 // Activate bank tab
                 bankTab.className = 'btn fw-bold flex-fill payment-tab active-tab';
-                bankTab.style.cssText = 'background: var(--accent-color); color: white; border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
-                
+                bankTab.style.cssText =
+                    'background: var(--accent-color); color: white; border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
+
                 // Deactivate paypal tab
                 paypalTab.className = 'btn fw-bold flex-fill payment-tab inactive-tab';
-                paypalTab.style.cssText = 'background: transparent; color: var(--accent-color); border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
-                
+                paypalTab.style.cssText =
+                    'background: transparent; color: var(--accent-color); border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
+
                 // Show bank form, hide paypal form
                 bankForm.style.display = 'block';
                 bankForm.className = 'payment-form active-form';
                 paypalForm.style.display = 'none';
                 paypalForm.className = 'payment-form inactive-form';
-                
+
                 // Enable bank fields, disable paypal fields
                 toggleFormFields('bank', true);
                 toggleFormFields('paypal', false);
-                
+
                 // Set payment method type
                 paymentMethodType.value = 'bank';
-                
+
                 // Show success message
                 if (typeof toastr !== 'undefined') {
                     toastr.info('Bank Account payment method selected');
                 }
-                
+
             } else if (method === 'paypal') {
                 // Activate paypal tab
                 paypalTab.className = 'btn fw-bold flex-fill payment-tab active-tab';
-                paypalTab.style.cssText = 'background: var(--accent-color); color: white; border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
-                
+                paypalTab.style.cssText =
+                    'background: var(--accent-color); color: white; border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
+
                 // Deactivate bank tab
                 bankTab.className = 'btn fw-bold flex-fill payment-tab inactive-tab';
-                bankTab.style.cssText = 'background: transparent; color: var(--accent-color); border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
-                
+                bankTab.style.cssText =
+                    'background: transparent; color: var(--accent-color); border-radius: 8px; border: 2px solid var(--accent-color); transition: all 0.3s ease;';
+
                 // Show paypal form, hide bank form
                 paypalForm.style.display = 'block';
                 paypalForm.className = 'payment-form active-form';
                 bankForm.style.display = 'none';
                 bankForm.className = 'payment-form inactive-form';
-                
+
                 // Enable paypal fields, disable bank fields
                 toggleFormFields('paypal', true);
                 toggleFormFields('bank', false);
-                
+
                 // Set payment method type
                 paymentMethodType.value = 'paypal';
-                
+
                 // Show success message
                 if (typeof toastr !== 'undefined') {
                     toastr.info('PayPal payment method selected');
                 }
             }
         }
-        
+
         // Function to enable/disable form fields
         function toggleFormFields(formType, enabled) {
             let fieldNames = [];
-            
+
             if (formType === 'bank') {
                 fieldNames = [
-                    'bank_name', 'account_holder', 'account_number', 'routing_number', 
+                    'bank_name', 'account_holder', 'account_number', 'routing_number',
                     'account_type', 'currency', 'swift_code', 'iban', 'bank_address'
                 ];
             } else if (formType === 'paypal') {
                 fieldNames = ['paypal_email', 'paypal_email_confirmation'];
             }
-            
+
             fieldNames.forEach(fieldName => {
                 const field = document.getElementById(fieldName);
                 if (field) {
                     field.disabled = !enabled;
-                    
+
                     // Remove required attribute when disabled
                     if (!enabled) {
                         field.removeAttribute('required');
                         field.value = ''; // Clear the value
                     } else {
                         // Add required attribute back for essential fields
-                        if (['bank_name', 'account_holder', 'account_number', 'routing_number', 'account_type', 'currency', 'paypal_email', 'paypal_email_confirmation'].includes(fieldName)) {
+                        if (['bank_name', 'account_holder', 'account_number', 'routing_number', 'account_type',
+                                'currency', 'paypal_email', 'paypal_email_confirmation'
+                            ].includes(fieldName)) {
                             field.setAttribute('required', 'required');
                         }
                     }
-                    
+
                     // Visual feedback
                     if (!enabled) {
                         field.style.backgroundColor = '#f8f9fa';
@@ -1494,14 +1603,14 @@
                 }
             });
         }
-        
+
         // Enhanced initialization for payment methods
         document.addEventListener('DOMContentLoaded', function() {
             // Set initial state (bank method selected by default)
             setTimeout(() => {
                 switchPaymentMethod('bank');
             }, 100);
-            
+
             // Add smooth transition animations
             const style = document.createElement('style');
             style.textContent = `

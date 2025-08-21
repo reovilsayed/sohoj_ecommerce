@@ -90,9 +90,14 @@ class HomeController extends Controller
             "post_code" => "required",
             "govt_id_back" => "required|image|mimes:jpeg,png",
             "govt_id_front" => "required|image|mimes:jpeg,png",
+
+            "company_registration" => "required",
+            'name' => 'required|string|max:255',
+            'store_email' => 'required|email|max:255',
+            'company_name' => 'required|string|max:255',
             // "payment_method_type" => "required|in:bank_account,paypal",
         ];
-        
+
         // Add validation rules based on payment method type
         if ($request->payment_method_type === 'bank') {
             $validationRules = array_merge($validationRules, [
@@ -106,7 +111,7 @@ class HomeController extends Controller
                 'swift_code' => 'nullable|string|max:50',
                 'iban' => 'nullable|string|max:34',
             ]);
-        } 
+        }
         if ($request->payment_method_type === 'paypal') {
             $validationRules = array_merge($validationRules, [
                 'paypal_email' => 'required|email|max:255',
@@ -193,7 +198,7 @@ class HomeController extends Controller
         $verification = Verification::create($verificationData);
 
         // Create address
-        Address::create([
+        $Address = Address::create([
             'country' => $request->country,
             'state' => $request->state,
             'city' => $request->city,
@@ -203,10 +208,44 @@ class HomeController extends Controller
             'phone' => $request->phone,
         ]);
 
+        // Check if user already has a shop
+        $user = Auth::user();
+        $shop = $user->shop;
+
+        if ($shop) {
+            // Update existing shop
+            $shop->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'company_name' => $request->company_name,
+                'company_registration' => $request->company_registration,
+                'country' => $Address->country,
+                'state' => $Address->state,
+                'city' => $Address->city,
+                'post_code' => $Address->post_code,
+            ]);
+        } else {
+            // Create new shop
+            $shop = Shop::create([
+                'user_id' => Auth::id(),
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'company_name' => $request->company_name,
+                'company_registration' => $request->company_registration,
+                'country' => $Address->country,
+                'state' => $Address->state,
+                'city' => $Address->city,
+                'post_code' => $Address->post_code,
+                'status' => 0,
+            ]);
+        }
+
         // Send notification email
         Mail::to(Settings::setting('admin_email'))->send(new VendorVerificationSuccess($user, $verification));
-        
-        return redirect('/vendor')->with('success_msg', 'Thanks for your information. Your ' . ($request->payment_method_type === 'bank_account' ? 'bank account' : 'PayPal') . ' details have been saved successfully.');
+
+        return redirect('/vendor/verification-pending')->with('success_msg', 'Thanks for your information. Your ' . ($request->payment_method_type === 'bank_account' ? 'bank account' : 'PayPal') . ' details have been saved successfully.');
     }
     public function offer(ProductModel $product, Request $request)
     {
@@ -371,7 +410,6 @@ class HomeController extends Controller
                 'message' => 'Store profile created successfully! Your store is now under review.',
                 'alert-type' => 'success',
             ]);
-
         } catch (Exception $e) {
             return back()->withInput()->with([
                 'message' => 'Error creating store profile: ' . $e->getMessage(),
