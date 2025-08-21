@@ -230,7 +230,8 @@ class HomeController extends Controller
             $shop = Shop::create([
                 'user_id' => Auth::id(),
                 'name' => $request->name,
-                'email' => $request->email,
+                'slug' => Str::slug($request->name),
+                'email' => $request->store_email,
                 'phone' => $request->phone,
                 'company_name' => $request->company_name,
                 'company_registration' => $request->company_registration,
