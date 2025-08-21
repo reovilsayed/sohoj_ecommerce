@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
+use App\Models\FilamentProduct;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\Prodcat;
@@ -38,7 +39,7 @@ use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
-    protected static ?string $model = Product::class;
+    protected static ?string $model = FilamentProduct::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 

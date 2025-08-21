@@ -5,6 +5,7 @@ namespace App\Filament\Vendor\Resources;
 use App\Facade\Sohoj;
 use App\Filament\Vendor\Resources\ProductResource\Pages;
 use App\Filament\Vendor\Resources\ProductResource\RelationManagers;
+use App\Models\FilamentProduct;
 use App\Models\Product;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Support\Facades\Log;
@@ -38,7 +39,7 @@ use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
-    protected static ?string $model = Product::class;
+    protected static ?string $model = FilamentProduct::class;
     protected static ?string $navigationGroup = 'Inventory';
     protected static ?string $navigationIcon = 'heroicon-o-cube';
     public static function canCreate(): bool
