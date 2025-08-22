@@ -539,7 +539,7 @@
             <div class="verification-footer">
                 <p>© 2023 Afrikartt E-commerce. All rights reserved.</p>
                 <div class="contact-info">
-                    Need help? Contact us at <a href="mailto:support@afrikartt.com">support@afrikartt.com</a>
+                    Need help? Contact us at <a href="mailto:{{ Settings::setting('admin_email') }}">{{ Settings::setting('admin_email') }}</a>
                 </div>
             </div>
         </div>
@@ -565,35 +565,110 @@
                 this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Checking...';
                 this.disabled = true;
 
-                setTimeout(() => {
+                // Make AJAX request to check shop status
+                fetch('/check-shop-status', {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Shop status response:', data); // Debug log
+                    
                     this.innerHTML = originalText;
                     this.disabled = false;
 
-                    // Create and show notification
+                    // Convert status to integer for comparison
+                    const shopStatus = parseInt(data.status);
+
+                    if (shopStatus === 1) {
+                        // Shop is approved, redirect to vendor dashboard
+                        const notification = document.createElement('div');
+                        notification.style.position = 'fixed';
+                        notification.style.bottom = '20px';
+                        notification.style.right = '20px';
+                        notification.style.padding = '15px 20px';
+                        notification.style.background = '#28a745';
+                        notification.style.color = 'white';
+                        notification.style.borderRadius = '8px';
+                        notification.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.15)';
+                        notification.style.zIndex = '1000';
+                        notification.innerHTML = '<i class="fas fa-check-circle me-2"></i> Congratulations! Your account has been approved. Redirecting to vendor dashboard...';
+
+                        document.body.appendChild(notification);
+
+                        setTimeout(() => {
+                            window.location.href = '/vendor';
+                        }, 2000);
+                    } else {
+                        // Shop is still pending (status = 0 or any other value)
+                        const notification = document.createElement('div');
+                        notification.style.position = 'fixed';
+                        notification.style.bottom = '20px';
+                        notification.style.right = '20px';
+                        notification.style.padding = '15px 20px';
+                        notification.style.background = '#DE991B';
+                        notification.style.color = 'white';
+                        notification.style.borderRadius = '8px';
+                        notification.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.15)';
+                        notification.style.zIndex = '1000';
+                        notification.innerHTML = '<i class="fas fa-hourglass-half me-2"></i> Please wait. You will get vendor access after admin approval.';
+
+                        document.body.appendChild(notification);
+
+                        // Remove notification after 4 seconds
+                        setTimeout(() => {
+                            notification.style.opacity = '0';
+                            notification.style.transition = 'opacity 0.5s ease';
+                            setTimeout(() => {
+                                if (document.body.contains(notification)) {
+                                    document.body.removeChild(notification);
+                                }
+                            }, 500);
+                        }, 4000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking shop status:', error); // Debug log
+                    
+                    this.innerHTML = originalText;
+                    this.disabled = false;
+                    
+                    // Show error message
                     const notification = document.createElement('div');
                     notification.style.position = 'fixed';
                     notification.style.bottom = '20px';
                     notification.style.right = '20px';
                     notification.style.padding = '15px 20px';
-                    notification.style.background = '#DE991B';
+                    notification.style.background = '#dc3545';
                     notification.style.color = 'white';
                     notification.style.borderRadius = '8px';
                     notification.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.15)';
                     notification.style.zIndex = '1000';
-                    notification.innerHTML =
-                        '<i class="fas fa-info-circle me-2"></i> Your verification status is still pending.';
+                    notification.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i> An error occurred. Please try again.';
 
                     document.body.appendChild(notification);
 
-                    // Remove notification after 3 seconds
                     setTimeout(() => {
                         notification.style.opacity = '0';
                         notification.style.transition = 'opacity 0.5s ease';
                         setTimeout(() => {
-                            document.body.removeChild(notification);
+                            if (document.body.contains(notification)) {
+                                document.body.removeChild(notification);
+                            }
                         }, 500);
                     }, 3000);
-                }, 2000);
+                });
             });
 
             // Add hover effects to timeline items

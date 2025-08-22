@@ -399,4 +399,43 @@ class HomeController extends Controller
             ]);
         }
     }
+
+    /**
+     * Check shop status for verification page
+     */
+    public function checkShopStatus()
+    {
+        try {
+            $user = Auth::user();
+            
+            if (!$user) {
+                return response()->json([
+                    'status' => 0,
+                    'message' => 'User not authenticated'
+                ], 401);
+            }
+            
+            $shop = $user->shop;
+            
+            if ($shop) {
+                return response()->json([
+                    'status' => (int) $shop->status,
+                    'message' => $shop->status == 1 ? 'Shop approved' : 'Shop pending approval',
+                    'shop_id' => $shop->id,
+                    'shop_name' => $shop->name
+                ]);
+            }
+            
+            return response()->json([
+                'status' => 0,
+                'message' => 'No shop found for this user'
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 0,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

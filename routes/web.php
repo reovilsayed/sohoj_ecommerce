@@ -138,6 +138,9 @@ Route::post('/2nd-step-store', [HomeController::class, 'vendorSecondStepStore'])
 Route::get('/store-profile-setup', [HomeController::class, 'storeProfileSetup'])->name('store.profile.setup')->middleware(['auth']);
 Route::post('/store-profile-store', [HomeController::class, 'storeProfileStore'])->name('store.profile.store')->middleware(['auth']);
 
+// Check Shop Status Route
+Route::get('/check-shop-status', [HomeController::class, 'checkShopStatus'])->name('check.shop.status')->middleware(['auth']);
+
 Route::get('/shop', [SellerPagesController::class, 'shop'])->name('vendor.shop')->middleware(['auth', 'verifiedEmail', 'second']);
 Route::post('/store-shop', [SellerPagesController::class, 'shopStore'])->middleware('auth', 'verifiedEmail', 'second')->name('vendor.store');
 
