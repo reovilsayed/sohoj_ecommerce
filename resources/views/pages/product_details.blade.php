@@ -753,7 +753,7 @@
                         <div id="ec-spt-nav-info" class="tab-pane fade">
                             <div class="ec-single-pro-tab-moreinfo">
                                 <ul>
-                                    <li><span>Weight</span> {{ $product->weight }}g</li>
+                                    <li><span>Weight</span> {{ $product->weight }} {{ $product->weight_unit }}</li>
                                     <li><span>Dimensions</span> {{ $product->dimensions }} cm</li>
                                     <li><span>Shipping Cost</span> {{ Sohoj::price($product->shipping_cost) }}</li>
                                 </ul>

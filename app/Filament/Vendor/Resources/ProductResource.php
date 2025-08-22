@@ -330,13 +330,26 @@ class ProductResource extends Resource
                                 Forms\Components\Section::make('Product Dimensions & Weight')
                                     ->description('Define physical characteristics of the product.')
                                     ->schema([
-                                        Forms\Components\Grid::make(3)
+                                        Forms\Components\Grid::make(4)
                                             ->schema([
                                                 TextInput::make('weight')
                                                     ->label('Weight (kg)')
                                                     ->numeric()
                                                     ->step(0.01)
                                                     ->helperText('Product weight in kilograms. Used for shipping calculations and logistics planning.')
+                                                    ->columnSpan(1),
+
+                                                Select::make('weight_unit')
+                                                    ->label('Weight Unit')
+                                                    ->options([
+                                                        'kg' => 'Kilograms (kg)',
+                                                        'g' => 'Grams (g)',
+                                                        'lb' => 'Pounds (lb)',
+                                                        'oz' => 'Ounces (oz)',
+                                                    ])
+                                                    ->default('kg')
+                                                    ->required()
+                                                    ->helperText('Select the unit for product weight.')
                                                     ->columnSpan(1),
 
                                                 TextInput::make('dimensions')
