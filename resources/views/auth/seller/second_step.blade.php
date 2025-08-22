@@ -3,6 +3,73 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+    
+    <style>
+        :root {
+            --accent-color: #DE991B;
+            --accent-color-rgb: 222, 153, 27;
+        }
+
+        /* Step indicator animations */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 3px 12px rgba(var(--accent-color-rgb), 0.25);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 5px 20px rgba(var(--accent-color-rgb), 0.4);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 3px 12px rgba(var(--accent-color-rgb), 0.25);
+            }
+        }
+
+        @keyframes checkmark {
+            0% {
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(180deg);
+            }
+            100% {
+                transform: scale(1) rotate(360deg);
+            }
+        }
+
+        @keyframes progressFill {
+            0% {
+                background: #e5e7eb;
+            }
+            100% {
+                background: var(--accent-color);
+            }
+        }
+
+        .step-transition {
+            animation: checkmark 0.6s ease-in-out;
+        }
+
+        .progress-fill {
+            animation: progressFill 0.5s ease-in-out forwards;
+        }
+
+        /* Enhanced button states */
+        .btn.btn-enabled {
+            background: var(--accent-color) !important;
+            color: white !important;
+            cursor: pointer !important;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .btn.btn-enabled:hover {
+            background: #c58514 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(var(--accent-color-rgb), 0.3);
+        }
+    </style>
 @endsection
 @section('content')
     <x-app.header />
@@ -72,6 +139,7 @@
                     </div>
                     <div class="card shadow-lg border-0" style="border-left: 8px solid var(--accent-color);">
                         <div class="card-body p-4 p-md-5">
+
                             <div class="mb-4">
                                 <div class="alert text-white text-center mb-0"
                                     style="background: var(--accent-color); border-radius: 1rem;">
@@ -244,7 +312,101 @@
                                             document.addEventListener('DOMContentLoaded', function() {
                                                 const signatureForm = document.getElementById('signature-form');
                                                 const continueBtn = document.getElementById('continueBtn');
+                                                const termsCheckbox = document.getElementById('TermsConditions');
+                                                const signatureInput = document.getElementById('signature-input');
 
+                                                // Function to check if form is valid
+                                                function checkFormValidity() {
+                                                    const isTermsChecked = termsCheckbox.checked;
+                                                    const hasSignature = signatureInput.value.trim() !== '';
+                                                    
+                                                    if (isTermsChecked && hasSignature) {
+                                                        continueBtn.disabled = false;
+                                                        continueBtn.classList.remove('btn-disabled');
+                                                        continueBtn.classList.add('btn-enabled');
+                                                        continueBtn.style.backgroundColor = 'var(--accent-color)';
+                                                        continueBtn.style.color = 'white';
+                                                        continueBtn.style.cursor = 'pointer';
+                                                    } else {
+                                                        continueBtn.disabled = true;
+                                                        continueBtn.classList.remove('btn-enabled');
+                                                        continueBtn.classList.add('btn-disabled');
+                                                        continueBtn.style.backgroundColor = '#6c757d';
+                                                        continueBtn.style.color = 'white';
+                                                        continueBtn.style.cursor = 'not-allowed';
+                                                    }
+                                                }
+
+                                                // Function to update step indicators
+                                                function updateStepIndicators() {
+                                                    // Update Step 2 to completed
+                                                    const step2Circle = document.getElementById('step2-circle');
+                                                    const progress2to3 = document.getElementById('progress-2-3');
+                                                    const step3Circle = document.getElementById('step3-circle');
+                                                    const step3Text = document.getElementById('step3-text');
+                                                    const step3Desc = document.getElementById('step3-desc');
+                                                    const sectionTitle = document.getElementById('section-title');
+                                                    const sectionDescription = document.getElementById('section-description');
+
+                                                    // Step 2 transition to completed
+                                                    step2Circle.style.animation = 'none';
+                                                    step2Circle.innerHTML = '<i class="fas fa-check"></i>';
+                                                    step2Circle.classList.add('step-transition');
+                                                    
+                                                    // Fill progress bar 2-3
+                                                    setTimeout(() => {
+                                                        progress2to3.style.background = 'var(--accent-color)';
+                                                        progress2to3.classList.add('progress-fill');
+                                                    }, 300);
+
+                                                    // Activate Step 3
+                                                    setTimeout(() => {
+                                                        step3Circle.style.background = 'var(--accent-color)';
+                                                        step3Circle.style.color = '#fff';
+                                                        step3Circle.style.animation = 'pulse 2s infinite';
+                                                        step3Circle.style.boxShadow = '0 3px 12px rgba(var(--accent-color-rgb), 0.25)';
+                                                        
+                                                        step3Text.style.color = 'var(--accent-color)';
+                                                        step3Text.classList.add('fw-bold');
+                                                        step3Desc.style.color = 'var(--accent-color)';
+                                                        
+                                                        // Update section title
+                                                        sectionTitle.textContent = 'Vendor Verification';
+                                                        sectionDescription.textContent = 'Complete your verification to start selling';
+                                                    }, 600);
+                                                }
+
+                                                // Function to show verification section
+                                                function showSection(sectionName) {
+                                                    const termsSection = document.getElementById('terms-section');
+                                                    const verificationSection = document.getElementById('verification-section');
+                                                    
+                                                    if (sectionName === 'verification') {
+                                                        termsSection.style.display = 'none';
+                                                        verificationSection.style.display = 'block';
+                                                        
+                                                        // Update step indicators
+                                                        updateStepIndicators();
+                                                        
+                                                        // Scroll to top smoothly
+                                                        window.scrollTo({
+                                                            top: 0,
+                                                            behavior: 'smooth'
+                                                        });
+                                                    }
+                                                }
+
+                                                // Event listeners
+                                                termsCheckbox.addEventListener('change', checkFormValidity);
+                                                
+                                                // Listen for signature changes
+                                                const canvas = document.getElementById('signature-canvas');
+                                                if (canvas) {
+                                                    canvas.addEventListener('mouseup', checkFormValidity);
+                                                    canvas.addEventListener('touchend', checkFormValidity);
+                                                }
+
+                                                // Form submission handler
                                                 if (signatureForm) {
                                                     signatureForm.addEventListener('submit', function(e) {
                                                         e.preventDefault();
@@ -282,6 +444,9 @@
                                                         }, 800);
                                                     });
                                                 }
+
+                                                // Initial form validation check
+                                                checkFormValidity();
                                             });
                                         </script>
 
@@ -427,7 +592,7 @@
                                                         PNG)</span>
                                                     <input id="govt_id_front" type="file"
                                                         class="d-none @error('govt_id_front') is-invalid @enderror"
-                                                        name="govt_id_front"
+                                                        name="govt_id_front" required
                                                         onchange="document.getElementById('govt_id_front_name').textContent = this.files[0]?.name || 'No file chosen'">
                                                 </label>
                                                 <span id="govt_id_front_name"
@@ -453,7 +618,7 @@
                                                         upload</span>
                                                     <input id="govt_id_back" type="file"
                                                         class="d-none @error('govt_id_back') is-invalid @enderror"
-                                                        name="govt_id_back"
+                                                        name="govt_id_back" required
                                                         onchange="document.getElementById('govt_id_back_name').textContent = this.files[0]?.name || 'No file chosen'">
                                                 </label>
                                                 <span id="govt_id_back_name"
