@@ -344,10 +344,10 @@ class ProductResource extends Resource
                                                     ->image()
                                                     ->directory('products')
                                                     ->imagePreviewHeight('120')
-                                                    ->visibility('public')
-                                                    ->maxSize(2048)
+                                                    // ->visibility('public')
+                                                    // ->maxSize(2048)
                                                     ->disk('public')
-                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
+                                                    // ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
                                                     ->helperText('Upload a high-quality image that represents your product. This will be the main image displayed.')
                                                     ->columnSpan(1),
 
@@ -357,11 +357,11 @@ class ProductResource extends Resource
                                                     ->multiple()
                                                     ->directory('products')
                                                     ->imagePreviewHeight('120')
-                                                    ->visibility('public')
-                                                    ->maxSize(2048)
+                                                    // ->visibility('public')
+                                                    // ->maxSize(2048)
                                                     ->maxFiles(10)
                                                     ->disk('public')
-                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
+                                                    // ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
                                                     ->helperText('Upload additional product images (max 10). Show different angles, details, or variations of your product.')
                                                     ->dehydrateStateUsing(fn($state) => is_array($state) ? $state : [])
                                                     ->columnSpan(1),
@@ -585,10 +585,10 @@ class ProductResource extends Resource
                                                                     ->image()
                                                                     ->directory('variants')
                                                                     ->imagePreviewHeight('150')
-                                                                    ->visibility('public')
+                                                                    // ->visibility('public')
                                                                     ->disk('public')
-                                                                    ->maxSize(2048)
-                                                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
+                                                                    // ->maxSize(2048)
+                                                                    // ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
                                                                     ->helperText('Image specific to this variant.')
                                                                     ->columnSpanFull(),
                                                             ]),
