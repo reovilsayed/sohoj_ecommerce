@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'ups' => [
+        'client_id' => env('UPS_CLIENT_ID'),
+        'client_secret' => env('UPS_CLIENT_SECRET'),
+        'account_number' => env('UPS_ACCOUNT_NUMBER'),
+        'production' => env('UPS_PRODUCTION', false),
+    ],
+
 ];

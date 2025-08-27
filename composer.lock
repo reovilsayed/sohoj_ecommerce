@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4443a6d3dd58f87a2410354d5140fa66",
+    "content-hash": "0bb62e4ddd908e3355a44c4e6dc7faba",
     "packages": [
         {
             "name": "anayarojo/shoppingcart",
@@ -5742,6 +5742,83 @@
                 "source": "https://github.com/ramsey/uuid/tree/4.9.0"
             },
             "time": "2025-06-25T14:20:11+00:00"
+        },
+        {
+            "name": "rawilk/laravel-ups",
+            "version": "v2.1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rawilk/laravel-ups.git",
+                "reference": "85bef01f407818d606a38d5647c439d4de3de556"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rawilk/laravel-ups/zipball/85bef01f407818d606a38d5647c439d4de3de556",
+                "reference": "85bef01f407818d606a38d5647c439d4de3de556",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "illuminate/contracts": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/http": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.0|^1.13"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^7.2",
+                "laravel/pint": "^1.2",
+                "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0|^10.0",
+                "pestphp/pest": "^1.22|^2.0|^3.0",
+                "pestphp/pest-plugin-laravel": "^1.3|^2.0|^3.0"
+            },
+            "suggest": {
+                "ext-gd": "Required for rotating labels",
+                "guzzlehttp/guzzle": "^7.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Rawilk\\Ups\\UpsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rawilk\\Ups\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Randall Wilk",
+                    "email": "randall@randallwilk.dev",
+                    "homepage": "https://randallwilk.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": "UPS api wrapper for Laravel.",
+            "homepage": "https://github.com/rawilk/laravel-ups",
+            "keywords": [
+                "UPS Api",
+                "laravel-ups",
+                "rawilk"
+            ],
+            "support": {
+                "issues": "https://github.com/rawilk/laravel-ups/issues",
+                "source": "https://github.com/rawilk/laravel-ups/tree/v2.1.7"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/rawilk",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-03-18T18:37:16+00:00"
         },
         {
             "name": "ryangjchandler/blade-capture-directive",
@@ -11877,12 +11954,12 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }
