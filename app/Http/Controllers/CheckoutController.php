@@ -13,7 +13,10 @@ use App\Models\Notification;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
+use App\Services\Checkout\CheckoutService;
+use App\Services\Checkout\Data\ShippingAndBillingInformation;
 use App\Services\PaymentService;
+use App\Services\UPSService;
 use App\Setting\Settings;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -25,6 +28,98 @@ use Illuminate\Support\Facades\Http;
 
 class CheckoutController extends Controller
 {
+
+    public function shippingAndBillingInformationPage()
+    {
+        return view('pages.checkout');
+    }
+    public function storeBillingAndShippingInformation(Request $request)
+    {
+        $shippingAndBillingInformation = new ShippingAndBillingInformation(
+            firstName: $request->first_name,
+            lastName: $request->last_name,
+            email: $request->email,
+            address_line: $request->address_1,
+            latitude: $request->latitude,
+            longitude: $request->longitude,
+            city: $request->city,
+            state: $request->state,
+            state_code: $request->state_code,
+            post_code: $request->post_code,
+            phone: $request->phone,
+            country_code: $request->country_code
+        );
+        $checkoutService = new CheckoutService($shippingAndBillingInformation);
+        $order = $checkoutService->createOrder();
+        Cart::destroy();
+        session()->forget('discount');
+        session()->forget('discount_code');
+        return redirect()->route('checkout.paymentPage', $order);
+    }
+
+    public function paymentPage(Order $order)
+    {
+        $shipping = json_decode($order->shipping, true);
+        $packages =  $order->products->map(function ($product) {
+            return [
+                'length' => $product->length ?? 10,
+                'width' => $product->width ?? 8,
+                'height' => $product->height ?? 4,
+                'weight' => $product->weight ?? 2,
+            ];
+        })->toArray();
+
+        $rates = (new UPSService())->getRates(toAddress: [
+            'name' => $shipping['firstName'] . ' ' . $shipping['lastName'],
+            'address_line' => $shipping['address_line'],
+            'city' => $shipping['city'],
+            'state' => $shipping['state_code'],
+            'postal_code' => $shipping['post_code'],
+            'country_code' => $shipping['country_code']
+        ], fromAddress: [
+            'name' => 'Afrikartt',
+            'address_line' => '55 Glenlake Parkway',
+            'city' => 'Atlanta',
+            'state' => 'GA',
+            'postal_code' => '30328',
+            'country_code' => 'US',
+        ], packageDetails: $packages);
+
+
+        return view('pages.checkout-payment', ['order' => $order, 'intent' => auth()->user()->createSetupIntent(), 'rates' => $rates]);
+    }
+
+    public function confirmOrder(Order $order, Request $request)
+    {
+        $order->update([
+            'shipping_method' => $request->selected_shipping_service,
+            'shipping_total' => $request->selected_shipping_amount,
+            'total' => $order->subtotal + $request->selected_shipping_amount - $order->discount,
+            'payment_method' => $request->payment_method,
+        ]);
+
+
+
+        $shipping = json_decode($order->shipping,true);
+        $payment = new PaymentService(Order::find($order->id));
+        $url = $payment->getPaymentRedirectUrl();
+
+        foreach ($order->childs as $childOrder) {
+            if ($shipping['email']) {
+                Mail::to($shipping['email'])->send(new CustomarOrderPlacedMail($order, $childOrder));
+        }
+        if (optional($childOrder->shop)->email) {
+                Mail::to(optional($childOrder->shop)->email)->send(new VendorOrderPlacedMail($order, $childOrder));
+            }
+            if (Settings::setting('admin_email')) {
+                Mail::to(Settings::setting('admin_email'))->send(new AdminOrderPlacedMail($order, $childOrder));
+            }
+        }
+        return redirect($url);
+    }
+
+
+
     public function store(Request $request)
     {
 
@@ -54,112 +149,9 @@ class CheckoutController extends Controller
             'shipping_url' => null,
         ];
 
-        if ($this->productsAreNoLongerAvailable()) {
 
-            return back()->withErrors('Sorry! One of the items in your cart is no longer Available!');
-        }
         // try {
-        // DB::beginTransaction();
-        $cartSubtotal = Cart::subtotalFloat() ?? 0;
-        $platform_fee = \Sohoj::flatCommision($cartSubtotal) ?? 0;
-        $shipping_cost = \Sohoj::shipping() ?? 0;
-        $discount = (float) (\Sohoj::discount() ?? 0);
-        $total = $cartSubtotal + $platform_fee + $shipping_cost - $discount;
-
-        $order = Order::create([
-            'user_id' => \auth()->check() ? \auth()->id() : null,
-            'shop_id' => null,
-            'product_id' => null,
-            'shipping' => json_encode($shipping),
-            'aptment' => $request->aptment,
-            'subtotal' => $cartSubtotal,
-            'discount' => \Sohoj::discount(),
-            'discount_code' => \Sohoj::discount_code(),
-            'tax' => null,
-            'shipping_total' => \Sohoj::shipping(),
-            'platform_fee' => $platform_fee,
-            'total' => \Sohoj::newTotal(),
-            'quantity' => null,
-            'vendor_total' => null,
-            'payment_method' => $request->payment_method,
-        ]);
-        foreach (Cart::Content() as $item) {
-            $varient = null;
-            if (@$item->options['variation']) {
-                $varient = $item->model->getVariationBySku($item->options['variation']);
-            }
-
-
-            $vendor_price = $item->model->vendor_price;
-            $shipping_cost = $item->model->shipping_cost;
-
-            // Fallback to (price - 0.10) if vendor_price is null
-            $vendor_price = $vendor_price ?? ($item->model->price - 0.10);
-
-            if ($item->model->sale_price) {
-                $flat_commision = $item->model->sale_price - $vendor_price;
-            } else {
-                $flat_commision = $item->model->price - $vendor_price;
-            }
-            OrderProduct::create([
-                'quantity' => $item->qty,
-                'order_id' => $order->id,
-                'product_id' => $item->model->id,
-                'price' => $item->price,
-                'total_price' => $item->price * $item->qty,
-                'variation' => $varient ? json_encode($varient->toArray()) : null,
-                'shop_id' => $item->model->shop_id,
-            ]);
-            $childOrder = Order::create([
-                'user_id' => \auth()->check() ? \auth()->id() : null,
-                'parent_id' => $order->id,
-                'shop_id' => $item->model->shop_id,
-                'product_id' => $item->id,
-                'shipping' => json_encode($shipping),
-                'aptment' => $request->aptment,
-                'subtotal' => floatval(str_replace(',', '', $item->price * $item->qty)),
-                'discount' => \Sohoj::discount(),
-                'discount_code' => null,
-                'tax' => null,
-                'shipping_total' => floatval(str_replace(',', '', $shipping_cost)),
-                'platform_fee' => $flat_commision,
-                'total' => floatval(str_replace(',', '', \Sohoj::round_num(($item->price * $item->qty) + $shipping_cost))),
-                'quantity' => $item->qty,
-                'vendor_total' => ($vendor_price  * $item->qty),
-                'payment_method' => $request->payment_method,
-                'product_price' => $item->price,
-                // 'admin_tax'=> \Sohoj::taxCalculation($flat_commision) ?? 0,
-
-            ]);
-
-            OrderProduct::create([
-                'quantity' => $item->qty,
-                'order_id' => $childOrder->id,
-                'product_id' => $item->model->id,
-                'price' => $item->price,
-                'total_price' => $item->price * $item->qty,
-                'variation' => $varient ? json_encode($varient->toArray()) : null,
-                'shop_id' => $item->model->shop_id,
-            ]);
-
-            $shipping = json_decode($childOrder->shipping, true);
-            // dd($shipping);
-            if ($shipping['email']) {
-                Mail::to($shipping['email'])->send(new CustomarOrderPlacedMail($order, $childOrder));
-            }
-            if (optional($childOrder->shop)->email) {
-                Mail::to(optional($childOrder->shop)->email)->send(new VendorOrderPlacedMail($order, $childOrder));
-            }
-            if (Settings::setting('admin_email')) {
-                Mail::to(Settings::setting('admin_email'))->send(new AdminOrderPlacedMail($order, $childOrder));
-            }
-        }
-        $paymentService = new PaymentService($order);
-        $url = $paymentService->getPaymentRedirectUrl();
-        Cart::destroy();
-        session()->forget('discount');
-        session()->forget('discount_code');
-        return redirect($url);
+        $order = (new CheckoutService())->createOrder();
     }
 
     protected function decreaseQuantities()

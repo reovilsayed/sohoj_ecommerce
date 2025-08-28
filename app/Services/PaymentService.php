@@ -39,39 +39,26 @@ class PaymentService
         $lineItems = [];
         $totalAmount = 0;
 
-        if ($this->order->childs && $this->order->childs->count() > 0) {
-            foreach ($this->order->childs as $orderProduct) {
-                if (empty($orderProduct->Product) || empty($orderProduct->quantity)) {
-                    continue;
-                }
-                $lineItems[] = [
-                    'price_data' => [
-                        'currency' => 'usd',
-                        'product_data' => [
-                            'name' => $orderProduct->Product->name,
+            foreach ($this->order->childs as $shopOrder) {
+                // if (empty($shopOrder->p) || empty($shopOrder->quantity)) {
+                //     continue;
+                // }
+                
+                $lineItems[] = $shopOrder->products->map(function($product){
+                    return [
+                        'price_data' => [
+                            'currency' => 'usd',
+                            'product_data' => [
+                                'name' => $product->name,
+                            ],
+                            'unit_amount' => intval(($product->pivot->price) * 100), // Stripe expects amount in cents
                         ],
-                        'unit_amount' => intval(($orderProduct->total / $orderProduct->quantity) * 100), // Stripe expects amount in cents
-                    ],
-                    'quantity' => $orderProduct->quantity,
-                ];
-                $totalAmount += $orderProduct->total;
+                        'quantity' => $product->pivot->quantity,
+                    ];
+                })->toArray();
             }
-        } else {
-            // Fallback for single-product order (no childs)
-            if (!empty($this->order->Product) && !empty($this->order->quantity)) {
-                $lineItems[] = [
-                    'price_data' => [
-                        'currency' => 'usd',
-                        'product_data' => [
-                            'name' => $this->order->Product->name,
-                        ],
-                        'unit_amount' => intval(($this->order->product->sale_price ?? $this->order->product->price / $this->order->quantity) * 100),
-                    ],
-                    'quantity' => $this->order->quantity,
-                ];
-                $totalAmount = $this->order->total;
-            }
-        }
+            $totalAmount = $this->order->total;
+       
 
         if (empty($lineItems)) {
             throw new \Exception('No products found for this order. Cannot create Stripe Checkout Session.');
@@ -91,6 +78,20 @@ class PaymentService
                         'description' => 'Sales tax',
                     ],
                     'unit_amount' => intval($taxAmount),
+                ],
+                'quantity' => 1,
+            ];
+        }
+        
+        if($this->order->shipping_total){
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => 'Shipping',
+                        'description' => 'Shipping cost',
+                    ],
+                    'unit_amount' => intval($this->order->shipping_total * 100),
                 ],
                 'quantity' => 1,
             ];

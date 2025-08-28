@@ -80,11 +80,14 @@ class UPSService
      */
     public function getRates(array $fromAddress, array $toAddress, array $packageDetails): array
     {
+    
         $accessToken = $this->getAccessToken();
         $this->validateAddress($fromAddress, 'from');
         $this->validateAddress($toAddress, 'to');
-        $this->validatePackageDetails($packageDetails);
-    
+        foreach ($packageDetails as $package) {
+            $this->validatePackageDetails($package);
+        }
+
         $payload = [
             'RateRequest' => [
                 'Request' => [
@@ -97,45 +100,48 @@ class UPSService
                     'Shipper' => $this->formatAddress($fromAddress, true),
                     'ShipTo' => $this->formatAddress($toAddress, true),
                     'ShipFrom' => $this->formatAddress($fromAddress, true),
-    
+
                     // Required Service code (03 = Ground, change if needed)
                     'Service' => [
                         'Code' => '03',
                         'Description' => 'Ground'
                     ],
-    
-                    'Package' => [[
-                        'PackagingType' => [
-                            'Code' => '02', // Customer Supplied Package
-                            'Description' => 'Package'
-                        ],
-                        'Dimensions' => [
-                            'UnitOfMeasurement' => ['Code' => 'IN'],
-                            'Length' => (string) $packageDetails['length'],
-                            'Width'  => (string) $packageDetails['width'],
-                            'Height' => (string) $packageDetails['height']
-                        ],
-                        'PackageWeight' => [
-                            'UnitOfMeasurement' => ['Code' => 'LBS'],
-                            'Weight' => (string) $packageDetails['weight']
-                        ]
-                    ]]
+
+                    'Package' => array_map(function ($package) {
+                        return [
+                            'PackagingType' => [
+                                'Code' => '02', // Customer Supplied Package
+                                'Description' => 'Package'
+                            ],
+                            'Dimensions' => [
+                                'UnitOfMeasurement' => ['Code' => 'IN'],
+                                'Length' => (string) $package['length'],
+                                'Width'  => (string) $package['width'],
+                                'Height' => (string) $package['height']
+                            ],
+                            'PackageWeight' => [
+                                'UnitOfMeasurement' => ['Code' => 'LBS'],
+                                'Weight' => (string) $package['weight']
+                            ]
+                        ];
+                    }, $packageDetails)
                 ]
             ]
         ];
-    
+      
+
         $response = $this->httpClient
             ->withToken($accessToken)
             ->withHeaders(['transId' => (string) Str::uuid()])
             ->post($this->baseUrl . '/api/rating/v1/Shop', $payload);
-    
+
         if (!$response->successful()) {
             throw new Exception('UPS Rate request failed: ' . $response->body());
         }
-    
+
         return $response->json();
     }
-    
+
     /**
      * Create shipment using UPS Ship API v2409
      */
@@ -249,7 +255,7 @@ class UPSService
             }
 
             $responseData = $response->json();
-            
+
             // Extract important shipment information
             if (isset($responseData['ShipmentResponse']['ShipmentResults'])) {
                 $shipmentResults = $responseData['ShipmentResponse']['ShipmentResults'];
@@ -267,7 +273,6 @@ class UPSService
                 'success' => true,
                 'raw_response' => $responseData
             ];
-
         } catch (\Exception $e) {
             Log::error('UPS Shipment error: ' . $e->getMessage());
             throw new Exception('Failed to create UPS shipment: ' . $e->getMessage());
@@ -366,7 +371,7 @@ class UPSService
         ];
 
         // Remove null values
-        return array_filter($formatted, function($value) {
+        return array_filter($formatted, function ($value) {
             return $value !== null;
         });
     }
@@ -392,7 +397,7 @@ class UPSService
         ];
 
         // Remove null values
-        return array_filter($formatted, function($value) {
+        return array_filter($formatted, function ($value) {
             return $value !== null;
         });
     }
@@ -418,7 +423,7 @@ class UPSService
         ];
 
         // Remove null values
-        return array_filter($formatted, function($value) {
+        return array_filter($formatted, function ($value) {
             return $value !== null;
         });
     }
@@ -426,7 +431,7 @@ class UPSService
     /**
      * Get service description by code
      */
-    private function getServiceDescription(string $serviceCode): string
+    public function getServiceDescription(string $serviceCode): string
     {
         $services = [
             '01' => 'Next Day Air',
@@ -503,11 +508,56 @@ class UPSService
     private function validateUSStateCode(string $stateCode, string $addressType): void
     {
         $validStates = [
-            'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
-            'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
-            'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
-            'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
-            'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY',
+            'AL',
+            'AK',
+            'AZ',
+            'AR',
+            'CA',
+            'CO',
+            'CT',
+            'DE',
+            'FL',
+            'GA',
+            'HI',
+            'ID',
+            'IL',
+            'IN',
+            'IA',
+            'KS',
+            'KY',
+            'LA',
+            'ME',
+            'MD',
+            'MA',
+            'MI',
+            'MN',
+            'MS',
+            'MO',
+            'MT',
+            'NE',
+            'NV',
+            'NH',
+            'NJ',
+            'NM',
+            'NY',
+            'NC',
+            'ND',
+            'OH',
+            'OK',
+            'OR',
+            'PA',
+            'RI',
+            'SC',
+            'SD',
+            'TN',
+            'TX',
+            'UT',
+            'VT',
+            'VA',
+            'WA',
+            'WV',
+            'WI',
+            'WY',
             'DC' // Washington DC
         ];
 

@@ -29,7 +29,7 @@ class Order extends Model
     }
     public function products()
     {
-        return $this->belongsToMany(Product::class)->withTimestamps();
+        return $this->belongsToMany(Product::class)->withTimestamps()->withPivot(['variation','quantity','price','total_price']);
     }
 
     public function product()
@@ -50,7 +50,7 @@ class Order extends Model
     }
     public function getFirstNameAttribute()
     {
-        return json_decode($this->shipping)->first_name;
+        return json_decode($this->shipping)?->first_name ?? json_decode($this->shipping)->firstName;
     }
     public function getEmailAttribute()
     {
@@ -74,7 +74,7 @@ class Order extends Model
     }
     public function getLastNameAttribute()
     {
-        return json_decode($this->shipping)->last_name;
+        return json_decode($this->shipping)?->last_name ?? json_decode($this->shipping)?->lastName;
     }
     public function getFullNameAttribute()
     {
@@ -117,6 +117,8 @@ class Order extends Model
                 $query->whereBetween('created_at', [$currentWeekStart, $currentWeekEnd]);
             });
     }
+
+
     public function scopeChildren($query)
     {
         return $query->whereNotNull('parent_id');

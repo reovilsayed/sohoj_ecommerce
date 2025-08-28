@@ -429,222 +429,307 @@
                         <div class="checkout-summary-title">Order Summary</div>
                         <div class="checkout-summary-content">
                             @php
-                                $items = Cart::Content();
+                                $items = $order->products;
                             @endphp
                             @foreach ($items as $item)
+                            
                                 <div class="d-flex align-items-center mb-5">
-                                    <img src="{{ Storage::url($item->model->image) }}" alt="{{ $item->name }}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;border:1px solid #eee;margin-right:12px;">
+                                    <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}"
+                                        style="width:48px;height:48px;object-fit:cover;border-radius:6px;border:1px solid #eee;margin-right:12px;">
                                     <div class="flex-grow-1">
                                         <div class="fw-semibold" style="font-size:1rem;">{{ $item->name }}</div>
                                         <div class="text-muted small">
-                                            @if($item->options && isset($item->options['variation']))
-                                                <span>Variation: {{ $item->options['variation'] }}</span>
+                                            @if ($item->pivot->variation)
+                                                <span>Variation: {{ json_decode($item->pivot->variation)->sku }}</span>
                                             @endif
-                                            <span class="ms-2">Qty: {{ $item->qty }}</span>
+                                            
+                                            <span class="ms-2">Qty: {{ $item->pivot->quantity }}</span>
                                         </div>
                                     </div>
-                                    <div class="fw-bold ms-2" style="white-space:nowrap;">{{ Sohoj::price($item->price * $item->qty) }}</div>
+                                    <div class="fw-bold ms-2" style="white-space:nowrap;">
+                                        {{ Sohoj::price($item->pivot->total_price) }}</div>
                                 </div>
                             @endforeach
                         </div>
                         <div class="checkout-summary-list">
 
                             <div class="border border-lg-1 p-1">
-                                <span>Items({{ Cart::count() }}):</span>
-                                <span>{{ Sohoj::price(Cart::subtotal()) }}</span>
+                                <span>Items({{ $items->sum('pivot.quantity') }}):</span>
+                                <span id="summaryItems">{{ Sohoj::price($items->sum('pivot.total_price')) }}</span>
                             </div>
-                            
-                            
+
+
                             <div class="border border-lg-1 p-1">
                                 <span>Discount:</span>
-                                <span>{{ Sohoj::price(Sohoj::discount()) }}</span>
+                                <span id="summaryDiscount">{{ Sohoj::price($order->discount) }}</span>
                             </div>
                             <div class="border border-lg-1 p-1">
                                 <span>Shipping:</span>
-                                <span><small class="text-danger">This step need to be completed</small></span>
+                                <span id="summaryShipping"><small class="text-danger">This step need to be completed</small></span>
                             </div>
                         </div>
                         <div class="checkout-summary-total d-flex justify-content-between align-items-center">
                             <span class="fw-bold">Order Total:</span>
-                            <span class="fw-bold">{{ Sohoj::price(Sohoj::newTotal()) }}</span>
+                            <span class="fw-bold" id="summaryTotal">{{ Sohoj::price($order->total) }}</span>
                         </div>
                     </div>
                 </aside>
                 <div class="col-lg-8">
                     <div class="card shadow-lg border-0 rounded-4 p-0 overflow-hidden">
                         <div class="card-body p-0">
-                            <form action="{{ route('checkout.storeBillingAndShippingInformation') }}" method="POST" id="multiStepCheckoutForm">
+                            <form action="{{ route('checkout.confirmOrder', $order->id) }}" method="POST"
+                                id="multiStepCheckoutForm">
+ 
+                                @php
+                                     $services = [
+                                        '01' => 'Next Day Air',
+                                        '02' => '2nd Day Air',
+                                        '03' => 'Ground',
+                                        '12' => '3 Day Select',
+                                        '13' => 'Next Day Air Saver',
+                                        '14' => 'Next Day Air Early A.M.',
+                                        '15' => 'UPS Express',
+                                        '22' => 'UPS Standard',
+                                        '32' => 'UPS Express Plus',
+                                        '33' => 'UPS Express',
+                                        '41' => 'UPS Express Early',
+                                        '42' => 'UPS Express',
+                                        '44' => 'UPS Express Plus',
+                                        '54' => 'UPS Express 12:00',
+                                        '59' => '2nd Day Air A.M.',
+                                        '65' => 'UPS Saver',
+                                        '66' => 'UPS Worldwide Express Freight',
+                                        '70' => 'UPS Access Point Economy',
+                                        '71' => 'UPS Worldwide Express Freight Midday',
+                                        '74' => 'UPS Express 12:00',
+                                        '82' => 'UPS Today Standard',
+                                        '83' => 'UPS Today Dedicated Courier',
+                                        '84' => 'UPS Today Intercity',
+                                        '85' => 'UPS Today Express',
+                                        '86' => 'UPS Today Express Saver',
+                                        '96' => 'UPS Worldwide Express Freight',
+                                    ];
+                                @endphp
                                 @csrf
                                 <div class="tab-content p-4" id="checkoutStepsContent">
                                     <!-- Step 2: Shipping -->
                                     <div class="tab-pane fade show active" id="step2" role="tabpanel"
                                         aria-labelledby="step2-tab">
-                                        <h4 class="fw-semibold mb-3">Shipping & Contact Info</h4>
-                                        <div class="checkout-card mb-4 p-4 shadow-sm border-0 rounded-4"
-                                            style="background: var(--bg-light); border: 1px solid var(--border-light);">
-                                            <div class="row g-3 align-items-end">
-                                                <div class="col-md-6">
-                                                    <label for="first_name" class="form-label">First Name</label>
-                                                    <input type="text" class="form-control" id="first_name"
-                                                        value="{{ old('first_name', Auth()->user() ? Auth()->user()->name : '') }}"
-                                                        name="first_name" placeholder="First Name">
-                                                    @error('first_name')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
+                                        <h4 class="fw-semibold mb-3">Select Shipping Rate</h4>
+                                        @php
+                                            $ratedShipments = data_get($rates, 'RateResponse.RatedShipment', []);
+                                            if (isset($ratedShipments['Service'])) {
+                                                $ratedShipments = [$ratedShipments];
+                                            }
+                                        @endphp
+                                        <div class="mt-3">
+                                            @if (!empty($ratedShipments))
+                                                <div class="checkout-card p-3"
+                                                    style="background: var(--bg-light); border: 1px solid var(--border-light);">
+                                                    <input type="hidden" name="selected_shipping_service"
+                                                        id="selected_shipping_service">
+                                                    <input type="hidden" name="selected_shipping_amount"
+                                                        id="selected_shipping_amount">
+                                                    <div class="d-flex flex-column gap-2">
+                                                        @foreach ($ratedShipments as $idx => $shipment)
+                                                            @php
+                                                                $serviceCode = data_get($shipment, 'Service.Code');
+                                                                $serviceDesc =
+                                                                    data_get($shipment, 'Service.Description') ??
+                                                                    'UPS Service ' . $serviceCode;
+
+                                                                $currency =
+                                                                    data_get(
+                                                                        $shipment,
+                                                                        'NegotiatedRateCharges.TotalCharge.CurrencyCode',
+                                                                    ) ??
+                                                                    (data_get($shipment, 'TotalCharges.CurrencyCode') ??
+                                                                        'USD');
+                                                                $displayCurrency = $currency === 'USD' ? '$' : $currency;
+                                                                $amount =
+                                                                    data_get(
+                                                                        $shipment,
+                                                                        'NegotiatedRateCharges.TotalCharge.MonetaryValue',
+                                                                    ) ??
+                                                                    data_get($shipment, 'TotalCharges.MonetaryValue');
+                                                                $days = data_get(
+                                                                    $shipment,
+                                                                    'GuaranteedDelivery.BusinessDaysInTransit',
+                                                                );
+                                                                $byTime = data_get(
+                                                                    $shipment,
+                                                                    'GuaranteedDelivery.DeliveryByTime',
+                                                                );
+                                                            @endphp
+                                                            <label class="payment-card-option"
+                                                                style="align-items: flex-start;">
+                                                                <input type="radio" name="shipping_rate"
+                                                                    class="form-check-input" value="{{ $serviceCode }}"
+                                                                    @checked($idx === 0) required>
+                                                                <span class="custom-radio-indicator"></span>
+                                                                <span class="payment-card-content">
+                                                                    <span class="payment-text-wrap">
+                                                                        <span class="payment-title">{{ $services[$serviceCode] }}
+                                                                            ({{ $serviceCode }})</span>
+                                                                        <span class="payment-desc">
+                                                                            @if ($days)
+                                                                                Est. {{ $days }} business
+                                                                                day{{ $days > 1 ? 's' : '' }}
+                                                                            @elseif ($byTime)
+                                                                                By {{ $byTime }}
+                                                                            @else
+                                                                                Estimated delivery not available
+                                                                            @endif
+                                                                        </span>
+                                                                    </span>
+                                                                    <span class="ms-auto fw-bold">{{ $displayCurrency }}
+                                                                        {{ number_format((float) $amount, 2) }}</span>
+                                                                </span>
+                                                            </label>
+                                                        @endforeach
+                                                    </div>
+                                                    <small class="text-muted">Shipping carrier: UPS</small>
                                                 </div>
-
-                                                <div class="col-md-6">
-                                                    <label for="last_name" class="form-label">Last Name</label>
-                                                    <input type="text" class="form-control" id="last_name"
-                                                        value="{{ old('last_name', Auth()->user() ? Auth()->user()->l_name : '') }}"
-                                                        name="last_name" placeholder="Last Name">
-                                                    @error('last_name')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-
-                                                <div class="col-md-12 mt-2">
-                                                    <label for="email" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" id="email"
-                                                        aria-describedby="email"
-                                                        value="{{ old('email', Auth()->user() ? Auth()->user()->email : '') }}"
-                                                        name="email" placeholder="Email Address">
-                                                    @error('email')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-
-                                                <div class="col-md-12 mt-2 position-relative">
-                                                    <label for="address_1" class="form-label">Address</label>
-                                                    <input type="text"
-                                                        class="form-control @error('address_1') is-invalid @enderror"
-                                                        id="address_1" name="address_1" value="{{ old('address_1') }}"
-                                                        placeholder="Address Line 1" autocomplete="off">
-
-                                                    @error('address_1')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">
-                                                            {{ $message }}
-                                                        </span>
-                                                    @enderror
-
-                                                    <!-- Optional: Capture coordinates -->
-                                                    <input type="hidden" name="latitude" id="latitude">
-                                                    <input type="hidden" name="longitude" id="longitude">
-                                                    <input type="hidden" name="state_code" id="state_code">
-                                                    <input type="hidden" name="country_code" id="country_code">
-                                                </div>
-
-
-                                                <div class="col-md-6 mt-2">
-                                                    <label for="phone" class="form-label">Phone</label>
-                                                    <input type="text" class="form-control" id="phone"
-                                                        value="{{ old('phone', Auth()->user() ? Auth()->user()->phone : '') }}"
-                                                        name="phone" placeholder="Phone Number">
-                                                    @error('phone')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-
-                                                <div class="col-md-6 mt-2">
-                                                    <label for="post_code" class="form-label">Post Code</label>
-                                                    <input type="text" class="form-control" id="post_code"
-                                                        name="post_code"
-                                                        value="{{ old('post_code', Auth()->user() ? Auth()->user()->post_code : '') }}"
-                                                        placeholder="Post Code">
-                                                    @error('post_code')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-
-                                                <div class="col-md-6 mt-2">
-                                                    <label for="state" class="form-label">State</label>
-                                                    <input type="text" class="form-control" id="state"
-                                                        name="state"
-                                                        value="{{ old('state', Auth()->user() ? Auth()->user()->state : '') }}"
-                                                        placeholder="State">
-                                                    @error('state')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-
-                                                <div class="col-md-6 mt-2">
-                                                    <label for="city" class="form-label">City</label>
-                                                    <input type="text" class="form-control" id="city"
-                                                        name="city"
-                                                        value="{{ old('city', Auth()->user() ? Auth()->user()->city : '') }}"
-                                                        placeholder="City">
-                                                    @error('city')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-
-                                     
-                                                
-                                            </div>
-                                            <button type="submit" class="btn btn-primary mt-5">Continue to Payment</button>
+                                            @else
+                                                <div class="alert alert-warning">No shipping rates available. Please go back
+                                                    and verify your address.</div>
+                                            @endif
                                         </div>
 
-                                        <style>
-                                            .checkout-card .form-floating>label>i {
-                                                position: absolute;
-                                                left: 1.1rem;
-                                                top: 50%;
-                                                transform: translateY(-50%);
-                                                pointer-events: none;
-                                            }
+                                        <h4 class="fw-semibold mb-4 mt-4">Select Payment Method</h4>
+                                        <div class="mt-2">
+                                            <label class="payment-card-option">
+                                                <input type="radio" name="payment_method" id="cash"
+                                                    value="cash" class="form-check-input" required>
+                                                <span class="custom-radio-indicator"></span>
+                                                <span class="payment-card-content">
+                                                    <span class="payment-img-wrap">
+                                                        <img src="https://img.icons8.com/color/64/000000/us-dollar-circled--v1.png"
+                                                            alt="Dollar" class="pay-img" />
+                                                    </span>
+                                                    <span class="payment-text-wrap">
+                                                        <span class="payment-title">Cash</span>
+                                                        <span class="payment-desc">Pay with cash upon
+                                                            delivery.</span>
+                                                    </span>
+                                                </span>
+                                            </label>
 
-                                            .checkout-card .form-floating>input {
-                                                padding-left: 2.5rem;
-                                            }
+                                            <label class="payment-card-option">
+                                                <input type="radio" name="payment_method" id="paypal"
+                                                    value="paypal" class="form-check-input" required>
+                                                <span class="custom-radio-indicator"></span>
+                                                <span class="payment-card-content">
+                                                    <span class="payment-img-wrap">
+                                                        <img src="https://img.icons8.com/color/64/000000/paypal.png"
+                                                            alt="PayPal" class="pay-img" />
+                                                    </span>
+                                                    <span class="payment-text-wrap">
+                                                        <span class="payment-title">PayPal</span>
+                                                        <span class="payment-desc">Pay securely using your PayPal
+                                                            account.</span>
+                                                    </span>
+                                                </span>
+                                            </label>
 
-                                            .address-card {
-                                                border: 2px solid #e3eafc;
-                                                transition: box-shadow 0.2s, border-color 0.2s;
-                                                cursor: pointer;
-                                            }
+                                            <label class="payment-card-option">
+                                                <input type="radio" name="payment_method" id="stripe"
+                                                    value="stripe" class="form-check-input" required>
+                                                <span class="custom-radio-indicator"></span>
+                                                <span class="payment-card-content">
+                                                    <span class="payment-img-wrap">
+                                                        <img src="https://img.icons8.com/color/64/000000/bank-card-back-side.png"
+                                                            alt="Stripe" class="pay-img" />
+                                                    </span>
+                                                    <span class="payment-text-wrap">
+                                                        <span class="payment-title">Card Payment</span>
+                                                        <span class="payment-desc">Pay with any major credit or
+                                                            debit card.</span>
+                                                    </span>
+                                                </span>
+                                            </label>
+                                            <div class="mt-4 mb-3 d-flex align-items-center px-3 py-2 rounded-3 shadow-sm"
+                                                style="background: var(--bg-light); border: 1px solid var(--border-light);">
+                                                <input type="checkbox" required
+                                                    class="form-check-input me-2 @error('terms') is-invalid @enderror"
+                                                    id="terms" value="1" name="terms"
+                                                    style="width: 22px; height: 22px; accent-color: var(--accent-color);">
+                                                <label class="form-check-label ms-1" for="terms"
+                                                    style="font-size: 1rem;">
+                                                    I have read and agree to the
+                                                    <a href="{{ url('page/policies') }}" target="_blank"
+                                                        class="text-decoration-underline text-primary fw-semibold">
+                                                        Terms & Conditions
+                                                    </a>
+                                                    of Afrikartt E-commerce
+                                                </label>
+                                                @error('terms')
+                                                    <span class="invalid-feedback d-block ms-2">{{ $message }}</span>
+                                                @enderror
+                                            </div>
 
-                                            .address-card:hover,
-                                            .address-card:focus-within {
-                                                border-color: var(--primary);
-                                                box-shadow: 0 4px 16px rgba(30, 136, 229, 0.10);
-                                            }
+                                            <button type="submit" class="btn checkout-btn w-auto mt-3 shadow-sm"
+                                                style="font-size: 1.1rem;">
+                                                <i class="fas fa-shopping-cart me-2"></i> Place Order
+                                            </button>
+                                        </div>
 
-                                            .address-card .form-check-input:checked~.address-label {
-                                                color: var(--primary);
-                                            }
-
-                                            .address-card .form-check-input:checked {
-                                                border-color: var(--primary);
-                                                background-color: var(--primary);
-                                            }
-
-                                            @media (max-width: 767px) {
-                                                .checkout-card {
-                                                    padding: 0.7rem !important;
-                                                }
-
-                                                .address-card {
-                                                    padding: 1rem !important;
-                                                }
-                                            }
-                                        </style>
                                     </div>
                                 </div>
-                                
-                            </form>
+
+                                <style>
+                                    .checkout-card .form-floating>label>i {
+                                        position: absolute;
+                                        left: 1.1rem;
+                                        top: 50%;
+                                        transform: translateY(-50%);
+                                        pointer-events: none;
+                                    }
+
+                                    .checkout-card .form-floating>input {
+                                        padding-left: 2.5rem;
+                                    }
+
+                                    .address-card {
+                                        border: 2px solid #e3eafc;
+                                        transition: box-shadow 0.2s, border-color 0.2s;
+                                        cursor: pointer;
+                                    }
+
+                                    .address-card:hover,
+                                    .address-card:focus-within {
+                                        border-color: var(--primary);
+                                        box-shadow: 0 4px 16px rgba(30, 136, 229, 0.10);
+                                    }
+
+                                    .address-card .form-check-input:checked~.address-label {
+                                        color: var(--primary);
+                                    }
+
+                                    .address-card .form-check-input:checked {
+                                        border-color: var(--primary);
+                                        background-color: var(--primary);
+                                    }
+
+                                    @media (max-width: 767px) {
+                                        .checkout-card {
+                                            padding: 0.7rem !important;
+                                        }
+
+                                        .address-card {
+                                            padding: 1rem !important;
+                                        }
+                                    }
+                                </style>
                         </div>
                     </div>
+
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 
 
@@ -737,11 +822,12 @@
 
                 const streetNumber = getComponent(components, 'street_number', 'short_name');
                 const route = getComponent(components, 'route', 'long_name');
-                const locality = getComponent(components, 'locality', 'long_name')
-                    || getComponent(components, 'postal_town', 'long_name')
-                    || getComponent(components, 'sublocality_level_1', 'long_name');
+                const locality = getComponent(components, 'locality', 'long_name') ||
+                    getComponent(components, 'postal_town', 'long_name') ||
+                    getComponent(components, 'sublocality_level_1', 'long_name');
                 const adminAreaLong = getComponent(components, 'administrative_area_level_1', 'long_name');
-                const adminAreaShort = getComponent(components, 'administrative_area_level_1', 'short_name');
+                const adminAreaShort = getComponent(components, 'administrative_area_level_1',
+                    'short_name');
                 const postalCode = getComponent(components, 'postal_code', 'short_name');
                 const countryShort = getComponent(components, 'country', 'short_name');
 
@@ -768,6 +854,66 @@
                     e.preventDefault();
                 }
             });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceInput = document.getElementById('selected_shipping_service');
+            const amountInput = document.getElementById('selected_shipping_amount');
+            const radios = document.querySelectorAll('input[name="shipping_rate"]');
+            const summaryShipping = document.getElementById('summaryShipping');
+            const summaryTotal = document.getElementById('summaryTotal');
+            const summaryItems = document.getElementById('summaryItems');
+            const summaryDiscount = document.getElementById('summaryDiscount');
+
+            function parseMoney(text){
+                return Number((text || '').toString().replace(/[^0-9.]/g, '')) || 0;
+            }
+
+            const itemsAmount = parseMoney(summaryItems ? summaryItems.textContent : '0');
+            const discountAmount = parseMoney(summaryDiscount ? summaryDiscount.textContent : '0');
+
+            function extractAmount(labelEl) {
+                const priceEl = labelEl.querySelector('.payment-card-content .fw-bold');
+                if (!priceEl) return '';
+                const text = priceEl.textContent.trim();
+                const match = text.match(/([0-9]+(?:\.[0-9]{1,2})?)/);
+                return match ? match[1] : '';
+            }
+
+            function extractCurrency(labelEl){
+                const priceEl = labelEl.querySelector('.payment-card-content .fw-bold');
+                if(!priceEl) return '';
+                const text = priceEl.textContent.trim();
+                // take non-digit prefix trimmed
+                let cur = text.replace(/\s*[0-9].*$/, '').trim();
+                if(cur === 'USD') cur = '$';
+                return cur || '';F
+            }
+
+            function updateHidden() {
+                const checked = document.querySelector('input[name="shipping_rate"]:checked');
+                if (!checked) return;
+                const label = checked.closest('label.payment-card-option');
+                if (serviceInput) serviceInput.value = checked.value;
+                if (amountInput) amountInput.value = extractAmount(label);
+
+                const currency = extractCurrency(label);
+                const shippingAmount = Number(amountInput.value || 0);
+                if(summaryShipping){
+                    summaryShipping.textContent = (currency ? (currency + ' ') : '') + shippingAmount.toFixed(2);
+                }
+                if(summaryTotal){
+                    const newTotal = itemsAmount - discountAmount + shippingAmount;
+                    summaryTotal.textContent = (currency ? (currency + ' ') : '') + newTotal.toFixed(2);
+                }
+            }
+
+            if (radios.length) {
+                radios.forEach(r => r.addEventListener('change', updateHidden));
+                updateHidden();
+            }
         });
     </script>
 

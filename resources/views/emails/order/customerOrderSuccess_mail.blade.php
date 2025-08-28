@@ -934,7 +934,7 @@
                 <div class="items-section">
                     <h3 class="section-title">
                         <span class="section-icon">🛒</span>
-                        Your Order Items ({{ count($order->childs) }} items)
+                        Your Order Items ({{ $order->products->sum('pivot.quantity') }} items)
                     </h3>
                     <table class="items-table">
                         <thead>
@@ -946,13 +946,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($order->childs as $item)
+                            @foreach ($order->products as $item)
                                 <tr>
                                     <td>
                                         <div class="product-info">
-                                            @if (isset($item->product) && $item->product->image)
-                                                <img src="{{ asset('storage/' . $item->product->image) }}"
-                                                    alt="{{ $item->product->name ?? 'Product' }}"
+                                            @if (isset($item->image) && $item->image)
+                                                <img src="{{ asset('storage/' . $item->image) }}"
+                                                    alt="{{ $item->name ?? 'Product' }}"
                                                     class="product-image">
                                             @else
                                                 <div
@@ -961,29 +961,29 @@
                                                 </div>
                                             @endif
                                             <div class="product-details">
-                                                <h6>{{ $item->product->name ?? ($item->name ?? 'Product Name') }}</h6>
-                                                @if (isset($item->product) && $item->product->sku)
-                                                    <p>SKU: {{ $item->product->sku }}</p>
+                                                <h6>{{ $item->name ?? ($item->name ?? 'Product Name') }}</h6>
+                                                @if (isset($item->sku) && $item->sku)
+                                                    <p>SKU: {{ $item->sku }}</p>
                                                 @endif
-                                                @if (isset($item->product) && $item->product->brand)
-                                                    <p>Brand: {{ $item->product->brand }}</p>
+                                                @if (isset($item->brand) && $item->brand)
+                                                    <p>Brand: {{ $item->brand }}</p>
                                                 @endif
-                                                @if (isset($item->product) && $item->product->category)
-                                                    <p>Category: {{ $item->product->category->name ?? 'N/A' }}</p>
+                                                @if (isset($item->category) && $item->category)
+                                                    <p>Category: {{ $item->category->name ?? 'N/A' }}</p>
                                                 @endif
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="quantity-display">{{ $item->quantity ?? 1 }}</div>
+                                        <div class="quantity-display">{{ $item->pivot->quantity ?? 1 }}</div>
                                     </td>
 
                                     <td class="price-cell">
-                                        ${{ number_format($item->product->sale_price ?? $item->product->price, 2) }}
+                                        ${{ number_format($item->sale_price ?? $item->price, 2) }}
                                     </td>
 
                                     <td class="price-cell">
-                                        ${{ number_format(($item->product->sale_price ?? $item->product->price) * ($item->quantity ?? 1), 2) }}
+                                        ${{ number_format(($item->sale_price ?? $item->price) * ($item->pivot->quantity ?? 1), 2) }}
                                     </td>
                                 </tr>
                             @endforeach

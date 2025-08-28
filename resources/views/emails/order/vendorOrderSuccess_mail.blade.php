@@ -673,12 +673,13 @@
                     </thead>
                     <tbody>
 
+                        @foreach ($childOrder->products as $product)
                         <tr>
                             <td>
                                 <div class="product-info">
-                                    @if (isset($childOrder->product) && $childOrder->product->image)
-                                        <img src="{{ asset('storage/' . $childOrder->product->image) }}"
-                                            alt="{{ $childOrder->product->name ?? 'Product' }}" class="product-image">
+                                    @if (isset($product->image) && $product->image)
+                                        <img src="{{ asset('storage/' . $product->image) }}"
+                                            alt="{{ $product->name ?? 'Product' }}" class="product-image">
                                     @else
                                         <div
                                             style="width: 60px; height: 60px; background: linear-gradient(135deg, #f1f3f4, #e9ecef); border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #6c757d; border: 2px solid #e9ecef;">
@@ -686,12 +687,12 @@
                                         </div>
                                     @endif
                                     <div class="product-details">
-                                        <h6>{{ $childOrder->product->name ?? 'Product Name' }}</h6>
-                                        @if (isset($childOrder->product) && $childOrder->product->sku)
-                                            <p>SKU: {{ $childOrder->product->sku }}</p>
+                                        <h6>{{ $product->name ?? 'Product Name' }}</h6>
+                                        @if (isset($product->sku) && $product->sku)
+                                            <p>SKU: {{ $product->sku }}</p>
                                         @endif
-                                        @if (isset($childOrder->product) && $childOrder->product->category)
-                                            <p>Category: {{ $childOrder->product->category->name ?? 'N/A' }}</p>
+                                        @if (isset($product->category) && $product->category)
+                                            <p>Category: {{ $product->category->name ?? 'N/A' }}</p>
                                         @endif
                                     </div>
                                 </div>
@@ -699,13 +700,14 @@
                             <td>
                                 <span class="quantity-badge">{{ $childOrder->quantity ?? 1 }}</span>
                             </td>
-                            <td>${{ number_format($childOrder->product->sale_price ?? $childOrder->product->price, 2) }}</td>
+                            <td>${{ number_format($product->sale_price ?? $product->price, 2) }}</td>
                             <td class="earnings-cell">
                                 <div class="earnings-amount">
-                                    ${{ number_format(($childOrder->product->sale_price ?? $childOrder->product->price) * ($childOrder->quantity ?? 1), 2) }}
+                                    ${{ number_format(($product->sale_price ?? $product->price) * ($product->pivot->quantity ?? 1), 2) }}
                                 </div>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

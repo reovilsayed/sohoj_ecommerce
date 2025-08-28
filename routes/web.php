@@ -94,7 +94,7 @@ Route::get('wishlist-to-cart/{product_id}', [WishlistController::class, 'wishlis
 //cart
 Route::post('/add-cart', [CartController::class, 'add'])->name('cart.store');
 Route::post('/buynow', [CartController::class, 'buynow'])->name('cart.boynow');
-Route::post('/add-update/', [CartController::class, 'update'])->name('cart.update');
+Route::post('/add-update', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart-destroy/{rowId}', [CartController::class, 'destroy'])->name('cart.destroy');
 Route::get('/cart-qty', [CartController::class, 'cartQty'])->name('cart.qty');
 
@@ -309,6 +309,14 @@ Route::post('/ups/pickup', function () {
 Route::post('/add-coupon', [CouponController::class, 'add'])->name('coupon');
 Route::get('/delete-coupon', [CouponController::class, 'destroy'])->name('coupon.destroy');
 
+
+Route::group(['prefix' => 'checkout'], function () {
+    Route::get('/add-billing-and-shipping-information', [CheckoutController::class, 'shippingAndBillingInformationPage'])->name('checkout.index');
+    Route::post('/store-billing-and-shipping-information', [CheckoutController::class, 'storeBillingAndShippingInformation'])->name('checkout.storeBillingAndShippingInformation');
+    Route::get('{order}/payment', [CheckoutController::class, 'paymentPage'])->name('checkout.paymentPage');
+    Route::post('{order}/confirm-order',[CheckoutController::class, 'confirmOrder'])->name('checkout.confirmOrder');
+
+});
 //checkout routes
 Route::post('/store-checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
