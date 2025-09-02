@@ -1,5 +1,6 @@
 <?php
 
+use App\Data\Country\Africa;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Auth\RegisterController;
@@ -29,12 +30,15 @@ use App\Models\Page;
 use App\Models\Shop;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Services\PaymentService;
 use App\Services\UPSService;
 use App\Setting\SettingsFacade as Settings;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Stripe\Price;
 use Stripe\Product;
 use Stripe\Stripe;
@@ -178,7 +182,7 @@ Route::get('/ups/ship', function () {
             'postal_code'    => '30328',
             'country_code'   => 'US',
         ];
-        
+
         $toAddress = [
             'name'           => 'Apple Inc.',
             'attention_name' => 'Apple Customer Service',
@@ -189,7 +193,7 @@ Route::get('/ups/ship', function () {
             'postal_code'    => '95014',
             'country_code'   => 'US',
         ];
-        
+
         $packageDetails = [
             'length' => 10.0,
             'width' => 8.0,
@@ -220,7 +224,7 @@ Route::get('/ups/ship', function () {
             'error' => $e->getMessage(),
             'trace' => $e->getTraceAsString()
         ]);
-        
+
         return response()->json([
             'success' => false,
             'error' => $e->getMessage(),
@@ -314,9 +318,44 @@ Route::group(['prefix' => 'checkout'], function () {
     Route::get('/add-billing-and-shipping-information', [CheckoutController::class, 'shippingAndBillingInformationPage'])->name('checkout.index');
     Route::post('/store-billing-and-shipping-information', [CheckoutController::class, 'storeBillingAndShippingInformation'])->name('checkout.storeBillingAndShippingInformation');
     Route::get('{order}/payment', [CheckoutController::class, 'paymentPage'])->name('checkout.paymentPage');
-    Route::post('{order}/confirm-order',[CheckoutController::class, 'confirmOrder'])->name('checkout.confirmOrder');
-
+    Route::post('{order}/confirm-order', [CheckoutController::class, 'confirmOrder'])->name('checkout.confirmOrder');
 });
+
+Route::get('/test/{order}/shipment', function (Order $order) {
+    $ups = new UPSService();
+    $shipping = json_decode($order->shipping,true);
+      $packages =  $order->products->map(function ($product) {
+        return [
+            'length' => $product->length ?? 10,
+            'width' => $product->width ?? 8,
+            'height' => $product->height ?? 4,
+            'weight' => $product->weight ?? 2,
+        ];
+    })->toArray();
+    $result =   $ups->createShipment(
+        toAddress: [
+            'name' => $shipping['firstName'] . ' ' . $shipping['lastName'],
+            'address_line' => $shipping['address_line'],
+            'city' => $shipping['city'],
+            'state' => $shipping['state_code'],
+            'postal_code' => $shipping['post_code'],
+            'country_code' => $shipping['country_code'],
+            'phone' => $shipping['phone'],
+        ],
+        fromAddress: [
+            'name' => 'Afrikartt',
+            'address_line' => '55 Glenlake Parkway',
+            'city' => 'Atlanta',
+            'state' => 'GA',
+            'postal_code' => '30328',
+            'country_code' => 'US',
+            'phone' => '800-742-5877',
+        ],
+        packageDetails: $packages,
+        serviceCode: $order->shipping_method
+    );
+    dd($result);
+})->name('checkout.test');
 //checkout routes
 Route::post('/store-checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
@@ -443,3 +482,15 @@ Route::get('/api-docs', function () {
 Route::get('test', function () {
     return Settings::setting('stripe_secret');
 });
+
+// Store selected country in session
+Route::post('/set-country', function (Request $request) {
+    $name = $request->input('name');
+    $flag = $request->input('flag');
+    if (!$name || !$flag) {
+        return response()->json(['ok' => false, 'message' => 'Invalid payload'], 422);
+    }
+    session(['myCountry' => ['name' => $name, 'flag' => $flag]]);
+    return response()->json(['ok' => true]);
+})->name('set.country');
+

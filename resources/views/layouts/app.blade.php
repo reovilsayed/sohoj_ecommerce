@@ -549,6 +549,130 @@
             ecCreateCookie('ecPopNewsLetter', dataValue, 1);
         </script>
     @endif
+
+    <!-- Floating Country Selector Button -->
+    <button type="button" class="country-fab" data-bs-toggle="modal" data-bs-target="#countryRegionModal" aria-label="Select Country">
+        <span class="country-flag-slot"><i class="fas fa-globe-africa"></i></span>
+    </button>
+
+    <!-- Country Selector Modal (Africa) -->
+    <div class="modal fade country-modal" id="countryRegionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-3 border-0 shadow-lg">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-semibold">
+                        <i class="fas fa-globe-africa me-2" style="color: var(--harvest-gold);"></i>
+                        Choose Your Country (Africa)
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-white"><i class="fas fa-search" style="color: var(--hunter-green);"></i></span>
+                        <input type="text" id="countrySearch" class="form-control" placeholder="Search countries...">
+                    </div>
+                    <div id="countryScroll" class="country-scroll">
+                        @foreach (App\Data\Country\Africa::getCountries() as $country)
+                            <div class="country-item" data-country="{{ $country['name'] }}" data-flag="{{ $country['flag'] }}">
+                                <img class="country-flag" src="{{ $country['flag'] }}" alt="{{ $country['name'] }}">
+                                <span class="country-name">{{ $country['name'] }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .country-fab {
+            position: fixed;
+            left: 16px;
+            bottom: 16px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: none;
+            background: var(--hunter-green);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,.18);
+            z-index: 1055;
+        }
+        .country-fab:hover { background: var(--harvest-gold); color: #fff; }
+        .country-modal .modal-content { background: var(--cosmic-latte); }
+        .country-modal .btn-primary { background: var(--hunter-green); border-color: var(--hunter-green); }
+        .country-modal .btn-primary:hover { background: var(--harvest-gold); border-color: var(--harvest-gold); }
+        .country-scroll { max-height: 50vh; overflow: auto; border: 1px solid var(--hunter-green); border-radius: 12px; background: #fff; }
+        .country-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; cursor: pointer; text-decoration: none; color: var(--seal-brown); }
+        .country-item:hover { background: var(--cosmic-latte); color: var(--hunter-green); }
+        .country-item + .country-item { border-top: 1px solid rgba(0,0,0,.06); }
+        .country-flag { width: 22px; height: 16px; object-fit: cover; border: 1px solid rgba(0,0,0,.1); }
+        .country-fab .country-flag-fab { width: 22px; height: 16px; object-fit: cover; border-radius: 2px; border: 1px solid rgba(0,0,0,.15); }
+    </style>
+
+    <script>
+        (function() {
+            var fabSlot = document.querySelector('.country-flag-slot');
+            if (!fabSlot) return;
+
+            function setFab(name, flagUrl){
+                if (flagUrl) {
+                    fabSlot.innerHTML = '<img class="country-flag-fab" alt="'+(name||'')+'" src="'+flagUrl+'">';
+                } else {
+                    fabSlot.innerHTML = '<i class="fas fa-globe-africa"></i>';
+                }
+            }
+
+            // Initialize from saved selection
+            var savedName = localStorage.getItem('selectedCountryName');
+            var savedFlag = localStorage.getItem('selectedCountryFlag');
+            if (savedFlag) setFab(savedName, savedFlag);
+
+            // Click handler for Blade-rendered items
+            document.querySelectorAll('#countryRegionModal .country-item').forEach(function(item){
+                item.addEventListener('click', function(){
+                    var name = this.getAttribute('data-country');
+                    var flag = this.getAttribute('data-flag');
+                    localStorage.setItem('selectedCountryName', name || '');
+                    localStorage.setItem('selectedCountryFlag', flag || '');
+
+                    fetch('{{ route('set.country') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ name: name, flag: flag })
+                    }).then(function(){
+                        setFab(name, flag);
+                        var modal = document.getElementById('countryRegionModal');
+                        if (modal) {
+                            var bsModal = bootstrap.Modal.getInstance(modal) || new bootstrap.Modal(modal);
+                            bsModal.hide();
+                        }
+                    });
+                });
+            });
+
+            // Live filter for country list
+            var searchInput = document.getElementById('countrySearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(){
+                    var q = this.value.toLowerCase();
+                    document.querySelectorAll('#countryScroll .country-item').forEach(function(row){
+                        var name = (row.querySelector('.country-name')?.textContent || '').toLowerCase();
+                        row.style.display = name.indexOf(q) !== -1 ? '' : 'none';
+                    });
+                });
+            }
+        })();
+    </script>
 </body>
 
 </html>

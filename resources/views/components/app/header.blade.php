@@ -15,7 +15,7 @@
         </div>
     </div>
     <!-- Main Bar -->
-    <div class="header-main py-3 bg-white">
+    <div class="header-main py-3 bg-white" style="background-color: #de9a1b65 !important;">
         <div class="container d-flex justify-content-between align-items-center">
             <!-- Logo -->
             <a href="{{ route('homepage') }}" class="navbar-brand d-flex align-items-center">
@@ -31,11 +31,11 @@
                 });
             @endphp
             <form class="d-none d-md-flex flex-grow-1 mx-4" action="{{ route('shops') }}" method="get"
-                style="max-width: 600px;">
+                style="max-width: 700px;">
                 <div class="input-group w-100">
-                    <input type="text" class="form-control rounded-start" name="search"
+                    <input style="border-top-left-radius: 50px !important;border-bottom-left-radius: 50px !important;" type="text" class="form-control rounded-start" name="search"
                         placeholder="Search products...">
-                    <select class="form-select border rounded-0 pt-2 h-100" name="category" style="max-width: 200px;">
+                    {{-- <select class="form-select border rounded-0 pt-2 h-100" name="category" style="max-width: 200px;">
                         <option value="" class="text-dark">All Categories</option>
                         @foreach ($categories as $category)
                             @if ($category->childrens->count())
@@ -53,9 +53,9 @@
                                 </option>
                             @endif
                         @endforeach
-                    </select>
-                    <button class="btn btn-success rounded-end h-100" type="submit"><i
-                            class="fas fa-search"></i></button>
+                    </select> --}}
+                    <button style="border-top-right-radius: 50px !important;border-bottom-right-radius: 50px !important;" class="btn btn-success rounded-end h-100" type="submit"><i
+                            class="fas fa-search me-2"></i></button>
                 </div>
             </form>
             @php
@@ -139,7 +139,7 @@
             <div class="input-group w-100">
                 <input type="text" class="form-control rounded-start" name="search"
                     placeholder="Search products...">
-                <select class="form-select h-100" name="category" style="max-width: 200px;">
+                {{-- <select class="form-select h-100" name="category" style="max-width: 200px;">
                     <option value="">All Categories</option>
                     @foreach ($categories as $category)
                         <option class="text-dark" value="{{ $category->slug }}" @if (request('category') == $category->slug) selected @endif>
@@ -150,10 +150,54 @@
                                 style="font-weight:300;">&nbsp;&nbsp;&nbsp;&nbsp;{{ $child->name }}</option>
                         @endforeach
                     @endforeach
-                </select>
+                </select> --}}
                 <button class="btn btn-success rounded-end" type="submit"><i class="fas fa-search"></i></button>
             </div>
         </form>
+    </div>
+
+    <div class="container-fluid py-3 " style="background-color: #415f4247 !important;">
+        <div class="d-flex flex-nowrap gap-2 justify-content-start category-scroll" style="white-space: nowrap;">
+            @foreach ($categories as $category)
+                @if ($category->childrens->count())
+                    <button type="button"
+                        class="btn btn-primary btn-sm rounded-pill px-3 flex-shrink-0 @if(request('category') == $category->slug) active bg-primary text-white border-primary @endif"
+                        style="font-weight: 500;"
+                        data-bs-toggle="modal" data-bs-target="#categoryModal-{{ $category->id }}">
+                        {{ $category->name }}
+                    </button>
+
+                    <div class="modal fade category-modal" id="categoryModal-{{ $category->id }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content rounded-3 border-0 shadow-lg">
+                                <div class="modal-header border-0">
+                                    <h5 class="modal-title fw-semibold">{{ $category->name }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body pt-0">
+                                    <div class="list-group list-group-flush">
+                                        <a href="{{ route('shops', ['category' => $category->slug]) }}" class="list-group-item list-group-item-action py-3 fw-semibold">
+                                            All {{ $category->name }}
+                                        </a>
+                                        @foreach ($category->childrens as $child)
+                                            <a href="{{ route('shops', ['category' => $child->slug]) }}" class="list-group-item list-group-item-action py-3 @if(request('category') == $child->slug) active @endif">
+                                                {{ $child->name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <a href="{{ route('shops', ['category' => $category->slug]) }}"
+                       class="btn btn-primary btn-sm rounded-pill px-3 flex-shrink-0 @if(request('category') == $category->slug) active bg-primary text-white border-primary @endif"
+                       style="font-weight: 500;">
+                        {{ $category->name }}
+                    </a>
+                @endif
+            @endforeach
+        </div>
     </div>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-md navbar-light bg-light shadow">
@@ -248,6 +292,18 @@
         </div>
     </div>
     <style>
+        .main-header .category-scroll { overflow-x: auto !important; overflow-y: visible !important; -ms-overflow-style: none; scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x; }
+        .main-header .category-scroll::-webkit-scrollbar { display: none; }
+        .main-header .category-scroll .dropdown-menu { z-index: 2000; margin-top: 6px; }
+        .main-header .category-modal .modal-content { background: var(--cosmic-latte); box-shadow: 0 12px 40px var(--shadow-primary); }
+        .main-header .category-modal .modal-header .modal-title { color: var(--harvest-gold); }
+        .main-header .category-modal .btn-close:focus { box-shadow: 0 0 0 0.2rem var(--harvest-gold); }
+        .main-header .category-modal .list-group-item { border: none; border-radius: 10px; margin-bottom: 6px; background: #fff; color: var(--seal-brown); }
+        .main-header .category-modal .list-group-item:hover { background: var(--cosmic-latte); color: var(--hunter-green); }
+        .main-header .category-modal .list-group-item.active { background: var(--hunter-green); color: #fff; }
+        .main-header .category-modal .list-group-item { border: none; border-radius: 10px; margin-bottom: 6px; background: #fff; color: var(--seal-brown); }
+        .main-header .category-modal .list-group-item:hover { background: var(--cosmic-latte); color: var(--hunter-green); }
+        .main-header .category-modal .list-group-item.active { background: var(--hunter-green); color: #fff; }
         .main-header .navbar-nav .nav-link {
             font-weight: 500;
             color: var(--text-dark);

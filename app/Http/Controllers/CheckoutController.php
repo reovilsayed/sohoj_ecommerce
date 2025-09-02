@@ -35,6 +35,20 @@ class CheckoutController extends Controller
     }
     public function storeBillingAndShippingInformation(Request $request)
     {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'address_1' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'state_code' => 'required',
+            'post_code' => 'required',
+            'phone' => 'required',
+            'country_code' => 'required',
+        ]);
         $shippingAndBillingInformation = new ShippingAndBillingInformation(
             firstName: $request->first_name,
             lastName: $request->last_name,
@@ -78,10 +92,10 @@ class CheckoutController extends Controller
             'country_code' => $shipping['country_code']
         ], fromAddress: [
             'name' => 'Afrikartt',
-            'address_line' => '55 Glenlake Parkway',
-            'city' => 'Atlanta',
-            'state' => 'GA',
-            'postal_code' => '30328',
+            'address_line' => '2251 SW Binford Lake Parkway',
+            'city' => 'Gresham',
+            'state' => 'OR',
+            'postal_code' => '97080',
             'country_code' => 'US',
         ], packageDetails: $packages);
 

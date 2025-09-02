@@ -485,6 +485,7 @@
                                         '01' => 'Next Day Air',
                                         '02' => '2nd Day Air',
                                         '03' => 'Ground',
+                                        '08' => 'UPS Worldwide Expedited',
                                         '12' => '3 Day Select',
                                         '13' => 'Next Day Air Saver',
                                         '14' => 'Next Day Air Early A.M.',
@@ -518,6 +519,7 @@
                                         <h4 class="fw-semibold mb-3">Select Shipping Rate</h4>
                                         @php
                                             $ratedShipments = data_get($rates, 'RateResponse.RatedShipment', []);
+                          
                                             if (isset($ratedShipments['Service'])) {
                                                 $ratedShipments = [$ratedShipments];
                                             }
@@ -552,6 +554,10 @@
                                                                         'NegotiatedRateCharges.TotalCharge.MonetaryValue',
                                                                     ) ??
                                                                     data_get($shipment, 'TotalCharges.MonetaryValue');
+
+                                                                    if($order->total > 100){
+                                                                       $amount = 0;
+                                                                    }
                                                                 $days = data_get(
                                                                     $shipment,
                                                                     'GuaranteedDelivery.BusinessDaysInTransit',

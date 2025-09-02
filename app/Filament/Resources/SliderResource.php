@@ -32,12 +32,19 @@ class SliderResource extends Resource
                     ->schema([
                         FileUpload::make('image')
                             ->label('Slider Image')
+                            ->disk('public')
                             ->image()
                             ->imagePreviewHeight('120')
                             ->directory('sliders')
                             ->required()
                             ->helperText('Recommended size: 1200x400px. JPG or PNG.'),
                     ]),
+
+                Forms\Components\TextInput::make('url')
+                    ->label('URL')
+                    ->url()
+                    ->maxLength(255),
+
             ]);
     }
 

@@ -1107,9 +1107,9 @@
     <x-app.header />
     {{-- <img src="{{Storage::url(auth()->user()->verification->signature)}}" alt="hello"> --}}
     <section class="hero">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row mt-4">
-                <div class="col-lg-3 ps-md-0 d-none d-md-block">
+                {{-- <div class="col-lg-3 ps-md-0 d-none d-md-block">
                     <div class="hero__categories rounded-4 shadow-lg overflow-hidden bg-white border-0">
                         <!-- Toggle Header -->
                         <div class="hero__categories__all d-flex align-items-center justify-content-between px-4 py-4 bg-gradient-primary"
@@ -1164,14 +1164,18 @@
                             </div>
                         </div>
                     </div>
+                </div> --}}
+                <div class="col-lg-5">
+                    <x-banner.home-left-banner />
                 </div>
-
-                <div class="col-lg-9 pe-md-0">
+           
+                <div class="col-lg-7 pe-md-0">
                     <div class="hero-slider-wrapper">
                         <div class="hero-slider" role="region" aria-label="Product carousel">
                             @foreach ($sliders as $index => $slider)
-                                <div class="hero__item set-bg"
-                                    style="background-image: url('{{ Storage::url($slider->image) }}');"
+                            
+                                <div class="hero__item set-bg" onclick="window.location.href='{{ $slider->url }}'"
+                                    style="background-image: url('{{ Storage::url($slider->image) }}');cursor: pointer"
                                     aria-hidden="{{ $index !== 0 ? 'true' : 'false' }}">
                                 </div>
                             @endforeach
@@ -1186,6 +1190,7 @@
                         </div>
                     </div>
                 </div>
+                
 
             </div>
 
@@ -1289,7 +1294,22 @@
                 <!-- product area end -->
                 <!-- Offer section  -->
                 <div class="container">
-                    <x-offer2 />
+                    <div class="row" style="height: max-content;">
+                        <div class="col-lg-4 ps-0 d-flex mid-bn mb-4 me-5 margin-left img-fluid"
+                            style="">
+                    
+                         <x-banner.home-one-left />
+                        </div>
+                    
+                    
+                        <div class="col-lg-7 mid-bn mb-4 img-fluid"
+                            style="height: 100%;">
+                    
+                
+                            <x-banner.home-one-right />
+                    
+                        </div>
+                    </div>
                 </div>
                 <!-- Offer section end -->
                 <!-- Product area start -->

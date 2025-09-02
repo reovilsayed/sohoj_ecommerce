@@ -151,9 +151,9 @@ class UPSService
         $accessToken = $this->getAccessToken();
 
         // Validate input
-        $this->validateAddress($fromAddress, 'from');
-        $this->validateAddress($toAddress, 'to');
-        $this->validatePackageDetails($packageDetails);
+        // $this->validateAddress($fromAddress, 'from');
+        // $this->validateAddress($toAddress, 'to');
+        // $this->validatePackageDetails($packageDetails);
 
         // UPS Ship API endpoint
         $endpoint = $this->baseUrl . '/api/shipments/v2409/ship';
@@ -186,9 +186,9 @@ class UPSService
                         'Code' => $serviceCode,
                         'Description' => $this->getServiceDescription($serviceCode)
                     ],
-                    'Package' => [
-                        [
-                            'Description' => $packageDetails['description'] ?? 'Package',
+                    'Package' => array_map(function ($package) {
+                      return  [
+                            'Description' => 'Package',
                             'Packaging' => [
                                 'Code' => '02', // Customer Supplied Package
                                 'Description' => 'Package'
@@ -198,19 +198,19 @@ class UPSService
                                     'Code' => 'IN',
                                     'Description' => 'Inches'
                                 ],
-                                'Length' => (string) $packageDetails['length'],
-                                'Width' => (string) $packageDetails['width'],
-                                'Height' => (string) $packageDetails['height']
+                                'Length' => (string) $package['length'],
+                                'Width' => (string) $package['width'],
+                                'Height' => (string) $package['height']
                             ],
                             'PackageWeight' => [
                                 'UnitOfMeasurement' => [
                                     'Code' => 'LBS',
                                     'Description' => 'Pounds'
                                 ],
-                                'Weight' => (string) $packageDetails['weight']
+                                'Weight' => (string) $package['weight']
                             ]
-                        ]
-                    ]
+                            ];
+                    }, $packageDetails)
                 ],
                 'LabelSpecification' => [
                     'LabelImageFormat' => [
