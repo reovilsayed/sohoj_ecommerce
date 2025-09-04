@@ -930,9 +930,19 @@
             text-decoration: none;
         }
 
+        /* 2-Row Grid for Categories */
+        .category-slide-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
         .category-circle {
-            width: 130px;
-            height: 130px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: #fff;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
@@ -955,8 +965,8 @@
 
         /* Circle Icon */
         .circle-icon {
-            width: 54px;
-            height: 54px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             background: #f8f8f8;
             display: flex;
@@ -968,8 +978,8 @@
         }
 
         .circle-icon img {
-            width: 70%;
-            height: 70%;
+            width: 100%;
+            /* height: 70%; */
             object-fit: contain;
         }
 
@@ -1105,75 +1115,16 @@
         });
     @endphp
     <x-app.header />
-    {{-- <img src="{{Storage::url(auth()->user()->verification->signature)}}" alt="hello"> --}}
     <section class="hero">
         <div class="container-fluid">
             <div class="row mt-4">
-                {{-- <div class="col-lg-3 ps-md-0 d-none d-md-block">
-                    <div class="hero__categories rounded-4 shadow-lg overflow-hidden bg-white border-0">
-                        <!-- Toggle Header -->
-                        <div class="hero__categories__all d-flex align-items-center justify-content-between px-4 py-4 bg-gradient-primary"
-                            onclick="toggleStaticCategory()">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="category-icon-wrapper">
-                                    <i class="fas fa-th-large text-white fs-5"></i>
-                                </div>
-                                <div>
-                                    <span class="fw-bold text-white fs-6">All Categories</span>
-                                    <div class="text-white-50 small" style="    color: #ffffff !important;">Browse by
-                                        category</div>
-                                </div>
-                            </div>
-                            <div class="category-toggle-icon">
-                                <i class="fas fa-chevron-down text-white transition" id="static-category-chevron"></i>
-                            </div>
-                        </div>
-
-                        <!-- Category List -->
-                        <div id="static-category-list" class="custom-scroll">
-                            <div class="category-list-wrapper ps-2 pt-3">
-                                @foreach ($categories as $category)
-                                    <div class="category-item mb-2">
-                                        <a href="{{ route('shops', ['category' => $category->slug]) }}"
-                                            class="category-link d-flex align-items-center justify-content-between p-2 rounded-3">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <div class="">
-                                                    <i class="fas fa-circle text-muted" style="font-size: 6px;"></i>
-                                                </div>
-                                                <span class="fw-semibold text-dark">{{ $category->name }}</span>
-                                            </div>
-                                            <i class="fas fa-chevron-right text-muted small"></i>
-                                        </a>
-                                    </div>
-
-                                    @foreach ($category->childrens as $child)
-                                        <div class="category-item mb-1 ms-4">
-                                            <a href="{{ route('shops', ['category' => $child->slug]) }}"
-                                                class="category-link d-flex align-items-center justify-content-between p-2 rounded-3">
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <div class="category-sub-icon">
-                                                        <i class="fas fa-circle text-muted" style="font-size: 6px;"></i>
-                                                    </div>
-                                                    <span class="text-secondary small">{{ $child->name }}</span>
-                                                </div>
-                                                <i class="fas fa-chevron-right text-muted" style="font-size: 10px;"></i>
-                                            </a>
-                                        </div>
-                                    @endforeach
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
                 <div class="col-lg-5">
                     <x-banner.home-left-banner />
                 </div>
-           
                 <div class="col-lg-7 pe-md-0">
                     <div class="hero-slider-wrapper">
                         <div class="hero-slider" role="region" aria-label="Product carousel">
                             @foreach ($sliders as $index => $slider)
-                            
                                 <div class="hero__item set-bg" onclick="window.location.href='{{ $slider->url }}'"
                                     style="background-image: url('{{ Storage::url($slider->image) }}');cursor: pointer"
                                     aria-hidden="{{ $index !== 0 ? 'true' : 'false' }}">
@@ -1190,10 +1141,7 @@
                         </div>
                     </div>
                 </div>
-                
-
             </div>
-
         </div>
     </section>
     <!-- hero section end -->
@@ -1215,32 +1163,35 @@
 
             <div class="swiper category-swiper pb-5 pt-3">
                 <div class="swiper-wrapper">
-                    @foreach ($categories as $category)
+                    @foreach ($categories->chunk(2) as $categoryChunk)
                         <div class="swiper-slide">
-                            <a href="{{ route('shops', ['category' => $category->slug]) }}" class="category-circle-link">
-                                <div class="category-circle text-center">
-                                    <div class="circle-icon mx-auto mb-2">
-                                        @if (!empty($category->logo))
-                                            <img src="{{ Storage::url($category->logo) }}" alt="{{ $category->name }}">
-                                        @else
-                                            <i class="fas fa-box-open"></i>
-                                        @endif
-                                    </div>
-                                    <div class="category-name px-3">
-                                        {{ Str::limit($category->name, 15) }}
-                                    </div>
-                                </div>
-                            </a>
+                            <div class="category-slide-grid">
+                                @foreach ($categoryChunk as $category)
+                                    <a href="{{ route('shops', ['category' => $category->slug]) }}"
+                                        class="category-circle-link d-flex justify-content-center align-items-center text-center">
+                                        <div class="">
+                                            <div class="category-circle text-center">
+                                                <div class="circle-icon mx-auto mb-2"
+                                                    style="margin-bottom: 0px !important;">
+                                                    @if (!empty($category->logo))
+                                                        <img src="{{ Storage::url($category->logo) }}"
+                                                            alt="{{ $category->name }}">
+                                                    @else
+                                                        <img src="{{ asset('assets/img/test.jpg') }}" alt="No Image">
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="category-name px-3">
+                                                {{ Str::limit($category->name, 10) }}
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
                         </div>
                     @endforeach
                 </div>
-
-                <!-- Swiper Arrows -->
-                {{-- <div class="swiper-button-prev category-arrow"></div>
-                <div class="swiper-button-next category-arrow"></div> --}}
             </div>
-
-
         </div>
     </section>
     <!--category Section End -->
@@ -1295,19 +1246,12 @@
                 <!-- Offer section  -->
                 <div class="container">
                     <div class="row" style="height: max-content;">
-                        <div class="col-lg-4 ps-0 d-flex mid-bn mb-4 me-5 margin-left img-fluid"
-                            style="">
-                    
-                         <x-banner.home-one-left />
+                        <div class="col-lg-4 ps-0 d-flex mid-bn mb-4 me-5 margin-left img-fluid" style="">
+                            <x-banner.home-one-left />
                         </div>
-                    
-                    
-                        <div class="col-lg-7 mid-bn mb-4 img-fluid"
-                            style="height: 100%;">
-                    
-                
+
+                        <div class="col-lg-7 mid-bn mb-4 img-fluid" style="height: 100%;">
                             <x-banner.home-one-right />
-                    
                         </div>
                     </div>
                 </div>
@@ -1323,8 +1267,6 @@
                                         <h2 id="bestSeller" class="related-product-sec-title"> Recommended For You</h2>
                                     </div>
                                     <div class="ec-spe-section  data-animation=" slideInLeft">
-
-
                                         <div class="ec-spe-products">
                                             @if ($recommandProducts->count() > 0)
                                                 @foreach ($recommandProducts->chunk(5) as $products)
