@@ -1049,8 +1049,8 @@
             }
 
             .circle-icon {
-                width: 36px;
-                height: 36px;
+                width: 100%;
+                height: 100%;
                 font-size: 1.2rem;
             }
 
