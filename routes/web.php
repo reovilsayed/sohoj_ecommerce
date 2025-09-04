@@ -385,6 +385,10 @@ Route::post('/refund/store', [PayoutsController::class, 'refund_store'])->name('
 
 Route::get('/vendor-register', [RegisterController::class, 'vendorCreate'])->name('vendor.create');
 Route::post('/vendor-store', [VendorRegisterController::class, 'register'])->name('vendor.register.store');
+
+// New comprehensive vendor registration form
+Route::get('/vendor-registration', [PageController::class, 'vendorRegistration'])->name('vendor.registration');
+Route::post('/vendor-registration', [PageController::class, 'vendorRegistrationStore'])->name('vendor.registration.store');
 Route::get('/vendor-register-2nd-step', [HomeController::class, 'vendorSecondStep'])->name('vendor.second.step');
 Route::post('/2nd-step-store', [HomeController::class, 'vendorSecondStepStore'])->name('vendor.second.step.store');
 

@@ -490,4 +490,122 @@ class PageController extends Controller
         $sellersHelps = Page::where('slug', 'sellers-helps')->where('status', 'ACTIVE')->first();
         return view('pages.sellers_helps', compact('sellersHelps'));
     }
+
+    public function vendorRegistration()
+    {
+        $countries = \App\Data\Country\Africa::getCountries();
+        return view('pages.vendor_registration', compact('countries'));
+    }
+
+    public function vendorRegistrationStore(Request $request)
+    {
+        // Validate the form data
+        $validated = $request->validate([
+            // Company Information
+            'company_name' => 'required|string|max:255',
+            'company_description' => 'required|string|max:1000',
+            'country_of_operation' => 'required|string|max:255',
+            'legally_registered' => 'required|in:yes,no',
+            'business_registration' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'tax_identification' => 'nullable|string|max:255',
+            'contact_person_name' => 'required|string|max:255',
+            'contact_email' => 'required|email|max:255',
+            
+            // Product Information
+            'products' => 'required|array|min:1',
+            'products.*.name' => 'required|string|max:255',
+            'products.*.category' => 'required|string|max:255',
+            'products.*.short_description' => 'required|string|max:500',
+            'products.*.detailed_description' => 'required|string|max:1500',
+            'products.*.price' => 'required|numeric|min:0',
+            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.ethically_sourced' => 'required|in:yes,no',
+            'products.*.images' => 'required|array|min:3',
+            'products.*.images.*' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'products.*.certifications' => 'nullable|string|max:500',
+            'products.*.complies_regulations' => 'required|in:yes,no',
+            
+            // Shipping & Packaging
+            'packaging_method' => 'required|string|max:1000',
+            'shipping_method' => 'required|string|max:255',
+            'estimated_delivery_time' => 'required|string|max:255',
+            'shipment_tracking' => 'required|in:yes,no',
+            
+            // Marketing & Brand Assets
+            'brand_logo' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+            'promotional_material' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'website_url' => 'nullable|url|max:255',
+            'social_media_links' => 'nullable|string|max:1000',
+            
+            // Vendor Agreement
+            'agree_terms' => 'required|accepted',
+            'handle_customer_inquiries' => 'required|in:yes,no',
+            'maintain_quality_standards' => 'required|in:yes,no',
+        ]);
+
+        try {
+            // Handle file uploads
+            $businessRegistrationPath = $request->file('business_registration')->store('vendor-documents', 'public');
+            $brandLogoPath = $request->file('brand_logo')->store('vendor-logos', 'public');
+            
+            $promotionalMaterialPath = null;
+            if ($request->hasFile('promotional_material')) {
+                $promotionalMaterialPath = $request->file('promotional_material')->store('vendor-promotional', 'public');
+            }
+
+            // Handle product images
+            $productsData = [];
+            foreach ($request->products as $index => $product) {
+                $productImages = [];
+                foreach ($product['images'] as $image) {
+                    $productImages[] = $image->store('vendor-products', 'public');
+                }
+                
+                $productsData[] = [
+                    'name' => $product['name'],
+                    'category' => $product['category'],
+                    'short_description' => $product['short_description'],
+                    'detailed_description' => $product['detailed_description'],
+                    'price' => $product['price'],
+                    'quantity' => $product['quantity'],
+                    'ethically_sourced' => $product['ethically_sourced'],
+                    'images' => $productImages,
+                    'certifications' => $product['certifications'] ?? null,
+                    'complies_regulations' => $product['complies_regulations'],
+                ];
+            }
+
+            // Store vendor registration data (you can save to database or send email)
+            $vendorData = [
+                'company_name' => $validated['company_name'],
+                'company_description' => $validated['company_description'],
+                'country_of_operation' => $validated['country_of_operation'],
+                'legally_registered' => $validated['legally_registered'],
+                'business_registration_path' => $businessRegistrationPath,
+                'tax_identification' => $validated['tax_identification'],
+                'contact_person_name' => $validated['contact_person_name'],
+                'contact_email' => $validated['contact_email'],
+                'products' => $productsData,
+                'packaging_method' => $validated['packaging_method'],
+                'shipping_method' => $validated['shipping_method'],
+                'estimated_delivery_time' => $validated['estimated_delivery_time'],
+                'shipment_tracking' => $validated['shipment_tracking'],
+                'brand_logo_path' => $brandLogoPath,
+                'promotional_material_path' => $promotionalMaterialPath,
+                'website_url' => $validated['website_url'],
+                'social_media_links' => $validated['social_media_links'],
+                'handle_customer_inquiries' => $validated['handle_customer_inquiries'],
+                'maintain_quality_standards' => $validated['maintain_quality_standards'],
+                'submitted_at' => now(),
+            ];
+
+            // Here you can save to database, send email, or process as needed
+            // For now, we'll just return a success message
+            
+            return redirect()->back()->with('success', 'Your vendor registration has been submitted successfully! We will review your application and get back to you within 3-5 business days.');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'There was an error submitting your registration. Please try again.')->withInput();
+        }
+    }
 }
