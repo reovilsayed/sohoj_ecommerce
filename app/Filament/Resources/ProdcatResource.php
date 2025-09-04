@@ -92,10 +92,12 @@ class ProdcatResource extends Resource
 
                 TextColumn::make('name')
                     ->searchable()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null)
                     ->sortable(),
 
                 TextColumn::make('slug')
-                    ->formatStateUsing(fn($state) => Str::slug($state))
+                    ->unique(Prodcat::class, 'slug', ignoreRecord: true)
                     ->searchable()
                     ->toggleable(),
 
@@ -153,7 +155,7 @@ class ProdcatResource extends Resource
     {
         // TEMPORARILY DISABLED FOR DEBUGGING
         return null;
-        
+
         return static::$model::count();
     }
 }
