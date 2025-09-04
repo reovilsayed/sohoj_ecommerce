@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('shop_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('logo');
-            $table->string('slug');
+            $table->string('slug')->unique()->nullable();
             $table->integer('parent_id')->nullable();
 
             $table->timestamps();

@@ -21,6 +21,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ProdcatResource extends Resource
 {
@@ -51,14 +52,21 @@ class ProdcatResource extends Resource
                                             ->required()
                                             ->maxLength(255)
                                             ->live(onBlur: true)
-                                            ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null)
+                                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                                if (blank($get('slug'))) {
+                                                    $set('slug', Str::slug($state));
+                                                }
+                                            })
+
                                             ->placeholder('E.g. Electronics'),
                                         TextInput::make('slug')
                                             ->label('Slug')
                                             ->required()
                                             ->maxLength(255)
-                                            ->unique(Prodcat::class, 'slug', ignoreRecord: true)
-                                            ->rules(['alpha_dash'])
+                                            ->rules([
+                                                fn($record) => Rule::unique('prodcats', 'slug')->ignore($record?->id),
+                                            ])
+                                            ->dehydrateStateUsing(fn($state) => Str::slug($state)) // auto-clean on save
                                             ->placeholder('Auto-generated from name'),
 
                                         Select::make('parent_id')
@@ -92,12 +100,9 @@ class ProdcatResource extends Resource
 
                 TextColumn::make('name')
                     ->searchable()
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null)
                     ->sortable(),
 
                 TextColumn::make('slug')
-                    ->unique(Prodcat::class, 'slug', ignoreRecord: true)
                     ->searchable()
                     ->toggleable(),
 
