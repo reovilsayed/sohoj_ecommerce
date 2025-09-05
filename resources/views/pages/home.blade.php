@@ -1150,18 +1150,18 @@
     <!-- Main Slider End -->
 
     <!--  category Section Start -->
-    <section class="section ec-category-section">
+    <section class="section ec-category-section mt-3">
         <div class="container">
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-12">
                     <div class="mb-5 mt-5">
                         <h1 class="related-product-sec-title mb-3">Browse Shops by Categories</h1>
                         <p class="text-muted fs-6">Discover amazing shops organized by categories</p>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
-            <div class="swiper category-swiper pb-5 pt-3">
+            <div class="swiper category-swiper pb-5 pt-5">
                 <div class="swiper-wrapper">
                     @foreach ($categories->chunk(2) as $categoryChunk)
                         <div class="swiper-slide">
