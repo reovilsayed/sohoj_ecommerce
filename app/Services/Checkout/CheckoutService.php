@@ -30,7 +30,9 @@ class CheckoutService
 
 
     ) {
+        
         $this->address = $shippingAndBillingInformation;
+
         $this->cart = new Cart();
         $this->customer = Auth::user();
         $this->setSubtotal();

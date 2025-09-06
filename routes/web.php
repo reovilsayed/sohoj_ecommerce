@@ -354,7 +354,6 @@ Route::get('/test/{order}/shipment', function (Order $order) {
         packageDetails: $packages,
         serviceCode: $order->shipping_method
     );
-    dd($result);
 })->name('checkout.test');
 //checkout routes
 Route::post('/store-checkout', [CheckoutController::class, 'store'])->name('checkout.store');
