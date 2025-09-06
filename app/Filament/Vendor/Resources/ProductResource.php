@@ -414,9 +414,8 @@ class ProductResource extends Resource
                                     ->schema([
                                         RichEditor::make('short_description')
                                             ->label('Short Description')
-                                            ->maxLength(500)
                                             ->placeholder('A brief summary for product listings')
-                                            ->helperText('Brief product summary (max 500 characters). This appears in product listings and search results to give customers a quick overview.')
+                                            ->helperText('Brief product summary. This appears in product listings and search results to give customers a quick overview.')
                                             ->toolbarButtons([
                                                 'bold',
                                                 'italic',
