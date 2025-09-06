@@ -10,6 +10,7 @@ class Order extends Model
 {
     use HasFactory;
 
+
     protected $guarded = [];
     // protected $casts = [
     //     'billing' => 'array',

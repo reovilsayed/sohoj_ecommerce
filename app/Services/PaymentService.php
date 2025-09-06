@@ -118,6 +118,7 @@ class PaymentService
             //     'enabled' => true,
             // ],
         ]);
+        dd($session);
         return $session->url;
     }
 
