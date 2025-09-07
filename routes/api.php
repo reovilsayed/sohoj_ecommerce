@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\OrderApiController;
 use App\Http\Controllers\Api\ProductApiController;
 use App\Http\Controllers\Api\VendorApiController;
-use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,15 +33,9 @@ Route::get('/vendors', [VendorApiController::class, 'index']);
 Route::get('/vendors/{shop:slug}', [VendorApiController::class, 'show']);
 Route::get('vendor/{shop:slug}/products', [ProductApiController::class, 'vendorProducts']);
 
-// Order and Checkout APIs
-Route::post('/orders', [OrderApiController::class, 'store']);
-Route::post('/orders/{order}/checkout', [OrderApiController::class, 'checkout']);
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('order/checkout', CheckoutController::class);
     Route::delete('order/delete', [OrderApiController::class, 'deleteOrder']);
     Route::get('order/{order}/shipping-rates', [OrderApiController::class, 'getShippingRates']);
     Route::post('order/{order}/confirm', [OrderApiController::class, 'confirmOrder']);
 });
-
-
