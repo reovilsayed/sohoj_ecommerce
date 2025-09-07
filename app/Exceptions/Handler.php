@@ -42,18 +42,16 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function report(Throwable $exception)
+    public function register(): void
     {
-        if ($this->shouldReport($exception)) {
-
-
-            if (env('APP_ENV') == 'production') {
-                return  Mail::send('emails.errors', ['exception' => $exception], function ($message) {
-                    $message->to('reovilsayed@gmail.com')->cc('asalaminsikder787@gmail.com')->subject('Error in  Sushi');
+        $this->reportable(function (Throwable $exception) {
+            if ($this->shouldReport($exception) && env('APP_ENV') === 'production') {
+                Mail::send('emails.errors', ['exception' => $exception], function ($message) {
+                    $message->to('reovilsayed@gmail.com')
+                        ->cc('asalaminsikder787@gmail.com')
+                        ->subject('Error in afrikartt');
                 });
             }
-        }
-
-        parent::report($exception);
+        });
     }
 }
