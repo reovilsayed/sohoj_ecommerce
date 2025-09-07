@@ -131,12 +131,6 @@ class HomeController extends Controller
         $filePath = storage_path('app/public/signatures/' . $fileName);
         file_put_contents($filePath, $signatureImage);
 
-        // Stripe setup (if using Stripe)
-        // if ($request->has('payment_method')) {
-        //     auth()->user()->createOrGetStripeCustomer();
-        //     auth()->user()->addPaymentMethod($data['payment_method']);
-        // }
-
         // Create Stripe subscription if needed
         Stripe::setApiKey(\App\Setting\Settings::setting('stripe_secret'));
         $product = Product::create([
@@ -208,10 +202,17 @@ class HomeController extends Controller
             'phone' => $request->phone,
         ]);
 
+        $baseSlug = Str::slug($request->name);
+        $slug = $baseSlug;
+        $count = 1;
+
+        while (Shop::where('slug', $slug)->exists()) {
+            $slug = "{$baseSlug}-" . $count++;
+        }
         Shop::create([
             'user_id' => Auth::id(),
             'name' => $request->name,
-            'slug' => Str::slug($request->name),
+            'slug' => $slug,
             'email' => $request->store_email,
             'phone' => $request->phone,
             'company_name' => $request->company_name,
@@ -407,16 +408,16 @@ class HomeController extends Controller
     {
         try {
             $user = Auth::user();
-            
+
             if (!$user) {
                 return response()->json([
                     'status' => 0,
                     'message' => 'User not authenticated'
                 ], 401);
             }
-            
+
             $shop = $user->shop;
-            
+
             if ($shop) {
                 return response()->json([
                     'status' => (int) $shop->status,
@@ -425,12 +426,11 @@ class HomeController extends Controller
                     'shop_name' => $shop->name
                 ]);
             }
-            
+
             return response()->json([
                 'status' => 0,
                 'message' => 'No shop found for this user'
             ]);
-            
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 0,
