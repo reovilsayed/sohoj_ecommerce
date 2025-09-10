@@ -13,9 +13,9 @@
 @endphp
 
 <div class="col-md-3 col-sm-6 col-12 mb-4">
-    <div class="product-card">
+    <div class="product-card" >
         {{-- Product Image Section --}}
-        <div class="product-image-wrapper">
+        <div class="product-image-wrapper" onclick="window.location.href='{{ route('product_details', $product->slug) }}'">
             <div class="product-image">
                 <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="product-img"
                     style="width: 100%; height: 100%; object-fit: cover;">

@@ -19,6 +19,7 @@ use App\Repository\ShopRepsitory;
 use App\Setting\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
@@ -26,14 +27,27 @@ class PageController extends Controller
 {
     public function home()
     {
+
+
         // Cache the entire homepage data together to reduce individual repository calls
         $homeData = Cache::remember('homepage_data', 1800, function () { // 30 minutes cache
+            $products = DB::table(DB::raw('(
+                SELECT p.*, 
+                       ROW_NUMBER() OVER (PARTITION BY shop_id ORDER BY id) AS row_num
+                FROM products p
+            ) as sub'))
+                ->where('row_num', '<=', 10)
+                ->orderBy('shop_id')
+                ->get()->map(function ($product) {
+                    return Product::find($product->id);
+                });
             return [
                 'latest_products' => ProductRepository::getLatestProducts(),
-                'bestsaleproducts' => ProductRepository::getBestsaleProducts(), 
+                'bestsaleproducts' => ProductRepository::getBestsaleProducts(),
                 'recommandProducts' => ProductRepository::getRecommandProducts(),
                 'latest_shops' => ShopRepsitory::getLatestShops(),
                 'prodcats' => CategoryRepository::getAllCategoriesWithProducts(),
+                'allproducts' => $products,
                 'sliders' => Slider::latest()->get()
             ];
         });
@@ -510,7 +524,7 @@ class PageController extends Controller
             'tax_identification' => 'nullable|string|max:255',
             'contact_person_name' => 'required|string|max:255',
             'contact_email' => 'required|email|max:255',
-            
+
             // Product Information
             'products' => 'required|array|min:1',
             'products.*.name' => 'required|string|max:255',
@@ -524,19 +538,19 @@ class PageController extends Controller
             'products.*.images.*' => 'required|file|mimes:jpg,jpeg,png|max:2048',
             'products.*.certifications' => 'nullable|string|max:500',
             'products.*.complies_regulations' => 'required|in:yes,no',
-            
+
             // Shipping & Packaging
             'packaging_method' => 'required|string|max:1000',
             'shipping_method' => 'required|string|max:255',
             'estimated_delivery_time' => 'required|string|max:255',
             'shipment_tracking' => 'required|in:yes,no',
-            
+
             // Marketing & Brand Assets
             'brand_logo' => 'required|file|mimes:jpg,jpeg,png|max:2048',
             'promotional_material' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'website_url' => 'nullable|url|max:255',
             'social_media_links' => 'nullable|string|max:1000',
-            
+
             // Vendor Agreement
             'agree_terms' => 'required|accepted',
             'handle_customer_inquiries' => 'required|in:yes,no',
@@ -547,7 +561,7 @@ class PageController extends Controller
             // Handle file uploads
             $businessRegistrationPath = $request->file('business_registration')->store('vendor-documents', 'public');
             $brandLogoPath = $request->file('brand_logo')->store('vendor-logos', 'public');
-            
+
             $promotionalMaterialPath = null;
             if ($request->hasFile('promotional_material')) {
                 $promotionalMaterialPath = $request->file('promotional_material')->store('vendor-promotional', 'public');
@@ -560,7 +574,7 @@ class PageController extends Controller
                 foreach ($product['images'] as $image) {
                     $productImages[] = $image->store('vendor-products', 'public');
                 }
-                
+
                 $productsData[] = [
                     'name' => $product['name'],
                     'category' => $product['category'],
@@ -601,9 +615,8 @@ class PageController extends Controller
 
             // Here you can save to database, send email, or process as needed
             // For now, we'll just return a success message
-            
-            return redirect()->back()->with('success', 'Your vendor registration has been submitted successfully! We will review your application and get back to you within 3-5 business days.');
 
+            return redirect()->back()->with('success', 'Your vendor registration has been submitted successfully! We will review your application and get back to you within 3-5 business days.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'There was an error submitting your registration. Please try again.')->withInput();
         }

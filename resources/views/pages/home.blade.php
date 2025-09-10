@@ -65,7 +65,7 @@
 
         .hero__item {
             flex: 0 0 100%;
-            min-height: 300px;
+            min-height: 500px;
             height: 60vw;
             max-height: 431px;
             background-size: cover;
@@ -1118,15 +1118,15 @@
     <section class="hero">
         <div class="container-fluid">
             <div class="row mt-4">
-                <div class="col-lg-5">
+                <div class="col-lg-5 d-none d-lg-block">
                     <x-banner.home-left-banner />
                 </div>
-                <div class="col-lg-7 pe-md-0">
-                    <div class="hero-slider-wrapper">
-                        <div class="hero-slider" role="region" aria-label="Product carousel">
+                <div class="col-lg-7 p-0 col-12 ">
+                    <div class="hero-slider-wrapper p-0">
+                        <div class="hero-slider" role="region" aria-label="Product carousel" style="height: 500px;">
                             @foreach ($sliders as $index => $slider)
                                 <div class="hero__item set-bg" onclick="window.location.href='{{ $slider->url }}'"
-                                    style="background-image: url('{{ Storage::url($slider->image) }}');cursor: pointer"
+                                    style="background-image: url('{{ Storage::url($slider->image) }}');cursor: pointer; "
                                     aria-hidden="{{ $index !== 0 ? 'true' : 'false' }}">
                                 </div>
                             @endforeach
@@ -1239,18 +1239,17 @@
 
 
                     </section>
-                @else
-                    <h3 class="text-center text-danger my-5"> Please increase the location to see more products.</h3>
                 @endif
+
                 <!-- product area end -->
                 <!-- Offer section  -->
                 <div class="container">
                     <div class="row" style="height: max-content;">
-                        <div class="col-lg-4 ps-0 d-flex mid-bn mb-4 me-5 margin-left img-fluid" style="">
+                        <div class="col-lg-4 ps-0 d-flex mid-bn   " style="">
                             <x-banner.home-one-left />
                         </div>
 
-                        <div class="col-lg-7 mid-bn mb-4 img-fluid" style="height: 100%;">
+                        <div class="col-lg-8 mid-bn mb-4 " style="height: 100%;">
                             <x-banner.home-one-right />
                         </div>
                     </div>
@@ -1264,7 +1263,7 @@
                                 <div class="col-md-12 text-left">
                                     <div class="section-title">
 
-                                        <h2 id="bestSeller" class="related-product-sec-title"> Recommended For You</h2>
+                                        <h2 id="bestSeller" class="related-product-sec-title"> Our Best Sellers</h2>
                                     </div>
                                     <div class="ec-spe-section  data-animation=" slideInLeft">
                                         <div class="ec-spe-products">
@@ -1307,8 +1306,50 @@
         </div>
     </section>
     <!-- ec Product tab Area End -->
+
+    <!-- New Product end -->
+    <!-- Explore shop end -->
+    <!-- Product tab Area Start -->
+
+    <section class="section ec-product-tab section-space-p">
+        <div class="container">
+            <div class="row">
+                <div class=" col-md-12">
+                    <h2 class="related-product-sec-title">Our 
+                        catalogue</h2>
+                </div>
+
+                <div class="tab-pane fade show active" id="all">
+
+
+
+
+                    <div class="row">
+                        
+                      
+                        @foreach ($allproducts as $product)
+                            <x-products.product :product="$product" :variant="'red'" :showMultipleCategories="true" />
+                        @endforeach
+
+               
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ec Product tab Area End -->
     <!-- Explore shop -->
-    @if ($latest_shops->count() > 0)
+    @if ($products->count() > 0)
         <section class="section ec-new-product">
             <div class="container">
                 <div class="row">
@@ -1317,7 +1358,7 @@
 
                             <h2 class="related-product-sec-title"> Trending Shops</h2>
                         </div>
-                        <div class="ec-spe-section  data-animation="slideInLeft">
+                        <div class="ec-spe-section" data-animation="slideInLeft">
                             <div class="ec-spe-products">
                                 @foreach ($latest_shops->chunk(4) as $shops)
                                     <div class="ec-fs-product">
@@ -1336,69 +1377,11 @@
                                 @endforeach
 
                             </div>
+
+
                         </div>
 
-
-
-                    </div>
-                </div>
-                <!-- New Product Content -->
-
-            </div>
-        </section>
-    @endif
-    <!-- New Product end -->
-    <!-- Explore shop end -->
-    <!-- Product tab Area Start -->
-    @if ($latest_shops->count() > 0)
-        <section class="section ec-product-tab section-space-p">
-            <div class="container">
-                <div class="row">
-                    <div class=" col-md-12">
-                        <h2 class="related-product-sec-title"> Recommended For You</h2>
-                    </div>
-
-                    <div class="tab-pane fade show active" id="all">
-                        @foreach ($latest_shops as $shop)
-                            @if ($shop->products->count())
-                                <div class="row mb-4 mt-4">
-                                    <div class="col-md-3 cols-12 pro-gl-content-shop">
-                                        <x-shops-card.card-1 :shop="$shop" />
-                                    </div>
-                                    <div class="col-md-9">
-                                        <div class="ec-spe-products">
-                                            @foreach ($shop->products->whereNull('parent_id')->chunk(4) as $products)
-                                                <div class="ec-fs-product">
-                                                    <div class="ec-fs-pro-inner">
-                                                        <div class="row">
-                                                            @php
-                                                                $last = $loop->last;
-                                                                $count = $shop->products->count();
-                                                            @endphp
-                                                            @foreach ($products as $product)
-                                                                <x-products.product :product="$product" :variant="'red'"
-                                                                    :showMultipleCategories="true" />
-                                                            @endforeach
-
-                                                            {{-- @if ($last && $count >= 8)
-                                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pro-gl-content d-flex align-items-center"
-                                                                    style="margin-bottom: 35px;">
-                                                                    <a href="{{ route('store_front', $shop->slug) }}"
-                                                                        class="btn btn-dark">View More</a>
-                                                                </div>
-                                                            @endif --}}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                        @endforeach
-
-
-                        <div class="view-more-shops-container">
+                        <div class="view-more-shops-container mb-5">
                             <a href="{{ route('vendors') }}" class="view-more-shops-btn">
                                 <span class="btn-text" style="color: #ffffff">Explore All Shops</span>
                                 <div class="btn-icon">
@@ -1413,11 +1396,11 @@
 
                     </div>
                 </div>
+                <!-- New Product Content -->
+
             </div>
         </section>
     @endif
-    <!-- ec Product tab Area End -->
-
 
     <!-- Product tab area end -->
     </main>
