@@ -95,8 +95,8 @@ class RegistrationController extends Controller
             'govt_id_front' => ['required', 'file', 'mimes:jpeg,png', 'max:5120'], // 5MB
 
             'company_registration' => ['required', 'string', 'max:255'],
-            'name' => ['required', 'string', 'max:255', 'unique:shops,name'],
-            'store_email' => ['required', 'email:rfc,dns', 'max:255', 'unique:shops,email'],
+            'name' => ['required', 'string', 'max:255'],
+            'store_email' => ['required', 'email:rfc,dns', 'max:255'],
             'company_name' => ['required', 'string', 'max:255'],
         ];
 
