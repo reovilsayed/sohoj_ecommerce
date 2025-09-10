@@ -114,6 +114,19 @@
             outline: 2px solid #dc3545;
             outline-offset: 3px;
         }
+
+        /* Validation error visibility */
+        .invalid-feedback {
+            display: block !important;
+            font-size: 0.95rem;
+            color: #b00020;
+            margin-top: 6px;
+        }
+        .is-invalid,
+        .is-invalid:focus {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.1rem rgba(220, 53, 69, 0.15) !important;
+        }
     </style>
 @endsection
 @section('registration-content')
@@ -133,6 +146,17 @@
                         <div
                             style="width: 80px; height: 4px; background: var(--accent-color); border-radius: 2px; margin-bottom: 1.5rem;">
                         </div>
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger" role="alert" style="border-radius:0;">
+                                <div class="fw-bold mb-1"><i class="fas fa-times-circle me-1"></i> Please fix the following errors:</div>
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
                         <div id="id-upload-alert" class="alert alert-danger d-none" role="alert" style="border-radius:0;">
                             <i class="fas fa-exclamation-triangle me-1"></i> Please upload both front and back of your ID to continue.
