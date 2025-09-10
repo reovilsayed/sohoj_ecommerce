@@ -22,6 +22,7 @@ configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
+    
     ->withMiddleware(function (Middleware $middleware) {
         // Add notification clearing middleware to web group
         $middleware->web(append: [

@@ -183,7 +183,7 @@ class UserController extends Controller
                 'role_id' => 3,
             ]);
             Mail::to($user->email)->send(new VerifyEmail($user, $verify_token));
-            return redirect('/verify-email');
+            return redirect()->route('verify.massage');
         }
         return redirect()->back()->withErrors('You have Already request');
     }

@@ -14,6 +14,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\PayoutsController;
 use App\Http\Controllers\Seller\ProductController;
+use App\Http\Controllers\Seller\RegistrationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Seller\SellerPagesController;
 use App\Http\Controllers\TicketsController;
@@ -323,8 +324,8 @@ Route::group(['prefix' => 'checkout'], function () {
 
 Route::get('/test/{order}/shipment', function (Order $order) {
     $ups = new UPSService();
-    $shipping = json_decode($order->shipping,true);
-      $packages =  $order->products->map(function ($product) {
+    $shipping = json_decode($order->shipping, true);
+    $packages =  $order->products->map(function ($product) {
         return [
             'length' => $product->length ?? 10,
             'width' => $product->width ?? 8,
@@ -382,8 +383,8 @@ Route::get('admin/order/canceled', [PayoutsController::class, 'cancel_order'])->
 Route::get('admin/order/refund', [PayoutsController::class, 'refund'])->name('refund.order')->middleware('auth', 'role:admin');
 Route::post('/refund/store', [PayoutsController::class, 'refund_store'])->name('refund.store');
 
-Route::get('/vendor-register', [RegisterController::class, 'vendorCreate'])->name('vendor.create');
-Route::post('/vendor-store', [VendorRegisterController::class, 'register'])->name('vendor.register.store');
+// Route::get('/vendor-register', [RegisterController::class, 'vendorCreate'])->name('vendor.create');
+// Route::post('/vendor-store', [VendorRegisterController::class, 'register'])->name('vendor.register.store');
 
 // New comprehensive vendor registration form
 Route::get('/vendor-registration', [PageController::class, 'vendorRegistration'])->name('vendor.registration');
@@ -497,3 +498,14 @@ Route::post('/set-country', function (Request $request) {
     return response()->json(['ok' => true]);
 })->name('set.country');
 
+
+
+
+Route::group(['prefix' => 'register-as-seller'], function () {
+    Route::get('/', [RegistrationController::class, 'basicInfo'])->name('vendor.create');
+    Route::post('/store', [VendorRegisterController::class, 'register'])->name('vendor.register.store');
+    Route::get('terms-and-conditions', [RegistrationController::class, 'termsAndConditions'])->name('vendor.registration.terms-and-conditions');
+    Route::post('terms-and-conditions', [RegistrationController::class, 'termsAndConditionsStore'])->name('vendor.registration.terms-and-conditions.store');
+    Route::get('/vendor-verification', [RegistrationController::class, 'vendorVerification'])->name('vendor.registration.verification');
+    Route::post('/vendor-verification/store', [RegistrationController::class, 'vendorVerificationStore'])->name('vendor.registration.verification.store');
+});

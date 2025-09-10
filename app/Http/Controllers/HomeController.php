@@ -77,8 +77,7 @@ class HomeController extends Controller
     }
     public function vendorSecondStepStore(Request $request)
     {
-        // dd($request->all());
-        // Validate basic fields
+   
         $validationRules = [
             "phone" => "required",
             "dob"  => "required",

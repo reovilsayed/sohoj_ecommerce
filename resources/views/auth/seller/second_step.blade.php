@@ -140,13 +140,7 @@
                     <div class="card shadow-lg border-0" style="border-left: 8px solid var(--accent-color);">
                         <div class="card-body p-4 p-md-5">
 
-                            <div class="mb-4">
-                                <div class="alert text-white text-center mb-0"
-                                    style="background: var(--accent-color); border-radius: 1rem;">
-                                    <span>Shop membership fee-$24.95/month <br>Start selling for free with our 30 days trial
-                                        period</span>
-                                </div>
-                            </div>
+                         
 
                             <!-- Terms & Conditions Section -->
                             <div id="terms-section" style="display: block;">
@@ -477,8 +471,7 @@
                                 </form>
 
                             </div>
-                            {{-- @dd(session()->get('')) --}}
-                            <!-- Vendor Verification Section -->
+                           
                             <div id="verification-section" style="display: none;">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h4 class="fw-bold text-dark mb-0 d-flex align-items-center"
@@ -1100,78 +1093,7 @@
                                         </div>
                                     </div>
                             </div>
-                            {{-- <h4 class="fw-bold text-dark mb-2 d-flex align-items-center"
-                                        style="letter-spacing: 1px;">
-                                        <i class="fas fa-credit-card me-2" style="color: var(--accent-color);"></i>
-                                        Credit/Debit Card
-                                    </h4>
-                                    <div
-                                        style="width: 60px; height: 4px; background: var(--accent-color); border-radius: 2px; margin-bottom: 0.5rem;">
-                                    </div>
-                                    <div class="mb-3 text-secondary small" style="margin-bottom: 1.5rem !important;">
-                                        <i class="fas fa-info-circle me-1"></i> Provide a valid card for your monthly
-                                        subscription. Your payment is secure.
-                                    </div>
-                                    <div class="shadow-sm mb-4"
-                                        style="background:#fafdff; border-left:4px solid var(--accent-color); padding:32px 24px 24px 24px; border-radius: 0;">
-                                        <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
-                                        <input name="payment_method" id="card-payment-method" type="hidden">
-                                        <div class="form-group mb-3">
-                                            <label for="card_info" class="form-label fw-bold"
-                                                style="font-size: 1rem; color: var(--accent-color);">Card Details<span
-                                                    class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-white border-1"
-                                                    style="border-radius:0;"><i class="fas fa-credit-card"
-                                                        style="color: var(--accent-color);"></i></span>
-                                                <div id="card-element" class="form-control bg-white border-1 px-4 py-2"
-                                                    style="box-shadow:none; border-radius:0;"></div>
-                                            </div>
-                                        </div>
-                                        <p class="mb-2">This card will be used for your monthly payment every month.</p>
-                                        <p class="text-primary">Each and every merchant must consent to having autopay
-                                            enabled.
-                                            At any moment, you are free to deactivate your shop or cancel your membership.
-                                        </p>
-                                        <div class="d-flex align-items-center mb-3" style="height: 40px;">
-                                            <input type="checkbox" required
-                                                class="form-check-input me-2 @error('ismonthly_charge') is-invalid @enderror"
-                                                id="ismonthly_charge" style="width: 25px;" value="1"
-                                                name="ismonthly_charge">
-                                            <label for="ismonthly_charge" class="form-label mb-0 fw-bold"
-                                                style="color: var(--accent-color);">Auto pay</label>
-                                            @error('ismonthly_charge')
-                                                <span class="invalid-feedback ms-2"
-                                                    role="alert"><strong>{{ $message }}</strong></span>
-                                            @enderror
-                                        </div>
-                                        <button id="card-button" type="button" class="btn mb-2 fw-bold shadow"
-                                            style="background-color:#FF0000 !important;color:white; transition:transform 0.2s; font-size:1.1rem;"
-                                            onmouseover="this.style.transform='translateY(-2px) scale(1.03)'"
-                                            onmouseout="this.style.transform='scale(1)'"
-                                            data-secret="{{ $intent->client_secret }}">
-                                            <i class="fas fa-lock me-2"></i> Verify
-                                        </button>
-                                    </div> --}}
-
-                            <!-- Checkbox -->
-                            {{-- <div class="d-flex align-items-center mb-3">
-                                        <input type="checkbox" required
-                                            class="form-check-input me-2 @error('terms') is-invalid @enderror"
-                                            id="termsCheckbox" style="width: 25px;" value="1" name="terms">
-
-                                        <label for="termsCheckbox" class="form-label mb-0 text-uppercase fw-bold"
-                                            style="font-size: 0.85rem; color: var(--accent-color); cursor: pointer;">
-                                            I have read and agree to the
-                                            <span class="text-primary">Terms &amp; Conditions</span>
-                                        </label>
-
-                                        @error('terms')
-                                            <span class="invalid-feedback ms-2" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div> --}}
+                          
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="">
@@ -1183,13 +1105,7 @@
                                     </button>
                                 </div>
 
-                                {{-- <div class="">
-                                            <button type="button" class="btn btn-sm"
-                                                style="background: var(--accent-color); color: #ffffff;"
-                                                onclick="showSection('terms')">
-                                                <i class="fas fa-file-contract me-1"></i> View Terms
-                                            </button>
-                                        </div> --}}
+                           
                             </div>
                             </form>
                         </div> <!-- End Verification Section -->
