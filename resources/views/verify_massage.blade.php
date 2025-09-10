@@ -1,7 +1,8 @@
 @extends('auth.seller.registration.layout', ['current_step' => 2])
 
 @section('registration-content')
-    <div class="d-flex align-items-center justify-content-center" style="min-height: 80vh; background: #fafdff;">
+
+<div class="d-flex align-items-center justify-content-center" style="min-height: 80vh; background: #fafdff;">
         <div class="card shadow-sm border-0 p-4"
             style="max-width: 400px; width: 100%; border-radius: 0; border-left: 6px solid var(--accent-color);">
             <div class="text-center mb-3">

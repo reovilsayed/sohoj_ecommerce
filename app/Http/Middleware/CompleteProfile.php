@@ -20,6 +20,6 @@ class CompleteProfile
             return $next($request);
         }
 
-        return redirect()->route('vendor.second.step');
+        return redirect()->route('vendor.registration.terms-and-conditions');
     }
 }

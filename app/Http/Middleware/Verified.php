@@ -16,12 +16,13 @@ class Verified
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->shop) {
+        if (auth()->check() && auth()->user()->shop) {
             if (auth()->user()->shop->status == 1) {
 
                 return $next($request);
             }
+            return redirect()->route('vendor.verification');
         }
-        return redirect()->route('vendor.verification');
+        return redirect('/');
     }
 }

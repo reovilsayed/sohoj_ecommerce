@@ -586,6 +586,11 @@ class SellerPagesController extends Controller
 
     public function verificationPending()
     {
-        return view('pages.verification_pending');
+        if (auth()->user()->fourth_step_completed) {
+
+            return view('pages.verification_pending');
+        }else{
+            return redirect()->route('vendor.create');
+        }
     }
 }

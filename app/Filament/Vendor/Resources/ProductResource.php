@@ -43,6 +43,8 @@ class ProductResource extends Resource
     protected static ?string $navigationLabel = 'Products';
     protected static ?string $navigationGroup = 'Inventory';
     protected static ?string $navigationIcon = 'heroicon-o-cube';
+    protected static ?string $pluralModelLabel = 'Products';
+    protected static ?string $modelLabel = 'Product';
     public static function canCreate(): bool
     {
         $user = Auth::user();
@@ -249,61 +251,14 @@ class ProductResource extends Resource
                                     ->schema([
                                         Forms\Components\Grid::make(3)
                                             ->schema([
-                                                TextInput::make('price')
-                                                    ->label('Regular Price')
-                                                    ->numeric()
-                                                    ->prefix('$')
-                                                    ->maxValue(999999.99)
-                                                    ->required()
-                                                    ->helperText('Set the standard selling price for this product.')
-                                                    ->reactive()
-                                                    ->afterStateUpdated(function (callable $set, callable $get) {
-                                                        $price = floatval($get('price'));
-                                                        $salePrice = $get('sale_price');
-
-                                                        // Use sale price if it's not null, else fallback to price
-                                                        $basePrice = (!is_null($salePrice) && $salePrice !== '') ? floatval($salePrice) : $price;
-
-                                                        $vendorPrice = $basePrice - ($basePrice * \Sohoj::vendorCommission());
-                                                        $set('vendor_price', round($vendorPrice, 2));
-                                                    })
-                                                    ->columnSpan(1),
-
-                                                TextInput::make('sale_price')
-                                                    ->label('Sale Price')
-                                                    ->numeric()
-                                                    ->prefix('$')
-                                                    ->maxValue(999999.99)
-                                                    ->nullable()
-                                                    ->reactive()
-                                                    ->afterStateUpdated(function (callable $set, callable $get, $state) {
-                                                        $price = floatval($get('price'));
-
-                                                        // If sale price is null or empty, fallback to price
-                                                        $basePrice = (!is_null($state) && $state !== '') ? floatval($state) : $price;
-
-                                                        $vendorPrice = $basePrice - ($basePrice * \Sohoj::vendorCommission());
-                                                        $set('vendor_price', round($vendorPrice, 2));
-                                                    })
-                                                    ->rules([
-                                                        fn(callable $get) => function (string $attribute, $value, callable $fail) use ($get) {
-                                                            $price = floatval($get('price'));
-                                                            if ($value && floatval($value) > $price) {
-                                                                $fail('Sale price must be less than or equal to regular price.');
-                                                            }
-                                                        },
-                                                    ])
-                                                    ->helperText('Optional. Discounted price. Must be lower than regular price.')
-                                                    ->columnSpan(1),
-
-                                                TextInput::make('vendor_price')
+                                                 TextInput::make('vendor_price')
                                                     ->label('Vendor Price')
                                                     ->numeric()
                                                     ->prefix('$')
-                                                    ->readOnly()
+                                              
                                                     ->required()
-                                                    ->helperText('Auto-calculated as 10% less than sale/regular price.')
-                                                    ->columnSpan(1),
+                                                
+                                                    ->columnSpanFull(1),
                                             ]),
                                         Forms\Components\Grid::make(2)
                                             ->schema([
@@ -454,7 +409,8 @@ class ProductResource extends Resource
                                             ->schema([
                                                 Toggle::make('status')
                                                     ->label('Active')
-                                                    ->default(true)
+                                                    ->default(false)
+                                                    ->disabled()
                                                     ->helperText('Make product visible to customers. Inactive products are hidden from the store but remain in your inventory.')
                                                     ->columnSpan(1),
 
@@ -462,12 +418,14 @@ class ProductResource extends Resource
                                                     ->label('Variable Product')
                                                     ->helperText('Enable if this product has variations like different sizes, colors, or materials. This will show the Variations tab.')
                                                     ->default(false)
-                                                    ->live()
+                                                    ->disabled()
+                                              
                                                     ->columnSpan(1),
 
                                                 Toggle::make('featured')
                                                     ->label('Featured')
                                                     ->default(false)
+                                                    ->disabled()
                                                     ->helperText('Highlight this product as a featured item.')
                                                     ->columnSpan(1),
                                             ]),

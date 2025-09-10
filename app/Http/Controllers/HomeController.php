@@ -62,7 +62,8 @@ class HomeController extends Controller
             'remember_token' => request('token'),
             'email_verified_at' => now(),
         ]);
-        return redirect()->route('vendor.second.step');
+        $user->createMeta('second_step_completed', true);
+        return redirect()->route('vendor.registration.terms-and-conditions');
     }
     public function verifyMassage()
     {
@@ -71,6 +72,7 @@ class HomeController extends Controller
     public function vendorSecondStep()
     {
         $user = auth()->user();
+    
         return view('auth.seller.second_step', [
             'intent' => $user->createSetupIntent()
         ]);

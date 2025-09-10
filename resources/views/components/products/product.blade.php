@@ -98,6 +98,7 @@
             </div>
 
             {{-- Product Price --}}
+            @if($currentPrice)
             <div class="product-price">
                 @if ($hasDiscount)
                     <span class="original-price" style="color: red !important; font-weight: 600; font-size: large;"
@@ -105,6 +106,12 @@
                 @endif
                 <span class="current-price" aria-label="Current price">{{ Sohoj::price($currentPrice) }}</span>
             </div>
+            @else
+            <h4>
+                Price Currently
+            </h4>
+
+            @endif
 
             {{-- Add to Cart Button --}}
             @if ($product->is_variable_product === 1)

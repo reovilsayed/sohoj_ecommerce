@@ -32,7 +32,12 @@ class User extends Authenticatable implements FilamentUser
         'nid',
         'bank_info',
         'address',
-        'payment_method'
+        'payment_method',
+        'first_step_completed',
+        'second_step_completed',
+        'third_step_completed',
+        'fourth_step_completed',
+    
     ];
 
     protected $fillable = [

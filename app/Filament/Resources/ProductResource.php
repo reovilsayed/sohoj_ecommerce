@@ -230,17 +230,8 @@ class ProductResource extends Resource
                                                     ->maxValue(999999.99)
                                                     ->required()
                                                     ->helperText('Set the standard selling price for this product.')
-                                                    ->reactive()
-                                                    ->afterStateUpdated(function (callable $set, callable $get) {
-                                                        $price = floatval($get('price'));
-                                                        $salePrice = $get('sale_price');
-
-                                                        // Use sale price if it's not null, else fallback to price
-                                                        $basePrice = (!is_null($salePrice) && $salePrice !== '') ? floatval($salePrice) : $price;
-
-                                                        $vendorPrice = $basePrice - ($basePrice * \Sohoj::vendorCommission());
-                                                        $set('vendor_price', round($vendorPrice, 2));
-                                                    })
+                                         
+                                 
                                                     ->columnSpan(1),
 
                                                 TextInput::make('sale_price')
@@ -250,15 +241,7 @@ class ProductResource extends Resource
                                                     ->maxValue(999999.99)
                                                     ->nullable()
                                                     ->reactive()
-                                                    ->afterStateUpdated(function (callable $set, callable $get, $state) {
-                                                        $price = floatval($get('price'));
-
-                                                        // If sale price is null or empty, fallback to price
-                                                        $basePrice = (!is_null($state) && $state !== '') ? floatval($state) : $price;
-
-                                                        $vendorPrice = $basePrice - ($basePrice * \Sohoj::vendorCommission());
-                                                        $set('vendor_price', round($vendorPrice, 2));
-                                                    })
+                                                
                                                     ->rules([
                                                         fn(callable $get) => function (string $attribute, $value, callable $fail) use ($get) {
                                                             $price = floatval($get('price'));
@@ -274,9 +257,9 @@ class ProductResource extends Resource
                                                     ->label('Vendor Price')
                                                     ->numeric()
                                                     ->prefix('$')
-                                                    ->readOnly()
+                                           
                                                     ->required()
-                                                    ->helperText('Auto-calculated as 10% less than sale/regular price.')
+                                                   
                                                     ->columnSpan(1),
                                             ]),
                                         Forms\Components\Grid::make(2)

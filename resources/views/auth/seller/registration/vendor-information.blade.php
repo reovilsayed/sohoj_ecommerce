@@ -86,6 +86,34 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(var(--accent-color-rgb), 0.3);
         }
+
+        /* Registration progress */
+        .registration-progress {
+            background: #fff;
+            border: 1px solid #eee;
+            border-left: 4px solid var(--accent-color);
+            padding: 12px 16px;
+            margin: 16px 0 24px 0;
+        }
+        .registration-progress .progress-track {
+            width: 100%;
+            height: 8px;
+            background: #f1f5f9;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .registration-progress .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        /* Highlight for missing ID uploads */
+        .id-required-missing {
+            outline: 2px solid #dc3545;
+            outline-offset: 3px;
+        }
     </style>
 @endsection
 @section('registration-content')
@@ -104,6 +132,24 @@
 
                         <div
                             style="width: 80px; height: 4px; background: var(--accent-color); border-radius: 2px; margin-bottom: 1.5rem;">
+                        </div>
+
+                        <div id="id-upload-alert" class="alert alert-danger d-none" role="alert" style="border-radius:0;">
+                            <i class="fas fa-exclamation-triangle me-1"></i> Please upload both front and back of your ID to continue.
+                        </div>
+
+                        <div class="registration-progress">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="small text-secondary">
+                                    <span id="registration-progress-text">0 of 0 fields completed</span>
+                                </div>
+                                <div class="small fw-bold" style="color: var(--accent-color);">
+                                    <span id="registration-progress-percent">0%</span>
+                                </div>
+                            </div>
+                            <div class="progress-track">
+                                <div id="registration-progress-bar" class="progress-bar"></div>
+                            </div>
                         </div>
 
                         <form method="POST" action="{{ route('vendor.registration.verification.store') }}" enctype="multipart/form-data"
@@ -199,6 +245,7 @@
                                             <input id="govt_id_front" type="file"
                                                 class="d-none @error('govt_id_front') is-invalid @enderror"
                                                 name="govt_id_front" required
+                                                accept="image/*"
                                                 onchange="document.getElementById('govt_id_front_name').textContent = this.files[0]?.name || 'No file chosen'">
                                         </label>
                                         <span id="govt_id_front_name"
@@ -225,6 +272,7 @@
                                             <input id="govt_id_back" type="file"
                                                 class="d-none @error('govt_id_back') is-invalid @enderror"
                                                 name="govt_id_back" required
+                                                accept="image/*"
                                                 onchange="document.getElementById('govt_id_back_name').textContent = this.files[0]?.name || 'No file chosen'">
                                         </label>
                                         <span id="govt_id_back_name"
@@ -420,7 +468,7 @@
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="">
-                                    <button type="submit" id="submit" class="btn fw-bold shadow"
+                                    <button type="submit" id="submit" class="btn fw-bold shadow" disabled
                                         style="background-color:#FF0000;color:white; transition:transform 0.2s; font-size:1.1rem;"
                                         onmouseover="this.style.transform='translateY(-2px) scale(1.03)'"
                                         onmouseout="this.style.transform='scale(1)'">
@@ -462,12 +510,76 @@
                 });
             });
 
+            // Progress calculation for required fields within the form
+            function getRequiredFields() {
+                return $('#verification-form').find('input[required], select[required], textarea[required]');
+            }
+
+            function isFieldFilled($el) {
+                const tag = $el.prop('tagName').toLowerCase();
+                const type = ($el.attr('type') || '').toLowerCase();
+                if (type === 'file') {
+                    return $el[0].files && $el[0].files.length > 0;
+                }
+                if (tag === 'select') {
+                    const val = $el.val();
+                    return val !== null && String(val).trim() !== '';
+                }
+                const val = $el.val();
+                return val !== null && String(val).trim() !== '';
+            }
+
+            // ID uploads enforcement
+            function hasBothIds() {
+                const front = document.getElementById('govt_id_front');
+                const back = document.getElementById('govt_id_back');
+                const hasFront = front && front.files && front.files.length > 0;
+                const hasBack = back && back.files && back.files.length > 0;
+                return hasFront && hasBack;
+            }
+
+            function updateIdRequirementUI() {
+                const ok = hasBothIds();
+                const $frontLabel = $('label[for="govt_id_front"]');
+                const $backLabel = $('label[for="govt_id_back"]');
+                $('#id-upload-alert').toggleClass('d-none', ok);
+                $('#submit').prop('disabled', !ok);
+                $frontLabel.toggleClass('id-required-missing', !ok && (!document.getElementById('govt_id_front').files.length));
+                $backLabel.toggleClass('id-required-missing', !ok && (!document.getElementById('govt_id_back').files.length));
+            }
+
+            function updateProgress() {
+                const $fields = getRequiredFields();
+                const total = $fields.length;
+                let complete = 0;
+                $fields.each(function() {
+                    if (isFieldFilled($(this))) complete++;
+                });
+                const percent = total === 0 ? 0 : Math.round((complete / total) * 100);
+                $('#registration-progress-text').text(complete + ' of ' + total + ' fields completed');
+                $('#registration-progress-percent').text(percent + '%');
+                $('#registration-progress-bar').css('width', percent + '%');
+                updateIdRequirementUI();
+            }
+
+            // Bind events for live updates
+            $(document).on('input change', '#verification-form input, #verification-form textarea', updateProgress);
+            $(document).on('change', '#verification-form select', updateProgress);
+            $('#govt_id_front, #govt_id_back').on('change', function() {
+                updateIdRequirementUI();
+                updateProgress();
+            });
+            // Select2 triggers
+            $('#country').on('select2:select select2:clear', updateProgress);
+            $('#state').on('select2:select select2:clear', updateProgress);
+
             // Load countries
             $.get("https://countriesnow.space/api/v0.1/countries/positions", function(res) {
                 $('#country').empty().append('<option value="">Select Country</option>');
                 res.data.forEach(function(country) {
                     $('#country').append(new Option(country.name, country.name));
                 });
+                updateProgress();
             });
 
             // Load states when country changes
@@ -478,6 +590,7 @@
 
                 if (!selectedCountry) {
                     $('#state').empty().append('<option value="">Select Country First</option>');
+                    updateProgress();
                     return;
                 }
 
@@ -498,8 +611,23 @@
                         } else {
                             $('#state').append('<option value="">No states found</option>');
                         }
+                        updateProgress();
                     }
                 });
+            });
+
+            // Initial calculation
+            updateProgress();
+
+            // On submit, enforce IDs and scroll to missing
+            $('#verification-form').on('submit', function(e) {
+                if (!hasBothIds()) {
+                    e.preventDefault();
+                    $('#id-upload-alert').removeClass('d-none');
+                    const $target = !$('input#govt_id_front')[0].files.length ? $('label[for="govt_id_front"]') : $('label[for="govt_id_back"]');
+                    $('html, body').animate({ scrollTop: $target.offset().top - 120 }, 300);
+                    $target.addClass('id-required-missing');
+                }
             });
         });
     </script>

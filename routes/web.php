@@ -504,8 +504,10 @@ Route::post('/set-country', function (Request $request) {
 Route::group(['prefix' => 'register-as-seller'], function () {
     Route::get('/', [RegistrationController::class, 'basicInfo'])->name('vendor.create');
     Route::post('/store', [VendorRegisterController::class, 'register'])->name('vendor.register.store');
-    Route::get('terms-and-conditions', [RegistrationController::class, 'termsAndConditions'])->name('vendor.registration.terms-and-conditions');
-    Route::post('terms-and-conditions', [RegistrationController::class, 'termsAndConditionsStore'])->name('vendor.registration.terms-and-conditions.store');
-    Route::get('/vendor-verification', [RegistrationController::class, 'vendorVerification'])->name('vendor.registration.verification');
-    Route::post('/vendor-verification/store', [RegistrationController::class, 'vendorVerificationStore'])->name('vendor.registration.verification.store');
+    Route::middleware(['auth', 'verifiedEmail'])->group(function () {
+        Route::get('terms-and-conditions', [RegistrationController::class, 'termsAndConditions'])->name('vendor.registration.terms-and-conditions');
+        Route::post('terms-and-conditions', [RegistrationController::class, 'termsAndConditionsStore'])->name('vendor.registration.terms-and-conditions.store');
+        Route::get('/vendor-verification', [RegistrationController::class, 'vendorVerification'])->name('vendor.registration.verification');
+        Route::post('/vendor-verification/store', [RegistrationController::class, 'vendorVerificationStore'])->name('vendor.registration.verification.store');
+    });
 });
