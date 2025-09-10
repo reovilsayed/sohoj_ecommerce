@@ -48,7 +48,12 @@ class RegisterController extends Controller
                 break;
 
             case 3:
-                return  RouteServiceProvider::VENDOR;
+                if(auth()->user()->email_verified_at == null){
+                    return url('/verify-email');
+                }{
+
+                    return  RouteServiceProvider::VENDOR;
+                }
                 break;
 
             default:
