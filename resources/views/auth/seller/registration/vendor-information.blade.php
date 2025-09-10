@@ -341,10 +341,7 @@
                                         @enderror
                                     </div>
                                     </select>
-                                    @error('name')
-                                        <span class="invalid-feedback"
-                                            role="alert"><strong>{{ $message }}</strong></span>
-                                    @enderror
+                             
 
                                     <div class="col-md-6">
                                         <label for="store_email" class="form-label fw-bold"
@@ -360,7 +357,7 @@
                                         @enderror
                                     </div>
                                     </select>
-                                    @error('name')
+                                    @error('store_email')
                                         <span class="invalid-feedback"
                                             role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
@@ -379,7 +376,7 @@
                                         @enderror
                                     </div>
                                     </select>
-                                    @error('name')
+                                    @error('company_name')
                                         <span class="invalid-feedback"
                                             role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
@@ -398,7 +395,7 @@
                                         @enderror
                                     </div>
                                     </select>
-                                    @error('name')
+                                    @error('company_registration')
                                         <span class="invalid-feedback"
                                             role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
