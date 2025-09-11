@@ -188,20 +188,26 @@
                         </div>
                     </div>
 
-                    <!-- Mobile Filter Button -->
-                    <div class="col-12 d-md-none mb-3">
-                        <div class="mobile-filter-header">
-                            <button class="btn btn-primary mobile-filter-btn w-100" type="button" data-bs-toggle="offcanvas" 
-                                    data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
-                                <i class="fas fa-filter me-2"></i>
-                                Filters & Sort
-                                @if ($hasActiveFilters)
-                                    <span class="badge bg-light text-primary ms-2">Active</span>
-                                @endif
-                            </button>
-                        </div>
+                    <!-- Mobile Filter Button - Fixed Position -->
+                    <div class="mobile-filter-floating d-md-none">
+                        <button class="btn btn-primary mobile-filter-btn rounded-circle mb-2" style="height: 50px; width: 50px; background-color: var(--harvest-gold);" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
+                            <i class="fas fa-filter me-2"></i>
+                            
+                            {{-- @if ($hasActiveFilters)
+                                <span
+                                    class="badge bg-light text-primary ms-2">{{ collect([$currentCategory, $currentRating, request('priceMin'), request('priceMax')])->filter()->count() }}</span>
+                            @endif --}}
+                        </button>
                     </div>
-
+                    <style>
+                        .mobile-filter-floating {
+                            position: fixed;
+                            bottom: 70px;
+                            z-index: 1050;
+                            border-radius: 50px;
+                        }
+                    </style>
                     <!-- Main Content Area -->
                     <section class="col-md-9 col-12">
                         <div class="modern-content-area">
@@ -245,7 +251,8 @@
         </section>
 
         <!-- Mobile Filter Offcanvas -->
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel">
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="filterOffcanvas"
+            aria-labelledby="filterOffcanvasLabel">
             <div class="offcanvas-header border-bottom">
                 <h5 class="offcanvas-title fw-bold" id="filterOffcanvasLabel">
                     <i class="fas fa-filter me-2"></i>
@@ -262,12 +269,12 @@
                     </h6>
                     <select name="ec-select" class="form-select"
                         onchange='updateSearchParams("filter_products",this.value,"{{ $route }}")'>
-                        <option value="most-sold"
-                            {{ $currentFilterProducts == 'most-sold' ? 'selected' : '' }}>Most Sold</option>
-                        <option value="price-low-high"
-                            {{ $currentFilterProducts == 'price-low-high' ? 'selected' : '' }}>Price, low to high</option>
-                        <option value="price-high-low"
-                            {{ $currentFilterProducts == 'price-high-low' ? 'selected' : '' }}>Price, high to low</option>
+                        <option value="most-sold" {{ $currentFilterProducts == 'most-sold' ? 'selected' : '' }}>Most Sold
+                        </option>
+                        <option value="price-low-high" {{ $currentFilterProducts == 'price-low-high' ? 'selected' : '' }}>
+                            Price, low to high</option>
+                        <option value="price-high-low" {{ $currentFilterProducts == 'price-high-low' ? 'selected' : '' }}>
+                            Price, high to low</option>
                     </select>
                 </div>
 
@@ -387,20 +394,20 @@
                     <div class="row g-2">
                         @if ($hasActiveFilters)
                             <div class="col-6">
-                                <a href="{{ route('shops') }}" class="btn btn-outline-secondary w-100">
+                                <a href="{{ route('shops') }}" style="background: red; color: white;" class="btn btn-danger w-100 text-light">
                                     <i class="fas fa-times me-2"></i>
                                     Clear All
                                 </a>
                             </div>
                             <div class="col-6">
-                                <button type="button" class="btn btn-primary w-100" data-bs-dismiss="offcanvas">
+                                <button type="button" class="btn btn-primary w-100" style="background-color: var(--harvest-gold);" data-bs-dismiss="offcanvas">
                                     <i class="fas fa-check me-2"></i>
                                     Apply Filters
                                 </button>
                             </div>
                         @else
                             <div class="col-12">
-                                <button type="button" class="btn btn-primary w-100" data-bs-dismiss="offcanvas">
+                                <button type="button" class="btn btn-primary w-100" style="background-color: var(--harvest-gold);" data-bs-dismiss="offcanvas">
                                     <i class="fas fa-check me-2"></i>
                                     Apply Filters
                                 </button>
