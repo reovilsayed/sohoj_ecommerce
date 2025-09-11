@@ -190,9 +190,9 @@
 
                     <!-- Mobile Filter Button - Fixed Position -->
                     <div class="mobile-filter-floating d-md-none">
-                        <button class="btn btn-primary mobile-filter-btn rounded-circle mb-2" style="height: 50px; width: 50px; background-color: var(--harvest-gold);" type="button" data-bs-toggle="offcanvas"
+                        <button class="btn btn-primary mobile-filter-btn rounded-circle mb-2 d-flex justify-content-center align-items-center" style="height: 50px; width: 50px; background-color: var(--harvest-gold);" type="button" data-bs-toggle="offcanvas"
                             data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
-                            <i class="fas fa-filter me-2"></i>
+                            <i class="fas fa-filter"></i>
                             
                             {{-- @if ($hasActiveFilters)
                                 <span
