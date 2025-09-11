@@ -66,7 +66,7 @@ class PageController extends Controller
     public function product_details($slug)
     {
         $product = Product::where('slug', $slug)->firstOrFail();
-        $related_products = Product::whereNull('parent_id')->limit(16)->get();
+        $related_products = Product::whereNull('parent_id')->limit(4)->get();
         $product->increment('views');
 
 

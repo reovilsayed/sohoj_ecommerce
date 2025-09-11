@@ -1,9 +1,15 @@
 @php
     $route = route('shops');
-    
+
     // Check if any filters are active
-    $hasActiveFilters = request('category') || request('ratings') || request('priceMin') || request('priceMax') || request('filter_products') || request('search');
-    
+    $hasActiveFilters =
+        request('category') ||
+        request('ratings') ||
+        request('priceMin') ||
+        request('priceMax') ||
+        request('filter_products') ||
+        request('search');
+
     // Get current filter values
     $currentCategory = request('category');
     $currentRating = request('ratings');
@@ -54,15 +60,15 @@
                     </div>
                 </div>
                 <div class="row">
-                    <!-- Modern Filter Sidebar -->
-                    <aside class="col-md-3 col-sm-12">
+                    <!-- Desktop Filter Sidebar -->
+                    <div class="col-md-3 d-none d-md-block">
                         <div class="modern-filter-sidebar">
                             <div class="filter-header">
                                 <h2 class="filter-title">
                                     <i class="fas fa-filter"></i>
                                     Filters
                                 </h2>
-                                @if($hasActiveFilters)
+                                @if ($hasActiveFilters)
                                     <a href="{{ route('shops') }}" class="clear-filters-btn" style="color: #ffffff">
                                         <i class="fas fa-times"></i>
                                         Clear All
@@ -93,9 +99,9 @@
                                 <ul class="category-list">
                                     @foreach ($categories as $category)
                                         <li class="category-item">
-                                            <a href="javascript:void(0)" 
-                                               class="category-link {{ $currentCategory == $category->slug ? 'active' : '' }}"
-                                               onclick='updateSearchParams("category","{{ $category->slug }}","{{ $route }}")'>
+                                            <a href="javascript:void(0)"
+                                                class="category-link {{ $currentCategory == $category->slug ? 'active' : '' }}"
+                                                onclick='updateSearchParams("category","{{ $category->slug }}","{{ $route }}")'>
                                                 <span>{{ $category->name }}</span>
                                                 <span class="category-badge">{{ $category->products->count() }}</span>
                                             </a>
@@ -180,16 +186,32 @@
                                 </div>
                             </div>
                         </div>
-                    </aside>
+                    </div>
+
+                    <!-- Mobile Filter Button -->
+                    <div class="col-12 d-md-none mb-3">
+                        <div class="mobile-filter-header">
+                            <button class="btn btn-primary mobile-filter-btn w-100" type="button" data-bs-toggle="offcanvas" 
+                                    data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
+                                <i class="fas fa-filter me-2"></i>
+                                Filters & Sort
+                                @if ($hasActiveFilters)
+                                    <span class="badge bg-light text-primary ms-2">Active</span>
+                                @endif
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Main Content Area -->
-                    <section class="col-md-9 col-sm-12">
+                    <section class="col-md-9 col-12">
                         <div class="modern-content-area">
                             <!-- Content Header -->
                             <div class="content-header">
                                 <div class="search-results">
-                                    Results for "<span class="search-term">{{ request()->search ?: 'All Products' }}</span>"
+                                    Results for "<span
+                                        class="search-term">{{ request()->search ?: 'All Products' }}</span>"
                                 </div>
-                                <div class="sort-container">
+                                <div class="sort-container d-none d-md-block">
                                     <span class="sort-label">Sort by:</span>
                                     <select name="ec-select" class="sort-select"
                                         onchange='updateSearchParams("filter_products",this.value,"{{ $route }}")'>
@@ -210,19 +232,187 @@
                                 <div class="shop-pro-inner">
                                     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
                                         @foreach ($products as $product)
-                                        <x-products.product :product="$product" :variant="'green'" :showMultipleCategories="true" />
+                                            <x-products.product :product="$product" :variant="'green'" :showMultipleCategories="true" />
                                         @endforeach
                                     </div>
                                 </div>
                             </div>
-                            {{$products->links('pagination::bootstrap-5')}}
+                            {{ $products->links('pagination::bootstrap-5') }}
                         </div>
                     </section>
                 </div>
             </div>
         </section>
+
+        <!-- Mobile Filter Offcanvas -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title fw-bold" id="filterOffcanvasLabel">
+                    <i class="fas fa-filter me-2"></i>
+                    Filters & Sort
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+                <!-- Mobile Sort Section -->
+                <div class="mobile-sort-section p-3 bg-light border-bottom">
+                    <h6 class="mb-2 fw-bold">
+                        <i class="fas fa-sort me-2"></i>
+                        Sort By
+                    </h6>
+                    <select name="ec-select" class="form-select"
+                        onchange='updateSearchParams("filter_products",this.value,"{{ $route }}")'>
+                        <option value="most-sold"
+                            {{ $currentFilterProducts == 'most-sold' ? 'selected' : '' }}>Most Sold</option>
+                        <option value="price-low-high"
+                            {{ $currentFilterProducts == 'price-low-high' ? 'selected' : '' }}>Price, low to high</option>
+                        <option value="price-high-low"
+                            {{ $currentFilterProducts == 'price-high-low' ? 'selected' : '' }}>Price, high to low</option>
+                    </select>
+                </div>
+
+                <!-- Filter Content -->
+                <div class="mobile-filter-content p-3">
+                    <!-- Price Range Filter -->
+                    <div class="filter-section">
+                        <h3 class="filter-section-title">
+                            <i class="fas fa-dollar-sign"></i>
+                            Price Range
+                        </h3>
+                        <div class="price-range-container">
+                            <div class="price-range-title">Set your budget</div>
+                            <div id="mobile-price-slider" class="price-slider"></div>
+                            <div id="mobile-price-display" class="price-display">
+                                <span>Min: <span id="mobileminPriceDisplay">${{ $currentPriceMin }}</span></span>
+                                <span>Max: <span id="mobilemaxPriceDisplay">${{ $currentPriceMax }}</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categories Filter -->
+                    <div class="filter-section">
+                        <h3 class="filter-section-title">
+                            <i class="fas fa-tags"></i>
+                            Categories
+                        </h3>
+                        <ul class="category-list">
+                            @foreach ($categories as $category)
+                                <li class="category-item">
+                                    <a href="javascript:void(0)"
+                                        class="category-link {{ $currentCategory == $category->slug ? 'active' : '' }}"
+                                        onclick='updateSearchParams("category","{{ $category->slug }}","{{ $route }}")'>
+                                        <span>{{ $category->name }}</span>
+                                        <span class="category-badge">{{ $category->products->count() }}</span>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+
+                    <!-- Rating Filter -->
+                    <div class="filter-section">
+                        <h3 class="filter-section-title">
+                            <i class="fas fa-star"></i>
+                            Rating
+                        </h3>
+                        <div class="rating-container">
+                            <form class="rating" id="mobileRatingForm">
+                                <div class="rating-option">
+                                    <input type="checkbox" value="5" {{ $currentRating == 5 ? 'checked' : '' }}>
+                                    <span class="rating-checkmark"></span>
+                                    <div class="rating-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span class="rating-text">5</span>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="checkbox" value="4" {{ $currentRating == 4 ? 'checked' : '' }}>
+                                    <span class="rating-checkmark"></span>
+                                    <div class="rating-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span class="rating-text">4</span>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="checkbox" value="3" {{ $currentRating == 3 ? 'checked' : '' }}>
+                                    <span class="rating-checkmark"></span>
+                                    <div class="rating-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span class="rating-text">3</span>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="checkbox" value="2" {{ $currentRating == 2 ? 'checked' : '' }}>
+                                    <span class="rating-checkmark"></span>
+                                    <div class="rating-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span class="rating-text">2</span>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="checkbox" value="1" {{ $currentRating == 1 ? 'checked' : '' }}>
+                                    <span class="rating-checkmark"></span>
+                                    <div class="rating-stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span class="rating-text">1</span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="offcanvas-footer p-3 border-top bg-light">
+                    <div class="row g-2">
+                        @if ($hasActiveFilters)
+                            <div class="col-6">
+                                <a href="{{ route('shops') }}" class="btn btn-outline-secondary w-100">
+                                    <i class="fas fa-times me-2"></i>
+                                    Clear All
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <button type="button" class="btn btn-primary w-100" data-bs-dismiss="offcanvas">
+                                    <i class="fas fa-check me-2"></i>
+                                    Apply Filters
+                                </button>
+                            </div>
+                        @else
+                            <div class="col-12">
+                                <button type="button" class="btn btn-primary w-100" data-bs-dismiss="offcanvas">
+                                    <i class="fas fa-check me-2"></i>
+                                    Apply Filters
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 @endsection
+
 @section('js')
 
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
@@ -231,7 +421,7 @@
     <script src="{{ asset('assets/frontend-assets/js/plugins/jquery.sticky-sidebar.js') }}"></script>
 
     <script src="{{ asset('assets/frontend-assets/js/main.js') }}"></script>
-    
+
     <script>
         var shopUrl = "{{ route('shops') }}";
         var currentPriceMin = {{ $currentPriceMin }};
@@ -265,11 +455,52 @@
                     removeSearchParam("ratings", shopUrl);
                 }
             });
+
+            // Mobile price slider initialization
+            $("#mobile-price-slider").slider({
+                range: true,
+                min: 0,
+                max: 1000,
+                values: [currentPriceMin, currentPriceMax],
+                slide: function(event, ui) {
+                    $("#mobileminPriceDisplay").text('$' + ui.values[0]);
+                    $("#mobilemaxPriceDisplay").text('$' + ui.values[1]);
+                },
+                stop: function(event, ui) {
+                    updateSearchParams('', '', shopUrl, ui.values[0], ui.values[1]);
+                }
+            });
+
+            // Display initial mobile price values
+            $("#mobileminPriceDisplay").text('$' + $("#mobile-price-slider").slider("values", 0));
+            $("#mobilemaxPriceDisplay").text('$' + $("#mobile-price-slider").slider("values", 1));
+
+            // Mobile rating filter functionality
+            $('#mobileRatingForm input[type="checkbox"]').on('change', function() {
+                if ($(this).is(':checked')) {
+                    updateSearchParams("ratings", $(this).val(), shopUrl);
+                } else {
+                    removeSearchParam("ratings", shopUrl);
+                }
+            });
+
+            // Auto-close offcanvas when filter is applied (optional)
+            $('.category-link, .rating-option input').on('click change', function() {
+                // Add a small delay before closing to show the selection
+                setTimeout(function() {
+                    if (window.innerWidth <= 767) {
+                        // Optional: Auto-close on mobile after selection
+                        // var offcanvasElement = document.getElementById('filterOffcanvas');
+                        // var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                        // if (offcanvas) offcanvas.hide();
+                    }
+                }, 100);
+            });
         });
 
         function updateSearchParams(searchParam, searchValue, route, priceMin, priceMax) {
             var url;
-            
+
             if (window.location.pathname !== "/shops") {
                 url = new URL(route);
             } else {
