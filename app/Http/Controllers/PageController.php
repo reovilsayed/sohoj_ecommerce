@@ -119,7 +119,7 @@ class PageController extends Controller
     public function checkout()
     {
 
-        return view('pages.checkout', ['intent' => auth()->user()->createSetupIntent()]);
+        return view('pages.checkout');
     }
     public function store_front($slug)
     {

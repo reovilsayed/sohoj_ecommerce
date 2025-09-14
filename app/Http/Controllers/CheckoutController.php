@@ -100,7 +100,7 @@ class CheckoutController extends Controller
         ], packageDetails: $packages);
 
 
-        return view('pages.checkout-payment', ['order' => $order, 'intent' => auth()->user()->createSetupIntent(), 'rates' => $rates]);
+        return view('pages.checkout-payment', ['order' => $order, 'rates' => $rates]);
     }
 
     public function confirmOrder(Order $order, Request $request)
@@ -233,7 +233,7 @@ class CheckoutController extends Controller
             Mail::to($childOrder->shop->email)->send(new VendorOrderSuccessMail($childOrder));
         }
 
-        Mail::to($order->user->email)->send(new CustomerOrderSuccessMail($order));
+        Mail::to(json_decode($order->shipping, true)['email'])->send(new CustomerOrderSuccessMail($order));
         if (Settings::setting('admin_email')) {
             Mail::to(Settings::setting('admin_email'))->send(new AdminOrderSuccessMail($order));
         }
@@ -267,7 +267,7 @@ class CheckoutController extends Controller
             Mail::to($childOrder->shop->email)->send(new VendorOrderSuccessMail($childOrder));
         }
 
-        Mail::to($order->user->email)->send(new CustomerOrderSuccessMail($order));
+        Mail::to(json_decode($order->shipping, true)['email'])->send(new CustomerOrderSuccessMail($order));
         if (Settings::setting('admin_email')) {
             Mail::to(Settings::setting('admin_email'))->send(new AdminOrderSuccessMail($order));
         }

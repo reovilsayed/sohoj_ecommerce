@@ -17,7 +17,7 @@ class CheckoutService
 {
     public Cart $cart;
     public ShippingAndBillingInformation $address;
-    public User $customer;
+    public  $customer;
     public float $cartSubtotal;
     public float $platformFee;
     public float $discount;
@@ -34,7 +34,12 @@ class CheckoutService
         $this->address = $shippingAndBillingInformation;
 
         $this->cart = new Cart();
-        $this->customer = Auth::user();
+        if(Auth::check()){ 
+            $this->customer = Auth::user();
+        }else{
+            $this->customer = null;
+        }
+
         $this->setSubtotal();
         $this->setPlatformFee();
         $this->setDiscount();
@@ -82,7 +87,7 @@ class CheckoutService
         $this->productHasStock();
 
         $order = Order::create([
-            'user_id' => $this->customer->id,
+            'user_id' =>  $this->customer ? $this->customer->id : null,
             'shop_id' => null,
             'product_id' => null,
             'shipping' => $this->address->toJson(),
@@ -111,7 +116,7 @@ class CheckoutService
             });
             $flat_commision = $total_price - $vendor_price;
             $shopOrder = Order::create([
-                'user_id' => $this->customer->id,
+                'user_id' => $this->customer ? $this->customer->id : null,
                 'parent_id' => $order->id,
                 'shop_id' => $shop->id,
                 'shipping' => $this->address->toJson(),

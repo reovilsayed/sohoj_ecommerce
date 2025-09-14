@@ -107,6 +107,24 @@
     <link rel="canonical" href="@yield('canonical_url', url()->current())" />
     @yield('jsonld')
     @yield('jsonld_breadcrumb')
+    <style>
+        .helper-button {
+            background-color: #1b4ace   ;
+            height: 25px;
+            width: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .helper-button:hover {
+            background-color: #142145;
+        
+        }
+    </style>
 </head>
 
 <body>

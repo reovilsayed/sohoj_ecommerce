@@ -72,7 +72,7 @@ Route::get('/shops', [PageController::class, 'shops'])->name('shops');
 Route::get('/cart', [PageController::class, 'cart'])->name('cart');
 
 Route::get('/product/{slug}', [PageController::class, 'product_details'])->name('product_details');
-Route::get('/checkout', [PageController::class, 'checkout'])->name('checkout')->middleware('auth');
+Route::get('/checkout', [PageController::class, 'checkout'])->name('checkout');
 // Route::get('/order_page', [PageController::class, 'order_page'])->name('order_page');
 Route::get('/verify-email', [HomeController::class, 'verifyMassage'])->name('verify.massage');
 Route::get('/thankyou', [PageController::class, 'thankyou'])->name('thankyou');

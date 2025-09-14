@@ -534,8 +534,7 @@
                                                     <!-- Optional: Capture coordinates -->
                                                     <input type="hidden" name="latitude" id="latitude">
                                                     <input type="hidden" name="longitude" id="longitude">
-                                                    <input type="hidden" name="state_code" id="state_code">
-                                                    <input type="hidden" name="country_code" id="country_code">
+                                                   
                                                 </div>
 
 
@@ -569,6 +568,28 @@
                                                         value="{{ old('state', Auth()->user() ? Auth()->user()->state : '') }}"
                                                         placeholder="State">
                                                     @error('state')
+                                                        <span class="text-danger small position-absolute"
+                                                            style="top:100%;left:0;">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <label for="state" class="form-label">State Code</label>
+                                                    <input type="text" class="form-control" id="state_code"
+                                                        name="state_code"
+                                                        value="{{ old('state_code', Auth()->user() ? Auth()->user()->state_code : '') }}"
+                                                        placeholder="State Code">
+                                                    @error('state_code')
+                                                        <span class="text-danger small position-absolute"
+                                                            style="top:100%;left:0;">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <label for="state" class="form-label">Country Code</label>
+                                                    <input type="text" class="form-control" id="country_code"
+                                                        name="country_code"
+                                                        value="{{ old('country_code', Auth()->user() ? Auth()->user()->country_code : '') }}"
+                                                        placeholder="Country Code">
+                                                    @error('country_code')
                                                         <span class="text-danger small position-absolute"
                                                             style="top:100%;left:0;">{{ $message }}</span>
                                                     @enderror
