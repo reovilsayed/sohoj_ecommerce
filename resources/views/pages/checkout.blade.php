@@ -550,7 +550,7 @@
                                                 </div>
 
                                                 <div class="col-md-6 mt-2">
-                                                    <label for="post_code" class="form-label">Post Code</label>
+                                                    <label for="post_code" class="form-label">Zip Code</label>
                                                     <input type="text" class="form-control" id="post_code"
                                                         name="post_code"
                                                         value="{{ old('post_code', Auth()->user() ? Auth()->user()->post_code : '') }}"
