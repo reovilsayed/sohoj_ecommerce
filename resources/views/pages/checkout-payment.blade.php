@@ -485,6 +485,7 @@
                                         '01' => 'Next Day Air',
                                         '02' => '2nd Day Air',
                                         '03' => 'Ground',
+                                        '07' => 'UPS Worldwide Express',
                                         '08' => 'UPS Worldwide Expedited',
                                         '12' => '3 Day Select',
                                         '13' => 'Next Day Air Saver',
