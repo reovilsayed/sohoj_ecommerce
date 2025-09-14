@@ -111,9 +111,10 @@
                     </div>
                 @else
                     <div class="dropdown">
-                        <a class="header-icon-btn user-dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                            title="Account">
-                            <i class="fas fa-user-circle"></i>
+                        <a class="header-icon-btn user-dropdown-toggle signup-btn" href="#" data-bs-toggle="dropdown"
+                            title="Signup or Register">
+                            <i class="fas fa-key me-2"></i>
+                            <span>Log in or Register</span>
                         </a>
                         <ul class="dropdown-menu user-dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('login') }}"><i
@@ -161,8 +162,7 @@
             @foreach ($categories as $category)
                 @if ($category->childrens->count())
                     <button type="button"
-                        class="btn btn-primary btn-sm rounded-pill px-3 flex-shrink-0 @if(request('category') == $category->slug) active bg-primary text-white border-primary @endif"
-                        style="font-weight: 500;"
+                        class="category-btn flex-shrink-0 @if(request('category') == $category->slug) active @endif"
                         data-bs-toggle="modal" data-bs-target="#categoryModal-{{ $category->id }}">
                         {{ $category->name }}
                     </button>
@@ -191,8 +191,7 @@
                     </div>
                 @else
                     <a href="{{ route('shops', ['category' => $category->slug]) }}"
-                       class="btn btn-primary btn-sm rounded-pill px-3 flex-shrink-0 @if(request('category') == $category->slug) active bg-primary text-white border-primary @endif"
-                       style="font-weight: 500;">
+                       class="category-btn flex-shrink-0 @if(request('category') == $category->slug) active @endif">
                         {{ $category->name }}
                     </a>
                 @endif
@@ -528,6 +527,61 @@
         }
         .removeBtn:hover {
             color: var(--error-color) !important;
+        }
+
+        .category-btn {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.5;
+            text-align: center;
+            text-decoration: none;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 50px;
+            height: 30px;
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+            transition: all 0.15s ease-in-out;
+        }
+
+        .category-btn:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            color: white;
+            text-decoration: none;
+        }
+
+        .category-btn:focus {
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(1, 148, 154, 0.25);
+        }
+
+        .category-btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .signup-btn {
+            width: auto !important;
+            height: 44px;
+            border-radius: 22px !important;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .signup-btn i {
+            font-size: 1rem;
         }
     </style>
 </header>

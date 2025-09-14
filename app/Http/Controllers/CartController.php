@@ -102,8 +102,12 @@ class CartController extends Controller
 	public function buynow(Request $request)
 	{
 
+
 		$this->cart($request);
 
+		if(isset($request->add_to_cart)){
+			return redirect()->back()->with('success_msg', 'Item has been added to cart!');;
+		}
 		return redirect('/cart')->with('success_msg', 'Item has been updated!');;
 	}
 

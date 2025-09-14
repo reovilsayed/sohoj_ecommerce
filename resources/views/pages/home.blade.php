@@ -61,14 +61,14 @@
             display: flex;
             overflow: hidden;
             scroll-snap-type: x mandatory;
+            aspect-ratio: 16/9;
+            width: 100%;
         }
 
         .hero__item {
             flex: 0 0 100%;
-            min-height: 500px;
-            height: 60vw;
-            max-height: 431px;
-            background-size: cover;
+            height: 100%;
+            background-size: 100% 100%;
             background-position: center;
             position: relative;
             display: flex;
@@ -148,11 +148,33 @@
             background: var(--accent-color);
         }
 
+        /* Fallback for browsers that don't support aspect-ratio */
+        @supports not (aspect-ratio: 16/9) {
+            .hero-slider {
+                height: 56.25vw; /* 16:9 aspect ratio fallback */
+                max-height: 500px;
+                min-height: 300px;
+            }
+        }
+
         @media (min-width: 768px) {
             .hero__item {
                 padding-left: 75px;
             }
+        }
 
+        @media (max-width: 767px) {
+            .hero-slider {
+                aspect-ratio: 4/3; /* Slightly taller on mobile for better mobile experience */
+            }
+            
+            @supports not (aspect-ratio: 4/3) {
+                .hero-slider {
+                    height: 75vw; /* 4:3 aspect ratio fallback for mobile */
+                    max-height: 400px;
+                    min-height: 250px;
+                }
+            }
         }
 
 
@@ -1123,7 +1145,7 @@
                 </div>
                 <div class="col-lg-7 p-0 col-12 ">
                     <div class="hero-slider-wrapper p-0">
-                        <div class="hero-slider" role="region" aria-label="Product carousel" style="height: 500px;">
+                        <div class="hero-slider" role="region" aria-label="Product carousel">
                             @foreach ($sliders as $index => $slider)
                                 <div class="hero__item set-bg" onclick="window.location.href='{{ $slider->url }}'"
                                     style="background-image: url('{{ Storage::url($slider->image) }}');cursor: pointer; "
