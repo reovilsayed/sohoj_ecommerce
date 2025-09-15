@@ -2,9 +2,9 @@
     <!-- Top Bar -->
     <div class="header-top py-3 mt-0 bg-dark text-light d-none d-md-block">
         <div class="container d-flex justify-content-between align-items-center">
-            <div>
+            {{-- <div>
                 <a class="helper-button" href="{{ route('contact') }}"><i class="fa  fa-question p-0"></i></a>
-            </div>
+            </div> --}}
             <div class="d-flex align-items-center gap-2">
                 <a href="{{ Settings::setting('social_fb_link') }}" class="text-light me-2"><i
                         class="fab fa-facebook-f"></i></a>
@@ -33,13 +33,14 @@
                     return Prodcat::whereNull('parent_id')->orderBy('role', 'asc')->with('childrens')->get();
                 });
             @endphp
-            <form class="d-none d-md-flex flex-grow-1 mx-4" action="{{ route('shops') }}" method="get"
+            <form class="d-none d-md-flex flex-grow-1  mx-4" action="{{ route('shops') }}" method="get"
                 style="max-width: 700px;">
-                <div class="input-group w-100">
+                <div class="input-group w-100" sty>
                     <input style="border-top-left-radius: 50px !important;border-bottom-left-radius: 50px !important;"
                         type="text" class="form-control rounded-start" name="search"
                         placeholder="Search products...">
-                    <select class="form-select border rounded-0 pt-2 h-100" name="category" style="max-width: 200px;">
+                    <select class="form-select border rounded-0 pt-2 h-100 m-0" name="category"
+                        style="max-width: 200px;">
                         <option value="" class="text-dark">All Categories</option>
                         @foreach ($categories as $category)
                             @if ($category->childrens->count())
@@ -61,7 +62,7 @@
                     </select>
                     <button
                         style="border-top-right-radius: 50px !important;border-bottom-right-radius: 50px !important;"
-                        class="btn btn-success rounded-end h-100" type="submit"><i
+                        class="  btn-success rounded-end h-100 px-2" type="submit"><i
                             class="fas fa-search me-2"></i></button>
                 </div>
             </form>
@@ -78,15 +79,9 @@
                         </span>
                     @endif
                 </a>
-                <a href="#" class="header-icon-btn position-relative" data-bs-toggle="offcanvas"
-                    data-bs-target="#cartOffcanvas" title="Cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="header-icon-badge">
-                        {{ Cart::content()->count() }}
-                    </span>
-                </a>
+
                 @auth
-                    <div class="dropdown">
+                    <div class="dropdown d-none d-md-block">
                         <a class="header-icon-btn user-dropdown-toggle" href="#" data-bs-toggle="dropdown"
                             title="Account">
                             <i class="fas fa-user-circle"></i>
@@ -117,11 +112,11 @@
                         </ul>
                     </div>
                 @else
-                    <div class="dropdown">
+                    <div class="dropdown d-none d-md-block">
                         <a class="header-icon-btn user-dropdown-toggle signup-btn" href="#" data-bs-toggle="dropdown"
-                            title="Signup or Register">
+                            title="Login">
                             <i class="fas fa-key me-2"></i>
-                            <span>Log in or Register</span>
+                            <span>Log in</span>
                         </a>
                         <ul class="dropdown-menu user-dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ route('login') }}"><i
@@ -136,6 +131,17 @@
                         </ul>
                     </div>
                 @endauth
+                <a href="#" class="header-icon-btn position-relative " data-bs-toggle="offcanvas"
+                    data-bs-target="#cartOffcanvas" title="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="header-icon-badge">
+                        {{ Cart::content()->count() }}
+                    </span>
+                </a>
+                <a href="{{ route('contact') }}" class="header-icon-btn position-relative" title="Cart">
+                    <i class="fa fa-question"></i>
+
+                </a>
             </div>
             <!-- Mobile Menu Toggle -->
             <button class="btn d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu">
@@ -223,6 +229,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Shops</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('faqs') }}">FAQ</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('vendor.create') }}">Become a Vendor</a></li>
                 </ul>
             </div>
         </div>
@@ -231,7 +238,7 @@
     <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title">Menu</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            <button type="button" class="btn-close text-dark" data-bs-dismiss="offcanvas"> </button>
         </div>
         <div class="offcanvas-body">
             <ul class="navbar-nav">
@@ -244,7 +251,38 @@
                 <li class="nav-item"><a class="nav-link" href="{{ url('/vendors') }}">Vendors</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('faqs') }}">FAQ</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact Us</a></li>
-                {{-- <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login/Register</a></li> --}}
+
+                @auth
+                    <hr class="mt-3">
+
+                    <hr>
+                    @if (Auth()->user()->role_id == 1)
+                        <li class="nav-item"><a class="btn btn-primary d-block" href="{{ url('admin') }}"><i
+                                    class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</a></li>
+                    @elseif (Auth()->user()->role_id == 2)
+                        <li class="nav-item"><a class="btn btn-primary d-block" href="{{ route('user.dashboard') }}"><i
+                                    class="fas fa-user me-2"></i>Profile</a></li>
+                    @endif
+                    @if (Auth()->user()->role_id == 3)
+                        <li class="nav-item"><a class="btn btn-primary d-block" href="{{ url('vendor') }}"><i
+                                    class="fas fa-store me-2"></i>Vendor
+                                Profile</a></li>
+                    @endif
+                    <li class="nav-item">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-grid">
+                            @csrf
+                            <button class="btn btn-secondary d-block"><i class="fas fa-key me-2"></i>Logout
+                            </button>
+                        </form>
+                    </li>
+                @else
+                    <hr class="mt-3">
+                    <li class="nav-item"><a class="btn btn-primary d-block" href="{{ route('login') }}">Login </a></li>
+                    <li class="nav-item mt-2"><a class="btn btn-primary d-block" href="{{ route('register') }}">Register
+                        </a></li>
+                    <li class="nav-item mt-2"><a class="btn btn-secondary d-block"
+                            href="{{ route('vendor.create') }}"> <i class="fas fa-store me-2"></i> Become a Vendor </a></li>
+                @endauth
             </ul>
         </div>
     </div>

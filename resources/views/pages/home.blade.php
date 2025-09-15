@@ -148,6 +148,20 @@
             background: var(--accent-color);
         }
 
+        /* Desktop: sync hero slider and left banner heights */
+        @media (min-width: 992px) {
+            .hero-slider {
+                aspect-ratio: auto;
+                height: 430px;
+            }
+            .home-left-banner {
+                height: 430px;
+            }
+            .hero__item {
+                height: 100%;
+            }
+        }
+
         /* Fallback for browsers that don't support aspect-ratio */
         @supports not (aspect-ratio: 16/9) {
             .hero-slider {
@@ -1140,11 +1154,11 @@
     <section class="hero">
         <div class="container-fluid">
             <div class="row mt-4">
-                <div class="col-lg-5 d-none d-lg-block">
+                <div class="col-lg-5 d-none d-lg-block" style="min-height: 100%;">
                     <x-banner.home-left-banner />
                 </div>
                 <div class="col-lg-7 p-0 col-12 ">
-                    <div class="hero-slider-wrapper p-0">
+                    <div class="hero-slider-wrapper px-2">
                         <div class="hero-slider" role="region" aria-label="Product carousel">
                             @foreach ($sliders as $index => $slider)
                                 <div class="hero__item set-bg" onclick="window.location.href='{{ $slider->url }}'"
