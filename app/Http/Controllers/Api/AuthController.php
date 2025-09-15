@@ -40,8 +40,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'     => ['required', 'string', 'max:255'],
-            'l_name'   => ['required', 'string', 'max:255'],
+            'first_name'     => ['required', 'string', 'max:255'],
+            'last_name'   => ['required', 'string', 'max:255'],
             'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -55,8 +55,8 @@ class AuthController extends Controller
         $data = $validator->validated();
 
         $user = User::create([
-            'name'     => $data['name'],
-            'l_name'   => $data['l_name'],
+            'name'     => $data['first_name'],
+            'l_name'   => $data['last_name'],
             'email'    => $data['email'],
             'password' => Hash::make($data['password']),
             'role_id'  => 2, // Default role for regular users
