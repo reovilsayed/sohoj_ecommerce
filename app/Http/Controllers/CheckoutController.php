@@ -36,6 +36,7 @@ class CheckoutController extends Controller
     }
     public function storeBillingAndShippingInformation(Request $request)
     {
+
         // dd($request->all());
         $request->validate([
             'first_name' => 'required',
@@ -52,38 +53,90 @@ class CheckoutController extends Controller
         ]);
 
 
-        $country = (new CountryStateCity())->countryDetails($request->country);
-        $state = (new CountryStateCity())->stateDetails($request->country, $request->state);
-        $city = (new CountryStateCity())->cityDetails($request->country, $request->state, $request->city);
+        try {
+            DB::beginTransaction();
 
-        $shippingAndBillingInformation = new ShippingAndBillingInformation(
-            firstName: $request->first_name,
-            lastName: $request->last_name,
-            email: $request->email,
-            address_line: $request->address_1,
-            latitude: $city['latitude'],
-            longitude: $city['longitude'],
-            city: $city['name'],
-            state: $request->state,
-            state_code: strlen($state['iso2']) < 2 ?  $state['iso3166_2'] : $state['iso2'],
-            state_name: $state['name'],
-            post_code: $request->post_code,
-            phone: $request->phone,
-            country_code: $country['iso2'],
-            country_name: $country['name']
+            $geo = new CountryStateCity();
+            $country = $geo->countryDetails($request->country);
+            $state   = $geo->stateDetails($request->country, $request->state);
+            $city    = $geo->cityDetails($request->country, $request->state, $request->city);
 
-        );
-  
-        $checkoutService = new CheckoutService($shippingAndBillingInformation);
-        $order = $checkoutService->createOrder();
-        Cart::destroy();
-        session()->forget('discount');
-        session()->forget('discount_code');
-        return redirect()->route('checkout.paymentPage', $order);
+            if (!$country) {
+                DB::rollBack();
+                return back()->withErrors(['country' => 'Selected country is invalid or unavailable.'])->withInput();
+            }
+            if (!$state) {
+                DB::rollBack();
+                return back()->withErrors(['state' => 'Selected state is invalid or unavailable for the chosen country.'])->withInput();
+            }
+            if (!$city) {
+                DB::rollBack();
+                return back()->withErrors(['city' => 'Selected city is invalid or unavailable for the chosen state.'])->withInput();
+            }
+
+            $shippingAndBillingInformation = new ShippingAndBillingInformation(
+                firstName: $request->first_name,
+                lastName: $request->last_name,
+                email: $request->email,
+                address_line: $request->address_1,
+                latitude: $city['latitude'] ?? null,
+                longitude: $city['longitude'] ?? null,
+                city: $city['name'] ?? ($request->city ?? ''),
+                state: $request->state,
+                state_code: isset($state['iso2']) && strlen($state['iso2']) < 2 ? ($state['iso3166_2'] ?? $state['iso2']) : ($state['iso2'] ?? ''),
+                state_name: $state['name'] ?? '',
+                post_code: $request->post_code,
+                phone: $request->phone,
+                country_code: $country['iso2'] ?? '',
+                country_name: $country['name'] ?? ''
+
+            );
+
+            $checkoutService = new CheckoutService($shippingAndBillingInformation);
+            $order = $checkoutService->createOrder();
+
+
+
+            // Post-commit actions
+            $shipping = json_decode($order->shipping, true);
+            $rates = (new UPSService())->getRates(toAddress: [
+                'name' => $shipping['firstName'] . ' ' . $shipping['lastName'],
+                'address_line' => $shipping['address_line'],
+                'city' => $shipping['city'],
+                'state' => $shipping['state_code'],
+                'postal_code' => $shipping['post_code'],
+                'country_code' => $shipping['country_code']
+            ], fromAddress: [
+                'name' => 'Afrikartt',
+                'address_line' => '2251 SW Binford Lake Parkway',
+                'city' => 'Gresham',
+                'state' => 'OR',
+                'postal_code' => '97080',
+                'country_code' => 'US',
+            ], packageDetails: $order->products->map(function ($product) {
+                return [
+                    'length' => $product->length ?? 10,
+                    'width' => $product->width ?? 8,
+                    'height' => $product->height ?? 4,
+                    'weight' => $product->weight ?? 2,
+                ];
+            })->toArray());
+            DB::commit();
+            Cart::destroy();
+            session()->forget('discount');
+            session()->forget('discount_code');
+            return redirect()->route('checkout.paymentPage', $order);
+        } catch (\Throwable $e) {
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
+            return back()->withErrors(['checkout' => $e->getMessage()])->withInput();
+        }
     }
 
     public function paymentPage(Order $order)
     {
+
         $shipping = json_decode($order->shipping, true);
         $packages =  $order->products->map(function ($product) {
             return [

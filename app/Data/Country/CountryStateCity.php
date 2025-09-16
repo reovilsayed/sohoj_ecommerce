@@ -5,6 +5,7 @@ namespace App\Data\Country;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class CountryStateCity
 {
@@ -15,7 +16,25 @@ class CountryStateCity
     {
         $this->data = Cache::remember('country_state_city_data', 3600, function () {
             $path = public_path('json/countries_states_cities.json');
-            return new Collection((array) json_decode(File::get($path), true));
+            if (!$path || !File::exists($path)) {
+                Log::warning('countries_states_cities.json not found at expected path', ['path' => $path]);
+                return new Collection([]);
+            }
+
+            try {
+                $json = File::get($path);
+            } catch (\Throwable $e) {
+                Log::error('Failed to read countries_states_cities.json', ['error' => $e->getMessage()]);
+                return new Collection([]);
+            }
+
+            $decoded = json_decode($json, true);
+            if (!is_array($decoded)) {
+                Log::error('Invalid JSON format in countries_states_cities.json');
+                return new Collection([]);
+            }
+
+            return new Collection($decoded);
         });
     }
 
