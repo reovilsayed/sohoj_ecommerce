@@ -23,6 +23,7 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/frontend-assets/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/frontend-assetss/responsive.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <style>
         /* Import centralized color system */
         @import url('{{ asset('assets/css/colors.css') }}');
@@ -505,13 +506,23 @@
                                                     @enderror
                                                 </div>
 
-                                                <div class="col-md-12 mt-2">
+                                                <div class="col-md-6 mt-2">
                                                     <label for="email" class="form-label">Email</label>
                                                     <input type="email" class="form-control" id="email"
                                                         aria-describedby="email"
                                                         value="{{ old('email', Auth()->user() ? Auth()->user()->email : '') }}"
                                                         name="email" placeholder="Email Address">
                                                     @error('email')
+                                                        <span class="text-danger small position-absolute"
+                                                            style="top:100%;left:0;">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <label for="phone" class="form-label">Phone</label>
+                                                    <input type="text" class="form-control" id="phone"
+                                                        value="{{ old('phone', Auth()->user() ? Auth()->user()->phone : '') }}"
+                                                        name="phone" placeholder="Phone Number">
+                                                    @error('phone')
                                                         <span class="text-danger small position-absolute"
                                                             style="top:100%;left:0;">{{ $message }}</span>
                                                     @enderror
@@ -531,19 +542,39 @@
                                                         </span>
                                                     @enderror
 
-                                                    <!-- Optional: Capture coordinates -->
-                                                    <input type="hidden" name="latitude" id="latitude">
-                                                    <input type="hidden" name="longitude" id="longitude">
-                                                   
+                                                
                                                 </div>
 
 
+                                               
+
+                                              
                                                 <div class="col-md-6 mt-2">
-                                                    <label for="phone" class="form-label">Phone</label>
-                                                    <input type="text" class="form-control" id="phone"
-                                                        value="{{ old('phone', Auth()->user() ? Auth()->user()->phone : '') }}"
-                                                        name="phone" placeholder="Phone Number">
-                                                    @error('phone')
+                                                    <label for="country" class="form-label">Country</label>
+                                                    <select class="form-control" id="country" name="country">
+                                                        <option value="">Select Country</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mt-2">
+                                                    <label for="state" class="form-label">State</label>
+                                                    <select class="form-control" id="state" name="state">
+                                                        <option value="">Select State</option>
+                                                    </select>
+                                                    @error('state')
+                                                        <span class="text-danger small position-absolute"
+                                                            style="top:100%;left:0;">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                
+                                              
+                                                
+
+                                                <div class="col-md-6 mt-2">
+                                                    <label for="city" class="form-label">City</label>
+                                                    <select class="form-control" id="city" name="city">
+                                                        <option value="">Select City</option>
+                                                    </select>
+                                                    @error('city')
                                                         <span class="text-danger small position-absolute"
                                                             style="top:100%;left:0;">{{ $message }}</span>
                                                     @enderror
@@ -560,54 +591,6 @@
                                                             style="top:100%;left:0;">{{ $message }}</span>
                                                     @enderror
                                                 </div>
-
-                                                <div class="col-md-6 mt-2">
-                                                    <label for="state" class="form-label">State</label>
-                                                    <input type="text" class="form-control" id="state"
-                                                        name="state"
-                                                        value="{{ old('state', Auth()->user() ? Auth()->user()->state : '') }}"
-                                                        placeholder="State">
-                                                    @error('state')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-md-6 mt-2">
-                                                    <label for="state" class="form-label">State Code</label>
-                                                    <input type="text" class="form-control" id="state_code"
-                                                        name="state_code"
-                                                        value="{{ old('state_code', Auth()->user() ? Auth()->user()->state_code : '') }}"
-                                                        placeholder="State Code">
-                                                    @error('state_code')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-md-6 mt-2">
-                                                    <label for="state" class="form-label">Country Code</label>
-                                                    <input type="text" class="form-control" id="country_code"
-                                                        name="country_code"
-                                                        value="{{ old('country_code', Auth()->user() ? Auth()->user()->country_code : '') }}"
-                                                        placeholder="Country Code">
-                                                    @error('country_code')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-
-                                                <div class="col-md-6 mt-2">
-                                                    <label for="city" class="form-label">City</label>
-                                                    <input type="text" class="form-control" id="city"
-                                                        name="city"
-                                                        value="{{ old('city', Auth()->user() ? Auth()->user()->city : '') }}"
-                                                        placeholder="City">
-                                                    @error('city')
-                                                        <span class="text-danger small position-absolute"
-                                                            style="top:100%;left:0;">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-
-                                     
                                                 
                                             </div>
                                             <button type="submit" class="btn btn-primary mt-5">Continue to Payment</button>
@@ -680,6 +663,7 @@
 @endsection
 @section('js')
     <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
     <script src="{{ asset('assets/frontend-assets/js/vendor/jquery.magnific-popup.min.js') }}"></script>
     <script src="{{ asset('assets/frontend-assets/js/plugins/jquery.sticky-sidebar.js') }}"></script>
@@ -728,15 +712,22 @@
         });
     </script>
 
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             const addressInput = document.getElementById('address_1');
             const latitudeInput = document.getElementById('latitude');
             const longitudeInput = document.getElementById('longitude');
             const stateCodeInput = document.getElementById('state_code');
             const countryCodeInput = document.getElementById('country_code');
-            const cityInput = document.getElementById('city');
-            const stateInput = document.getElementById('state');
+            const citySelect = document.getElementById('city');
+            const stateSelect = document.getElementById('state');
+            const countrySelect = document.getElementById('country');
+
+            // Initialize Choices.js for searchable selects
+            const countryChoices = new Choices(countrySelect, { searchEnabled: true, shouldSort: true, itemSelectText: '' });
+            const stateChoices   = new Choices(stateSelect,   { searchEnabled: true, shouldSort: true, itemSelectText: '' });
+            const cityChoices    = new Choices(citySelect,    { searchEnabled: true, shouldSort: true, itemSelectText: '' });
             const postalCodeInput = document.getElementById('post_code');
 
             const autocomplete = new google.maps.places.Autocomplete(addressInput, {
@@ -769,8 +760,8 @@
                 const addressLine = [streetNumber, route].filter(Boolean).join(' ');
 
                 if (addressLine) addressInput.value = addressLine;
-                if (cityInput) cityInput.value = locality;
-                if (stateInput) stateInput.value = adminAreaLong || adminAreaShort;
+                if (citySelect) setSelected(citySelect, locality);
+                if (stateSelect) setSelected(stateSelect, adminAreaLong || adminAreaShort);
                 if (postalCodeInput) postalCodeInput.value = postalCode;
                 if (stateCodeInput) stateCodeInput.value = adminAreaShort;
                 if (countryCodeInput) countryCodeInput.value = countryShort;
@@ -788,6 +779,64 @@
                 if (e.key === 'Enter') {
                     e.preventDefault();
                 }
+            });
+
+            // Helpers
+            function clearOptions(selectEl, placeholder = 'Select') {
+                const instance = selectEl === countrySelect ? countryChoices : selectEl === stateSelect ? stateChoices : cityChoices;
+                instance.clearStore();
+                instance.setChoices([{ value: '', label: placeholder, selected: true }], 'value', 'label', true);
+            }
+
+            function setSelected(selectEl, label) {
+                const instance = selectEl === countrySelect ? countryChoices : selectEl === stateSelect ? stateChoices : cityChoices;
+                const found = instance._store.choices.find(c => c.label === label);
+                if (found) instance.setChoiceByValue(found.value);
+            }
+
+            async function fetchJson(url) {
+                const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+                if (!res.ok) throw new Error('Network error');
+                return res.json();
+            }
+
+            function populateSelect(selectEl, data, placeholder) {
+                const instance = selectEl === countrySelect ? countryChoices : selectEl === stateSelect ? stateChoices : cityChoices;
+                const choices = [{ value: '', label: placeholder, selected: true }];
+                for (const [id, name] of Object.entries(data)) {
+                    choices.push({ value: id, label: name });
+                }
+                instance.setChoices(choices, 'value', 'label', true);
+            }
+
+            // Load countries
+            try {
+                const countries = await fetchJson('/api/geo/countries');
+                populateSelect(countrySelect, countries, 'Select Country');
+            } catch (e) { /* ignore */ }
+
+            // On country change -> load states
+            countrySelect.addEventListener('change', async function() {
+                const countryId = this.value;
+                clearOptions(stateSelect, 'Select State');
+                clearOptions(citySelect, 'Select City');
+                if (!countryId) return;
+                try {
+                    const states = await fetchJson('/api/geo/states/' + encodeURIComponent(countryId));
+                    populateSelect(stateSelect, states, 'Select State');
+                } catch (e) { /* ignore */ }
+            });
+
+            // On state change -> load cities
+            stateSelect.addEventListener('change', async function() {
+                const stateId = this.value;
+                const countryId = countrySelect.value;
+                clearOptions(citySelect, 'Select City');
+                if (!countryId || !stateId) return;
+                try {
+                    const cities = await fetchJson('/api/geo/cities/' + encodeURIComponent(countryId) + '/' + encodeURIComponent(stateId));
+                    populateSelect(citySelect, cities, 'Select City');
+                } catch (e) { /* ignore */ }
             });
         });
     </script>

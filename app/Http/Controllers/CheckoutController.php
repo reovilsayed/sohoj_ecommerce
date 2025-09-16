@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\Country\CountryStateCity;
 use App\Mail\AdminOrderPlacedMail;
 use App\Mail\AdminOrderSuccessMail;
 use App\Mail\CustomarOrderPlacedMail;
@@ -35,34 +36,44 @@ class CheckoutController extends Controller
     }
     public function storeBillingAndShippingInformation(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email',
             'address_1' => 'required',
-            // 'latitude' => 'required',
-            // 'longitude' => 'required',
+
             'city' => 'required',
             'state' => 'required',
-            'state_code' => 'required',
+
             'post_code' => 'required',
             'phone' => 'required',
-            'country_code' => 'required',
+            'country' => 'required',
         ]);
+
+
+        $country = (new CountryStateCity())->countryDetails($request->country);
+        $state = (new CountryStateCity())->stateDetails($request->country, $request->state);
+        $city = (new CountryStateCity())->cityDetails($request->country, $request->state, $request->city);
+
         $shippingAndBillingInformation = new ShippingAndBillingInformation(
             firstName: $request->first_name,
             lastName: $request->last_name,
             email: $request->email,
             address_line: $request->address_1,
-            latitude: $request->latitude,
-            longitude: $request->longitude,
-            city: $request->city,
+            latitude: $city['latitude'],
+            longitude: $city['longitude'],
+            city: $city['name'],
             state: $request->state,
-            state_code: $request->state_code,
+            state_code: strlen($state['iso2']) < 2 ?  $state['iso3166_2'] : $state['iso2'],
+            state_name: $state['name'],
             post_code: $request->post_code,
             phone: $request->phone,
-            country_code: $request->country_code
+            country_code: $country['iso2'],
+            country_name: $country['name']
+
         );
+  
         $checkoutService = new CheckoutService($shippingAndBillingInformation);
         $order = $checkoutService->createOrder();
         Cart::destroy();
@@ -114,15 +125,15 @@ class CheckoutController extends Controller
 
 
 
-        $shipping = json_decode($order->shipping,true);
+        $shipping = json_decode($order->shipping, true);
         $payment = new PaymentService(Order::find($order->id));
         $url = $payment->getPaymentRedirectUrl();
 
         foreach ($order->childs as $childOrder) {
             if ($shipping['email']) {
                 Mail::to($shipping['email'])->send(new CustomarOrderPlacedMail($order, $childOrder));
-        }
-        if (optional($childOrder->shop)->email) {
+            }
+            if (optional($childOrder->shop)->email) {
                 Mail::to(optional($childOrder->shop)->email)->send(new VendorOrderPlacedMail($order, $childOrder));
             }
             if (Settings::setting('admin_email')) {

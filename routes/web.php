@@ -1,6 +1,7 @@
 <?php
 
 use App\Data\Country\Africa;
+use App\Data\Country\CountryStateCity;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Auth\RegisterController;
@@ -510,4 +511,15 @@ Route::group(['prefix' => 'register-as-seller'], function () {
         Route::get('/vendor-verification', [RegistrationController::class, 'vendorVerification'])->name('vendor.registration.verification');
         Route::post('/vendor-verification/store', [RegistrationController::class, 'vendorVerificationStore'])->name('vendor.registration.verification.store');
     });
+});
+
+
+Route::get('json/countries', function () {
+    return (new CountryStateCity())->countries();
+});
+Route::get('json/states/{country}', function ($country) {
+    return (new CountryStateCity())->states($country);
+});
+Route::get('json/cities/{country}/{state}', function ($country,$state) {
+    return (new CountryStateCity())->cities($country,$state);
 });

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Data\Country\CountryStateCity;
 use App\Models\Product;
 use App\Services\Checkout\CheckoutService;
 use App\Services\Checkout\Data\ShippingAndBillingInformation;
@@ -100,6 +101,22 @@ class CheckoutController extends Controller
 
     }
 
-    
+    public function countries()
+    {
+        $data = (new CountryStateCity())->countries();
+        return response()->json($data);
+    }
+
+    public function states($country)
+    {
+        $data = (new CountryStateCity())->states($country);
+        return response()->json($data);
+    }
+
+    public function cities($country, $state)
+    {
+        $data = (new CountryStateCity())->cities($country, $state);
+        return response()->json($data);
+    }
 
 }

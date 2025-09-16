@@ -17,7 +17,9 @@ class ShippingAndBillingInformation
     public $post_code;
     public $phone;
     public $country_code;
-
+    public $country_name;
+    public $state_name;
+    
     public function __construct(
   
         string $firstName,
@@ -31,7 +33,10 @@ class ShippingAndBillingInformation
         string $state_code,
         string $post_code,
         string $phone,
-        string $country_code
+        string $country_code,
+        string $country_name,
+        string $state_name
+
     ) {
       
         $this->firstName = $firstName;
@@ -46,6 +51,8 @@ class ShippingAndBillingInformation
         $this->post_code = $post_code;
         $this->phone = $phone;
         $this->country_code = $country_code;
+        $this->country_name = $country_name;
+        $this->state_name = $state_name;
     }
 
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\OrderApiController;
 use App\Http\Controllers\Api\ProductApiController;
 use App\Http\Controllers\Api\VendorApiController;
+use App\Http\Controllers\Api\CheckoutController as ApiCheckoutController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,11 @@ Route::get('/categories', [CategoryApiController::class, 'index']);
 Route::get('/vendors', [VendorApiController::class, 'index']);
 Route::get('/vendors/{shop:slug}', [VendorApiController::class, 'show']);
 Route::get('vendors/{shop:slug}/products', [ProductApiController::class, 'vendorProducts']);
+
+// Country / State / City endpoints
+Route::get('geo/countries', [ApiCheckoutController::class, 'countries']);
+Route::get('geo/states/{country}', [ApiCheckoutController::class, 'states']);
+Route::get('geo/cities/{country}/{state}', [ApiCheckoutController::class, 'cities']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('order/checkout', CheckoutController::class);
