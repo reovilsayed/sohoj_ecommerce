@@ -13,7 +13,7 @@ class CountryStateCity
     public function __construct()
     {
         $this->data = Cache::remember('country_state_city_data', 3600, function () {
-            $path = app_path('Data/Country/json/countries_states_cities.json');
+            $path = public_path('json/countries_states_cities.json');
             return new Collection((array) json_decode(file_get_contents($path), true));
         });
     }
