@@ -4,6 +4,7 @@ namespace App\Data\Country;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 
 class CountryStateCity
 {
@@ -14,7 +15,7 @@ class CountryStateCity
     {
         $this->data = Cache::remember('country_state_city_data', 3600, function () {
             $path = public_path('json/countries_states_cities.json');
-            return new Collection((array) json_decode(file_get_contents($path), true));
+            return new Collection((array) json_decode(File::get($path), true));
         });
     }
 
