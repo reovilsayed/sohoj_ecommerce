@@ -57,7 +57,10 @@ class CheckoutController extends Controller
                 state_code: $request->state_code,
                 post_code: $request->post_code,
                 phone: $request->phone,
-                country_code: $request->country_code
+                country_code: $request->country_code,
+                country_name: $request->country_name,
+                state_name: $request->state_name
+                
             );
 
             $checkoutService = new CheckoutService($shippingAndBillingInformation);
