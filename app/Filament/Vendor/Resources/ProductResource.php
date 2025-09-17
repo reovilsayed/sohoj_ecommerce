@@ -419,7 +419,7 @@ class ProductResource extends Resource
                                                     ->helperText('Enable if this product has variations like different sizes, colors, or materials. This will show the Variations tab.')
                                                     ->default(false)
                                                     // ->disabled()
-                                              
+                                                    ->live()
                                                     ->columnSpan(1),
 
                                                 Toggle::make('featured')
