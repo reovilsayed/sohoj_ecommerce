@@ -418,7 +418,7 @@ class ProductResource extends Resource
                                                     ->label('Variable Product')
                                                     ->helperText('Enable if this product has variations like different sizes, colors, or materials. This will show the Variations tab.')
                                                     ->default(false)
-                                                    ->disabled()
+                                                    // ->disabled()
                                               
                                                     ->columnSpan(1),
 
