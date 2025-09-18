@@ -523,3 +523,41 @@ Route::get('json/states/{country}', function ($country) {
 Route::get('json/cities/{country}/{state}', function ($country,$state) {
     return (new CountryStateCity())->cities($country,$state);
 });
+
+// Search endpoints for country/state by name or code
+Route::get('api/geo/search/country', function (Request $request) {
+    $q = $request->query('q');
+    if (!$q) {
+        return response()->json([], 200);
+    }
+    $svc = new CountryStateCity();
+    return response()->json($svc->searchCountries($q));
+});
+
+Route::get('api/geo/search/state', function (Request $request) {
+    $country = $request->query('country');
+    $q = $request->query('q');
+    if (!$country || !$q) {
+        return response()->json([], 200);
+    }
+    $svc = new CountryStateCity();
+    return response()->json($svc->searchStates($country, $q));
+});
+
+// Resolve endpoints: map name/code to canonical dataset row
+Route::get('api/geo/resolve/country', function (Request $request) {
+    $needle = $request->query('needle');
+    if (!$needle) return response()->json([], 200);
+    $svc = new CountryStateCity();
+    $row = $svc->findCountry($needle);
+    return response()->json($row ?: []);
+});
+
+Route::get('api/geo/resolve/state', function (Request $request) {
+    $country = $request->query('country');
+    $needle = $request->query('needle');
+    if (!$country || !$needle) return response()->json([], 200);
+    $svc = new CountryStateCity();
+    $row = $svc->findState($country, $needle);
+    return response()->json($row ?: []);
+});

@@ -210,6 +210,9 @@
                 </div>
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
+                    @if(request('redirect'))
+                        <input type="hidden" name="redirect" value="{{ request('redirect') }}">
+                    @endif
                     <div class="form-group position-relative">
                         <label for="email" class="form-label">Email address</label>
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"

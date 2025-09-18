@@ -40,6 +40,11 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
+        // Check if there's a redirect parameter in the request (from form submission or URL)
+        if (request()->has('redirect')) {
+            return request()->get('redirect');
+        }
+
         switch (auth()->user()->role_id) {
             case 1:
                 return RouteServiceProvider::ADMIN;

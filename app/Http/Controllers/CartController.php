@@ -101,14 +101,34 @@ class CartController extends Controller
 
 	public function buynow(Request $request)
 	{
-
-
 		$this->cart($request);
 
+		// Handle different buy intents
 		if(isset($request->add_to_cart)){
-			return redirect()->back()->with('success_msg', 'Item has been added to cart!');;
+			return redirect()->back()->with('success_msg', 'Item has been added to cart!');
 		}
-		return redirect('/cart')->with('success_msg', 'Item has been updated!');;
+		
+		// If coming from guest modal, go to cart page
+		if ($request->input('buy_intent') === 'buy_now_guest') {
+			return redirect('/cart')->with('success_msg', 'Item has been added to cart!');
+		}
+		
+		// If coming from sign in/sign up modal, add to cart and redirect to auth
+		if ($request->input('buy_intent') === 'buy_now_signin') {
+			return redirect()->route('login', ['redirect' => url('/cart')])->with('success_msg', 'Item has been added to cart! Please sign in to continue.');
+		}
+		
+		if ($request->input('buy_intent') === 'buy_now_signup') {
+			return redirect()->route('register', ['redirect' => url('/cart')])->with('success_msg', 'Item has been added to cart! Please sign up to continue.');
+		}
+		
+		// For logged-in users, Buy Now should go to cart page
+		if ($request->input('buy_intent') === 'buy_now') {
+			return redirect('/cart')->with('success_msg', 'Item has been added to cart!');
+		}
+
+		// Default fallback
+		return redirect('/cart')->with('success_msg', 'Item has been added to cart!');
 	}
 
 	private function cart($request)

@@ -51,6 +51,7 @@ class PageController extends Controller
                 'sliders' => Slider::latest()->get()
             ];
         });
+    
 
         return view('pages.home', $homeData);
     }

@@ -270,6 +270,84 @@
             cursor: not-allowed;
         }
 
+
+        /* Enhanced Guest Buy Modal Styling */
+        #guestBuyModal .modal-content {
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        #guestBuyModal .modal-header {
+            background: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            padding: 14px 18px;
+        }
+
+        #guestBuyModal .modal-title {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        #guestBuyModal .modal-body {
+            padding: 18px;
+        }
+
+        .guest-buy-preview {
+            width: 100%;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        .guest-buy-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .guest-buy-variant {
+            display: inline-block;
+            margin-top: 4px;
+            background: #fffbe6;
+            color: #6b5c01;
+            border: 1px solid #ffe58f;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+        }
+
+        .guest-buy-price {
+            font-weight: 700;
+            color: #000;
+            font-size: 1.1rem;
+        }
+
+        .guest-buy-compare-price {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-decoration: line-through;
+        }
+
+        #guestBuyModal .modal-footer {
+            border-top: 1px solid #e9ecef;
+            padding: 14px 18px 18px 18px;
+        }
+
+        .btn-guest-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #000;
+        }
+
+        .btn-guest-warning:hover {
+            background-color: #ffb400;
+            border-color: #ffb400;
+            color: #000;
+        }
+
         .variation-card.out-of-stock:hover {
             transform: none;
             border-color: #dee2e6;
@@ -678,7 +756,7 @@
 
                                             </div>
                                             {{-- @dd($product) --}}
-                                            <form action="{{ route('cart.boynow') }}" method="POST">
+                                            <form id="buy-now-form" action="{{ route('cart.boynow') }}" method="POST">
                                                 @csrf
                                                 @if ($product->is_variable_product && count($product->subproductsuser) > 0)
                                                     @foreach ($product->attributes as $attribute)
@@ -707,6 +785,9 @@
                                                 <input type="hidden" name="selected_variant_sku"
                                                     id="selected_variant_sku" value="" />
 
+                                                {{-- Hidden input for buy intent --}}
+                                                <input type="hidden" name="buy_intent" id="buy_intent" value="" />
+
                                                 {{-- Selected variant info display --}}
                                                 <div id="selected-variant-info" class="alert alert-info mt-3"
                                                     style="display: none;">
@@ -731,7 +812,7 @@
                                                             <div class="ec-single-cart d-flex gap-2">
 
                                                                 <input type="submit" class="btn btn-sm btn-success" name="add_to_cart" type="submit"
-                                                                id="buy-now-btn" value="Add to Cart">
+                                                                id="add-to-cart-btn" value="Add to Cart">
 
                                                                 <button class="btn btn-sm btn-dark" type="submit"
                                                                     id="buy-now-btn">Buy
@@ -889,6 +970,42 @@
         </section>
         <!-- End Single product -->
 
+        <!-- Guest Buy Modal -->
+        <div class="modal fade" id="guestBuyModal" tabindex="-1" aria-labelledby="guestBuyModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 d-flex align-items-center gap-2" id="guestBuyModalLabel">
+                            <i class="fas fa-shopping-bag text-warning"></i>
+                            Complete your purchase
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="guest-buy-preview d-flex align-items-center gap-3">
+                            <img id="guest-buy-product-image" src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" style="width:70px;height:70px;object-fit:cover;border-radius:6px;">
+                            <div class="flex-grow-1">
+                                <div class="guest-buy-name" id="guest-buy-product-name">{{ $product->name }}</div>
+                                <div class="guest-buy-variant" id="guest-buy-variant-text" style="display:none;"></div>
+                                <div class="guest-buy-sku" id="guest-buy-sku-text" style="font-size:0.8rem;color:#6c757d;margin-top:2px;">
+                                    SKU: {{ $product->sku }}
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <div class="guest-buy-price" id="guest-buy-price-text">{{ Sohoj::price($product->sale_price ?? $product->price) }}</div>
+                                <div class="guest-buy-compare-price" id="guest-buy-compare-price-text" style="display:none;font-size:0.8rem;color:#6c757d;text-decoration:line-through;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex flex-column align-items-stretch gap-2">
+                        <a href="{{ route('login') }}?redirect={{ urlencode(request()->fullUrl()) }}" class="btn btn-dark w-100" id="signin-buy-btn"><i class="fas fa-sign-in-alt me-2"></i>Sign in and Buy</a>
+                        <a href="{{ route('register') }}?redirect={{ urlencode(request()->fullUrl()) }}" class="btn btn-outline-dark w-100" id="signup-buy-btn"><i class="fas fa-user-plus me-2"></i>Sign up and Buy</a>
+                        <button type="button" class="btn btn-guest-warning w-100" id="guest-buy-btn"><i class="fas fa-bolt me-2"></i>Buy as Guest</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <section class="section ec-new-product" style="margin-bottom: 100px">
             <div class="container">
@@ -970,6 +1087,8 @@
             const productSku = document.querySelector('.product-sku-info');
             const selectedSkuInput = document.getElementById('selected_variant_sku');
             const buyNowBtn = document.getElementById('buy-now-btn');
+            const addToCartBtn = document.getElementById('add-to-cart-btn');
+            const buyIntentInput = document.getElementById('buy_intent');
             const mainProductImage = document.querySelector('.single-product-cover .single-slide img');
             const selectedVariantInfo = document.getElementById('selected-variant-info');
             const selectedVariantDetails = document.getElementById('selected-variant-details');
@@ -1063,6 +1182,11 @@
                     setTimeout(() => {
                         this.style.transform = 'scale(1)';
                     }, 150);
+
+                    // Update guest modal content if it exists and user is not logged in
+                    @if (!Auth::check())
+                    updateGuestModalContent();
+                    @endif
                 });
             });
 
@@ -1082,7 +1206,7 @@
             });
 
             // Form validation - require variant selection for variable products
-            const cartForm = document.querySelector('form[action*="cart.boynow"]');
+            const cartForm = document.getElementById('buy-now-form');
             if (cartForm && {{ $product->is_variable_product ? 'true' : 'false' }}) {
                 cartForm.addEventListener('submit', function(e) {
                     const selectedSku = selectedSkuInput.value;
@@ -1099,6 +1223,183 @@
                 buyNowBtn.disabled = true;
                 buyNowBtn.textContent = 'Select a variant first';
             }
+
+            // For logged-in users: ensure intent is set before submitting via Buy Now
+            if (buyNowBtn) {
+                buyNowBtn.addEventListener('click', function() {
+                    // For logged-in users, Buy Now should add to cart and go to cart page
+                    if (buyIntentInput) buyIntentInput.value = 'buy_now';
+                });
+            }
+
+            // Intercept Buy Now for guests
+            @if (!Auth::check())
+            if (buyNowBtn) {
+                buyNowBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (buyIntentInput) buyIntentInput.value = '';
+                    
+                    // Populate modal with product/variant details
+                    updateGuestModalContent();
+                    
+                    const modalEl = document.getElementById('guestBuyModal');
+                    try {
+                        if (window.bootstrap && typeof window.bootstrap.Modal === 'function') {
+                            const modal = new window.bootstrap.Modal(modalEl);
+                            modal.show();
+                        } else if (window.$ && typeof window.$(modalEl).modal === 'function') {
+                            window.$(modalEl).modal('show');
+                        } else {
+                            // Very basic fallback
+                            modalEl.classList.add('show');
+                            modalEl.style.display = 'block';
+                            modalEl.removeAttribute('aria-hidden');
+                        }
+                    } catch (e) {
+                        if (window.$ && typeof window.$(modalEl).modal === 'function') {
+                            window.$(modalEl).modal('show');
+                        } else {
+                            modalEl.classList.add('show');
+                            modalEl.style.display = 'block';
+                            modalEl.removeAttribute('aria-hidden');
+                        }
+                    }
+                });
+            }
+
+            // Function to update guest modal content
+            function updateGuestModalContent() {
+                const modalImg = document.getElementById('guest-buy-product-image');
+                const modalName = document.getElementById('guest-buy-product-name');
+                const modalVariant = document.getElementById('guest-buy-variant-text');
+                const modalSku = document.getElementById('guest-buy-sku-text');
+                const modalPrice = document.getElementById('guest-buy-price-text');
+                const modalComparePrice = document.getElementById('guest-buy-compare-price-text');
+                const signinBtn = document.getElementById('signin-buy-btn');
+                const signupBtn = document.getElementById('signup-buy-btn');
+
+                const selectedCard = document.querySelector('.variation-card.selected');
+                
+                if (selectedCard) {
+                    // Update with variant information
+                    const variantImg = selectedCard.dataset.variationImage;
+                    const variantSku = selectedCard.dataset.variationSku;
+                    const variantPrice = parseFloat(selectedCard.dataset.variationPrice);
+                    const variantComparePrice = parseFloat(selectedCard.dataset.variationComparePrice);
+                    const attributes = selectedCard.querySelectorAll('.attribute-value');
+                    const attributeText = Array.from(attributes).map(a => a.textContent.trim()).join(', ');
+                    
+                    // Update image
+                    if (variantImg) {
+                        modalImg.src = variantImg;
+                    }
+                    
+                    // Update variant text
+                    if (attributeText) {
+                        modalVariant.textContent = attributeText;
+                        modalVariant.style.display = 'block';
+                    } else {
+                        modalVariant.style.display = 'none';
+                    }
+                    
+                    // Update SKU
+                    if (variantSku) {
+                        modalSku.textContent = 'SKU: ' + variantSku;
+                    }
+                    
+                    // Update price
+                    modalPrice.textContent = '$' + variantPrice.toFixed(2);
+                    
+                    // Update compare price
+                    if (variantComparePrice > 0 && variantComparePrice > variantPrice) {
+                        modalComparePrice.textContent = '$' + variantComparePrice.toFixed(2);
+                        modalComparePrice.style.display = 'block';
+                    } else {
+                        modalComparePrice.style.display = 'none';
+                    }
+                } else {
+                    // Reset to original product information
+                    modalImg.src = '{{ Storage::url($product->image) }}';
+                    modalVariant.style.display = 'none';
+                    modalSku.textContent = 'SKU: {{ $product->sku }}';
+                    modalPrice.textContent = '{{ Sohoj::price($product->sale_price ?? $product->price) }}';
+                    
+                    @if($product->sale_price)
+                        modalComparePrice.textContent = '{{ Sohoj::price($product->price) }}';
+                        modalComparePrice.style.display = 'block';
+                    @else
+                        modalComparePrice.style.display = 'none';
+                    @endif
+                }
+
+                // Set up sign in/sign up buttons to submit form with appropriate intent
+                signinBtn.onclick = function(e) {
+                    e.preventDefault();
+                    submitFormWithIntent('buy_now_signin');
+                };
+                
+                signupBtn.onclick = function(e) {
+                    e.preventDefault();
+                    submitFormWithIntent('buy_now_signup');
+                };
+            }
+
+            // Function to submit form with specific intent
+            function submitFormWithIntent(intent) {
+                // Close the modal first
+                const modalEl = document.getElementById('guestBuyModal');
+                try {
+                    if (window.bootstrap && typeof window.bootstrap.Modal === 'function') {
+                        const modal = window.bootstrap.Modal.getInstance(modalEl);
+                        if (modal) modal.hide();
+                    } else if (window.$ && typeof window.$(modalEl).modal === 'function') {
+                        window.$(modalEl).modal('hide');
+                    } else {
+                        modalEl.classList.remove('show');
+                        modalEl.style.display = 'none';
+                        modalEl.setAttribute('aria-hidden', 'true');
+                    }
+                } catch (e) {
+                    // Fallback
+                    modalEl.classList.remove('show');
+                    modalEl.style.display = 'none';
+                    modalEl.setAttribute('aria-hidden', 'true');
+                }
+
+                // Variant validation (since form.submit() bypasses handlers)
+                const selectedSku = selectedSkuInput ? selectedSkuInput.value : '';
+                if ({{ $product->is_variable_product ? 'true' : 'false' }} && !selectedSku) {
+                    alert('Please select a variant before proceeding.');
+                    return;
+                }
+
+                // Ensure the form submits as Buy Now (not add to cart)
+                if (addToCartBtn) {
+                    addToCartBtn.disabled = true;
+                }
+
+                if (buyIntentInput) buyIntentInput.value = intent;
+
+                // Prefer requestSubmit to trigger native submit events/validation
+                try {
+                    if (typeof cartForm.requestSubmit === 'function') {
+                        cartForm.requestSubmit();
+                    } else {
+                        cartForm.submit();
+                    }
+                } catch (err) {
+                    cartForm.submit();
+                }
+            }
+
+            // Guest: submit the existing form as guest when clicking Buy as Guest
+            const guestBuyBtn = document.getElementById('guest-buy-btn');
+            if (guestBuyBtn && cartForm) {
+                guestBuyBtn.addEventListener('click', function() {
+                    submitFormWithIntent('buy_now_guest');
+                });
+            }
+            @endif
         });
     </script>
 @endsection

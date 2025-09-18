@@ -50,11 +50,7 @@ configure(basePath: dirname(__DIR__))
         ])->validateCsrfTokens(except: [
             '/file/post'
         ]);
-        
-        // Add FilamentNotificationFixMiddleware to prevent memory accumulation
-        $middleware->web(append: [
-            FilamentNotificationFixMiddleware::class,
-        ]);
+      
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

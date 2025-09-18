@@ -59,7 +59,13 @@ class CheckoutController extends Controller
             $geo = new CountryStateCity();
             $country = $geo->countryDetails($request->country);
             $state   = $geo->stateDetails($request->country, $request->state);
-            $city    = $geo->cityDetails($request->country, $request->state, $request->city);
+            if (is_numeric($request->city)) {
+                $city    = $geo->cityDetails($request->country, $request->state, $request->city);
+            } else {
+                $city = [
+                    'name' => $request->city,
+                ];
+            }
 
             if (!$country) {
                 DB::rollBack();

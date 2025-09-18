@@ -593,7 +593,7 @@
                                                 </div>
                                                 
                                             </div>
-                                            <button type="submit" class="btn btn-primary mt-5">Continue to Payment</button>
+                                            <button type="submit" class="btn btn-primary mt-5" id="continue-to-payment" disabled>Continue to Payment</button>
                                         </div>
 
                                         <style>
@@ -723,12 +723,35 @@
             const citySelect = document.getElementById('city');
             const stateSelect = document.getElementById('state');
             const countrySelect = document.getElementById('country');
+            const continueBtn = document.getElementById('continue-to-payment');
 
             // Initialize Choices.js for searchable selects
             const countryChoices = new Choices(countrySelect, { searchEnabled: true, shouldSort: true, itemSelectText: '' });
             const stateChoices   = new Choices(stateSelect,   { searchEnabled: true, shouldSort: true, itemSelectText: '' });
             const cityChoices    = new Choices(citySelect,    { searchEnabled: true, shouldSort: true, itemSelectText: '' });
             const postalCodeInput = document.getElementById('post_code');
+
+            function isFilled(el) {
+                return el && String(el.value).trim().length > 0;
+            }
+
+            function isSelectFilled(el) {
+                return el && el.value && String(el.value).trim() !== '';
+            }
+
+            function updateContinueState(pending = false) {
+                if (!continueBtn) return;
+                const requiredOk = isFilled(document.getElementById('first_name'))
+                    && isFilled(document.getElementById('last_name'))
+                    && isFilled(document.getElementById('email'))
+                    && isFilled(document.getElementById('phone'))
+                    && isFilled(document.getElementById('address_1'))
+                    && isSelectFilled(countrySelect)
+                    && isSelectFilled(stateSelect)
+                    && isSelectFilled(citySelect)
+                    && isFilled(document.getElementById('post_code'));
+                continueBtn.disabled = pending || !requiredOk;
+            }
 
             const autocomplete = new google.maps.places.Autocomplete(addressInput, {
                 types: ['geocode'],
@@ -739,9 +762,11 @@
                 return comp ? comp[nameType] : '';
             }
 
-            autocomplete.addListener('place_changed', function() {
+            autocomplete.addListener('place_changed', async function() {
+                updateContinueState(true);
                 const place = autocomplete.getPlace();
                 if (!place || !place.address_components) {
+                    updateContinueState(false);
                     return;
                 }
 
@@ -760,11 +785,83 @@
                 const addressLine = [streetNumber, route].filter(Boolean).join(' ');
 
                 if (addressLine) addressInput.value = addressLine;
-                if (citySelect) setSelected(citySelect, locality);
-                if (stateSelect) setSelected(stateSelect, adminAreaLong || adminAreaShort);
                 if (postalCodeInput) postalCodeInput.value = postalCode;
                 if (stateCodeInput) stateCodeInput.value = adminAreaShort;
                 if (countryCodeInput) countryCodeInput.value = countryShort;
+
+                // Resolve to your dataset's IDs and names
+                try {
+                    let resolvedCountry = null;
+                    if (countryShort) {
+                        const res = await fetch(`/api/geo/resolve/country?needle=${encodeURIComponent(countryShort)}`);
+                        if (res.ok) resolvedCountry = await res.json();
+                    }
+                    if (!resolvedCountry && place && place.address_components) {
+                        const countryLong = getComponent(place.address_components, 'country', 'long_name');
+                        if (countryLong) {
+                            const res2 = await fetch(`/api/geo/resolve/country?needle=${encodeURIComponent(countryLong)}`);
+                            if (res2.ok) resolvedCountry = await res2.json();
+                        }
+                    }
+
+                    if (resolvedCountry && resolvedCountry.id) {
+                        // Select the country by ID
+                        ensureChoice(countrySelect, resolvedCountry.id, resolvedCountry.name || resolvedCountry.iso2 || resolvedCountry.code || countryShort);
+
+                        // Load the correct states list for this country, then set state
+                        try {
+                            const statesMap = await fetchJson(`/json/states/${encodeURIComponent(resolvedCountry.id)}`);
+                            populateSelect(stateSelect, statesMap, 'Select State');
+                        } catch (e) { /* ignore */ }
+
+                        // Resolve state within this country using short or long code
+                        let resolvedState = null;
+                        const stateNeedle = adminAreaShort || adminAreaLong;
+                        if (stateNeedle) {
+                            const resSt = await fetch(`/api/geo/resolve/state?country=${encodeURIComponent(resolvedCountry.id)}&needle=${encodeURIComponent(stateNeedle)}`);
+                            if (resSt.ok) resolvedState = await resSt.json();
+                        }
+                        if (!resolvedState && adminAreaLong) {
+                            const resSt2 = await fetch(`/api/geo/resolve/state?country=${encodeURIComponent(resolvedCountry.id)}&needle=${encodeURIComponent(adminAreaLong)}`);
+                            if (resSt2.ok) resolvedState = await resSt2.json();
+                        }
+                        if (resolvedState && resolvedState.id) {
+                            ensureChoice(stateSelect, resolvedState.id, resolvedState.name || stateNeedle);
+                        } else if (stateNeedle) {
+                            // As a last resort, try searching states in this country to map to an ID
+                            try {
+                                const searchRes = await fetch(`/api/geo/search/state?country=${encodeURIComponent(resolvedCountry.id)}&q=${encodeURIComponent(stateNeedle)}`);
+                                if (searchRes.ok) {
+                                    const found = await searchRes.json();
+                                    const firstId = Object.keys(found)[0];
+                                    const firstName = firstId ? found[firstId] : null;
+                                    if (firstId) {
+                                        ensureChoice(stateSelect, firstId, firstName || stateNeedle);
+                                    } else {
+                                        ensureChoice(stateSelect, stateNeedle, stateNeedle);
+                                    }
+                                } else {
+                                    ensureChoice(stateSelect, stateNeedle, stateNeedle);
+                                }
+                            } catch (_) {
+                                ensureChoice(stateSelect, stateNeedle, stateNeedle);
+                            }
+                        }
+                    } else {
+                        // Country fallback to short code
+                        if (countryShort) ensureChoice(countrySelect, countryShort, countryShort);
+                        const stateLabel = adminAreaLong || adminAreaShort;
+                        if (stateLabel) ensureChoice(stateSelect, stateLabel, stateLabel);
+                    }
+
+                    if (citySelect && locality) ensureChoice(citySelect, locality, locality);
+                } catch (e) {
+                    // On any error, fallback to string labels
+                    if (countryShort) ensureChoice(countrySelect, countryShort, countryShort);
+                    const stateLabel = adminAreaLong || adminAreaShort;
+                    if (stateLabel) ensureChoice(stateSelect, stateLabel, stateLabel);
+                    if (citySelect && locality) ensureChoice(citySelect, locality, locality);
+                }
 
                 if (place.geometry) {
                     const lat = place.geometry.location.lat();
@@ -772,6 +869,8 @@
                     latitudeInput.value = lat;
                     longitudeInput.value = lng;
                 }
+                // finalize state after async operations
+                setTimeout(() => updateContinueState(false), 50);
             });
 
             // Prevent form submission when selecting from suggestions
@@ -792,6 +891,27 @@
                 const instance = selectEl === countrySelect ? countryChoices : selectEl === stateSelect ? stateChoices : cityChoices;
                 const found = instance._store.choices.find(c => c.label === label);
                 if (found) instance.setChoiceByValue(found.value);
+            }
+
+            // Ensure an option exists in the Choices select; add and select if missing
+            function ensureChoice(selectEl, value, label) {
+                const instance = selectEl === countrySelect ? countryChoices : selectEl === stateSelect ? stateChoices : cityChoices;
+                const valueStr = String(value);
+                let hasOption = false;
+                for (let i = 0; i < selectEl.options.length; i++) {
+                    if (String(selectEl.options[i].value) === valueStr) {
+                        hasOption = true;
+                        break;
+                    }
+                }
+                if (!hasOption) {
+                    const opt = document.createElement('option');
+                    opt.value = valueStr;
+                    opt.text = label || valueStr;
+                    selectEl.appendChild(opt);
+                    instance.setChoices([{ value: valueStr, label: label || valueStr }], 'value', 'label', false);
+                }
+                instance.setChoiceByValue(valueStr);
             }
 
             async function fetchJson(url) {
@@ -817,6 +937,7 @@
 
             // On country change -> load states
             countrySelect.addEventListener('change', async function() {
+                updateContinueState(true);
                 const countryId = this.value;
                 clearOptions(stateSelect, 'Select State');
                 clearOptions(citySelect, 'Select City');
@@ -825,10 +946,12 @@
                     const states = await fetchJson('/api/geo/states/' + encodeURIComponent(countryId));
                     populateSelect(stateSelect, states, 'Select State');
                 } catch (e) { /* ignore */ }
+                updateContinueState(false);
             });
 
             // On state change -> load cities
             stateSelect.addEventListener('change', async function() {
+                updateContinueState(true);
                 const stateId = this.value;
                 const countryId = countrySelect.value;
                 clearOptions(citySelect, 'Select City');
@@ -837,7 +960,20 @@
                     const cities = await fetchJson('/api/geo/cities/' + encodeURIComponent(countryId) + '/' + encodeURIComponent(stateId));
                     populateSelect(citySelect, cities, 'Select City');
                 } catch (e) { /* ignore */ }
+                updateContinueState(false);
             });
+
+            // Reactively validate inputs and selects
+            ['first_name','last_name','email','phone','address_1','post_code'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', () => updateContinueState(false));
+            });
+            [countrySelect, stateSelect, citySelect].forEach(el => {
+                if (el) el.addEventListener('change', () => updateContinueState(false));
+            });
+
+            // Initial evaluation
+            updateContinueState(false);
         });
     </script>
 

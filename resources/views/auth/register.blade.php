@@ -128,6 +128,9 @@
                         <div class="card-body p-4 p-md-5">
                             <form method="POST" action="{{ route('register') }}" novalidate>
                                 @csrf
+                                @if(request('redirect'))
+                                    <input type="hidden" name="redirect" value="{{ request('redirect') }}">
+                                @endif
                                 <div class="row g-3 mb-3">
                                     <div class="col-md-6">
                                         <label for="name" class="form-label">First Name <span class="text-danger">*</span></label>

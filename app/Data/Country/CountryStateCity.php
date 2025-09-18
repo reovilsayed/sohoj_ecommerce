@@ -89,4 +89,79 @@ class CountryStateCity
             return $cities->pluck('name', 'id');
         });
     }
+
+    /**
+     * Flexible country finder by id, name, or code (iso2/iso3/code)
+     */
+    public function findCountry($needle)
+    {
+        return Cache::remember("country_state_city:find_country:" . md5((string)$needle), 3600, function () use ($needle) {
+            // Direct ID match
+            if (is_numeric($needle)) {
+                $row = $this->data->firstWhere('id', (int) $needle);
+                if ($row) return $row;
+            }
+
+            $q = strtolower(trim((string) $needle));
+            return $this->data->first(function ($row) use ($q) {
+                $name = strtolower((string)($row['name'] ?? ''));
+                $iso2 = strtolower((string)($row['iso2'] ?? $row['code'] ?? ''));
+                $iso3 = strtolower((string)($row['iso3'] ?? ''));
+                return $q === $name || $q === $iso2 || $q === $iso3;
+            });
+        });
+    }
+
+    /**
+     * Search countries by name substring, returns [id => name]
+     */
+    public function searchCountries(string $query)
+    {
+        $q = strtolower(trim($query));
+        if ($q === '') return collect();
+        return $this->data
+            ->filter(function ($row) use ($q) {
+                return str_contains(strtolower((string)($row['name'] ?? '')), $q);
+            })
+            ->pluck('name', 'id');
+    }
+
+    /**
+     * Flexible state finder by country (id/name/code) and state (id/name/code)
+     */
+    public function findState($country, $state)
+    {
+        $countryRow = $this->findCountry($country);
+        if (!$countryRow) return null;
+        $states = new Collection($countryRow['states'] ?? []);
+
+        // Direct ID
+        if (is_numeric($state)) {
+            $st = $states->firstWhere('id', (int)$state);
+            if ($st) return $st;
+        }
+
+        $q = strtolower(trim((string)$state));
+        return $states->first(function ($row) use ($q) {
+            $name = strtolower((string)($row['name'] ?? ''));
+            $code = strtolower((string)($row['code'] ?? $row['iso2'] ?? ''));
+            return $q === $name || $q === $code;
+        });
+    }
+
+    /**
+     * Search states within a country by name substring, returns [id => name]
+     */
+    public function searchStates($country, string $query)
+    {
+        $countryRow = $this->findCountry($country);
+        if (!$countryRow) return collect();
+        $states = new Collection($countryRow['states'] ?? []);
+        $q = strtolower(trim($query));
+        if ($q === '') return collect();
+        return $states->filter(function ($row) use ($q) {
+                return str_contains(strtolower((string)($row['name'] ?? '')), $q);
+            })
+            ->pluck('name', 'id');
+    }
 }
