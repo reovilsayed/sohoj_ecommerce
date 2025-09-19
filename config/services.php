@@ -42,4 +42,9 @@ return [
         'production' => env('UPS_PRODUCTION', false),
     ],
 
+    'eash_ship' => [
+        'access_token'=>env('EASH_SHIP_ACCESS_TOKEN'),
+        'mode'=>env('EASH_SHIP_MODE', 'sandbox'),
+    ]
+
 ];
