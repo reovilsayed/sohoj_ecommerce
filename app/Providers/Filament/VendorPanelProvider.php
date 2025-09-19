@@ -29,6 +29,8 @@ use Illuminate\Session\Middleware\StartSession;
 use Filament\Navigation\NavigationGroup;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Http\Middleware\QueryLoggerMiddleware;
+use App\Http\Middleware\EnsureVendor;
+use App\Http\Middleware\EnsureTwoFactorVerified;
 
 class VendorPanelProvider extends PanelProvider
 {
@@ -41,7 +43,7 @@ class VendorPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->darkMode(false)
-            ->login()
+            // ->login() // disable Filament's login, use app login instead
             ->brandName('Vendor Dashboard')
             // ->databaseNotifications()
             ->renderHook(
@@ -87,10 +89,13 @@ class VendorPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
 
                 Verified::class,
+                EnsureTwoFactorVerified::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
                 CompleteProfile::class,
+                EnsureVendor::class,
+                \App\Http\Middleware\RedirectToAppLoginForPanels::class,
             ])
             ->widgets([
                 // TEMPORARILY DISABLED FOR DEBUGGING

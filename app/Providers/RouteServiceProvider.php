@@ -40,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
             Route::middleware('web', 'auth', 'role:vendor', 'verifiedShop', 'second')
                 ->group(base_path('routes/vendor.php'));
-            Route::middleware('web', 'auth')
+            Route::middleware('web', 'auth', 'ensure.user')
                 ->group(base_path('routes/user.php'));
         });
     }

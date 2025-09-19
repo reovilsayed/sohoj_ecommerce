@@ -24,6 +24,7 @@ use Filament\Navigation\NavigationGroup;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Http\Middleware\QueryLoggerMiddleware;
+use App\Http\Middleware\EnsureTwoFactorVerified;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -34,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            // ->login() // disable Filament's login, use app login instead
             ->brandName('Admin Panel')
             ->darkMode(false)
             // ->databaseNotifications()
@@ -103,10 +104,12 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                EnsureTwoFactorVerified::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
                 \App\Http\Middleware\RoleMiddleware::class . ':admin',
+                \App\Http\Middleware\RedirectToAppLoginForPanels::class,
             ])
 
             ->widgets([

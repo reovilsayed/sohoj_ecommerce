@@ -45,6 +45,7 @@ use Illuminate\Support\Facades\File;
 use Stripe\Price;
 use Stripe\Product;
 use Stripe\Stripe;
+use App\Http\Controllers\TwoFactorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,6 +131,13 @@ Route::get('/seller', [SellerPagesController::class, 'dashboard'])->middleware('
 
 
 Auth::routes();
+
+// Two-Factor Authentication routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/two-factor/challenge', [TwoFactorController::class, 'showChallenge'])->name('twofactor.challenge');
+    Route::post('/two-factor/verify', [TwoFactorController::class, 'verify'])->name('twofactor.verify');
+    Route::get('/two-factor/resend', [TwoFactorController::class, 'resend'])->name('twofactor.resend');
+});
 
 
 

@@ -7,6 +7,10 @@ use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\SecondStepVerifications;
 use App\Http\Middleware\Verified;
 use App\Http\Middleware\ClearNotificationsMiddleware;
+use App\Http\Middleware\EnsureVendor;
+use App\Http\Middleware\EnsureUser;
+use App\Http\Middleware\EnsureTwoFactorVerified;
+use App\Http\Middleware\RedirectToAppLoginForPanels;
 use Filament\Http\Middleware\AuthenticateSession;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Foundation\Application;
@@ -24,9 +28,10 @@ configure(basePath: dirname(__DIR__))
     )
     
     ->withMiddleware(function (Middleware $middleware) {
-        // Add notification clearing middleware to web group
+        // Add notification clearing + 2FA enforcement to web group
         $middleware->web(append: [
             ClearNotificationsMiddleware::class,
+            EnsureTwoFactorVerified::class,
         ]);
         
         $middleware->alias([
@@ -46,6 +51,9 @@ configure(basePath: dirname(__DIR__))
             'second' => SecondStepVerifications::class,
             'needPaymentMethod' => NeedPaymentMethod::class,
             'clear.notifications' => ClearNotificationsMiddleware::class,
+            'ensure.vendor' => EnsureVendor::class,
+            'ensure.user' => EnsureUser::class,
+            'panel.login.redirect' => RedirectToAppLoginForPanels::class,
 
         ])->validateCsrfTokens(except: [
             '/file/post'

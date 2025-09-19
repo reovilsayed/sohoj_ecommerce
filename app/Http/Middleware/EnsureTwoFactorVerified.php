@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class EnsureTwoFactorVerified
+{
+    /**
+     * Handle an incoming request.
+     */
+    public function handle(Request $request, Closure $next)
+    {
+        if (!Auth::check()) {
+            return $next($request);
+        }
+
+        $routeName = optional($request->route())->getName();
+        $path = $request->path();
+
+        // Allowlist: 2FA routes, logout, password reset, assets
+        $allowedNames = [
+            'twofactor.challenge',
+            'twofactor.verify',
+            'twofactor.resend',
+            'logout',
+            'password.request',
+            'password.email',
+            'password.reset',
+            'password.update',
+        ];
+        $isAllowed = in_array($routeName, $allowedNames, true)
+            || str_starts_with($path, 'assets/')
+            || str_starts_with($path, 'storage/')
+            || str_starts_with($path, 'build/')
+            || str_starts_with($path, 'favicon');
+
+        $user = Auth::user();
+        $hasPendingTwoFactor = !empty($user->two_factor_code) && !empty($user->two_factor_expires_at);
+
+        if ($hasPendingTwoFactor && !$isAllowed) {
+            if (!session()->has('intended_after_2fa')) {
+                session(['intended_after_2fa' => $request->fullUrl()]);
+            }
+            return redirect()->route('twofactor.challenge');
+        }
+
+        return $next($request);
+    }
+}
+
+
