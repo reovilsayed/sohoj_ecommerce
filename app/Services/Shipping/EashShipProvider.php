@@ -93,7 +93,6 @@ class EashShipProvider
     public function getRates()
     {
 
-        dd($this->accessToken);
         $payload = $this->getRatesPayload();
 
         $response = Http::withHeaders([
