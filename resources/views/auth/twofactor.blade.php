@@ -70,7 +70,9 @@
                     </div>
                     <button type="submit" class="btn-login">Verify</button>
                 </form>
-
+                <div class="forgot-password">
+                    <a href="{{ route('password.request') }}">Forgot Password?</a>
+                </div>
                 <div class="helper mt-3">
                     Didn't receive it? <a href="{{ route('twofactor.resend') }}">Resend code</a>
                 </div>
