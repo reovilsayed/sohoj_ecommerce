@@ -17,7 +17,7 @@ class EashShipProvider
 
     private function setAccessToken()
     {
-        $this->accessToken = (config('services.eash_ship.mode') == 'sandbox' ?  "sand_" : "prod_") . config('services.eash_ship.access_token');
+        $this->accessToken =  config('services.eash_ship.access_token');
     }
 
     public function getRatesPayload()
@@ -36,16 +36,17 @@ class EashShipProvider
                 "contact_email" => "info@afrikartt.com",
             ],
             "destination_address" => [
-                "city" => "London",
-                "company_name" => "Test Plc.",
-                "contact_email" => "asd@asd.com",
-                "contact_name" => "Foo Bar",
-                "contact_phone" => "+85230085678",
-                "country_alpha2" => "GB",
-                "line_1" => "30 Bond Street",
-                "line_2" => "Flat 3",
-                "postal_code" => "W1 5AA",
-                "state" => null
+                "city" => "Wasilla",
+                "company_name" => "",
+                "contact_email" => "thisiskazi@gmail.com",
+                "contact_name" => "Kazi Thabit",
+                "contact_phone" => "808-852-5935",
+                "country_alpha2" => "US",
+                "line_2" => "940 Goldendale Dr",
+                "line_1" => "940 Goldendale Dr, Wasilla, Alaska 99654, USA",
+                
+                "postal_code" => "99654",
+                "state" => "AK"
             ],
             "set_as_residential" => true,
             "incoterms" => "DDP",
@@ -63,7 +64,7 @@ class EashShipProvider
             "parcels" => [
                 [
                     "box" => null,
-                    "total_actual_weight" => 1,
+                    "total_actual_weight" => 5,
 
                     "items" => [
                         [
@@ -76,11 +77,11 @@ class EashShipProvider
                             "declared_currency" => "USD",
 
                             "declared_customs_value" => 1,
-                            "actual_weight" => 1,
+                            "actual_weight" => 5.0,
                             "dimensions" => [
-                                "length" => 1,
-                                "width" => 1,
-                                "height" => 1
+                                "length" => 25.00,
+                                "width" => 25.0,
+                                "height" => 25.0
                             ],
                         ]
 
@@ -104,23 +105,17 @@ class EashShipProvider
         return $response->json();
     }
 
-
-    public function validateAddress($companyName, $line1, $line2 = null, $city, $state, $postalCode, $countryAlpha2,)
+    public function getCategories()
     {
         $response = Http::withHeaders([
             'authorization' => 'Bearer ' . $this->accessToken,
             'accept' => 'application/json',
             'content-type' => 'application/json',
-        ])->post($this->endpoint . 'addresses/validations', [
-            "company_name" => $companyName,
-            "line_1" => $line1,
-            "line_2" => $line2,
-            "city" => $city,
-            "state" => $state,
-            "postal_code" => $postalCode,
-            "country_alpha2" => $countryAlpha2,
-        ]);
+        ])->get($this->endpoint . 'item_categories');
 
         return $response->json();
     }
+
+
+   
 }
