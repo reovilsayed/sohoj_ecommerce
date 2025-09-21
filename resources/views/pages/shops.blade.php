@@ -243,7 +243,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {{ $products->links('pagination::bootstrap-5') }}
+                            {{ $products->withQueryString()->links('pagination::bootstrap-5') }}
                         </div>
                     </section>
                 </div>

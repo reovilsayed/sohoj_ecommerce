@@ -57,11 +57,13 @@ class PageController extends Controller
     }
     public function shops()
     {
+    
         $products = ProductRepository::getAllProducts();
 
         $categories = CategoryRepository::getAllParentCategories();
 
         $latest_shops =  ShopRepsitory::getLatestShops();
+        
         return view('pages.shops', compact('products', 'categories', 'latest_shops'));
     }
     public function product_details($slug)
