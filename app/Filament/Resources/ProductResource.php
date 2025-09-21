@@ -8,6 +8,7 @@ use App\Models\Shop;
 use App\Models\Prodcat;
 use FiberError;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -91,24 +92,24 @@ class ProductResource extends Resource
                                                     ->relationship('parentproduct', 'name')
                                                     ->searchable()
                                                     ->nullable()
-                                                    ->getSearchResultsUsing(fn (string $search): array => Product::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
-                                                    ->getOptionLabelUsing(fn ($value): ?string => Product::find($value)?->name),
+                                                    ->getSearchResultsUsing(fn(string $search): array => Product::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
+                                                    ->getOptionLabelUsing(fn($value): ?string => Product::find($value)?->name),
 
                                                 Select::make('prodcats')
                                                     ->label('Categories')
                                                     ->relationship('prodcats', 'name')
                                                     ->multiple()
                                                     ->searchable()
-                                                    ->getSearchResultsUsing(fn (string $search): array => \App\Models\Prodcat::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
-                                                    ->getOptionLabelsUsing(fn (array $values): array => \App\Models\Prodcat::whereIn('id', $values)->pluck('name', 'id')->toArray()),
+                                                    ->getSearchResultsUsing(fn(string $search): array => \App\Models\Prodcat::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
+                                                    ->getOptionLabelsUsing(fn(array $values): array => \App\Models\Prodcat::whereIn('id', $values)->pluck('name', 'id')->toArray()),
 
                                                 Select::make('shop_id')
                                                     ->label('Shop')
                                                     ->relationship('shop', 'name')
                                                     ->required()
                                                     ->searchable()
-                                                    ->getSearchResultsUsing(fn (string $search): array => Shop::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
-                                                    ->getOptionLabelUsing(fn ($value): ?string => Shop::find($value)?->name),
+                                                    ->getSearchResultsUsing(fn(string $search): array => Shop::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
+                                                    ->getOptionLabelUsing(fn($value): ?string => Shop::find($value)?->name),
                                             ]),
                                         Grid::make(1)
                                             ->schema([
@@ -153,7 +154,7 @@ class ProductResource extends Resource
                                             ->maxValue(999999.99)
                                             ->nullable()
                                             ->rules([
-                                                fn (callable $get) => function (string $attribute, $value, callable $fail) use ($get) {
+                                                fn(callable $get) => function (string $attribute, $value, callable $fail) use ($get) {
                                                     $price = $get('price');
                                                     if ($value && $price && floatval($value) > floatval($price)) {
                                                         $fail('Sale price must be less than or equal to regular price.');
@@ -258,6 +259,48 @@ class ProductResource extends Resource
                                             ->disabled()
                                             ->dehydrated(false),
                                     ]),
+                                Section::make('Parcels')
+                                    ->schema([
+                                        Repeater::make('parcels.items')
+                                            ->schema([
+                                                Fieldset::make('Safety & Restrictions')
+                                                    ->schema([
+                                                        Toggle::make('contains_battery_pi966')->label('Contains Battery PI966'),
+                                                        Toggle::make('contains_battery_pi967')->label('Contains Battery PI967'),
+                                                        Toggle::make('contains_liquids')->label('Contains Liquids'),
+                                                    ])
+                                                    ->columns(3),
+
+                                                Fieldset::make('Basic Info')
+                                                    ->schema([
+                                                        TextInput::make('description')->label('Description'),
+                                                        TextInput::make('category')->label('Category'),
+                                                        TextInput::make('origin_country_alpha2')->label('Origin Country (ISO Alpha-2)'),
+                                                       
+                                                    ])
+                                                    ->columns(3),
+
+                                                Fieldset::make('Dimensions (cm)')
+                                                    ->schema([
+                                                        TextInput::make('length')->numeric()->label('Length'),
+                                                        TextInput::make('width')->numeric()->label('Width'),
+                                                        TextInput::make('height')->numeric()->label('Height'),
+                                                    ])
+                                                    ->columns(3),
+
+                                                Fieldset::make('Weight & Value')
+                                                    ->schema([
+                                                        TextInput::make('actual_weight')->numeric()->label('Weight (kg)')->columnSpanFull(),
+                                                        // TextInput::make('declared_customs_value')->numeric()->label('Customs Value'),
+                                                    ])
+                                                    ->columns(2),
+                                            ])
+                                            ->columns(1)
+                                            ->collapsible()
+                                            ->itemLabel(fn(array $state): ?string => $state['description'] ?? null)
+
+                                    ])
+
                             ]),
                     ])
                     ->columnSpanFull(),
@@ -412,7 +455,7 @@ class ProductResource extends Resource
     {
         // TEMPORARILY DISABLED FOR DEBUGGING
         return null;
-        
+
         try {
             $count = static::getModel()::count();
             return $count > 0 ? (string) $count : null;
