@@ -677,7 +677,7 @@
 
                                             <button type="submit" class="btn checkout-btn w-auto mt-3 shadow-sm"
                                                 style="font-size: 1.1rem;">
-                                                <i class="fas fa-shopping-cart me-2"></i> Place Order
+                                                <i class="fas fa-credit-card me-2"></i> Continue to Payment
                                             </button>
                                         </div>
 
