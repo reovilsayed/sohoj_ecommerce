@@ -320,7 +320,9 @@ Route::get('api/geo/resolve/state', function (Request $request) {
     return response()->json($row ?: []);
 });
 
-Route::get('eash-ship', function () {
+
+
+Route::get('test-eash-ship', function () {
     $eashShip = new EashShipProvider();
     $rates = $eashShip->getRates();
     return $rates;

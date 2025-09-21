@@ -16,15 +16,70 @@ class Product extends Model
     protected $casts = [
         'images' => 'array',
         'variations' => ProductVarient::class,
+        'parcels' => 'array',
+
     ];
 
     public $with = ['ratings'];
 
     public function getVariationBySku($sku)
     {
-     return Varient::bySku($this, $sku);
+        return Varient::bySku($this, $sku);
     }
-    
+
+
+    public function getParcelsAttribute($value)
+    {
+        // If value is already an array, use it directly
+        if (is_array($value)) {
+            $parcels = $value;
+        }
+        // If value is a JSON string, decode it
+        elseif (is_string($value) && !empty($value)) {
+            $parcels = json_decode($value, true);
+            // If json_decode fails or returns null, use empty array
+            if (json_last_error() !== JSON_ERROR_NONE || $parcels === null) {
+                $parcels = [];
+            }
+        }
+        // For any other case (null, empty string, etc.)
+        else {
+            $parcels = [];
+        }
+
+        return collect($parcels)->map(function ($parcel) {
+            // Ensure $parcel is an array
+            if (!is_array($parcel)) {
+                return [
+                    'length' => null,
+                    'width' => null,
+                    'height' => null,
+                    'actual_weight' => null,
+                    'contains_battery_pi966' => false,
+                    'contains_battery_pi967' => false,
+                    'contains_liquids' => false,
+                    'category_id' => null,
+                    'description' => '',
+                    'origin_country_alpha2' => '',
+                ];
+            }
+
+            return [
+                'length' => isset($parcel['length']) ? (int) $parcel['length'] : null,
+                'width' => isset($parcel['width']) ? (int) $parcel['width'] : null,
+                'height' => isset($parcel['height']) ? (int) $parcel['height'] : null,
+                'actual_weight' => isset($parcel['actual_weight']) ? (float) $parcel['actual_weight'] : null,
+                'contains_battery_pi966' => isset($parcel['contains_battery_pi966']) ? (bool) $parcel['contains_battery_pi966'] : false,
+                'contains_battery_pi967' => isset($parcel['contains_battery_pi967']) ? (bool) $parcel['contains_battery_pi967'] : false,
+                'contains_liquids' => isset($parcel['contains_liquids']) ? (bool) $parcel['contains_liquids'] : false,
+                'category_id' => $parcel['category_id'] ?? null,
+                'description' => $parcel['description'] ?? '',
+                'origin_country_alpha2' => $parcel['origin_country_alpha2'] ?? '',
+            ];
+        })->toArray();
+    }
+
+
     public function shop()
     {
         return $this->belongsTo(Shop::class);
@@ -173,5 +228,4 @@ class Product extends Model
     {
         return $this->sale_price ?? $this->price;
     }
-
 }

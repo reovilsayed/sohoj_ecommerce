@@ -407,6 +407,7 @@ class ProductResource extends Resource
                             ->schema([
                                 Section::make('Parcels')
                                     ->schema([
+                                        
                                         Repeater::make('parcels')
                                             ->schema([
                                                 Fieldset::make('Safety & Restrictions')
@@ -423,7 +424,7 @@ class ProductResource extends Resource
                                                         Select::make('category_id')
                                                             ->label('Category')
                                                             ->options(function () {
-                                                                $response = Http::get(url('/eash-ship'))->json();
+                                                                $response = Http::get(config('app.url') . '/api/eash-ship')->json();
 
                                                                 return collect($response['item_categories'] ?? [])
                                                                     ->pluck('name', 'id');
