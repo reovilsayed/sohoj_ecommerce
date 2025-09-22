@@ -34,7 +34,10 @@ use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Fieldset;
+
 use Filament\Support\Enums\FontWeight;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class ProductResource extends Resource
@@ -42,6 +45,7 @@ class ProductResource extends Resource
     protected static ?string $model = FilamentProduct::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+
 
     protected static ?string $navigationGroup = 'Inventory';
     protected static ?string $navigationLabel = 'Products';
@@ -122,7 +126,12 @@ class ProductResource extends Resource
                                                     ->columnSpan(1)
                                                     ->getSearchResultsUsing(fn(string $search): array => Shop::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
                                                     ->getOptionLabelUsing(fn($value): ?string => Shop::find($value)?->name),
-
+                                                TextInput::make('search_keywords')
+                                                    ->label('Search Keywords')
+                                                    ->maxLength(255)
+                                                    ->placeholder('Enter keywords separated by commas')
+                                                    ->helperText('Add keywords to improve product searchability. Separate multiple keywords with commas.')
+                                                    ->columnSpan(3)
                                             ]),
                                     ]),
                             ]),
@@ -230,8 +239,8 @@ class ProductResource extends Resource
                                                     ->maxValue(999999.99)
                                                     ->required()
                                                     ->helperText('Set the standard selling price for this product.')
-                                         
-                                 
+
+
                                                     ->columnSpan(1),
 
                                                 TextInput::make('sale_price')
@@ -241,7 +250,7 @@ class ProductResource extends Resource
                                                     ->maxValue(999999.99)
                                                     ->nullable()
                                                     ->reactive()
-                                                
+
                                                     ->rules([
                                                         fn(callable $get) => function (string $attribute, $value, callable $fail) use ($get) {
                                                             $price = floatval($get('price'));
@@ -257,9 +266,9 @@ class ProductResource extends Resource
                                                     ->label('Vendor Price')
                                                     ->numeric()
                                                     ->prefix('$')
-                                           
+
                                                     ->required()
-                                                   
+
                                                     ->columnSpan(1),
                                             ]),
                                         Forms\Components\Grid::make(2)
@@ -402,7 +411,60 @@ class ProductResource extends Resource
                                             ]),
                                     ]),
                             ]),
+                        Tabs\Tab::make('Shipping')
+                            ->icon('heroicon-o-truck')
+                            ->schema([
+                                Section::make('Parcels')
+                                    ->schema([
+                                        Repeater::make('parcels')
+                                            ->schema([
+                                                Fieldset::make('Safety & Restrictions')
+                                                    ->schema([
+                                                        Toggle::make('contains_battery_pi966')->label('Battery PI966'),
+                                                        Toggle::make('contains_battery_pi967')->label('Battery PI967'),
+                                                        Toggle::make('contains_liquids')->label('Liquids'),
+                                                    ])
+                                                    ->columns(3),
 
+                                                Fieldset::make('Basic Info')
+                                                    ->schema([
+                                                        TextInput::make('description')->label('Description')->required(),
+                                                        Select::make('category_id')
+                                                            ->label('Category')
+                                                            ->options(function () {
+                                                                $response = Http::get(config('app.url') . '/api/eash-ship')->json();
+
+                                                                return collect($response['item_categories'] ?? [])
+                                                                    ->pluck('name', 'id');
+                                                            })
+                                                            ->searchable()
+                                                            ->required(),
+
+                                                        TextInput::make('origin_country_alpha2')->label('Origin Country (ISO-2)')->maxLength(2),
+
+                                                    ])
+                                                    ->columns(3),
+
+                                                Fieldset::make('Dimensions (cm)')
+                                                    ->schema([
+                                                        TextInput::make('length')->numeric()->label('Length'),
+                                                        TextInput::make('width')->numeric()->label('Width'),
+                                                        TextInput::make('height')->numeric()->label('Height'),
+                                                    ])
+                                                    ->columns(3),
+
+                                                Fieldset::make('Weight & Value')
+                                                    ->schema([
+                                                        TextInput::make('actual_weight')->numeric()->label('Weight (kg)'),
+                                                        // TextInput::make('declared_customs_value')->numeric()->label('Customs Value'),
+                                                    ])
+                                                    ->columns(2),
+                                            ])
+                                            ->columns(1)
+                                            ->collapsible()
+                                            ->itemLabel(fn(array $state): ?string => $state['description'] ?? 'Parcel'),
+                                    ]),
+                            ]),
                         Tabs\Tab::make('Settings')
                             ->icon('heroicon-o-cog-6-tooth')
                             ->schema([
@@ -607,6 +669,9 @@ class ProductResource extends Resource
 
 
                             ]),
+
+
+
                     ])
                     ->columnSpanFull()
                     ->persistTabInQueryString(),
@@ -769,7 +834,15 @@ class ProductResource extends Resource
             return null;
         }
     }
+    public static function getLabel(): string
+    {
+        return 'Product';
+    }
 
+    public static function getPluralLabel(): string
+    {
+        return 'Products';
+    }
     public static function getNavigationBadgeColor(): string|array|null
     {
         try {

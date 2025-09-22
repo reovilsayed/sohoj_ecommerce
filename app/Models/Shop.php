@@ -81,8 +81,10 @@ class Shop extends Model
                     });
                 })->when(request()->has('search'), function ($q) {
                     return $q->where(function ($query) {
-                        $query->where('name', 'LIKE', '%' . request()->search . '%')
-                            ->orWhere('short_description', 'LIKE', '%' . request()->search . '%');
+                        $search = request()->search;
+                        $query->where('name', 'LIKE', '%' . $search . '%')
+                            ->orWhere('short_description', 'LIKE', '%' . $search . '%')
+                           ;
                     });
                 })
                     ->when(request()->has('search'), function ($q) {

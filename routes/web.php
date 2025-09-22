@@ -278,8 +278,8 @@ Route::get('json/countries', function () {
 Route::get('json/states/{country}', function ($country) {
     return (new CountryStateCity())->states($country);
 });
-Route::get('json/cities/{country}/{state}', function ($country,$state) {
-    return (new CountryStateCity())->cities($country,$state);
+Route::get('json/cities/{country}/{state}', function ($country, $state) {
+    return (new CountryStateCity())->cities($country, $state);
 });
 
 // Search endpoints for country/state by name or code
@@ -320,8 +320,10 @@ Route::get('api/geo/resolve/state', function (Request $request) {
     return response()->json($row ?: []);
 });
 
+
+
 Route::get('test-eash-ship', function () {
     $eashShip = new EashShipProvider();
     $rates = $eashShip->getRates();
-return $rates;
+    return $rates;
 });

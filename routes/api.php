@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\OrderApiController;
 use App\Http\Controllers\Api\ProductApiController;
 use App\Http\Controllers\Api\VendorApiController;
 use App\Http\Controllers\Api\CheckoutController as ApiCheckoutController;
+use App\Services\Shipping\EashShipProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,4 +45,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('order/delete', [OrderApiController::class, 'deleteOrder']);
     Route::get('order/{order}/shipping-rates', [OrderApiController::class, 'getShippingRates']);
     Route::post('order/{order}/confirm', [OrderApiController::class, 'confirmOrder']);
+});
+Route::get('eash-ship', function () {
+    $eashShip = new EashShipProvider();
+    $rates = $eashShip->getCategories();
+    return $rates;
 });

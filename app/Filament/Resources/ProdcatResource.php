@@ -155,7 +155,15 @@ class ProdcatResource extends Resource
             'edit' => Pages\EditProdcat::route('/{record}/edit'),
         ];
     }
+    public static function getLabel(): string
+    {
+        return 'Product Category';
+    }
 
+    public static function getPluralLabel(): string
+    {
+        return 'Product Categories';
+    }
     public static function getNavigationBadge(): ?string
     {
         // TEMPORARILY DISABLED FOR DEBUGGING

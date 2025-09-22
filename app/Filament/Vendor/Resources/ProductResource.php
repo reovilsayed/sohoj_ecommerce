@@ -19,6 +19,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
@@ -34,6 +37,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 
@@ -129,6 +133,12 @@ class ProductResource extends Resource
                                                     ->required()
                                                     ->helperText('Choose the type of product: Simple (single item), Variable (sizes/colors), Grouped (bundle), External (affiliate), or Digital (downloadable).')
                                                     ->columnSpan(1),
+                                                TextInput::make('search_keywords')
+                                                    ->label('Search Keywords')
+                                                    ->maxLength(255)
+                                                    ->placeholder('Enter keywords separated by commas')
+                                                    ->helperText('Add keywords to improve product searchability. Separate multiple keywords with commas.')
+                                                    ->columnSpan(3),
                                             ]),
 
                                         Forms\Components\Grid::make(2)
@@ -251,13 +261,13 @@ class ProductResource extends Resource
                                     ->schema([
                                         Forms\Components\Grid::make(3)
                                             ->schema([
-                                                 TextInput::make('vendor_price')
+                                                TextInput::make('vendor_price')
                                                     ->label('Vendor Price')
                                                     ->numeric()
                                                     ->prefix('$')
-                                              
+
                                                     ->required()
-                                                
+
                                                     ->columnSpanFull(1),
                                             ]),
                                         Forms\Components\Grid::make(2)
@@ -398,7 +408,61 @@ class ProductResource extends Resource
                                             ]),
                                     ]),
                             ]),
+                        Tabs\Tab::make('Shipping')
+                            ->icon('heroicon-o-truck')
+                            ->schema([
+                                Section::make('Parcels')
+                                    ->schema([
 
+                                        Repeater::make('parcels')
+                                            ->schema([
+                                                Fieldset::make('Safety & Restrictions')
+                                                    ->schema([
+                                                        Toggle::make('contains_battery_pi966')->label('Battery PI966'),
+                                                        Toggle::make('contains_battery_pi967')->label('Battery PI967'),
+                                                        Toggle::make('contains_liquids')->label('Liquids'),
+                                                    ])
+                                                    ->columns(3),
+
+                                                Fieldset::make('Basic Info')
+                                                    ->schema([
+                                                        TextInput::make('description')->label('Description')->required(),
+                                                        Select::make('category_id')
+                                                            ->label('Category')
+                                                            ->options(function () {
+                                                                $response = Http::get(config('app.url') . '/api/eash-ship')->json();
+
+                                                                return collect($response['item_categories'] ?? [])
+                                                                    ->pluck('name', 'id');
+                                                            })
+                                                            ->searchable()
+                                                            ->required(),
+
+                                                        TextInput::make('origin_country_alpha2')->label('Origin Country (ISO-2)')->maxLength(2),
+
+                                                    ])
+                                                    ->columns(3),
+
+                                                Fieldset::make('Dimensions (cm)')
+                                                    ->schema([
+                                                        TextInput::make('length')->numeric()->label('Length'),
+                                                        TextInput::make('width')->numeric()->label('Width'),
+                                                        TextInput::make('height')->numeric()->label('Height'),
+                                                    ])
+                                                    ->columns(3),
+
+                                                Fieldset::make('Weight & Value')
+                                                    ->schema([
+                                                        TextInput::make('actual_weight')->numeric()->label('Weight (kg)'),
+                                                        // TextInput::make('declared_customs_value')->numeric()->label('Customs Value'),
+                                                    ])
+                                                    ->columns(2),
+                                            ])
+                                            ->columns(1)
+                                            ->collapsible()
+                                            ->itemLabel(fn(array $state): ?string => $state['description'] ?? 'Parcel'),
+                                    ]),
+                            ]),
                         Tabs\Tab::make('Settings')
                             ->icon('heroicon-o-cog-6-tooth')
                             ->schema([
@@ -908,7 +972,15 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
+    public static function getLabel(): string
+    {
+        return 'Product';
+    }
 
+    public static function getPluralLabel(): string
+    {
+        return 'Products';
+    }
     public static function getNavigationBadge(): ?string
     {
         try {
