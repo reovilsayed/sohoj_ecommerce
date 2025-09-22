@@ -725,6 +725,31 @@
             const countrySelect = document.getElementById('country');
             const continueBtn = document.getElementById('continue-to-payment');
 
+            // Lightweight in-memory cache for API responses and de-duped inflight requests
+            const apiCache = new Map();
+            const inflight = new Map();
+
+            async function cachedFetchJson(url) {
+                if (apiCache.has(url)) return apiCache.get(url);
+                if (inflight.has(url)) return inflight.get(url);
+                const p = fetch(url, { headers: { 'Accept': 'application/json' } })
+                    .then(res => {
+                        if (!res.ok) throw new Error('Network error');
+                        return res.json();
+                    })
+                    .then(data => {
+                        apiCache.set(url, data);
+                        inflight.delete(url);
+                        return data;
+                    })
+                    .catch(err => {
+                        inflight.delete(url);
+                        throw err;
+                    });
+                inflight.set(url, p);
+                return p;
+            }
+
             // Initialize Choices.js for searchable selects
             const countryChoices = new Choices(countrySelect, { searchEnabled: true, shouldSort: true, itemSelectText: '' });
             const stateChoices   = new Choices(stateSelect,   { searchEnabled: true, shouldSort: true, itemSelectText: '' });
@@ -744,6 +769,22 @@
                     return true;
                 }
                 return false;
+            }
+
+            // Coalesce frequent enable/disable calls to a single frame
+            let updateScheduled = false;
+            function scheduleUpdateContinueState(pending = false) {
+                if (!continueBtn) return;
+                if (pending) {
+                    continueBtn.disabled = true;
+                    return;
+                }
+                if (updateScheduled) return;
+                updateScheduled = true;
+                requestAnimationFrame(() => {
+                    updateScheduled = false;
+                    updateContinueState(false);
+                });
             }
 
             function updateContinueState(pending = false) {
@@ -788,10 +829,10 @@
             }
 
             autocomplete.addListener('place_changed', async function() {
-                updateContinueState(true);
+                scheduleUpdateContinueState(true);
                 const place = autocomplete.getPlace();
                 if (!place || !place.address_components) {
-                    updateContinueState(false);
+                    scheduleUpdateContinueState(false);
                     return;
                 }
 
@@ -817,16 +858,15 @@
                 // Resolve to your dataset's IDs and names
                 try {
                     let resolvedCountry = null;
-                    if (countryShort) {
-                        const res = await fetch(`/api/geo/resolve/country?needle=${encodeURIComponent(countryShort)}`);
-                        if (res.ok) resolvedCountry = await res.json();
-                    }
-                    if (!resolvedCountry && place && place.address_components) {
-                        const countryLong = getComponent(place.address_components, 'country', 'long_name');
-                        if (countryLong) {
-                            const res2 = await fetch(`/api/geo/resolve/country?needle=${encodeURIComponent(countryLong)}`);
-                            if (res2.ok) resolvedCountry = await res2.json();
-                        }
+                    const countryLong = getComponent(place.address_components, 'country', 'long_name');
+                    const countryRequests = [];
+                    if (countryShort) countryRequests.push(cachedFetchJson(`/api/geo/resolve/country?needle=${encodeURIComponent(countryShort)}`));
+                    if (countryLong) countryRequests.push(cachedFetchJson(`/api/geo/resolve/country?needle=${encodeURIComponent(countryLong)}`));
+                    for (const req of countryRequests) {
+                        try {
+                            const r = await req;
+                            if (r && r.id) { resolvedCountry = r; break; }
+                        } catch (_) { /* ignore */ }
                     }
 
                     if (resolvedCountry && resolvedCountry.id) {
@@ -835,41 +875,42 @@
 
                         // Load the correct states list for this country, then set state
                         try {
-                            const statesMap = await fetchJson(`/json/states/${encodeURIComponent(resolvedCountry.id)}`);
+                            const statesMap = await cachedFetchJson(`/json/states/${encodeURIComponent(resolvedCountry.id)}`);
                             populateSelect(stateSelect, statesMap, 'Select State');
                         } catch (e) { /* ignore */ }
 
                         // Resolve state within this country using short or long code
-                        let resolvedState = null;
-                        const stateNeedle = adminAreaShort || adminAreaLong;
-                        if (stateNeedle) {
-                            const resSt = await fetch(`/api/geo/resolve/state?country=${encodeURIComponent(resolvedCountry.id)}&needle=${encodeURIComponent(stateNeedle)}`);
-                            if (resSt.ok) resolvedState = await resSt.json();
-                        }
-                        if (!resolvedState && adminAreaLong) {
-                            const resSt2 = await fetch(`/api/geo/resolve/state?country=${encodeURIComponent(resolvedCountry.id)}&needle=${encodeURIComponent(adminAreaLong)}`);
-                            if (resSt2.ok) resolvedState = await resSt2.json();
-                        }
-                        if (resolvedState && resolvedState.id) {
-                            ensureChoice(stateSelect, resolvedState.id, resolvedState.name || stateNeedle);
-                        } else if (stateNeedle) {
-                            // As a last resort, try searching states in this country to map to an ID
-                            try {
-                                const searchRes = await fetch(`/api/geo/search/state?country=${encodeURIComponent(resolvedCountry.id)}&q=${encodeURIComponent(stateNeedle)}`);
-                                if (searchRes.ok) {
-                                    const found = await searchRes.json();
+                        const stateNeedlePrimary = adminAreaShort || adminAreaLong;
+                        if (stateNeedlePrimary) {
+                            let resolvedState = null;
+                            const stateRequests = [
+                                cachedFetchJson(`/api/geo/resolve/state?country=${encodeURIComponent(resolvedCountry.id)}&needle=${encodeURIComponent(stateNeedlePrimary)}`)
+                            ];
+                            if (adminAreaLong && adminAreaLong !== stateNeedlePrimary) {
+                                stateRequests.push(cachedFetchJson(`/api/geo/resolve/state?country=${encodeURIComponent(resolvedCountry.id)}&needle=${encodeURIComponent(adminAreaLong)}`));
+                            }
+                            for (const req of stateRequests) {
+                                try {
+                                    const r = await req;
+                                    if (r && r.id) { resolvedState = r; break; }
+                                } catch (_) { /* ignore */ }
+                            }
+                            if (resolvedState && resolvedState.id) {
+                                ensureChoice(stateSelect, resolvedState.id, resolvedState.name || stateNeedlePrimary);
+                            } else {
+                                // Fallback search
+                                try {
+                                    const found = await cachedFetchJson(`/api/geo/search/state?country=${encodeURIComponent(resolvedCountry.id)}&q=${encodeURIComponent(stateNeedlePrimary)}`);
                                     const firstId = Object.keys(found)[0];
                                     const firstName = firstId ? found[firstId] : null;
                                     if (firstId) {
-                                        ensureChoice(stateSelect, firstId, firstName || stateNeedle);
+                                        ensureChoice(stateSelect, firstId, firstName || stateNeedlePrimary);
                                     } else {
-                                        ensureChoice(stateSelect, stateNeedle, stateNeedle);
+                                        ensureChoice(stateSelect, stateNeedlePrimary, stateNeedlePrimary);
                                     }
-                                } else {
-                                    ensureChoice(stateSelect, stateNeedle, stateNeedle);
+                                } catch (_) {
+                                    ensureChoice(stateSelect, stateNeedlePrimary, stateNeedlePrimary);
                                 }
-                            } catch (_) {
-                                ensureChoice(stateSelect, stateNeedle, stateNeedle);
                             }
                         }
                     } else {
@@ -894,10 +935,8 @@
                     latitudeInput.value = lat;
                     longitudeInput.value = lng;
                 }
-                // finalize state after async operations with multiple attempts to ensure proper state
-                setTimeout(() => updateContinueState(false), 50);
-                setTimeout(() => updateContinueState(false), 100);
-                setTimeout(() => updateContinueState(false), 200);
+                // finalize state after async operations
+                scheduleUpdateContinueState(false);
             });
 
             // Prevent form submission when selecting from suggestions
@@ -936,19 +975,15 @@
                     opt.value = valueStr;
                     opt.text = label || valueStr;
                     selectEl.appendChild(opt);
+                    // Append without resetting existing to avoid full re-render cost
                     instance.setChoices([{ value: valueStr, label: label || valueStr }], 'value', 'label', false);
                 }
                 instance.setChoiceByValue(valueStr);
-                
-                // Trigger continue button state update after setting the choice
-                setTimeout(() => updateContinueState(false), 10);
+                // Trigger coalesced continue button state update
+                scheduleUpdateContinueState(false);
             }
 
-            async function fetchJson(url) {
-                const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-                if (!res.ok) throw new Error('Network error');
-                return res.json();
-            }
+            async function fetchJson(url) { return cachedFetchJson(url); }
 
             function populateSelect(selectEl, data, placeholder) {
                 const instance = selectEl === countrySelect ? countryChoices : selectEl === stateSelect ? stateChoices : cityChoices;
@@ -967,7 +1002,7 @@
 
             // On country change -> load states
             countrySelect.addEventListener('change', async function() {
-                updateContinueState(true);
+                scheduleUpdateContinueState(true);
                 const countryId = this.value;
                 clearOptions(stateSelect, 'Select State');
                 clearOptions(citySelect, 'Select City');
@@ -976,12 +1011,12 @@
                     const states = await fetchJson('/api/geo/states/' + encodeURIComponent(countryId));
                     populateSelect(stateSelect, states, 'Select State');
                 } catch (e) { /* ignore */ }
-                updateContinueState(false);
+                scheduleUpdateContinueState(false);
             });
 
             // On state change -> load cities
             stateSelect.addEventListener('change', async function() {
-                updateContinueState(true);
+                scheduleUpdateContinueState(true);
                 const stateId = this.value;
                 const countryId = countrySelect.value;
                 clearOptions(citySelect, 'Select City');
@@ -990,7 +1025,7 @@
                     const cities = await fetchJson('/api/geo/cities/' + encodeURIComponent(countryId) + '/' + encodeURIComponent(stateId));
                     populateSelect(citySelect, cities, 'Select City');
                 } catch (e) { /* ignore */ }
-                updateContinueState(false);
+                scheduleUpdateContinueState(false);
             });
 
             // Reactively validate inputs and selects
