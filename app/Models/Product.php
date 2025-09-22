@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Casts\ProductVarient;
 use App\Casts\ProductVarient\Varient;
+use App\Models\Traits\ShippingInfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, ShippingInfo;
     protected $guarded = [];
 
     protected $casts = [
@@ -173,5 +174,8 @@ class Product extends Model
     {
         return $this->sale_price ?? $this->price;
     }
+
+
+
 
 }

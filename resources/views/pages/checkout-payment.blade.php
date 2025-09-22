@@ -391,6 +391,268 @@
             font-weight: 400;
             line-height: 1.3;
         }
+
+        /* Enhanced Shipping Options Styles */
+        .shipping-rates-container {
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .shipping-header {
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 1rem;
+        }
+
+        .shipping-header h5 {
+            color: var(--text-dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .shipping-options-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .shipping-option-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: white;
+            border: 2px solid var(--border-light);
+        }
+
+        .shipping-option-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .shipping-option-label {
+            display: block;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+        }
+
+        .shipping-radio-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .shipping-option-content {
+            display: flex;
+            align-items: center;
+            padding: 1.25rem;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .shipping-logo-section {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 60px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .shipping-logo {
+            width: 50px;
+            height: 35px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .shipping-radio-indicator {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 24px;
+            height: 24px;
+            border: 3px solid white;
+            border-radius: 50%;
+            background: var(--border-medium);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shipping-radio-indicator::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .shipping-info-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .shipping-company-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .shipping-company-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .shipping-network {
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .shipping-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .delivery-time {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .delivery-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .shipping-cost {
+            display: flex;
+            align-items: center;
+        }
+
+        .cost-amount {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            background: rgba(var(--accent-color-rgb), 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(var(--accent-color-rgb), 0.2);
+        }
+
+        .shipping-selection-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--success-color, #28a745);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        /* Selected state */
+        .shipping-option-card:has(.shipping-radio-input:checked) {
+            border-color: var(--accent-color);
+            background: linear-gradient(135deg, rgba(var(--accent-color-rgb), 0.05) 0%, rgba(var(--accent-color-rgb), 0.02) 100%);
+            box-shadow: 0 8px 25px rgba(var(--accent-color-rgb), 0.15);
+        }
+
+        .shipping-option-card:has(.shipping-radio-input:checked) .shipping-radio-indicator {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .shipping-option-card:has(.shipping-radio-input:checked) .shipping-radio-indicator::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .shipping-option-card:has(.shipping-radio-input:checked) .shipping-selection-indicator {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .shipping-option-card:has(.shipping-radio-input:checked) .shipping-company-name {
+            color: var(--accent-color);
+        }
+
+        /* Error state */
+        .shipping-error-state {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 2rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .shipping-rates-container {
+                padding: 1rem;
+            }
+
+            .shipping-option-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .shipping-logo-section {
+                width: 100%;
+                height: 80px;
+            }
+
+            .shipping-logo {
+                width: 60px;
+                height: 45px;
+            }
+
+            .shipping-details {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .cost-amount {
+                font-size: 1.1rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .shipping-option-card {
+                margin: 0 -0.5rem;
+                border-radius: 8px;
+            }
+
+            .shipping-option-content {
+                padding: 1rem;
+            }
+        }
     </style>
 @endsection
 
@@ -432,7 +694,6 @@
                                 $items = $order->products;
                             @endphp
                             @foreach ($items as $item)
-                            
                                 <div class="d-flex align-items-center mb-5">
                                     <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}"
                                         style="width:48px;height:48px;object-fit:cover;border-radius:6px;border:1px solid #eee;margin-right:12px;">
@@ -442,7 +703,7 @@
                                             @if ($item->pivot->variation)
                                                 <span>Variation: {{ json_decode($item->pivot->variation)->sku }}</span>
                                             @endif
-                                            
+
                                             <span class="ms-2">Qty: {{ $item->pivot->quantity }}</span>
                                         </div>
                                     </div>
@@ -465,7 +726,8 @@
                             </div>
                             <div class="border border-lg-1 p-1">
                                 <span>Shipping:</span>
-                                <span id="summaryShipping"><small class="text-danger">This step need to be completed</small></span>
+                                <span id="summaryShipping"><small class="text-danger">This step need to be
+                                        completed</small></span>
                             </div>
                         </div>
                         <div class="checkout-summary-total d-flex justify-content-between align-items-center">
@@ -479,127 +741,100 @@
                         <div class="card-body p-0">
                             <form action="{{ route('checkout.confirmOrder', $order->id) }}" method="POST"
                                 id="multiStepCheckoutForm">
- 
-                                @php
-                                     $services = [
-                                        '01' => 'Next Day Air',
-                                        '02' => '2nd Day Air',
-                                        '03' => 'Ground',
-                                        '07' => 'UPS Worldwide Express',
-                                        '08' => 'UPS Worldwide Expedited',
-                                        '12' => '3 Day Select',
-                                        '13' => 'Next Day Air Saver',
-                                        '14' => 'Next Day Air Early A.M.',
-                                        '15' => 'UPS Express',
-                                        '22' => 'UPS Standard',
-                                        '32' => 'UPS Express Plus',
-                                        '33' => 'UPS Express',
-                                        '41' => 'UPS Express Early',
-                                        '42' => 'UPS Express',
-                                        '44' => 'UPS Express Plus',
-                                        '54' => 'UPS Express 12:00',
-                                        '59' => '2nd Day Air A.M.',
-                                        '65' => 'UPS Saver',
-                                        '66' => 'UPS Worldwide Express Freight',
-                                        '70' => 'UPS Access Point Economy',
-                                        '71' => 'UPS Worldwide Express Freight Midday',
-                                        '74' => 'UPS Express 12:00',
-                                        '82' => 'UPS Today Standard',
-                                        '83' => 'UPS Today Dedicated Courier',
-                                        '84' => 'UPS Today Intercity',
-                                        '85' => 'UPS Today Express',
-                                        '86' => 'UPS Today Express Saver',
-                                        '96' => 'UPS Worldwide Express Freight',
-                                    ];
-                                @endphp
+
+
                                 @csrf
                                 <div class="tab-content p-4" id="checkoutStepsContent">
                                     <!-- Step 2: Shipping -->
                                     <div class="tab-pane fade show active" id="step2" role="tabpanel"
                                         aria-labelledby="step2-tab">
                                         <h4 class="fw-semibold mb-3">Select Shipping Rate</h4>
-                                        @php
-                                            $ratedShipments = data_get($rates, 'RateResponse.RatedShipment', []);
-                          
-                                            if (isset($ratedShipments['Service'])) {
-                                                $ratedShipments = [$ratedShipments];
-                                            }
-                                        @endphp
+
                                         <div class="mt-3">
-                                            @if (!empty($ratedShipments))
-                                                <div class="checkout-card p-3"
-                                                    style="background: var(--bg-light); border: 1px solid var(--border-light);">
-                                                    <input type="hidden" name="selected_shipping_service"
-                                                        id="selected_shipping_service">
-                                                    <input type="hidden" name="selected_shipping_amount"
-                                                        id="selected_shipping_amount">
-                                                    <div class="d-flex flex-column gap-2">
-                                                        @foreach ($ratedShipments as $idx => $shipment)
-                                                            @php
-                                                                $serviceCode = data_get($shipment, 'Service.Code');
-                                                                $serviceDesc =
-                                                                    data_get($shipment, 'Service.Description') ??
-                                                                    'UPS Service ' . $serviceCode;
-
-                                                                $currency =
-                                                                    data_get(
-                                                                        $shipment,
-                                                                        'NegotiatedRateCharges.TotalCharge.CurrencyCode',
-                                                                    ) ??
-                                                                    (data_get($shipment, 'TotalCharges.CurrencyCode') ??
-                                                                        'USD');
-                                                                $displayCurrency = $currency === 'USD' ? '$' : $currency;
-                                                                $amount =
-                                                                    data_get(
-                                                                        $shipment,
-                                                                        'NegotiatedRateCharges.TotalCharge.MonetaryValue',
-                                                                    ) ??
-                                                                    data_get($shipment, 'TotalCharges.MonetaryValue');
-
-                                                                    if($order->total > 100){
-                                                                       $amount = 0;
-                                                                    }
-                                                                $days = data_get(
-                                                                    $shipment,
-                                                                    'GuaranteedDelivery.BusinessDaysInTransit',
-                                                                );
-                                                                $byTime = data_get(
-                                                                    $shipment,
-                                                                    'GuaranteedDelivery.DeliveryByTime',
-                                                                );
-                                                            @endphp
-                                                            <label class="payment-card-option"
-                                                                style="align-items: flex-start;">
-                                                                <input type="radio" name="shipping_rate"
-                                                                    class="form-check-input" value="{{ $serviceCode }}"
-                                                                    @checked($idx === 0) required>
-                                                                <span class="custom-radio-indicator"></span>
-                                                                <span class="payment-card-content">
-                                                                    <span class="payment-text-wrap">
-                                                                        <span class="payment-title">{{ $services[$serviceCode] }}
-                                                                            ({{ $serviceCode }})</span>
-                                                                        <span class="payment-desc">
-                                                                            @if ($days)
-                                                                                Est. {{ $days }} business
-                                                                                day{{ $days > 1 ? 's' : '' }}
-                                                                            @elseif ($byTime)
-                                                                                By {{ $byTime }}
-                                                                            @else
-                                                                                Estimated delivery not available
-                                                                            @endif
-                                                                        </span>
-                                                                    </span>
-                                                                    <span class="ms-auto fw-bold">{{ $displayCurrency }}
-                                                                        {{ number_format((float) $amount, 2) }}</span>
-                                                                </span>
-                                                            </label>
+                                            @if (!empty($rates))
+                                                <div class="shipping-rates-container">
+                                                    <div class="shipping-header mb-3">
+                                                        <h5 class="mb-1">
+                                                            <i class="fas fa-truck me-2 text-primary"></i>
+                                                            Available Shipping Options
+                                                        </h5>
+                                                        <p class="text-muted small mb-0">Choose your preferred delivery method</p>
+                                                    </div>
+                                                    
+                                                    <input type="hidden" name="selected_shipping_service" id="selected_shipping_service">
+                                                    <input type="hidden" name="selected_shipping_amount" id="selected_shipping_amount">
+                                                    
+                                                    <div class="shipping-options-grid">
+                                                        @foreach ($rates['rates'] as $rate)
+                                                            <div class="shipping-option-card" data-rate="{{ $rate['courier_service']['id'] }}">
+                                                                <label class="shipping-option-label">
+                                                                    <input type="radio" name="shipping_rate"
+                                                                        class="shipping-radio-input"
+                                                                        value="{{ $rate['courier_service']['id'] }}"
+                                                                        @checked($loop->first) required>
+                                                                    <div class="shipping-option-content">
+                                                                        <div class="shipping-logo-section">
+                                                                            <img src="{{ $rate['courier_service']['logo'] }}"
+                                                                                alt="{{ $rate['courier_service']['name'] }}"
+                                                                                class="shipping-logo">
+                                                                            <div class="shipping-radio-indicator"></div>
+                                                                        </div>
+                                                                        
+                                                                        <div class="shipping-info-section">
+                                                                            <div class="shipping-company-info">
+                                                                                <h6 class="shipping-company-name mb-1">
+                                                                                    {{ $rate['courier_service']['name'] }}
+                                                                                </h6>
+                                                                                @if($rate['courier_service']['umbrella_name'] && $rate['courier_service']['umbrella_name'] !== $rate['courier_service']['name'])
+                                                                                    <span class="shipping-network text-muted small">
+                                                                                        via {{ $rate['courier_service']['umbrella_name'] }}
+                                                                                    </span>
+                                                                                @endif
+                                                                            </div>
+                                                                            
+                                                                            <div class="shipping-details">
+                                                                                <div class="delivery-time">
+                                                                                    <i class="fas fa-clock text-warning me-1"></i>
+                                                                                    @if ($rate['max_delivery_time'])
+                                                                                        <span class="delivery-text">
+                                                                                            {{ $rate['max_delivery_time'] }} business day{{ $rate['max_delivery_time'] > 1 ? 's' : '' }}
+                                                                                        </span>
+                                                                                    @else
+                                                                                        <span class="delivery-text text-muted">
+                                                                                            Delivery time not specified
+                                                                                        </span>
+                                                                                    @endif
+                                                                                </div>
+                                                                                
+                                                                                <div class="shipping-cost">
+                                                                                    <span class="cost-amount">
+                                                                                        {{ $rate['rates_in_origin_currency']['currency'] }}
+                                                                                        {{ number_format((float) $rate['rates_in_origin_currency']['total_charge'], 2) }}
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        <div class="shipping-selection-indicator">
+                                                                            <i class="fas fa-check-circle"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
                                                         @endforeach
                                                     </div>
-                                                    <small class="text-muted">Shipping carrier: UPS</small>
                                                 </div>
                                             @else
-                                                <div class="alert alert-warning">No shipping rates available. Please go back
-                                                    and verify your address.</div>
+                                                <div class="shipping-error-state">
+                                                    <div class="text-center py-4">
+                                                        <i class="fas fa-exclamation-triangle text-warning mb-3" style="font-size: 2.5rem;"></i>
+                                                        <h5 class="text-warning mb-2">No Shipping Options Available</h5>
+                                                        <p class="text-muted mb-3">We couldn't find shipping options for your address. Please verify your shipping information.</p>
+                                                        <button type="button" class="btn btn-outline-primary" onclick="history.back()">
+                                                            <i class="fas fa-arrow-left me-2"></i>Go Back & Update Address
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             @endif
                                         </div>
 
@@ -874,7 +1109,7 @@
             const summaryItems = document.getElementById('summaryItems');
             const summaryDiscount = document.getElementById('summaryDiscount');
 
-            function parseMoney(text){
+            function parseMoney(text) {
                 return Number((text || '').toString().replace(/[^0-9.]/g, '')) || 0;
             }
 
@@ -882,36 +1117,36 @@
             const discountAmount = parseMoney(summaryDiscount ? summaryDiscount.textContent : '0');
 
             function extractAmount(labelEl) {
-                const priceEl = labelEl.querySelector('.payment-card-content .fw-bold');
+                const priceEl = labelEl.querySelector('.cost-amount');
                 if (!priceEl) return '';
                 const text = priceEl.textContent.trim();
                 const match = text.match(/([0-9]+(?:\.[0-9]{1,2})?)/);
                 return match ? match[1] : '';
             }
 
-            function extractCurrency(labelEl){
-                const priceEl = labelEl.querySelector('.payment-card-content .fw-bold');
-                if(!priceEl) return '';
+            function extractCurrency(labelEl) {
+                const priceEl = labelEl.querySelector('.cost-amount');
+                if (!priceEl) return '';
                 const text = priceEl.textContent.trim();
                 // take non-digit prefix trimmed
                 let cur = text.replace(/\s*[0-9].*$/, '').trim();
-                if(cur === 'USD') cur = '$';
-                return cur || '';F
+                if (cur === 'USD') cur = '$';
+                return cur || '';
             }
 
             function updateHidden() {
                 const checked = document.querySelector('input[name="shipping_rate"]:checked');
                 if (!checked) return;
-                const label = checked.closest('label.payment-card-option');
+                const label = checked.closest('label.shipping-option-label');
                 if (serviceInput) serviceInput.value = checked.value;
                 if (amountInput) amountInput.value = extractAmount(label);
 
                 const currency = extractCurrency(label);
                 const shippingAmount = Number(amountInput.value || 0);
-                if(summaryShipping){
+                if (summaryShipping) {
                     summaryShipping.textContent = (currency ? (currency + ' ') : '') + shippingAmount.toFixed(2);
                 }
-                if(summaryTotal){
+                if (summaryTotal) {
                     const newTotal = itemsAmount - discountAmount + shippingAmount;
                     summaryTotal.textContent = (currency ? (currency + ' ') : '') + newTotal.toFixed(2);
                 }

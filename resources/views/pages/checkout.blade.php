@@ -736,7 +736,14 @@
             }
 
             function isSelectFilled(el) {
-                return el && el.value && String(el.value).trim() !== '';
+                if (!el) return false;
+                // Check both the native select value and Choices.js instance
+                if (el.value && String(el.value).trim() !== '') return true;
+                // Check if it's a Choices.js select and has a selected value
+                if (el.choices && el.choices._store && el.choices._store.activeItems && el.choices._store.activeItems.length > 0) {
+                    return true;
+                }
+                return false;
             }
 
             function updateContinueState(pending = false) {
@@ -750,7 +757,25 @@
                     && isSelectFilled(stateSelect)
                     && isSelectFilled(citySelect)
                     && isFilled(document.getElementById('post_code'));
+                
                 continueBtn.disabled = pending || !requiredOk;
+                
+                // Debug logging to help troubleshoot
+                if (window.location.search.includes('debug=1')) {
+                    console.log('Continue button state:', {
+                        first_name: isFilled(document.getElementById('first_name')),
+                        last_name: isFilled(document.getElementById('last_name')),
+                        email: isFilled(document.getElementById('email')),
+                        phone: isFilled(document.getElementById('phone')),
+                        address_1: isFilled(document.getElementById('address_1')),
+                        country: isSelectFilled(countrySelect),
+                        state: isSelectFilled(stateSelect),
+                        city: isSelectFilled(citySelect),
+                        post_code: isFilled(document.getElementById('post_code')),
+                        requiredOk: requiredOk,
+                        disabled: continueBtn.disabled
+                    });
+                }
             }
 
             const autocomplete = new google.maps.places.Autocomplete(addressInput, {
@@ -869,8 +894,10 @@
                     latitudeInput.value = lat;
                     longitudeInput.value = lng;
                 }
-                // finalize state after async operations
+                // finalize state after async operations with multiple attempts to ensure proper state
                 setTimeout(() => updateContinueState(false), 50);
+                setTimeout(() => updateContinueState(false), 100);
+                setTimeout(() => updateContinueState(false), 200);
             });
 
             // Prevent form submission when selecting from suggestions
@@ -912,6 +939,9 @@
                     instance.setChoices([{ value: valueStr, label: label || valueStr }], 'value', 'label', false);
                 }
                 instance.setChoiceByValue(valueStr);
+                
+                // Trigger continue button state update after setting the choice
+                setTimeout(() => updateContinueState(false), 10);
             }
 
             async function fetchJson(url) {
@@ -968,8 +998,16 @@
                 const el = document.getElementById(id);
                 if (el) el.addEventListener('input', () => updateContinueState(false));
             });
+            
+            // Add event listeners for Choices.js select elements
             [countrySelect, stateSelect, citySelect].forEach(el => {
-                if (el) el.addEventListener('change', () => updateContinueState(false));
+                if (el) {
+                    el.addEventListener('change', () => updateContinueState(false));
+                    // Also listen for Choices.js specific events
+                    if (el.choices) {
+                        el.choices.passedElement.element.addEventListener('change', () => updateContinueState(false));
+                    }
+                }
             });
 
             // Initial evaluation

@@ -34,31 +34,30 @@ class PaymentService
 
     public function createStripeCheckoutLink()
     {
+
         Stripe::setApiKey(Settings::setting('stripe_secret'));
 
         $lineItems = [];
         $totalAmount = 0;
 
-            foreach ($this->order->childs as $shopOrder) {
-                // if (empty($shopOrder->p) || empty($shopOrder->quantity)) {
-                //     continue;
-                // }
-                
-                $lineItems[] = $shopOrder->products->map(function($product){
-                    return [
-                        'price_data' => [
-                            'currency' => 'usd',
-                            'product_data' => [
-                                'name' => $product->name,
-                            ],
-                            'unit_amount' => intval(($product->pivot->price) * 100), // Stripe expects amount in cents
-                        ],
-                        'quantity' => $product->pivot->quantity,
-                    ];
-                })->toArray();
-            }
-            $totalAmount = $this->order->total;
-       
+        foreach ($this->order->products as $product) {
+            // if (empty($shopOrder->p) || empty($shopOrder->quantity)) {
+            //     continue;
+            // }
+
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => $product->name,   
+                    ],
+                    'unit_amount' => intval(($product->pivot->price) * 100), // Stripe expects amount in cents
+                ],
+                'quantity' => $product->pivot->quantity,
+            ];
+        }
+        $totalAmount = $this->order->total;
+
 
         if (empty($lineItems)) {
             throw new \Exception('No products found for this order. Cannot create Stripe Checkout Session.');
@@ -82,8 +81,8 @@ class PaymentService
                 'quantity' => 1,
             ];
         }
-        
-        if($this->order->shipping_total){
+
+        if ($this->order->shipping_total) {
             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'usd',
@@ -118,7 +117,7 @@ class PaymentService
             //     'enabled' => true,
             // ],
         ]);
-        
+
         return $session->url;
     }
 
