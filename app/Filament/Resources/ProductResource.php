@@ -46,6 +46,7 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
+
     protected static ?string $navigationGroup = 'Inventory';
     protected static ?string $navigationLabel = 'Products';
     protected static ?int $navigationSort = 1;
@@ -125,7 +126,12 @@ class ProductResource extends Resource
                                                     ->columnSpan(1)
                                                     ->getSearchResultsUsing(fn(string $search): array => Shop::where('name', 'like', "%{$search}%")->limit(50)->pluck('name', 'id')->toArray())
                                                     ->getOptionLabelUsing(fn($value): ?string => Shop::find($value)?->name),
-
+                                                TextInput::make('search_keywords')
+                                                    ->label('Search Keywords')
+                                                    ->maxLength(255)
+                                                    ->placeholder('Enter keywords separated by commas')
+                                                    ->helperText('Add keywords to improve product searchability. Separate multiple keywords with commas.')
+                                                    ->columnSpan(3)
                                             ]),
                                     ]),
                             ]),
@@ -828,7 +834,15 @@ class ProductResource extends Resource
             return null;
         }
     }
+    public static function getLabel(): string
+    {
+        return 'Product';
+    }
 
+    public static function getPluralLabel(): string
+    {
+        return 'Products';
+    }
     public static function getNavigationBadgeColor(): string|array|null
     {
         try {

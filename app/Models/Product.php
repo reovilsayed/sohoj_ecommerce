@@ -121,6 +121,7 @@ class Product extends Model
     }
     public function scopeFilter($query)
     {
+
         //new
         return $query
             ->when(request()->filled('category'), function ($q) {
@@ -130,8 +131,12 @@ class Product extends Model
             })
             ->when(request()->has('search'), function ($q) {
                 return $q->where(function ($query) {
+                    $search = request()->search;
+
                     $query->where('name', 'LIKE', '%' . request()->search . '%')
-                        ->orWhere('short_description', 'LIKE', '%' . request()->search . '%');
+                        ->orWhere('short_description', 'LIKE', '%' . request()->search . '%')
+                        ->orWhere('search_keywords', 'LIKE', "%{$search}%")
+                    ;
                 });
             })
             ->when(request()->has('featured'), function ($q) {

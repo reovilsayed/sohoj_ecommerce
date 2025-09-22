@@ -57,7 +57,7 @@ class PageController extends Controller
     }
     public function shops()
     {
-    
+
         $products = ProductRepository::getAllProducts();
 
         $categories = CategoryRepository::getAllParentCategories();

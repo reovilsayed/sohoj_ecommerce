@@ -16,22 +16,140 @@
             --shadow-lg: var(--shadow-dark);
             --transition: all 0.3s ease;
         }
-        .login-wrapper { display: flex; min-height: 100vh; background-color: var(--bg-light); }
-        .login-content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-        .login-card { width: 100%; max-width: 400px; background: var(--bg-secondary); border-radius: 12px; box-shadow: var(--shadow-medium); padding: 2.5rem; }
-        .brand-logo { font-size: 1.75rem; font-weight: 700; color: var(--accent-color); margin-bottom: 2rem; text-align: center; display: block; }
-        .login-header { text-align: center; margin-bottom: 2rem; }
-        .login-header h1 { font-size: 1.5rem; font-weight: 600; color: var(--accent-color); margin-bottom: 0.5rem; }
-        .login-header p { color: var(--text-secondary); font-size: 1rem; }
-        .form-group { margin-bottom: 1.25rem; }
-        .form-label { display: block; margin-bottom: 0.5rem; color: var(--accent-color); font-size: 0.875rem; font-weight: 500; }
-        .form-control { width: 100%; height: 3rem; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: 8px; font-size: 0.875rem; transition: all 0.2s; }
-        .form-control:focus { border-color: var(--accent-color); box-shadow: 0 0 0 3px var(--shadow-primary); outline: none; }
-        .btn-login { width: 100%; height: 3rem; background: var(--accent-color); color: var(--text-light); border: none; border-radius: 8px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
-        .btn-login:hover { background: var(--primary-dark); }
-        @media (min-width: 768px) { .login-image { display: block; } .login-card { padding: 3rem; } }
-        @media (min-width: 853px) and (max-width: 1280px) { .login-wrapper { min-height: 61vh; } .login-image { display: none !important; } }
-        .helper { text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; }
+
+        .login-wrapper {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--bg-light);
+        }
+
+        .login-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            box-shadow: var(--shadow-medium);
+            padding: 2.5rem;
+        }
+
+        .brand-logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            text-align: center;
+            display: block;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 3rem;
+            padding: 0.75rem;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px var(--shadow-primary);
+            outline: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            height: 3rem;
+            background: var(--accent-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-login:hover {
+            background: var(--primary-dark);
+        }
+
+        @media (min-width: 768px) {
+            .login-image {
+                display: block;
+            }
+
+            .login-card {
+                padding: 3rem;
+            }
+        }
+
+        @media (min-width: 853px) and (max-width: 1280px) {
+            .login-wrapper {
+                min-height: 61vh;
+            }
+
+            .login-image {
+                display: none !important;
+            }
+        }
+
+        /* New styles for the links row */
+        .links-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .links-container a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .links-container a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
     </style>
 @endsection
 
@@ -66,15 +184,16 @@
                     @csrf
                     <div class="form-group">
                         <label for="code" class="form-label">Verification Code</label>
-                        <input id="code" type="text" class="form-control" name="code" required autofocus autocomplete="one-time-code" maxlength="6" placeholder="123456">
+                        <input id="code" type="text" class="form-control" name="code" required autofocus
+                            autocomplete="one-time-code" maxlength="6" placeholder="123456">
                     </div>
                     <button type="submit" class="btn-login">Verify</button>
                 </form>
-                <div class="forgot-password">
+
+                <!-- Updated links container with both links in one row -->
+                <div class="links-container">
                     <a href="{{ route('password.request') }}">Forgot Password?</a>
-                </div>
-                <div class="helper mt-3">
-                    Didn't receive it? <a href="{{ route('twofactor.resend') }}">Resend code</a>
+                    <a href="{{ route('twofactor.resend') }}">Resend code</a>
                 </div>
             </div>
         </div>
@@ -84,5 +203,3 @@
 @section('js')
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 @endsection
-
-

@@ -1,4 +1,4 @@
-@import url('colors.css');
+@import url("colors.css");
 
 .submit:hover {
     color: var(--text-primary) !important;
@@ -92,8 +92,6 @@
     border-top-right-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
 }
-
-
 
 select {
     color: var(--text-primary) !important;
@@ -275,11 +273,11 @@ select {
 .ec-footer .footer-top .ec-footer-widget .ec-footer-heading {
     color: var(--text-dark) !important;
 }
-.ec-footer .footer-top .ec-footer-widget .ec-footer-links .ec-footer-link a{
+.ec-footer .footer-top .ec-footer-widget .ec-footer-links .ec-footer-link a {
     color: var(--text-secondary) !important;
 }
-  /* Modern Shops Page Design */
-  .modern-shops-container {
+/* Modern Shops Page Design */
+.modern-shops-container {
     background: var(--bg-light);
     min-height: 100vh;
     padding: 2rem 0;
@@ -304,7 +302,7 @@ select {
 }
 
 .filter-title {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--text-dark);
     margin: 0;
@@ -317,7 +315,7 @@ select {
     padding: 0.5rem 1rem;
     border-radius: 25px;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     transition: all 0.3s ease;
     text-decoration: none;
     opacity: 1;
@@ -471,18 +469,18 @@ select {
     vertical-align: middle;
 }
 
-.rating-option input[type="checkbox"]:checked~.rating-checkmark {
+.rating-option input[type="checkbox"]:checked ~ .rating-checkmark {
     background: var(--primary-color);
     border-color: var(--primary-color);
 }
 
 .rating-checkmark:after {
-    content: '';
+    content: "";
     position: absolute;
     display: none;
 }
 
-.rating-option input[type="checkbox"]:checked~.rating-checkmark:after {
+.rating-option input[type="checkbox"]:checked ~ .rating-checkmark:after {
     display: block;
 }
 
@@ -495,11 +493,11 @@ select {
     border-width: 0 3px 3px 0;
     border-radius: 1px;
     transform: rotate(45deg);
-    content: '';
+    content: "";
 }
 
 .rating-option:hover,
-.rating-option input[type="checkbox"]:focus~.rating-checkmark {
+.rating-option input[type="checkbox"]:focus ~ .rating-checkmark {
     background: var(--bg-light);
     box-shadow: 0 2px 8px var(--shadow-primary);
 }
@@ -687,7 +685,7 @@ select {
 }
 
 .checkout-hero::after {
-    content: '';
+    content: "";
     position: absolute;
     right: -60px;
     top: -40px;

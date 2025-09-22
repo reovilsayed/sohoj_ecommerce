@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->json('parcels')->nullable()->after('shipping_cost');
+            $table->string('search_keywords')->nullable()->after('parcels');
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('parcels');
+            $table->dropColumn('search_keywords');
         });
     }
 };

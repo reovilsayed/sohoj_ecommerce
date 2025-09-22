@@ -133,6 +133,12 @@ class ProductResource extends Resource
                                                     ->required()
                                                     ->helperText('Choose the type of product: Simple (single item), Variable (sizes/colors), Grouped (bundle), External (affiliate), or Digital (downloadable).')
                                                     ->columnSpan(1),
+                                                TextInput::make('search_keywords')
+                                                    ->label('Search Keywords')
+                                                    ->maxLength(255)
+                                                    ->placeholder('Enter keywords separated by commas')
+                                                    ->helperText('Add keywords to improve product searchability. Separate multiple keywords with commas.')
+                                                    ->columnSpan(3),
                                             ]),
 
                                         Forms\Components\Grid::make(2)
@@ -407,7 +413,7 @@ class ProductResource extends Resource
                             ->schema([
                                 Section::make('Parcels')
                                     ->schema([
-                                        
+
                                         Repeater::make('parcels')
                                             ->schema([
                                                 Fieldset::make('Safety & Restrictions')
@@ -966,7 +972,15 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
+    public static function getLabel(): string
+    {
+        return 'Product';
+    }
 
+    public static function getPluralLabel(): string
+    {
+        return 'Products';
+    }
     public static function getNavigationBadge(): ?string
     {
         try {
