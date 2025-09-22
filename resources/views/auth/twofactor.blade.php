@@ -165,7 +165,7 @@
                 <div class="login-header">
                     <h1>Verify your login</h1>
                     <p>Enter the 6-digit code we sent to your email</p>
-                    <p style="margin-top: .25rem; color: var(--text-secondary); font-size: .9rem;">
+                    <p class="text-danger" style="margin-top: .25rem; color: var(--text-secondary); font-size: .9rem;">
                         It may take up to a minute to receive the code. The code is valid for 10 minutes.
                     </p>
                 </div>
