@@ -864,7 +864,7 @@
                     </div>
                     <div class="tab-content  ec-single-pro-tab-content">
                         <div id="ec-spt-nav-details" class="tab-pane fade show active">
-                            <div class="ec-single-pro-tab-desc">
+  <div class="ec-single-pro-tab-desc" style="word-break: normal; overflow-wrap: normal; white-space: normal; hyphens: none;">
                                 <p>{!! $product->description !!}</p>
                             </div>
                         </div>
@@ -906,8 +906,6 @@
                                             </div>
                                         </div>
                                     @endforeach
-
-
                                 </div>
                                 @php
                                     $user = Auth()->id();
