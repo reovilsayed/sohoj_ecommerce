@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Casts\ProductVarient;
 use App\Casts\ProductVarient\Varient;
+use App\Models\Traits\ShippingInfo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, ShippingInfo;
     protected $guarded = [];
 
     protected $casts = [
@@ -107,18 +108,22 @@ class Product extends Model
     {
         return route('product', $this->slug);
     }
+    
     public function attributes()
     {
         return $this->hasMany(Attribute::class);
     }
+
     public function subproducts()
     {
         return $this->hasMany(Product::class, 'parent_id', 'id');
     }
+
     public function subproductsuser()
     {
         return $this->hasMany(Product::class, 'parent_id', 'id')->where('price', '>', 0)->whereNotNull('variations');
     }
+
     public function scopeFilter($query)
     {
 
@@ -226,8 +231,6 @@ class Product extends Model
         }
         return false;
     }
-
-
 
     public function getPrice()
     {

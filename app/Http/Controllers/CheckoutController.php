@@ -17,6 +17,7 @@ use App\Models\Product;
 use App\Services\Checkout\CheckoutService;
 use App\Services\Checkout\Data\ShippingAndBillingInformation;
 use App\Services\PaymentService;
+use App\Services\Shipping\EashShipProvider;
 use App\Services\UPSService;
 use App\Setting\Settings;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -36,17 +37,13 @@ class CheckoutController extends Controller
     }
     public function storeBillingAndShippingInformation(Request $request)
     {
-
-        // dd($request->all());
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email',
             'address_1' => 'required',
-
             'city' => 'required',
             'state' => 'required',
-
             'post_code' => 'required',
             'phone' => 'required',
             'country' => 'required',
@@ -58,7 +55,14 @@ class CheckoutController extends Controller
 
             $geo = new CountryStateCity();
             $country = $geo->countryDetails($request->country);
-            $state   = $geo->stateDetails($request->country, $request->state);
+
+            if (is_numeric($request->state)) {
+                $state   = $geo->stateDetails($request->country, $request->state);
+            } else {
+                $state = [
+                    'name' => $request->state,
+                ];
+            }
             if (is_numeric($request->city)) {
                 $city    = $geo->cityDetails($request->country, $request->state, $request->city);
             } else {
@@ -66,7 +70,6 @@ class CheckoutController extends Controller
                     'name' => $request->city,
                 ];
             }
-
             if (!$country) {
                 DB::rollBack();
                 return back()->withErrors(['country' => 'Selected country is invalid or unavailable.'])->withInput();
@@ -101,32 +104,15 @@ class CheckoutController extends Controller
             $checkoutService = new CheckoutService($shippingAndBillingInformation);
             $order = $checkoutService->createOrder();
 
+            $eashShip = new EashShipProvider();
 
 
             // Post-commit actions
             $shipping = json_decode($order->shipping, true);
-            $rates = (new UPSService())->getRates(toAddress: [
-                'name' => $shipping['firstName'] . ' ' . $shipping['lastName'],
-                'address_line' => $shipping['address_line'],
-                'city' => $shipping['city'],
-                'state' => $shipping['state_code'],
-                'postal_code' => $shipping['post_code'],
-                'country_code' => $shipping['country_code']
-            ], fromAddress: [
-                'name' => 'Afrikartt',
-                'address_line' => '2251 SW Binford Lake Parkway',
-                'city' => 'Gresham',
-                'state' => 'OR',
-                'postal_code' => '97080',
-                'country_code' => 'US',
-            ], packageDetails: $order->products->map(function ($product) {
-                return [
-                    'length' => $product->length ?? 10,
-                    'width' => $product->width ?? 8,
-                    'height' => $product->height ?? 4,
-                    'weight' => $product->weight ?? 2,
-                ];
-            })->toArray());
+            $rates = $eashShip->getRates($shipping, $order->products);
+            if (isset($rates['rates']) == false) {
+                throw new \Exception('Shipping method not available for the selected country and state');
+            }
             DB::commit();
             Cart::destroy();
             session()->forget('discount');
@@ -143,31 +129,13 @@ class CheckoutController extends Controller
     public function paymentPage(Order $order)
     {
 
-        $shipping = json_decode($order->shipping, true);
-        $packages =  $order->products->map(function ($product) {
-            return [
-                'length' => $product->length ?? 10,
-                'width' => $product->width ?? 8,
-                'height' => $product->height ?? 4,
-                'weight' => $product->weight ?? 2,
-            ];
-        })->toArray();
 
-        $rates = (new UPSService())->getRates(toAddress: [
-            'name' => $shipping['firstName'] . ' ' . $shipping['lastName'],
-            'address_line' => $shipping['address_line'],
-            'city' => $shipping['city'],
-            'state' => $shipping['state_code'],
-            'postal_code' => $shipping['post_code'],
-            'country_code' => $shipping['country_code']
-        ], fromAddress: [
-            'name' => 'Afrikartt',
-            'address_line' => '2251 SW Binford Lake Parkway',
-            'city' => 'Gresham',
-            'state' => 'OR',
-            'postal_code' => '97080',
-            'country_code' => 'US',
-        ], packageDetails: $packages);
+        $shipping = json_decode($order->shipping, true);
+
+        $packages =  $order->products;
+
+        $eashShip = new EashShipProvider();
+        $rates = $eashShip->getRates($shipping, $packages);
 
 
         return view('pages.checkout-payment', ['order' => $order, 'rates' => $rates]);
