@@ -107,9 +107,10 @@
                 <span class="current-price" aria-label="Current price">{{ Sohoj::price($currentPrice) }}</span>
             </div>
             @else
-            <h4>
-                Price Currently
-            </h4>
+            
+            <p class="text-danger">
+                Price Currently Not Available
+            </p>
 
             @endif
 

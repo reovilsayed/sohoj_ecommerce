@@ -972,6 +972,15 @@
         <!-- End Single product -->
 
         <!-- Guest Buy Modal -->
+        <!-- Store main product data to avoid Blade variable shadowing in later loops -->
+        <div id="main-product-data" hidden
+            data-image="{{ Storage::url($product->image) }}"
+            data-name="{{ $product->name }}"
+            data-sku="{{ $product->sku }}"
+            data-price="{{ Sohoj::price($product->sale_price ?? $product->price) }}"
+            data-compare-price="{{ $product->sale_price ? Sohoj::price($product->price) : '' }}"
+            data-stock="{{ $product->quantity }}"
+        ></div>
         <div class="modal fade" id="guestBuyModal" tabindex="-1" aria-labelledby="guestBuyModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -985,20 +994,18 @@
                     </div>
                     <div class="modal-body">
                         <div class="guest-buy-preview d-flex align-items-center gap-3">
-                            <img id="guest-buy-product-image" src="{{ Storage::url($product->image) }}"
-                                alt="{{ $product->name }}"
+                            <img id="guest-buy-product-image" src="" alt=""
                                 style="width:70px;height:70px;object-fit:cover;border-radius:6px;">
                             <div class="flex-grow-1">
-                                <div class="guest-buy-name" id="guest-buy-product-name">{{ $product->name }}</div>
+                                <div class="guest-buy-name" id="guest-buy-product-name"></div>
                                 <div class="guest-buy-variant" id="guest-buy-variant-text" style="display:none;"></div>
                                 <div class="guest-buy-sku" id="guest-buy-sku-text"
                                     style="font-size:0.8rem;color:#6c757d;margin-top:2px;">
-                                    SKU: {{ $product->sku }}
+                                    
                                 </div>
                             </div>
                             <div class="text-end">
-                                <div class="guest-buy-price" id="guest-buy-price-text">
-                                    {{ Sohoj::price($product->sale_price ?? $product->price) }}</div>
+                                <div class="guest-buy-price" id="guest-buy-price-text"></div>
                                 <div class="guest-buy-compare-price" id="guest-buy-compare-price-text"
                                     style="display:none;font-size:0.8rem;color:#6c757d;text-decoration:line-through;">
                                 </div>
@@ -1106,11 +1113,22 @@
             const selectedVariantInfo = document.getElementById('selected-variant-info');
             const selectedVariantDetails = document.getElementById('selected-variant-details');
 
-            // Store original product data
-            const originalPrice = '{{ Sohoj::price($product->sale_price ?? $product->price) }}';
-            const originalOldPrice = '{{ $product->sale_price ? Sohoj::price($product->price) : '' }}';
-            const originalStock = '{{ $product->quantity }}';
-            const originalImage = '{{ Storage::url($product->image) }}';
+            // Main product data from hidden element (avoids Blade variable conflicts)
+            const mainDataEl = document.getElementById('main-product-data');
+            const MAIN_PRODUCT = mainDataEl ? {
+                image: mainDataEl.getAttribute('data-image') || '',
+                name: mainDataEl.getAttribute('data-name') || '',
+                sku: mainDataEl.getAttribute('data-sku') || '',
+                price: mainDataEl.getAttribute('data-price') || '',
+                comparePrice: mainDataEl.getAttribute('data-compare-price') || '',
+                stock: mainDataEl.getAttribute('data-stock') || ''
+            } : { image: '', name: '', sku: '', price: '', comparePrice: '', stock: '' };
+
+            // Store original product data from MAIN_PRODUCT
+            const originalPrice = MAIN_PRODUCT.price;
+            const originalOldPrice = MAIN_PRODUCT.comparePrice;
+            const originalStock = MAIN_PRODUCT.stock;
+            const originalImage = MAIN_PRODUCT.image;
 
             variationCards.forEach(function(card) {
                 card.addEventListener('click', function() {
@@ -1303,9 +1321,7 @@
                         const attributeText = Array.from(attributes).map(a => a.textContent.trim()).join(', ');
 
                         // Update image
-                        if (variantImg) {
-                            modalImg.src = variantImg;
-                        }
+                        modalImg.src = variantImg || MAIN_PRODUCT.image;
 
                         // Update variant text
                         if (attributeText) {
@@ -1316,9 +1332,7 @@
                         }
 
                         // Update SKU
-                        if (variantSku) {
-                            modalSku.textContent = 'SKU: ' + variantSku;
-                        }
+                        modalSku.textContent = 'SKU: ' + (variantSku || MAIN_PRODUCT.sku);
 
                         // Update price
                         modalPrice.textContent = '$' + variantPrice.toFixed(2);
@@ -1330,19 +1344,22 @@
                         } else {
                             modalComparePrice.style.display = 'none';
                         }
+
+                        // Name
+                        modalName.textContent = MAIN_PRODUCT.name;
                     } else {
                         // Reset to original product information
-                        modalImg.src = '{{ Storage::url($product->image) }}';
+                        modalImg.src = MAIN_PRODUCT.image;
+                        modalName.textContent = MAIN_PRODUCT.name;
                         modalVariant.style.display = 'none';
-                        modalSku.textContent = 'SKU: {{ $product->sku }}';
-                        modalPrice.textContent = '{{ Sohoj::price($product->sale_price ?? $product->price) }}';
-
-                        @if ($product->sale_price)
-                            modalComparePrice.textContent = '{{ Sohoj::price($product->price) }}';
+                        modalSku.textContent = 'SKU: ' + MAIN_PRODUCT.sku;
+                        modalPrice.textContent = MAIN_PRODUCT.price;
+                        if (MAIN_PRODUCT.comparePrice) {
+                            modalComparePrice.textContent = MAIN_PRODUCT.comparePrice;
                             modalComparePrice.style.display = 'block';
-                        @else
+                        } else {
                             modalComparePrice.style.display = 'none';
-                        @endif
+                        }
                     }
 
                     // Set up sign in/sign up buttons to submit form with appropriate intent

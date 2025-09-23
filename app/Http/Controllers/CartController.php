@@ -104,24 +104,24 @@ class CartController extends Controller
 		$this->cart($request);
 
 		// Handle different buy intents
-		if(isset($request->add_to_cart)){
+		if (isset($request->add_to_cart)) {
 			return redirect()->back()->with('success_msg', 'Item has been added to cart!');
 		}
-		
+
 		// If coming from guest modal, go to cart page
 		if ($request->input('buy_intent') === 'buy_now_guest') {
 			return redirect('/cart')->with('success_msg', 'Item has been added to cart!');
 		}
-		
+
 		// If coming from sign in/sign up modal, add to cart and redirect to auth
 		if ($request->input('buy_intent') === 'buy_now_signin') {
 			return redirect()->route('login', ['redirect' => url('/cart')])->with('success_msg', 'Item has been added to cart! Please sign in to continue.');
 		}
-		
+
 		if ($request->input('buy_intent') === 'buy_now_signup') {
 			return redirect()->route('register', ['redirect' => url('/cart')])->with('success_msg', 'Item has been added to cart! Please sign up to continue.');
 		}
-		
+
 		// For logged-in users, Buy Now should go to cart page
 		if ($request->input('buy_intent') === 'buy_now') {
 			return redirect('/cart')->with('success_msg', 'Item has been added to cart!');
@@ -145,6 +145,9 @@ class CartController extends Controller
 
 		$price = $variation ? $variation->price : $product->getPrice();
 
+		if ($price == false) {
+			return response()->json(['error' => 'price not available'], 404);
+		}
 		Cart::add([
 			'id'      => $product->id,
 			'name'    => $product->name,
