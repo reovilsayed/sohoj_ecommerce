@@ -30,7 +30,7 @@ class PageController extends Controller
 
 
         // Cache the entire homepage data together to reduce individual repository calls
-        $homeData = Cache::remember('homepage_data', 1800, function () { // 30 minutes cache
+        $homeData = Cache::remember('homepage_data', 600, function () { // 30 minutes cache
             $products = DB::table(DB::raw('(
                 SELECT p.*, 
                        ROW_NUMBER() OVER (PARTITION BY shop_id ORDER BY id) AS row_num

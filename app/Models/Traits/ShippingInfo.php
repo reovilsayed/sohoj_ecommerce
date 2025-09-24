@@ -8,44 +8,53 @@ trait ShippingInfo
 {
     public function contains_battery_pi966()
     {
-        return true;
+        return $this->parcels[0]['contains_battery_pi966'] ?? false;
     }
 
     public function contains_battery_pi967()
     {
-        return true;
+        return $this->parcels[0]['contains_battery_pi967'] ?? false;
     }
 
     public function contains_liquids()
     {
-        return true;
+        return $this->parcels[0]['contains_liquids'] ?? false;
     }
 
     public function origin_country_alpha2()
     {
-        return 'US';
+        return $this->parcels[0]['origin_country_alpha2'] ?? '';
     }
 
     public function length()
     {
-        return 25;
+        return $this->parcels[0]['length'] ?? 25;
     }
 
     public function width()
     {
-        return 25;
+        return $this->parcels[0]['width'] ?? 25;
     }
 
     public function height()
     {
-        return 25;
+        return $this->parcels[0]['height'] ?? 25;
     }
 
     public function weight(){
-        return 5;
+        return $this->parcels[0]['actual_weight'] ?? 0.5;
     }
 
     public function hs_code(){
-        return '91021900';
+        return $this->parcels[0]['category_id'] ?? null;
     }
+
+    public function category_id(){
+        return (string) $this->parcels[0]['category_id'] ?? null;
+    }
+
+    public function description(){
+        return $this->parcels[0]['description'] ?? '';
+    }
+    
 }

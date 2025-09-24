@@ -120,19 +120,7 @@ class ProductResource extends Resource
                                                     ->helperText('URL-friendly version of the product name. Used in web addresses. Auto-generated from product name.')
                                                     ->columnSpan(2),
 
-                                                Select::make('type')
-                                                    ->label('Product Type')
-                                                    ->options([
-                                                        'simple' => 'Simple Product',
-                                                        'variable' => 'Variable Product',
-                                                        'grouped' => 'Grouped Product',
-                                                        'external' => 'External Product',
-                                                        'digital' => 'Digital Product',
-                                                    ])
-                                                    ->default('simple')
-                                                    ->required()
-                                                    ->helperText('Choose the type of product: Simple (single item), Variable (sizes/colors), Grouped (bundle), External (affiliate), or Digital (downloadable).')
-                                                    ->columnSpan(1),
+                                              
                                                 TextInput::make('search_keywords')
                                                     ->label('Search Keywords')
                                                     ->maxLength(255)
@@ -141,27 +129,7 @@ class ProductResource extends Resource
                                                     ->columnSpan(3),
                                             ]),
 
-                                        Forms\Components\Grid::make(2)
-                                            ->schema([
-                                                Select::make('parent_id')
-                                                    ->label('Parent Product')
-                                                    ->relationship('parentproduct', 'name')
-                                                    ->searchable()
-                                                    ->nullable()
-                                                    ->getSearchResultsUsing(function (string $search) {
-                                                        $user = Auth::user();
-                                                        if (!$user || !$user->shop) return [];
-
-                                                        return Product::where('shop_id', $user->shop->id)
-                                                            ->where('name', 'like', "%{$search}%")
-                                                            ->whereNull('parent_id')
-                                                            ->limit(50)
-                                                            ->pluck('name', 'id')
-                                                            ->toArray();
-                                                    })
-                                                    ->helperText('Optional. Select if this is a variation of another product (e.g., different size or color of the same item).')
-                                                    ->columnSpan(2),
-                                            ]),
+                                    
                                     ]),
                             ]),
 
@@ -289,51 +257,7 @@ class ProductResource extends Resource
                                     ]),
                             ]),
 
-                        Tabs\Tab::make('Physical Properties')
-                            ->icon('heroicon-o-scale')
-                            ->schema([
-                                Forms\Components\Section::make('Product Dimensions & Weight')
-                                    ->description('Define physical characteristics of the product.')
-                                    ->schema([
-                                        Forms\Components\Grid::make(4)
-                                            ->schema([
-                                                TextInput::make('weight')
-                                                    ->label('Weight (kg)')
-                                                    ->numeric()
-                                                    ->step(0.01)
-                                                    ->helperText('Product weight in kilograms. Used for shipping calculations and logistics planning.')
-                                                    ->columnSpan(1),
-
-                                                Select::make('weight_unit')
-                                                    ->label('Weight Unit')
-                                                    ->options([
-                                                        'kg' => 'Kilograms (kg)',
-                                                        'g' => 'Grams (g)',
-                                                        'lb' => 'Pounds (lb)',
-                                                        'oz' => 'Ounces (oz)',
-                                                    ])
-                                                    ->default('kg')
-                                                    ->required()
-                                                    ->helperText('Select the unit for product weight.')
-                                                    ->columnSpan(1),
-
-                                                TextInput::make('dimensions')
-                                                    ->label('Dimensions (L x W x H)')
-                                                    ->placeholder('e.g., 10 x 5 x 3 cm')
-                                                    ->helperText('Product dimensions in Length x Width x Height format. Include units (cm, inches, etc.). Used for shipping and display purposes.')
-                                                    ->columnSpan(1),
-
-                                                TextInput::make('rating_count')
-                                                    ->label('Rating Count')
-                                                    ->numeric()
-                                                    ->default(0)
-                                                    ->disabled()
-                                                    ->dehydrated(false)
-                                                    ->helperText('Number of customer ratings received. This field is automatically updated and cannot be edited manually.')
-                                                    ->columnSpan(1),
-                                            ]),
-                                    ]),
-                            ]),
+                    
 
                         Tabs\Tab::make('Media')
                             ->icon('heroicon-o-photo')
@@ -408,13 +332,13 @@ class ProductResource extends Resource
                                             ]),
                                     ]),
                             ]),
-                        Tabs\Tab::make('Shipping')
+                            Tabs\Tab::make('Shipping')
                             ->icon('heroicon-o-truck')
                             ->schema([
                                 Section::make('Parcels')
                                     ->schema([
-
-                                        Repeater::make('parcels')
+                                        Forms\Components\Group::make()
+                                            ->statePath('parcels.0')
                                             ->schema([
                                                 Fieldset::make('Safety & Restrictions')
                                                     ->schema([
@@ -430,10 +354,14 @@ class ProductResource extends Resource
                                                         Select::make('category_id')
                                                             ->label('Category')
                                                             ->options(function () {
-                                                                $response = Http::get(config('app.url') . '/api/eash-ship')->json();
+                                                                $http = Http::withOptions([]);
+                                                                if (app()->environment('local')) {
+                                                                    $http = $http->withoutVerifying();
+                                                                }
+                                                                $response = $http->get(config('app.url') . '/api/eash-ship')->json();
 
                                                                 return collect($response['item_categories'] ?? [])
-                                                                    ->pluck('name', 'id');
+                                                                    ->pluck('name', 'hs_code');
                                                             })
                                                             ->searchable()
                                                             ->required(),
@@ -457,10 +385,11 @@ class ProductResource extends Resource
                                                         // TextInput::make('declared_customs_value')->numeric()->label('Customs Value'),
                                                     ])
                                                     ->columns(2),
-                                            ])
-                                            ->columns(1)
-                                            ->collapsible()
-                                            ->itemLabel(fn(array $state): ?string => $state['description'] ?? 'Parcel'),
+                                            ])->afterStateHydrated(function ($state, callable $set) {
+                                                if ($state === null || $state === [] || $state === '') {
+                                                    $set('parcels.0', []);
+                                                }
+                                            }),
                                     ]),
                             ]),
                         Tabs\Tab::make('Settings')
@@ -471,12 +400,7 @@ class ProductResource extends Resource
                                     ->schema([
                                         Forms\Components\Grid::make(2)
                                             ->schema([
-                                                Toggle::make('status')
-                                                    ->label('Active')
-                                                    ->default(false)
-                                                    ->disabled()
-                                                    ->helperText('Make product visible to customers. Inactive products are hidden from the store but remain in your inventory.')
-                                                    ->columnSpan(1),
+                                          
 
                                                 Toggle::make('is_variable_product')
                                                     ->label('Variable Product')
@@ -486,12 +410,6 @@ class ProductResource extends Resource
                                                     ->live()
                                                     ->columnSpan(1),
 
-                                                Toggle::make('featured')
-                                                    ->label('Featured')
-                                                    ->default(false)
-                                                    ->disabled()
-                                                    ->helperText('Highlight this product as a featured item.')
-                                                    ->columnSpan(1),
                                             ]),
                                     ]),
                             ]),
@@ -598,44 +516,7 @@ class ProductResource extends Resource
                                                                     ->columnSpan(1),
                                                             ]),
 
-                                                        Forms\Components\Fieldset::make('Dimensions (Physical dimensions for shipping)')
-                                                            ->schema([
-                                                                Forms\Components\TextInput::make('dimensions_help')
-                                                                    ->label('')
-                                                                    ->default('Physical dimensions for shipping.')
-                                                                    ->disabled()
-                                                                    ->dehydrated(false)
-                                                                    ->extraAttributes(['style' => 'background: transparent; border: none; font-size: 12px; color: #6b7280;'])
-                                                                    ->columnSpanFull(),
-
-                                                                Forms\Components\Grid::make(4)
-                                                                    ->schema([
-                                                                        TextInput::make('weight')
-                                                                            ->label('Weight (kg)')
-                                                                            ->numeric()
-                                                                            ->step(0.01)
-                                                                            ->columnSpan(1),
-
-                                                                        TextInput::make('height')
-                                                                            ->label('Height (cm)')
-                                                                            ->numeric()
-                                                                            ->step(0.1)
-                                                                            ->columnSpan(1),
-
-                                                                        TextInput::make('width')
-                                                                            ->label('Width (cm)')
-                                                                            ->numeric()
-                                                                            ->step(0.1)
-                                                                            ->columnSpan(1),
-
-                                                                        TextInput::make('length')
-                                                                            ->label('Length (cm)')
-                                                                            ->numeric()
-                                                                            ->step(0.1)
-                                                                            ->columnSpan(1),
-                                                                    ]),
-                                                            ]),
-
+                                           
                                                         Forms\Components\Fieldset::make('Variant Image')
                                                             ->schema([
                                                                 FileUpload::make('variant_image')

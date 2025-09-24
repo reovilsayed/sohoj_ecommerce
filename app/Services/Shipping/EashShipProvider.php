@@ -64,38 +64,36 @@ class EashShipProvider
                 "output_currency" => "USD"
             ],
             "parcels" => [
+               ... $packages->map(function ($package) {
+                    return [
+                        "total_actual_weight" => (float) $package->weight() * $package->pivot->quantity,
 
-                [
-                    "total_actual_weight" => $packages->map(function ($package) {
-                        return $package->weight() * $package->pivot->quantity;
-                    })->sum(),
+                        "items" => [
 
-                    "items" => [
-                        ...$packages->map(function ($package) {
-                            return [
-
-                                "hs_code" => $package->hs_code(),
+                            [
                                 "contains_battery_pi966" => $package->contains_battery_pi966(),
                                 "contains_battery_pi967" => $package->contains_battery_pi967(),
                                 "contains_liquids" => $package->contains_liquids(),
                                 "origin_country_alpha2" => $package->origin_country_alpha2(),
+                                "hs_code" => $package->hs_code(),
+                                "description" => $package->description(),
                                 "quantity" => $package->pivot->quantity,
                                 "declared_currency" => "USD",
 
                                 "declared_customs_value" => 1,
-                                "actual_weight" => $package->weight() ,
+                                "actual_weight" => (float) $package->weight(),
                                 "dimensions" => [
-                                    "length" => $package->length() ,
-                                    "width" => $package->width() ,
-                                    "height" => $package->height() 
+                                    "length" => (int) $package->length(),
+                                    "width" => (int) $package->width(),
+                                    "height" => (int) $package->height()
                                 ],
-                            ];
-                        })->toArray()
+                            ]
 
 
-                    ]
-                ]
 
+                        ]
+                    ];
+                })->toArray()
 
             ]
         ];
@@ -126,7 +124,7 @@ class EashShipProvider
     //             "country_alpha2" => "US",
     //             "line_2" => "940 Goldendale Dr",
     //             "line_1" => "940 Goldendale Dr, Wasilla, Alaska 99654, USA",
-                
+
     //             "postal_code" => "99654",
     //             "state" => "AK"
     //         ],
@@ -186,29 +184,37 @@ class EashShipProvider
 
         $payload = $this->getRatesPayload($shipping, $packages);
 
-        $response = Http::withHeaders([
+        $http = Http::withHeaders([
             'authorization' => 'Bearer ' . $this->accessToken,
             'accept' => 'application/json',
             'content-type' => 'application/json',
-        ])->post($this->endpoint . 'rates', $payload);
+        ]);
+        if (app()->environment('local')) {
+            $http = $http->withoutVerifying();
+        }
+        $response = $http->post($this->endpoint . 'rates', $payload);
 
         return $response->json();
     }
 
     public function getCategories()
     {
-        $response = Http::withHeaders([
+        $http = Http::withHeaders([
             'authorization' => 'Bearer ' . $this->accessToken,
             'accept' => 'application/json',
             'content-type' => 'application/json',
-        ])->get($this->endpoint . 'item_categories');
+        ]);
+        if (app()->environment('local')) {
+            $http = $http->withoutVerifying();
+        }
+        $response = $http->get($this->endpoint . 'item_categories');
 
         return $response->json();
     }
 
     protected function getShipmentPayload(Order $order)
     {
-   
+
         $shipping = json_decode($order->shipping, true);
         return [
             "origin_address" => [
@@ -234,11 +240,11 @@ class EashShipProvider
                 "postal_code" => $shipping['post_code'],
                 "state" => $shipping['state_code']
             ],
-            "order_data"=>[
-                "platform_name"=>"afrikartt",
-                "platform_order_number"=>$order->id,
-                "order_created_at"=>$order->created_at,
-                "order_tag_list"=>$order->products->pluck('name')->toArray(),
+            "order_data" => [
+                "platform_name" => "afrikartt",
+                "platform_order_number" => $order->id,
+                "order_created_at" => $order->created_at,
+                "order_tag_list" => $order->products->pluck('name')->toArray(),
             ]
         ];
     }
@@ -246,14 +252,16 @@ class EashShipProvider
     public function createShipment(Order $order)
     {
         $payload = $this->getShipmentPayload($order);
-        Http::withHeaders([
+        $http = Http::withHeaders([
             'authorization' => 'Bearer ' . $this->accessToken,
             'accept' => 'application/json',
             'content-type' => 'application/json',
-        ])->post($this->endpoint . 'shipments', $payload);
+        ]);
+        if (app()->environment('local')) {
+            $http = $http->withoutVerifying();
+        }
+        $response = $http->post($this->endpoint . 'shipments', $payload);
 
         return $response->json();
     }
-
-   
 }

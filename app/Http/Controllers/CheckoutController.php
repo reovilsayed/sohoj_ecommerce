@@ -110,6 +110,7 @@ class CheckoutController extends Controller
             // Post-commit actions
             $shipping = json_decode($order->shipping, true);
             $rates = $eashShip->getRates($shipping, $order->products);
+         
             if (isset($rates['rates']) == false) {
                 throw new \Exception('Shipping method not available for the selected country and state');
             }

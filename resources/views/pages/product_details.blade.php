@@ -124,9 +124,9 @@
         }
 
         /* @keyframes spin {
-                                            from { transform: rotate(0deg); }
-                                            to { transform: rotate(360deg); }
-                                        } */
+                                                        from { transform: rotate(0deg); }
+                                                        to { transform: rotate(360deg); }
+                                                    } */
 
         .product-title {
             font-size: 0.9rem;
@@ -442,6 +442,7 @@
             // Process variations data - now they are Varient objects
             $variations = $product->variations ?? [];
         @endphp
+   
         <!-- Sart Single product -->
         <section class="ec-page-content section-space-p product_details-body">
             <div class="container">
@@ -680,18 +681,25 @@
 
                                                 <div class="ec-single-price-stoke">
                                                     <div class="ec-single-price product-price">
-                                                        <span
-                                                            class="ec-single-ps-title price-currency product_details-body">usd</span>
+
                                                         <div class="d-flex align-items-center">
 
-                                                            <span class="ec-price d-flex align-items-center">
-                                                                <span
-                                                                    class="new-price product-ammount product_details-body">{{ Sohoj::price($product->sale_price ?? $product->price) }}</span>
-                                                                @if ($product->sale_price)
-                                                                    <del><span
-                                                                            class="old-price ">{{ Sohoj::price($product->price) }}</span></del>
-                                                                @endif
+                                                            @if ($product->sale_price ?? $product->price)
+                                                                <span class="ec-price d-flex align-items-center">
 
+                                                                    <span
+                                                                        class="new-price product-ammount product_details-body">{{ Sohoj::price($product->sale_price ?? $product->price) }}</span>
+                                                                    @if ($product->sale_price)
+                                                                        <del><span
+                                                                                class="old-price ">{{ Sohoj::price($product->price) }}</span></del>
+                                                                    @endif
+                                                                @else
+                                                                    <span class="ec-price d-flex align-items-center">
+                                                                        <span
+                                                                            class="new-price product-ammount product_details-body">Price
+                                                                            Not Available</span>
+                                                                    </span>
+                                                            @endif
                                                             </span>
                                                             @if ($product->is_offer == true)
                                                                 <a href="javascript:void(0)" data-bs-toggle="modal"
@@ -802,23 +810,23 @@
                                                         value="{{ $product->id }}" />
 
                                                     <div class="d-flex flex-wrap align-items-center gap-3">
+                                                        @if ($product->sale_price ?? $product->price)
+                                                            <div class="qty-plus-minus">
+                                                                <input class="qty-input qty" type="text"
+                                                                    name="quantity" value="1" />
+                                                            </div>
 
-                                                        <div class="qty-plus-minus">
-                                                            <input class="qty-input qty" type="text" name="quantity"
-                                                                value="1" />
-                                                        </div>
+                                                            <div class="d-flex gap-2">
+                                                                <input type="submit" class="btn btn-sm btn-success"
+                                                                    name="add_to_cart" id="add-to-cart-btn"
+                                                                    value="Add to Cart">
 
-                                                        <div class="d-flex gap-2">
-                                                            <input type="submit" class="btn btn-sm btn-success"
-                                                                name="add_to_cart" id="add-to-cart-btn"
-                                                                value="Add to Cart">
-
-                                                            <button class="btn btn-sm btn-dark" type="submit"
-                                                                id="buy-now-btn">
-                                                                Buy Now
-                                                            </button>
-                                                        </div>
-
+                                                                <button class="btn btn-sm btn-dark" type="submit"
+                                                                    id="buy-now-btn">
+                                                                    Buy Now
+                                                                </button>
+                                                            </div>
+                                                        @endif
                                                         <div>
                                                             @if (!in_array($product->id, session()->get('wishlist', [])))
                                                                 <a href="{{ route('wishlist.add', ['productId' => $product->id]) }}"
@@ -867,7 +875,8 @@
                     </div>
                     <div class="tab-content  ec-single-pro-tab-content">
                         <div id="ec-spt-nav-details" class="tab-pane fade show active">
-  <div class="ec-single-pro-tab-desc" style="word-break: normal; overflow-wrap: normal; white-space: normal; hyphens: none;">
+                            <div class="ec-single-pro-tab-desc"
+                                style="word-break: normal; overflow-wrap: normal; white-space: normal; hyphens: none;">
                                 <p>{!! $product->description !!}</p>
                             </div>
                         </div>
@@ -973,14 +982,11 @@
 
         <!-- Guest Buy Modal -->
         <!-- Store main product data to avoid Blade variable shadowing in later loops -->
-        <div id="main-product-data" hidden
-            data-image="{{ Storage::url($product->image) }}"
-            data-name="{{ $product->name }}"
-            data-sku="{{ $product->sku }}"
+        <div id="main-product-data" hidden data-image="{{ Storage::url($product->image) }}"
+            data-name="{{ $product->name }}" data-sku="{{ $product->sku }}"
             data-price="{{ Sohoj::price($product->sale_price ?? $product->price) }}"
             data-compare-price="{{ $product->sale_price ? Sohoj::price($product->price) : '' }}"
-            data-stock="{{ $product->quantity }}"
-        ></div>
+            data-stock="{{ $product->quantity }}"></div>
         <div class="modal fade" id="guestBuyModal" tabindex="-1" aria-labelledby="guestBuyModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -1001,7 +1007,7 @@
                                 <div class="guest-buy-variant" id="guest-buy-variant-text" style="display:none;"></div>
                                 <div class="guest-buy-sku" id="guest-buy-sku-text"
                                     style="font-size:0.8rem;color:#6c757d;margin-top:2px;">
-                                    
+
                                 </div>
                             </div>
                             <div class="text-end">
@@ -1122,7 +1128,14 @@
                 price: mainDataEl.getAttribute('data-price') || '',
                 comparePrice: mainDataEl.getAttribute('data-compare-price') || '',
                 stock: mainDataEl.getAttribute('data-stock') || ''
-            } : { image: '', name: '', sku: '', price: '', comparePrice: '', stock: '' };
+            } : {
+                image: '',
+                name: '',
+                sku: '',
+                price: '',
+                comparePrice: '',
+                stock: ''
+            };
 
             // Store original product data from MAIN_PRODUCT
             const originalPrice = MAIN_PRODUCT.price;

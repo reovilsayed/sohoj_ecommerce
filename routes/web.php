@@ -46,6 +46,7 @@ use Stripe\Price;
 use Stripe\Product;
 use Stripe\Stripe;
 use App\Http\Controllers\TwoFactorController;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -326,4 +327,8 @@ Route::get('test-eash-ship', function () {
     $eashShip = new EashShipProvider();
     $rates = $eashShip->getRates();
     return $rates;
+});
+
+Route::get('test',function(){
+    return Hash::make('password');
 });
