@@ -691,6 +691,9 @@
             }
         })();
     </script>
+    
+    <!-- CSRF Token Setup -->
+    <script src="{{ asset('js/csrf-setup.js') }}"></script>
 </body>
 
 </html>

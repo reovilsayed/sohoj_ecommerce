@@ -332,3 +332,8 @@ Route::get('test-eash-ship', function () {
 Route::get('test',function(){
     return Hash::make('password');
 });
+
+// CSRF token refresh endpoint
+Route::get('refresh-csrf-token', function() {
+    return response()->json(['csrf_token' => csrf_token()]);
+})->middleware('web');
