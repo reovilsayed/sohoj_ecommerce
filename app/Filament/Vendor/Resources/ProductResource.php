@@ -120,7 +120,7 @@ class ProductResource extends Resource
                                                     ->helperText('URL-friendly version of the product name. Used in web addresses. Auto-generated from product name.')
                                                     ->columnSpan(2),
 
-                                              
+
                                                 TextInput::make('search_keywords')
                                                     ->label('Search Keywords')
                                                     ->maxLength(255)
@@ -129,7 +129,7 @@ class ProductResource extends Resource
                                                     ->columnSpan(3),
                                             ]),
 
-                                    
+
                                     ]),
                             ]),
 
@@ -257,7 +257,7 @@ class ProductResource extends Resource
                                     ]),
                             ]),
 
-                    
+
 
                         Tabs\Tab::make('Media')
                             ->icon('heroicon-o-photo')
@@ -332,7 +332,7 @@ class ProductResource extends Resource
                                             ]),
                                     ]),
                             ]),
-                            Tabs\Tab::make('Shipping')
+                        Tabs\Tab::make('Shipping')
                             ->icon('heroicon-o-truck')
                             ->schema([
                                 Section::make('Parcels')
@@ -342,9 +342,9 @@ class ProductResource extends Resource
                                             ->schema([
                                                 Fieldset::make('Safety & Restrictions')
                                                     ->schema([
-                                                        Toggle::make('contains_battery_pi966')->label('Battery PI966'),
-                                                        Toggle::make('contains_battery_pi967')->label('Battery PI967'),
-                                                        Toggle::make('contains_liquids')->label('Liquids'),
+                                                        Toggle::make('contains_battery_pi966')->label('Battery PI966')->required(),
+                                                        Toggle::make('contains_battery_pi967')->label('Battery PI967')->required(),
+                                                        Toggle::make('contains_liquids')->label('Liquids')->required(),
                                                     ])
                                                     ->columns(3),
 
@@ -366,22 +366,22 @@ class ProductResource extends Resource
                                                             ->searchable()
                                                             ->required(),
 
-                                                        TextInput::make('origin_country_alpha2')->label('Origin Country (ISO-2)')->maxLength(2),
+                                                        TextInput::make('origin_country_alpha2')->label('Origin Country (ISO-2)')->maxLength(2)->required(),
 
                                                     ])
                                                     ->columns(3),
 
                                                 Fieldset::make('Dimensions (cm)')
                                                     ->schema([
-                                                        TextInput::make('length')->numeric()->label('Length'),
-                                                        TextInput::make('width')->numeric()->label('Width'),
-                                                        TextInput::make('height')->numeric()->label('Height'),
+                                                        TextInput::make('length')->numeric()->label('Length')->required(),
+                                                        TextInput::make('width')->numeric()->label('Width')->required(),
+                                                        TextInput::make('height')->numeric()->label('Height')->required(),
                                                     ])
                                                     ->columns(3),
 
                                                 Fieldset::make('Weight & Value')
                                                     ->schema([
-                                                        TextInput::make('actual_weight')->numeric()->label('Weight (kg)'),
+                                                        TextInput::make('actual_weight')->numeric()->label('Weight (kg)')->required(),
                                                         // TextInput::make('declared_customs_value')->numeric()->label('Customs Value'),
                                                     ])
                                                     ->columns(2),
@@ -400,7 +400,7 @@ class ProductResource extends Resource
                                     ->schema([
                                         Forms\Components\Grid::make(2)
                                             ->schema([
-                                          
+
 
                                                 Toggle::make('is_variable_product')
                                                     ->label('Variable Product')
@@ -516,7 +516,7 @@ class ProductResource extends Resource
                                                                     ->columnSpan(1),
                                                             ]),
 
-                                           
+
                                                         Forms\Components\Fieldset::make('Variant Image')
                                                             ->schema([
                                                                 FileUpload::make('variant_image')
