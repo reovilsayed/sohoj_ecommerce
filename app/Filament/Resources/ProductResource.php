@@ -96,7 +96,7 @@ class ProductResource extends Resource
                                                     ->helperText('URL-friendly version of the product name. Used in web addresses. Auto-generated from product name.')
                                                     ->columnSpan(2),
 
-                                      
+
 
                                                 Select::make('shop_id')
                                                     ->label('Shop')
@@ -357,15 +357,23 @@ class ProductResource extends Resource
                                             ->schema([
                                                 Fieldset::make('Safety & Restrictions')
                                                     ->schema([
-                                                        Toggle::make('contains_battery_pi966')->label('Battery PI966'),
-                                                        Toggle::make('contains_battery_pi967')->label('Battery PI967'),
-                                                        Toggle::make('contains_liquids')->label('Liquids'),
+                                                        Toggle::make('contains_battery_pi966')
+                                                            ->label('Battery PI966')
+                                                            ->required(),
+                                                        Toggle::make('contains_battery_pi967')
+                                                            ->label('Battery PI967')
+                                                            ->required(),
+                                                        Toggle::make('contains_liquids')
+                                                            ->label('Liquids')
+                                                            ->required(),
                                                     ])
                                                     ->columns(3),
 
                                                 Fieldset::make('Basic Info')
                                                     ->schema([
-                                                        TextInput::make('description')->label('Description')->required(),
+                                                        TextInput::make('description')
+                                                            ->label('Description')
+                                                            ->required(),
                                                         Select::make('category_id')
                                                             ->label('Category')
                                                             ->options(function () {
@@ -380,33 +388,48 @@ class ProductResource extends Resource
                                                             })
                                                             ->searchable()
                                                             ->required(),
-
-                                                        TextInput::make('origin_country_alpha2')->label('Origin Country (ISO-2)')->maxLength(2),
-
+                                                        TextInput::make('origin_country_alpha2')
+                                                            ->label('Origin Country (ISO-2)')
+                                                            ->maxLength(2)
+                                                            ->required(),
                                                     ])
                                                     ->columns(3),
 
                                                 Fieldset::make('Dimensions (cm)')
                                                     ->schema([
-                                                        TextInput::make('length')->numeric()->label('Length'),
-                                                        TextInput::make('width')->numeric()->label('Width'),
-                                                        TextInput::make('height')->numeric()->label('Height'),
+                                                        TextInput::make('length')
+                                                            ->numeric()
+                                                            ->label('Length')
+                                                            ->required(),
+                                                        TextInput::make('width')
+                                                            ->numeric()
+                                                            ->label('Width')
+                                                            ->required(),
+                                                        TextInput::make('height')
+                                                            ->numeric()
+                                                            ->label('Height')
+                                                            ->required(),
                                                     ])
                                                     ->columns(3),
 
                                                 Fieldset::make('Weight & Value')
                                                     ->schema([
-                                                        TextInput::make('actual_weight')->numeric()->label('Weight (kg)'),
-                                                        // TextInput::make('declared_customs_value')->numeric()->label('Customs Value'),
+                                                        TextInput::make('actual_weight')
+                                                            ->numeric()
+                                                            ->label('Weight (kg)')
+                                                            ->required(),
+                                                        // TextInput::make('declared_customs_value')->numeric()->label('Customs Value')->required(),
                                                     ])
                                                     ->columns(2),
-                                            ])->afterStateHydrated(function ($state, callable $set) {
+                                            ])
+                                            ->afterStateHydrated(function ($state, callable $set) {
                                                 if ($state === null || $state === [] || $state === '') {
                                                     $set('parcels.0', []);
                                                 }
                                             }),
                                     ]),
                             ]),
+
                         Tabs\Tab::make('Settings')
                             ->icon('heroicon-o-cog-6-tooth')
                             ->schema([
@@ -539,7 +562,7 @@ class ProductResource extends Resource
                                                                     ->columnSpan(1),
                                                             ]),
 
-                                                  
+
                                                         Forms\Components\Fieldset::make('Variant Image')
                                                             ->schema([
                                                                 FileUpload::make('variant_image')
