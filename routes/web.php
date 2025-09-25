@@ -323,15 +323,6 @@ Route::get('api/geo/resolve/state', function (Request $request) {
 
 
 
-Route::get('test-eash-ship', function () {
-    $eashShip = new EashShipProvider();
-    $rates = $eashShip->getRates();
-    return $rates;
-});
-
-Route::get('test',function(){
-    return Hash::make('password');
-});
 
 // CSRF token refresh endpoint
 Route::get('refresh-csrf-token', function() {
