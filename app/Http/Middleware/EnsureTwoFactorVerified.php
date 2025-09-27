@@ -16,6 +16,9 @@ class EnsureTwoFactorVerified
         if (!Auth::check()) {
             return $next($request);
         }
+        if(Auth::user()->role->name == 'vendor'){
+            return $next($request);
+        }
 
         $routeName = optional($request->route())->getName();
         $path = $request->path();
