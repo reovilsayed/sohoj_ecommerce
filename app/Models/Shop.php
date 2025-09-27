@@ -17,6 +17,7 @@ class Shop extends Model
     protected $casts = [
         'tags' => 'array',
         'status' => 'boolean',
+        'social_links' => 'array',
     ];
     protected $meta_attributes = [
         "image1",

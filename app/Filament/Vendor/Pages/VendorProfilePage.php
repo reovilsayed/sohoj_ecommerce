@@ -64,6 +64,7 @@ class VendorProfilePage extends Page
                 'post_code' => $shop->post_code ?? '',
                 'city' => $shop->city ?? '',
                 'state' => $shop->state ?? '',
+                'social_links' => $shop->social_links ?? []
             ]
         ]);
     }
@@ -80,8 +81,8 @@ class VendorProfilePage extends Page
                         TextInput::make('shopData.name')
                             ->label('Shop Name')
                             ->required()
-                        ->live(true)
-                            ->afterStateUpdated(fn(string $context, $state, callable $set) => $set('shopData.slug', Str::slug($state)) )
+                            ->live(true)
+                            ->afterStateUpdated(fn(string $context, $state, callable $set) => $set('shopData.slug', Str::slug($state)))
                             ->maxLength(255),
 
                         TextInput::make('shopData.slug')
@@ -323,6 +324,27 @@ class VendorProfilePage extends Page
                     ->label('Description')
                     ->nullable()
                     ->maxLength(1000),
+                Section::make('Social Links')
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                TextInput::make('shopData.social_links.tiktok')
+                                  
+                                    ->label('TikTok')
+                                    ->url()
+                                    ->nullable()
+                                    ->maxLength(255),
+
+                                TextInput::make('shopData.social_links.instagram')
+                                    ->label('Instagram')
+                                    ->url()
+                                    ->nullable()
+                                    ->maxLength(255),
+
+                            ]),
+                    ])
+                    ->columns(1)
+                    ->collapsible(),
             ]);
     }
 
@@ -330,6 +352,7 @@ class VendorProfilePage extends Page
     {
         $user = Auth::user();
         $shop = $user->shop;
+
         // Update shop data
         if ($shop) {
             $shop->update([
@@ -345,6 +368,7 @@ class VendorProfilePage extends Page
                 'city' => $this->shopData['city'],
                 'state' => $this->shopData['state'],
                 'country' => $this->shopData['country'],
+                'social_links' => $this->shopData['social_links'] ?? []
             ]);
         }
 

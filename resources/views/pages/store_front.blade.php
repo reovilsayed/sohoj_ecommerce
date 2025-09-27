@@ -424,7 +424,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            /* color: white; */
             font-size: 18px;
             transition: transform 0.2s;
             text-decoration: none;
@@ -432,7 +432,7 @@
 
         .social-link:hover {
             transform: scale(1.1);
-            color: white;
+            /* color: white; */
         }
 
         .social-facebook {
@@ -534,392 +534,379 @@
         {{-- <div class="cover-overlay"></div> --}}
     </div>
     {{-- @if ($shop->slug == 'adidas-bd') --}}
-        <div class="container mt-4">
-            <div class="row">
-                <!-- Left Sidebar - Brand Information -->
-                <div class="col-md-3">
-                    <div class="brand-sidebar">
-                        <!-- Brand Logo and Name -->
-                        <div class="brand-header text-center mb-4">
-                            <img class="brand-logo" src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }} logo">
-                            <h2 class="brand-name mt-3">{{ $shop->name }}</h2>
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Left Sidebar - Brand Information -->
+            <div class="col-md-3">
+                <div class="brand-sidebar">
+                    <!-- Brand Logo and Name -->
+                    <div class="brand-header text-center mb-4">
+                        <img class="brand-logo" src="{{ Storage::url($shop->logo) }}" alt="{{ $shop->name }} logo">
+                        <h2 class="brand-name mt-3">{{ $shop->name }}</h2>
 
 
-                            <p class="brand-tagline text-muted">
-                                {{ Illuminate\Support\Str::limit($shop->short_description, 200) }}
-                            </p>
-                        </div>
-
-                        <!-- Contact Information -->
-                        <div class="brand-info-card">
-                            <h5 class="info-title"><i class="fas fa-info-circle me-2"></i>Shop Information</h5>
-                            <ul class="info-list">
-                                <li>
-                                    <i class="fas fa-user me-2"></i>
-                                    <span>Owner: {{ $shop->user->name }}</span>
-                                </li>
-                                <li>
-                                    <i class="fas fa-building me-2"></i>
-                                    <span>Company: {{ $shop->company_name }}</span>
-                                </li>
-                                <li>
-                                    <i class="fas fa-map-marker-alt me-2"></i>
-                                    <span> {{ $shop->city }}, {{ $shop->state }}</span>
-                                </li>
-                                <li>
-                                    <i class="fas fa-phone me-2"></i>
-                                    <span>{{ $shop->phone }}</span>
-                                </li>
-                                <li>
-                                    <i class="fas fa-envelope me-2"></i>
-                                    <span>{{ $shop->email }}</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Stats -->
-                        <div class="brand-stats-card">
-                            <div class="stat-item">
-                                <div class="stat-value">{{ number_format(Sohoj::average_rating($shop->ratings), 1) }}</div>
-                                <div class="stat-label">Average Rating</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value">{{ $shop->orders->count() }}</div>
-                                <div class="stat-label">Total Sales</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value">{{ $shop->ratings->count() }}</div>
-                                <div class="stat-label">Reviews</div>
-                            </div>
-                        </div>
-
-                        <!-- Follow/Message Buttons -->
-                        <div class="brand-actions">
-                            @auth
-                                <form action="{{ route('follow', $shop) }}" method="post">
-                                    @csrf
-                                    @php
-                                        $follow = auth()->user()->follows($shop);
-                                    @endphp
-                                    <button class="add-to-cart-btn">
-                                        <i class="fas fa-user-plus me-2 py-2 "></i>
-                                        {{ $follow ? 'Unfollow Shop' : 'Follow Shop' }}
-                                    </button>
-                                </form>
-                            @else
-                                <a class="add-to-cart-btn py-2 text-white" href="{{ route('login') }}">
-                                    <i class="fas fa-user-plus me-2"></i>
-                                    Follow Shop
-                                </a>
-                            @endauth
-
-                            <a href="{{ route('massage.create', $shop->id) }}"
-                                class="btn btn-block btn-message text-white">
-                                <i class="fas fa-envelope me-2"></i>
-                                Contact Seller
-                            </a>
-                        </div>
-
-                        <!-- Social Links -->
-                        @if ($shop->facebook || $shop->instagram || $shop->twitter || $shop->linkedin)
-                            <div class="brand-social-card">
-                                <h5 class="social-title">Follow Us</h5>
-                                <div class="social-links">
-                                    @if ($shop->facebook)
-                                        <a href="{{ $shop->facebook }}" target="_blank" class="social-link">
-                                            <i class="fab fa-facebook-f"></i>
-                                        </a>
-                                    @endif
-                                    @if ($shop->instagram)
-                                        <a href="{{ $shop->instagram }}" target="_blank" class="social-link">
-                                            <i class="fab fa-instagram"></i>
-                                        </a>
-                                    @endif
-                                    @if ($shop->twitter)
-                                        <a href="{{ $shop->twitter }}" target="_blank" class="social-link">
-                                            <i class="fab fa-twitter"></i>
-                                        </a>
-                                    @endif
-                                    @if ($shop->linkedin)
-                                        <a href="{{ $shop->linkedin }}" target="_blank" class="social-link">
-                                            <i class="fab fa-linkedin-in"></i>
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
+                        <p class="brand-tagline text-muted">
+                            {{ Illuminate\Support\Str::limit($shop->short_description, 200) }}
+                        </p>
                     </div>
-                </div>
 
-                <!-- Right Content Area -->
-                <div class="col-md-9">
-                    <!-- Navigation Tabs with Search Box -->
-                    <div class="brand-content-tabs">
-                        <div class="tabs-header">
-                            <ul class="nav nav-tabs" id="shopTabs" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                                        data-bs-target="#home" type="button" role="tab">
-                                        <i class="fas fa-home me-2"></i>Home
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="products-tab" data-bs-toggle="tab"
-                                        data-bs-target="#products" type="button" role="tab">
-                                        <i class="fas fa-box me-2"></i>Products
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="about-tab" data-bs-toggle="tab" data-bs-target="#about"
-                                        type="button" role="tab">
-                                        <i class="fas fa-info-circle me-2"></i>About
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab"
-                                        data-bs-target="#reviews" type="button" role="tab">
-                                        <i class="fas fa-star me-2"></i>Reviews
-                                    </button>
-                                </li>
-                            </ul>
+                    <!-- Contact Information -->
+                    <div class="brand-info-card">
+                        <h5 class="info-title"><i class="fas fa-info-circle me-2"></i>Shop Information</h5>
+                        <ul class="info-list">
+                            <li>
+                                <i class="fas fa-user me-2"></i>
+                                <span>Owner: {{ $shop->user->name }}</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-building me-2"></i>
+                                <span>Company: {{ $shop->company_name }}</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                <span> {{ $shop->city }}, {{ $shop->state }}</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-phone me-2"></i>
+                                <span>{{ $shop->phone }}</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-envelope me-2"></i>
+                                <span>{{ $shop->email }}</span>
+                            </li>
+                        </ul>
+                    </div>
 
-                            <!-- Search Box moved to right side -->
-                            <div class="search-container">
-                                <form action="{{ route('store_front', $shop->slug) }}" method="get"
-                                    class="search-form">
-                                    <div class="input-group">
-                                        <input type="text" name="search" class="form-control"
-                                            placeholder="Search products...">
-                                        <button type="submit" class="btn btn-search">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
-                                </form>
+                    <!-- Stats -->
+                    <div class="brand-stats-card">
+                        <div class="stat-item">
+                            <div class="stat-value">{{ number_format(Sohoj::average_rating($shop->ratings), 1) }}</div>
+                            <div class="stat-label">Average Rating</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">{{ $shop->orders->count() }}</div>
+                            <div class="stat-label">Total Sales</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">{{ $shop->ratings->count() }}</div>
+                            <div class="stat-label">Reviews</div>
+                        </div>
+                    </div>
+
+                    <!-- Follow/Message Buttons -->
+                    <div class="brand-actions">
+                        @auth
+                            <form action="{{ route('follow', $shop) }}" method="post">
+                                @csrf
+                                @php
+                                    $follow = auth()->user()->follows($shop);
+                                @endphp
+                                <button class="add-to-cart-btn">
+                                    <i class="fas fa-user-plus me-2 py-2 "></i>
+                                    {{ $follow ? 'Unfollow Shop' : 'Follow Shop' }}
+                                </button>
+                            </form>
+                        @else
+                            <a class="add-to-cart-btn py-2 text-white" href="{{ route('login') }}">
+                                <i class="fas fa-user-plus me-2"></i>
+                                Follow Shop
+                            </a>
+                        @endauth
+
+                        <a href="{{ route('massage.create', $shop->id) }}" class="btn btn-block btn-message text-white">
+                            <i class="fas fa-envelope me-2"></i>
+                            Contact Seller
+                        </a>
+                    </div>
+
+                    <!-- Social Links -->
+                    @if (!empty($shop->social_links) && (isset($shop->social_links['tiktok']) || isset($shop->social_links['instagram'])))
+                        <div class="brand-social-card">
+                            <h5 class="social-title">Follow Us</h5>
+                            <div class="social-links">
+                                @if (isset($shop->social_links['tiktok']) && $shop->social_links['tiktok'])
+                                    <a href="{{ $shop->social_links['tiktok'] }}" target="_blank" class="social-link">
+                                        <i class="fab fa-tiktok fa-2xl"></i>
+                                    </a>
+                                @endif
+                                @if (isset($shop->social_links['instagram']) && $shop->social_links['instagram'])
+                                    <a href="{{ $shop->social_links['instagram'] }}" target="_blank" class="social-link">
+                                        <i class="fab fa-instagram fa-2xl"></i>
+                                    </a>
+                                @endif
                             </div>
                         </div>
+                    @endif
+                </div>
+            </div>
 
-                        <div class="tab-content" id="shopTabsContent">
-                            <!-- Home Tab -->
-                            <div class="tab-pane fade show active" id="home" role="tabpanel">
-                                @if (count($shop->products) > 0)
-                                    @php
-                                        $products = $shop->products->where('featured', 1)->chunk(4);
-                                        $bannerToggle = false; // Flag to alternate between your two banner styles
-                                    @endphp
+            <!-- Right Content Area -->
+            <div class="col-md-9">
+                <!-- Navigation Tabs with Search Box -->
+                <div class="brand-content-tabs">
+                    <div class="tabs-header">
+                        <ul class="nav nav-tabs" id="shopTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                                    type="button" role="tab">
+                                    <i class="fas fa-home me-2"></i>Home
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="products-tab" data-bs-toggle="tab" data-bs-target="#products"
+                                    type="button" role="tab">
+                                    <i class="fas fa-box me-2"></i>Products
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="about-tab" data-bs-toggle="tab" data-bs-target="#about"
+                                    type="button" role="tab">
+                                    <i class="fas fa-info-circle me-2"></i>About
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews"
+                                    type="button" role="tab">
+                                    <i class="fas fa-star me-2"></i>Reviews
+                                </button>
+                            </li>
+                        </ul>
 
-                                    @foreach ($products as $productGroup)
-                                        <!-- Product Group (4 products) -->
-                                        <div class="content-card mb-3">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    @foreach ($productGroup as $product)
-                                                        <x-products.product :product="$product" />
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
+                        <!-- Search Box moved to right side -->
+                        <div class="search-container">
+                            <form action="{{ route('store_front', $shop->slug) }}" method="get" class="search-form">
+                                <div class="input-group">
+                                    <input type="text" name="search" class="form-control"
+                                        placeholder="Search products...">
+                                    <button type="submit" class="btn btn-search">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
 
-                                        <!-- Banner after each product group -->
-                                        @if ($bannerToggle)
-                                            <!-- First Banner Style -->
-                                            @if ($shop->category1)
-                                                <div class="row mb-4">
-                                                    <div class="col-lg-12 ps-0 d-flex mid-bn me-5 margin-left"
-                                                        style="height: 180px; overflow:hidden;position:relative;background-size: cover; background-image: url({{ $shop->image1 ? Storage::url($shop->image1) : asset('assets/img/store_front/bnwatch.png') }})">
-                                                        <div class="p-4 ms-4">
-                                                            <p style="font-size:14px ;color: #fff !important;">
-                                                                {{ $shop->category1 ? $shop->category1 : 'Please Category Add' }}
-                                                            </p>
-                                                            <h4 style="font-size:1.2rem;color: #fff !important;">
-                                                                {{ $shop->title1 ? $shop->title1 : 'Please Add title' }}
-                                                            </h4>
-                                                            <a class="mid-btn mt-2 btn btn-dark"
-                                                                href="{{ $shop->link1 }}"><span
-                                                                    style="font-size: 10px">View Collection</span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @else
-                                            <!-- Second Banner Style -->
-                                            @if ($shop->category2)
-                                                <div class="row mb-4">
-                                                    <div class="col-lg-12 mid-bn"
-                                                        style="height: 180px; overflow: hidden; background-size: cover;background-image: url({{ $shop->image2 ? Storage::url($shop->image2) : asset('assets/img/store_front/bnbag.png') }})">
-                                                        <div class="p-4 ms-4">
-                                                            <p style="font-size:14px ;color: #fff !important;">
-                                                                {{ $shop->category2 ? $shop->category2 : 'Please Add Category' }}
-                                                            </p>
-                                                            <h4 style="font-size:1.2rem;color: #fff !important;">
-                                                                {{ $shop->title2 ? $shop->title2 : 'Please add Title' }}
-                                                            </h4>
-                                                            <a class="mid-btn mt-2 btn btn-dark"
-                                                                href="{{ $shop->link2 }}"><span
-                                                                    style="font-size: 10px">View Collection</span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endif
+                    <div class="tab-content" id="shopTabsContent">
+                        <!-- Home Tab -->
+                        <div class="tab-pane fade show active" id="home" role="tabpanel">
+                            @if (count($shop->products) > 0)
+                                @php
+                                    $products = $shop->products->where('featured', 1)->chunk(4);
+                                    $bannerToggle = false; // Flag to alternate between your two banner styles
+                                @endphp
 
-                                        @php $bannerToggle = !$bannerToggle; @endphp
-                                    @endforeach
-                                @else
-                                    <div class="text-center py-4">
-                                        <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
-                                        <h5 class="text-muted">No products available</h5>
-                                    </div>
-                                @endif  
-                            </div>
-
-                            <!-- Products Tab -->
-                            <div class="tab-pane fade" id="products" role="tabpanel">
-                                <div class="content-card">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h4>All Products</h4>
-                                        <div class="product-filters">
-                                            <select class="form-select form-select-sm">
-                                                <option>Sort by</option>
-                                                <option>Price: Low to High</option>
-                                                <option>Price: High to Low</option>
-                                                <option>Newest</option>
-                                                <option>Popular</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        @if (count($shop->products) > 0)
+                                @foreach ($products as $productGroup)
+                                    <!-- Product Group (4 products) -->
+                                    <div class="content-card mb-3">
+                                        <div class="card-body">
                                             <div class="row">
-                                                @foreach ($shop->products as $product)
+                                                @foreach ($productGroup as $product)
                                                     <x-products.product :product="$product" />
                                                 @endforeach
                                             </div>
-                                        @else
-                                            <div class="text-center py-4">
-                                                <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
-                                                <h5 class="text-muted">No products available</h5>
-                                                <p class="text-muted">This shop hasn't added any products yet.</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Banner after each product group -->
+                                    @if ($bannerToggle)
+                                        <!-- First Banner Style -->
+                                        @if ($shop->category1)
+                                            <div class="row mb-4">
+                                                <div class="col-lg-12 ps-0 d-flex mid-bn me-5 margin-left"
+                                                    style="height: 180px; overflow:hidden;position:relative;background-size: cover; background-image: url({{ $shop->image1 ? Storage::url($shop->image1) : asset('assets/img/store_front/bnwatch.png') }})">
+                                                    <div class="p-4 ms-4">
+                                                        <p style="font-size:14px ;color: #fff !important;">
+                                                            {{ $shop->category1 ? $shop->category1 : 'Please Category Add' }}
+                                                        </p>
+                                                        <h4 style="font-size:1.2rem;color: #fff !important;">
+                                                            {{ $shop->title1 ? $shop->title1 : 'Please Add title' }}
+                                                        </h4>
+                                                        <a class="mid-btn mt-2 btn btn-dark"
+                                                            href="{{ $shop->link1 }}"><span style="font-size: 10px">View
+                                                                Collection</span></a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         @endif
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- About Tab -->
-                            <div class="tab-pane fade" id="about" role="tabpanel">
-                                <div class="content-card mb-4">
-                                    <div class="card-header">
-                                        <h4>About {{ $shop->name }}</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        {!! $shop->description !!}
-                                    </div>
-                                </div>
-
-                                @if ($shop->shopPolicy)
-                                    <div class="content-card">
-                                        <div class="card-header">
-                                            <h4>Shop Policies</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="policy-item">
-                                                        <div class="policy-icon text-danger">
-                                                            <i class="fas fa-ban"></i>
-                                                        </div>
-                                                        <div class="policy-details">
-                                                            <h6>Cancellation Policy</h6>
-                                                            <p>{{ $shop->shopPolicy->cancellation }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="policy-item">
-                                                        <div class="policy-icon text-warning">
-                                                            <i class="fas fa-exchange-alt"></i>
-                                                        </div>
-                                                        <div class="policy-details">
-                                                            <h6>Return & Exchange</h6>
-                                                            <p>{{ $shop->shopPolicy->return_exchange }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="policy-item">
-                                                        <div class="policy-icon text-success">
-                                                            <i class="fas fa-credit-card"></i>
-                                                        </div>
-                                                        <div class="policy-details">
-                                                            <h6>Payment Options</h6>
-                                                            <p>{{ $shop->shopPolicy->payment_option }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="policy-item">
-                                                        <div class="policy-icon text-primary">
-                                                            <i class="fas fa-truck"></i>
-                                                        </div>
-                                                        <div class="policy-details">
-                                                            <h6>Delivery Information</h6>
-                                                            <p>{{ $shop->shopPolicy->delivery }}</p>
-                                                        </div>
+                                    @else
+                                        <!-- Second Banner Style -->
+                                        @if ($shop->category2)
+                                            <div class="row mb-4">
+                                                <div class="col-lg-12 mid-bn"
+                                                    style="height: 180px; overflow: hidden; background-size: cover;background-image: url({{ $shop->image2 ? Storage::url($shop->image2) : asset('assets/img/store_front/bnbag.png') }})">
+                                                    <div class="p-4 ms-4">
+                                                        <p style="font-size:14px ;color: #fff !important;">
+                                                            {{ $shop->category2 ? $shop->category2 : 'Please Add Category' }}
+                                                        </p>
+                                                        <h4 style="font-size:1.2rem;color: #fff !important;">
+                                                            {{ $shop->title2 ? $shop->title2 : 'Please add Title' }}
+                                                        </h4>
+                                                        <a class="mid-btn mt-2 btn btn-dark"
+                                                            href="{{ $shop->link2 }}"><span style="font-size: 10px">View
+                                                                Collection</span></a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
+                                    @endif
+
+                                    @php $bannerToggle = !$bannerToggle; @endphp
+                                @endforeach
+                            @else
+                                <div class="text-center py-4">
+                                    <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                                    <h5 class="text-muted">No products available</h5>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Products Tab -->
+                        <div class="tab-pane fade" id="products" role="tabpanel">
+                            <div class="content-card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h4>All Products</h4>
+                                    <div class="product-filters">
+                                        <select class="form-select form-select-sm">
+                                            <option>Sort by</option>
+                                            <option>Price: Low to High</option>
+                                            <option>Price: High to Low</option>
+                                            <option>Newest</option>
+                                            <option>Popular</option>
+                                        </select>
                                     </div>
-                                @endif
+                                </div>
+                                <div class="card-body">
+                                    @if (count($shop->products) > 0)
+                                        <div class="row">
+                                            @foreach ($shop->products as $product)
+                                                <x-products.product :product="$product" />
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="text-center py-4">
+                                            <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                                            <h5 class="text-muted">No products available</h5>
+                                            <p class="text-muted">This shop hasn't added any products yet.</p>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- About Tab -->
+                        <div class="tab-pane fade" id="about" role="tabpanel">
+                            <div class="content-card mb-4">
+                                <div class="card-header">
+                                    <h4>About {{ $shop->name }}</h4>
+                                </div>
+                                <div class="card-body">
+                                    {!! $shop->description !!}
+                                </div>
                             </div>
 
-                            <!-- Reviews Tab -->
-                            <div class="tab-pane fade" id="reviews" role="tabpanel">
+                            @if ($shop->shopPolicy)
                                 <div class="content-card">
                                     <div class="card-header">
-                                        <h4>Customer Reviews</h4>
-                                        <div class="rating-summary">
-                                            <div class="average-rating">
-                                                {{ number_format(Sohoj::average_rating($shop->ratings), 1) }}
-                                                <input name="rating" type="number"
-                                                    value="{{ Sohoj::average_rating($shop->ratings) }}"
-                                                    class="rating published_rating" data-size="xs" readonly>
-                                            </div>
-                                            <div class="total-reviews">{{ $shop->ratings->count() }} reviews</div>
-                                        </div>
+                                        <h4>Shop Policies</h4>
                                     </div>
                                     <div class="card-body">
-                                        @if ($shop->ratings()->count() > 0)
-                                            @foreach ($shop->ratings as $rating)
-                                                <div class="review-item mb-4">
-                                                    <div class="review-header">
-                                                        <img class="review-avatar"
-                                                            src="{{ asset('assets/img/single_product/person.png') }}"
-                                                            alt="Reviewer">
-                                                        <div class="reviewer-info">
-                                                            <h6>{{ $rating->name }}</h6>
-                                                            <div class="review-date">
-                                                                {{ $rating->created_at->format('M d, Y') }}</div>
-                                                        </div>
-                                                        <div class="review-rating">
-                                                            <input name="rating" type="number"
-                                                                value="{{ $rating->rating }}"
-                                                                class="rating published_rating" data-size="xs" readonly>
-                                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="policy-item">
+                                                    <div class="policy-icon text-danger">
+                                                        <i class="fas fa-ban"></i>
                                                     </div>
-                                                    <div class="review-content">
-                                                        <p>{{ $rating->review }}</p>
+                                                    <div class="policy-details">
+                                                        <h6>Cancellation Policy</h6>
+                                                        <p>{{ $shop->shopPolicy->cancellation }}</p>
                                                     </div>
                                                 </div>
-                                            @endforeach
-                                        @else
-                                            <div class="text-center py-4">
-                                                <i class="fas fa-star fa-3x text-muted mb-3"></i>
-                                                <h5 class="text-muted">No reviews yet</h5>
-                                                <p class="text-muted">Be the first to review this shop!</p>
                                             </div>
-                                        @endif
+                                            <div class="col-md-6">
+                                                <div class="policy-item">
+                                                    <div class="policy-icon text-warning">
+                                                        <i class="fas fa-exchange-alt"></i>
+                                                    </div>
+                                                    <div class="policy-details">
+                                                        <h6>Return & Exchange</h6>
+                                                        <p>{{ $shop->shopPolicy->return_exchange }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="policy-item">
+                                                    <div class="policy-icon text-success">
+                                                        <i class="fas fa-credit-card"></i>
+                                                    </div>
+                                                    <div class="policy-details">
+                                                        <h6>Payment Options</h6>
+                                                        <p>{{ $shop->shopPolicy->payment_option }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="policy-item">
+                                                    <div class="policy-icon text-primary">
+                                                        <i class="fas fa-truck"></i>
+                                                    </div>
+                                                    <div class="policy-details">
+                                                        <h6>Delivery Information</h6>
+                                                        <p>{{ $shop->shopPolicy->delivery }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Reviews Tab -->
+                        <div class="tab-pane fade" id="reviews" role="tabpanel">
+                            <div class="content-card">
+                                <div class="card-header">
+                                    <h4>Customer Reviews</h4>
+                                    <div class="rating-summary">
+                                        <div class="average-rating">
+                                            {{ number_format(Sohoj::average_rating($shop->ratings), 1) }}
+                                            <input name="rating" type="number"
+                                                value="{{ Sohoj::average_rating($shop->ratings) }}"
+                                                class="rating published_rating" data-size="xs" readonly>
+                                        </div>
+                                        <div class="total-reviews">{{ $shop->ratings->count() }} reviews</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    @if ($shop->ratings()->count() > 0)
+                                        @foreach ($shop->ratings as $rating)
+                                            <div class="review-item mb-4">
+                                                <div class="review-header">
+                                                    <img class="review-avatar"
+                                                        src="{{ asset('assets/img/single_product/person.png') }}"
+                                                        alt="Reviewer">
+                                                    <div class="reviewer-info">
+                                                        <h6>{{ $rating->name }}</h6>
+                                                        <div class="review-date">
+                                                            {{ $rating->created_at->format('M d, Y') }}</div>
+                                                    </div>
+                                                    <div class="review-rating">
+                                                        <input name="rating" type="number"
+                                                            value="{{ $rating->rating }}" class="rating published_rating"
+                                                            data-size="xs" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="review-content">
+                                                    <p>{{ $rating->review }}</p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="text-center py-4">
+                                            <i class="fas fa-star fa-3x text-muted mb-3"></i>
+                                            <h5 class="text-muted">No reviews yet</h5>
+                                            <p class="text-muted">Be the first to review this shop!</p>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -927,386 +914,387 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <style>
-            /* Brand Sidebar Styles */
-            .brand-sidebar {
-                background: #fff;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-                padding: 20px;
-            }
+    <style>
+        /* Brand Sidebar Styles */
+        .brand-sidebar {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
 
-            .brand-logo {
-                width: 120px;
-                height: 120px;
-                object-fit: contain;
-                border-radius: 50%;
-                border: 1px solid #eee;
-                padding: 5px;
-            }
+        .brand-logo {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 50%;
+            border: 1px solid #eee;
+            padding: 5px;
+        }
 
-            .brand-name {
-                font-size: 1.5rem;
-                font-weight: 600;
-                color: #333;
-            }
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
 
-            .brand-tagline {
-                font-size: 0.9rem;
-            }
+        .brand-tagline {
+            font-size: 0.9rem;
+        }
 
-            .brand-info-card {
-                background: #f9f9f9;
-                border-radius: 8px;
-                padding: 15px;
-                margin-bottom: 20px;
-            }
+        .brand-info-card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
 
-            .info-title {
-                font-size: 1.1rem;
-                margin-bottom: 15px;
-                color: #444;
-            }
+        .info-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #444;
+        }
 
-            .info-list {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-            .info-list li {
-                margin-bottom: 10px;
-                font-size: 0.9rem;
-                color: #555;
-            }
+        .info-list li {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #555;
+        }
 
-            .info-list i {
-                width: 20px;
-                text-align: center;
-            }
+        .info-list i {
+            width: 20px;
+            text-align: center;
+        }
 
-            .brand-stats-card {
-                display: flex;
-                justify-content: space-between;
-                background: #fff;
-                border: 1px solid #eee;
-                border-radius: 8px;
-                padding: 15px;
-                margin-bottom: 20px;
-            }
+        .brand-stats-card {
+            display: flex;
+            justify-content: space-between;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
 
-            .stat-item {
-                text-align: center;
-            }
+        .stat-item {
+            text-align: center;
+        }
 
-            .stat-value {
-                font-size: 1.3rem;
-                font-weight: 600;
-                color: #333;
-            }
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
 
-            .stat-label {
-                font-size: 0.8rem;
-                color: #777;
-            }
+        .stat-label {
+            font-size: 0.8rem;
+            color: #777;
+        }
 
-            .brand-actions {
-                margin-bottom: 20px;
-            }
+        .brand-actions {
+            margin-bottom: 20px;
+        }
 
-            .btn-follow,
-            .btn-message {
-                width: 100%;
-                margin-bottom: 10px;
-                border-radius: 6px;
-                /* padding: 10px; */
-                font-size: 0.9rem;
-            }
+        .btn-follow,
+        .btn-message {
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            /* padding: 10px; */
+            font-size: 0.9rem;
+        }
 
-            .btn-follow {
-                background-color: #f8f9fa;
-                border: 1px solid #ddd;
-                color: #333;
-            }
+        .btn-follow {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            color: #333;
+        }
 
-            .btn-follow:hover {
-                background-color: #e9ecef;
-            }
+        .btn-follow:hover {
+            background-color: #e9ecef;
+        }
 
-            .btn-message {
-                background-color: var(--accent-color);
-                color: white;
-                border-radius: 10px;
-                margin-top: 10px;
-            }
+        .btn-message {
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
 
-            .btn-message:hover {
-                background-color: var(--accent-color);
-            }
+        .btn-message:hover {
+            background-color: var(--accent-color);
+        }
 
-            .brand-social-card {
-                background: #f9f9f9;
-                border-radius: 8px;
-                padding: 15px;
-            }
+        .brand-social-card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+        }
 
-            .social-title {
-                font-size: 1.1rem;
-                margin-bottom: 15px;
-                color: #444;
-            }
+        .social-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #444;
+        }
 
-            .social-links {
-                display: flex;
-                justify-content: center;
-                gap: 15px;
-            }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
 
-            .social-link {
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 1rem;
-                text-decoration: none;
-            }
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* color: white; */
+            font-size: 1rem;
+            text-decoration: none;
+        }
 
-            .social-facebook {
-                background-color: #3b5998;
-            }
+        .social-facebook {
+            background-color: #3b5998;
+        }
 
-            .social-instagram {
-                background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
-            }
+        .social-instagram {
+            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        }
 
-            .social-twitter {
-                background-color: #1da1f2;
-            }
+        .social-twitter {
+            background-color: #1da1f2;
+        }
 
-            .social-linkedin {
-                background-color: #0077b5;
-            }
+        .social-linkedin {
+            background-color: #0077b5;
+        }
 
-            /* Content Tabs Styles */
-            .brand-content-tabs {
-                background: #fff;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            }
+        /* Content Tabs Styles */
+        .brand-content-tabs {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
 
+        .tabs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .nav-tabs {
+            border-bottom: none;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: #555;
+            font-weight: 500;
+            padding: 15px 20px;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tabs .nav-link:hover {
+            border-color: transparent;
+            color: var(--accent-color) !important;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--accent-color) !important;
+            border-bottom: 3px solid var(--accent-color) !important;
+            background: transparent;
+        }
+
+        .search-container {
+            margin-left: auto;
+            padding: 10px 0;
+        }
+
+        .search-form {
+            width: 250px;
+        }
+
+        .search-form .input-group {
+            width: 100%;
+        }
+
+        .search-form .form-control {
+            border-radius: 20px 0 0 20px;
+            border-right: none;
+            height: 38px;
+            font-size: 0.9rem;
+        }
+
+        .search-form .btn-search {
+            background: var(--accent-color) !important;
+            color: white;
+            border-radius: 0 20px 20px 0;
+            border-left: none;
+            height: 45px;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-content {
+            padding: 20px;
+        }
+
+        .content-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-header h4 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Policy Items */
+        .policy-item {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .policy-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .policy-details h6 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .policy-details p {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Review Items */
+        .review-item {
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .review-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .reviewer-info {
+            flex-grow: 1;
+        }
+
+        .reviewer-info h6 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .review-date {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .review-rating {
+            margin-left: 15px;
+        }
+
+        .review-content p {
+            margin: 0;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .rating-summary {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .average-rating {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .total-reviews {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
             .tabs-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 0 20px;
-                border-bottom: 1px solid #eee;
-            }
-
-            .nav-tabs {
-                border-bottom: none;
-            }
-
-            .nav-tabs .nav-link {
-                border: none;
-                color: #555;
-                font-weight: 500;
-                padding: 15px 20px;
-                border-bottom: 3px solid transparent;
-            }
-
-            .nav-tabs .nav-link:hover {
-                border-color: transparent;
-                color: var(--accent-color) !important;
-            }
-
-            .nav-tabs .nav-link.active {
-                color: var(--accent-color) !important;
-                border-bottom: 3px solid var(--accent-color) !important;
-                background: transparent;
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .search-container {
-                margin-left: auto;
-                padding: 10px 0;
+                width: 100%;
+                padding: 0 20px 15px;
             }
 
             .search-form {
-                width: 250px;
-            }
-
-            .search-form .input-group {
                 width: 100%;
             }
+        }
+    </style>
 
-            .search-form .form-control {
-                border-radius: 20px 0 0 20px;
-                border-right: none;
-                height: 38px;
-                font-size: 0.9rem;
+    <script>
+        // Bootstrap tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            var shopTabs = document.getElementById('shopTabs');
+            if (shopTabs) {
+                var tab = new bootstrap.Tab(shopTabs.querySelector('.nav-link.active'));
+                tab.show();
             }
+        });
+    </script>
 
-            .search-form .btn-search {
-                background: var(--accent-color) !important;
-                color: white;
-                border-radius: 0 20px 20px 0;
-                border-left: none;
-                height: 45px;
-                width: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .tab-content {
-                padding: 20px;
-            }
-
-            .content-card {
-                background: #fff;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-                margin-bottom: 20px;
-            }
-
-            .card-header {
-                padding: 15px 20px;
-                border-bottom: 1px solid #eee;
-                display: flex;
-                align-items: center;
-            }
-
-            .card-header h4 {
-                margin: 0;
-                font-size: 1.2rem;
-            }
-
-            .card-body {
-                padding: 20px;
-            }
-
-            /* Policy Items */
-            .policy-item {
-                display: flex;
-                margin-bottom: 20px;
-            }
-
-            .policy-icon {
-                font-size: 1.5rem;
-                margin-right: 15px;
-                width: 40px;
-                text-align: center;
-            }
-
-            .policy-details h6 {
-                font-size: 1rem;
-                margin-bottom: 5px;
-            }
-
-            .policy-details p {
-                font-size: 0.9rem;
-                color: #666;
-                margin: 0;
-            }
-
-            /* Review Items */
-            .review-item {
-                padding-bottom: 15px;
-                border-bottom: 1px solid #eee;
-            }
-
-            .review-item:last-child {
-                border-bottom: none;
-            }
-
-            .review-header {
-                display: flex;
-                align-items: center;
-                margin-bottom: 10px;
-            }
-
-            .review-avatar {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                margin-right: 15px;
-            }
-
-            .reviewer-info {
-                flex-grow: 1;
-            }
-
-            .reviewer-info h6 {
-                margin: 0;
-                font-size: 1rem;
-            }
-
-            .review-date {
-                font-size: 0.8rem;
-                color: #777;
-            }
-
-            .review-rating {
-                margin-left: 15px;
-            }
-
-            .review-content p {
-                margin: 0;
-                color: #333;
-                font-size: 0.95rem;
-            }
-
-            .rating-summary {
-                display: flex;
-                align-items: center;
-                margin-left: auto;
-            }
-
-            .average-rating {
-                font-size: 1.5rem;
-                font-weight: 600;
-                margin-right: 10px;
-                display: flex;
-                align-items: center;
-            }
-
-            .total-reviews {
-                font-size: 0.9rem;
-                color: #777;
-            }
-
-            /* Responsive adjustments */
-            @media (max-width: 992px) {
-                .tabs-header {
-                    flex-direction: column;
-                    align-items: flex-start;
-                }
-
-                .search-container {
-                    width: 100%;
-                    padding: 0 20px 15px;
-                }
-
-                .search-form {
-                    width: 100%;
-                }
-            }
-        </style>
-
-        <script>
-            // Bootstrap tab functionality
-            document.addEventListener('DOMContentLoaded', function() {
-                var shopTabs = document.getElementById('shopTabs');
-                if (shopTabs) {
-                    var tab = new bootstrap.Tab(shopTabs.querySelector('.nav-link.active'));
-                    tab.show();
-                }
-            });
-        </script>
-   
 
     <!-- Message Modal -->
     <div class="modal fade" id="massageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
