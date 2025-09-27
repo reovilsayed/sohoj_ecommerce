@@ -87,9 +87,7 @@ class VendorPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-
                 Verified::class,
-                // EnsureTwoFactorVerified::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
