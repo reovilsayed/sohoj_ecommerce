@@ -3,6 +3,7 @@
 use App\Data\Country\Africa;
 use App\Data\Country\CountryStateCity;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LocalAdminController;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VendorRegisterController;
@@ -73,6 +74,16 @@ Route::post('/add-address', [CheckoutController::class, 'userAddress'])->name('u
 
 Route::get('/', [PageController::class, 'home'])->name('homepage');
 Route::get('/shops', [PageController::class, 'shops'])->name('shops');
+
+// Local Admin Routes (only accessible in local environment)
+Route::prefix('local-admin')->name('local-admin.')->group(function () {
+    Route::get('/', [LocalAdminController::class, 'index'])->name('index');
+    Route::post('/login-as-user/{userId}', [LocalAdminController::class, 'loginAsUser'])->name('login-as-user');
+    Route::post('/login-as-shop/{shopId}', [LocalAdminController::class, 'loginAsShop'])->name('login-as-shop');
+    Route::post('/return-to-admin', [LocalAdminController::class, 'returnToAdmin'])->name('return-to-admin');
+    Route::post('/create-test-user', [LocalAdminController::class, 'createTestUser'])->name('create-test-user');
+    Route::post('/create-test-shop', [LocalAdminController::class, 'createTestShop'])->name('create-test-shop');
+});
 Route::get('/cart', [PageController::class, 'cart'])->name('cart');
 
 Route::get('/product/{slug}', [PageController::class, 'product_details'])->name('product_details');

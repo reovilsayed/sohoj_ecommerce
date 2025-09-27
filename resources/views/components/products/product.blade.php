@@ -16,7 +16,7 @@
     <div class="product-card" >
         {{-- Product Image Section --}}
         <div class="product-image-wrapper" >
-            <div class="product-image">
+            <div class="product-image" style="cursor: pointer;">
                 <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="product-img"
                     style="width: 100%; height: 100%; object-fit: cover;">
 
@@ -130,6 +130,19 @@
                         <i class="fas fa-shopping-cart me-2" aria-hidden="true"></i>
                         <span class="btn-text">Add to Cart</span>
                     </button>
+                </form>
+                <form action="{{ route('cart.boynow') }}" method="POST" class="add-to-cart-form">
+                    @csrf
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <div class="d-grid">
+                    <button class="btn btn-dark rounded-3 mt-2 " type="submit" aria-label="Add {{ $product->name }} to cart">
+                        <span class="spinner" style="display:none;margin-right:8px;"><i
+                                class="fas fa-spinner fa-spin"></i></span>
+                                <i class="fa-solid fa-bolt"></i>
+                        <span class="btn-text">Buy Now</span>
+                    </button>
+                    </div>
                 </form>
             @endif
 

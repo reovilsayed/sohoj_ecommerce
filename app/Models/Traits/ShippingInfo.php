@@ -8,41 +8,41 @@ trait ShippingInfo
 {
     public function contains_battery_pi966()
     {
-        return $this->parcels[0]['contains_battery_pi966'] ?? false;
+        return boolval($this->parcels[0]['contains_battery_pi966'] ?? false);
     }
 
     public function contains_battery_pi967()
     {
-        return $this->parcels[0]['contains_battery_pi967'] ?? false;
+        return boolval($this->parcels[0]['contains_battery_pi967'] ?? false);
     }
 
     public function contains_liquids()
     {
-        return $this->parcels[0]['contains_liquids'] ?? false;
+        return boolval($this->parcels[0]['contains_liquids'] ?? false);
     }
 
     public function origin_country_alpha2()
     {
-        return $this->parcels[0]['origin_country_alpha2'] ?? '';
+        return strtoupper($this->parcels[0]['origin_country_alpha2'] ?? '');
     }
 
     public function length()
     {
-        return $this->parcels[0]['length'] ?? 25;
+        return number_format($this->parcels[0]['length'] ?? 25, 2);
     }
 
     public function width()
     {
-        return $this->parcels[0]['width'] ?? 25;
+        return number_format($this->parcels[0]['width'] ?? 25, 2);
     }
 
     public function height()
     {
-        return $this->parcels[0]['height'] ?? 25;
+        return number_format($this->parcels[0]['height'] ?? 25, 2);
     }
 
     public function weight(){
-        return $this->parcels[0]['actual_weight'] ?? 0.5;
+        return number_format($this->parcels[0]['actual_weight'] ?? 0.5, 2);
     }
 
     public function hs_code(){

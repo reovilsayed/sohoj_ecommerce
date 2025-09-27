@@ -89,7 +89,7 @@ class VendorPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
 
                 Verified::class,
-                EnsureTwoFactorVerified::class,
+                // EnsureTwoFactorVerified::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
