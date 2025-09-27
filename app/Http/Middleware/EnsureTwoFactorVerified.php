@@ -40,7 +40,7 @@ class EnsureTwoFactorVerified
         $user = Auth::user();
         $hasPendingTwoFactor = !empty($user->two_factor_code) && !empty($user->two_factor_expires_at);
 
-        if ($hasPendingTwoFactor && !$isAllowed) {
+        if ($hasPendingTwoFactor && !$isAllowed && env('APP_ENV') === 'production') {
             if (!session()->has('intended_after_2fa')) {
                 session(['intended_after_2fa' => $request->fullUrl()]);
             }

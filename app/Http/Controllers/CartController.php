@@ -128,7 +128,7 @@ class CartController extends Controller
 		}
 
 		// Default fallback
-		return redirect('/cart')->with('success_msg', 'Item has been added to cart!');
+		return redirect('/checkout')->with('success_msg', 'Item has been added to cart!');
 	}
 
 	private function cart($request)
