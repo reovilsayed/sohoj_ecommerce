@@ -7,6 +7,7 @@ use App\Filament\Resources\DashboardResource\Widgets\DashboardChart;
 use App\Filament\Resources\PolarChartDashboardResource\Widgets\DashboardChart as WidgetsDashboardChart;
 use App\Filament\Resources\StatsOverViewResource\Widgets\StatsOverview as WidgetsStatsOverview;
 use App\Filament\Widgets\ListLatestShops;
+use App\Http\Middleware\ClearNotificationsMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -105,6 +106,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 EnsureTwoFactorVerified::class,
+                ClearNotificationsMiddleware::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

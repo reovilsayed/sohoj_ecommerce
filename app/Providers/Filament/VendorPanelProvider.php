@@ -19,6 +19,7 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use App\Filament\Vendor\Pages\ViewInvoice;
 use App\Filament\Vendor\Pages\VendorProfilePage;
+use App\Http\Middleware\ClearNotificationsMiddleware;
 use App\Http\Middleware\CompleteProfile;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -88,6 +89,7 @@ class VendorPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 Verified::class,
+                ClearNotificationsMiddleware::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
