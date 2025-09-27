@@ -58,6 +58,9 @@ configure(basePath: dirname(__DIR__))
         ])->validateCsrfTokens(except: [
             '/file/post'
         ]);
+        
+        // Replace default CSRF middleware with custom handler
+        $middleware->replace(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class, \App\Http\Middleware\HandleCsrfExceptions::class);
       
     })
     ->withExceptions(function (Exceptions $exceptions) {
