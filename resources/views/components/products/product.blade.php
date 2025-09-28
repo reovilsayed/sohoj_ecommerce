@@ -12,7 +12,7 @@
     $showMultipleCategories = $showMultipleCategories ?? true;
 @endphp
 
-<div class="col-md-3 col-sm-6 col-12 mb-4">
+<div class="col-md-4 col-sm-6 col-12 mb-4">
     <div class="product-card" >
         {{-- Product Image Section --}}
         <div class="product-image-wrapper" >
