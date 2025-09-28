@@ -821,7 +821,7 @@
                                                                     name="add_to_cart" id="add-to-cart-btn"
                                                                     value="Add to Cart">
 
-                                                                <button class="btn btn-sm btn-dark" type="submit"
+                                                                <button class="btn btn-sm btn-dark" style="width: 300px" type="submit"
                                                                     id="buy-now-btn">
                                                                     Buy Now
                                                                 </button>

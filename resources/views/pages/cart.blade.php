@@ -403,27 +403,7 @@
                             <span class="summary-value">${{ Cart::subtotal() }}</span>
                         </div>
 
-                        <div class="summary-row">
-                            <span class="summary-label">Shipping</span>
-                            <span class="summary-value">
-                                @if (Sohoj::shipping() == 0)
-                                    Free
-                                @else
-                                    {{ Sohoj::price(Sohoj::shipping()) }}
-                                @endif
-                            </span>
-                        </div>
-
-                        {{-- <div class="summary-row">
-                            <span class="summary-label">Tax</span>
-                            <span class="summary-value">
-                                @if (Sohoj::price(Sohoj::tax()) == 0)
-                                    Free
-                                @else
-                                    {{ Sohoj::price(Sohoj::tax()) }}
-                                @endif
-                            </span>
-                        </div> --}}
+         
 
                         <div class="summary-row">
                             <span class="summary-label">Discount</span>

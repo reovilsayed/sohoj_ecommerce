@@ -2,10 +2,35 @@
 
     $averageRating = Sohoj::average_rating($product->ratings);
     $ratingCount = $product->ratings->count();
-    $currentPrice = $product->sale_price ?? $product->price;
-    $originalPrice = $product->price;
-    $hasDiscount = $product->sale_price && $product->sale_price < $product->price;
-    $discountPercentage = $hasDiscount ? round((($originalPrice - $currentPrice) / $originalPrice) * 100) : 0;
+    
+    // Handle pricing for variable products
+    if ($product->is_variable_product && $product->variations && count($product->variations) > 0) {
+        // Get minimum price from variations
+        $variationPrices = collect($product->variations)->map(function($variation) {
+            return $variation->price ?? 0;
+        })->filter(function($price) {
+            return $price > 0;
+        });
+        
+        if ($variationPrices->isNotEmpty()) {
+            $currentPrice = $variationPrices->min();
+            $originalPrice = $currentPrice; // For variable products, we'll show the min price
+            $hasDiscount = false; // Variable products show "Start From" instead of discount
+            $discountPercentage = 0;
+        } else {
+            $currentPrice = $product->sale_price ?? $product->price;
+            $originalPrice = $product->price;
+            $hasDiscount = $product->sale_price && $product->sale_price < $product->price;
+            $discountPercentage = $hasDiscount ? round((($originalPrice - $currentPrice) / $originalPrice) * 100) : 0;
+        }
+    } else {
+        // Regular product pricing
+        $currentPrice = $product->sale_price ?? $product->price;
+        $originalPrice = $product->price;
+        $hasDiscount = $product->sale_price && $product->sale_price < $product->price;
+        $discountPercentage = $hasDiscount ? round((($originalPrice - $currentPrice) / $originalPrice) * 100) : 0;
+    }
+    
     $fullStars = floor($averageRating);
     $hasHalfStar = $averageRating - $fullStars >= 0.5;
 
@@ -18,7 +43,7 @@
         <div class="product-image-wrapper">
             <div class="product-image" style="cursor: pointer;">
                 <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="product-img"
-                    style="width: 100%; height: 100%; object-fit: cover;">
+                    style="width: 100%; height: 100%; object-fit: contain;">
 
                 {{-- Product Actions Overlay --}}
                 <div class="product-overlay"
@@ -102,18 +127,24 @@
                 {{-- Product Price --}}
                 @if ($currentPrice)
                     <div class="product-price">
-                        @if ($hasDiscount)
-                            <span class="original-price"
-                                style="color: red !important; font-weight: 600; font-size: large;"
-                                aria-label="Original price">{{ Sohoj::price($originalPrice) }}</span>
+                        @if ($product->is_variable_product && $product->variations && count($product->variations) > 0)
+                            {{-- Variable Product: Show "Start From" pricing --}}
+                            <span class="start-from-label" style="font-size: 1em; color: #666; font-weight: 500;">Start From</span>
+                            <span class="current-price" aria-label="Starting price">{{ Sohoj::price($currentPrice) }}</span>
+                        @else
+                            {{-- Regular Product: Show normal pricing with discount if applicable --}}
+                            @if ($hasDiscount)
+                                <span class="original-price"
+                                    style="color: red !important; font-weight: 600; font-size: large;"
+                                    aria-label="Original price">{{ Sohoj::price($originalPrice) }}</span>
+                            @endif
+                            <span class="current-price" aria-label="Current price">{{ Sohoj::price($currentPrice) }}</span>
                         @endif
-                        <span class="current-price" aria-label="Current price">{{ Sohoj::price($currentPrice) }}</span>
                     </div>
                 @else
                     <p class="text-danger">
                         Price Currently Not Available
                     </p>
-
                 @endif
 
                 {{-- Add to Cart Button --}}

@@ -275,7 +275,11 @@ class ProductResource extends Resource
                                                     ->visibility('public')
                                                     ->maxSize(2048)
                                                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
-                                                    ->helperText('Upload a high-quality image that represents your product. This will be the main image displayed.')
+                                                    ->imageResizeMode('cover')
+                                                    ->imageResizeTargetWidth('450')
+                                                    ->imageResizeTargetHeight('450')
+                                                    ->imageCropAspectRatio('1:1')
+                                                    ->helperText('Upload a high-quality square image (recommended: 450x450px, 1:1 aspect ratio). This will be the main image displayed on product listings and detail pages.')
                                                     ->columnSpan(1),
 
                                                 FileUpload::make('images')
@@ -288,7 +292,11 @@ class ProductResource extends Resource
                                                     ->maxSize(2048)
                                                     ->maxFiles(10)
                                                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
-                                                    ->helperText('Upload additional product images (max 10). Show different angles, details, or variations of your product.')
+                                                    ->imageResizeMode('cover')
+                                                    ->imageResizeTargetWidth('450')
+                                                    ->imageResizeTargetHeight('450')
+                                                    ->imageCropAspectRatio('1:1')
+                                                    ->helperText('Upload additional product images (max 10, recommended: 450x450px, 1:1 aspect ratio). Show different angles, details, or variations of your product.')
                                                     ->dehydrateStateUsing(fn($state) => is_array($state) ? $state : [])
                                                     ->columnSpan(1),
                                             ]),
@@ -520,14 +528,18 @@ class ProductResource extends Resource
                                                         Forms\Components\Fieldset::make('Variant Image')
                                                             ->schema([
                                                                 FileUpload::make('variant_image')
-                                                                    ->label('')
+                                                                    ->label('Variant Image')
                                                                     ->image()
                                                                     ->directory('variants')
                                                                     ->imagePreviewHeight('150')
                                                                     ->visibility('public')
                                                                     ->maxSize(2048)
                                                                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/avif'])
-                                                                    ->helperText('Image specific to this variant.')
+                                                                    ->imageResizeMode('cover')
+                                                                    ->imageResizeTargetWidth('450')
+                                                                    ->imageResizeTargetHeight('450')
+                                                                    ->imageCropAspectRatio('1:1')
+                                                                    ->helperText('Upload an image specific to this variant (recommended: 450x450px, 1:1 aspect ratio). This image will be displayed when customers select this specific variant.')
                                                                     ->columnSpanFull(),
                                                             ]),
                                                     ])

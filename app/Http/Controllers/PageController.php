@@ -51,7 +51,7 @@ class PageController extends Controller
                 'sliders' => Slider::latest()->get()
             ];
         });
-    
+
 
         return view('pages.home', $homeData);
     }
@@ -63,13 +63,15 @@ class PageController extends Controller
         $categories = CategoryRepository::getAllParentCategories();
 
         $latest_shops =  ShopRepsitory::getLatestShops();
-        
+
         return view('pages.shops', compact('products', 'categories', 'latest_shops'));
     }
     public function product_details($slug)
     {
         $product = Product::where('slug', $slug)->firstOrFail();
-        $related_products = Product::whereNull('parent_id')->limit(4)->get();
+        $related_products = Product::whereNull('parent_id')->whereHas('prodcats', function ($query) use ($product) {
+            $query->whereIn('prodcats.id', $product->prodcats->pluck('id'));
+        })->get();
         $product->increment('views');
 
 
