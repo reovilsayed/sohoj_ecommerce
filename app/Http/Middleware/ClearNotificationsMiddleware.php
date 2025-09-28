@@ -17,6 +17,7 @@ class ClearNotificationsMiddleware
             $request->session()->forget('filament.notifications');
             $request->session()->forget('notifications');
             
+            
             // Note: Removed $request->session()->forget('_flash') as it was preventing
             // Laravel flash messages from working properly. The _flash key is used
             // by Laravel to manage flash data and should not be manually cleared.

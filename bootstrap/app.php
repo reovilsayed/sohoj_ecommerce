@@ -31,6 +31,7 @@ configure(basePath: dirname(__DIR__))
         // Add notification clearing + 2FA enforcement to web group
         $middleware->web(append: [
             EnsureTwoFactorVerified::class,
+            FilamentNotificationFixMiddleware::class,
         ]);
         
         $middleware->alias([
