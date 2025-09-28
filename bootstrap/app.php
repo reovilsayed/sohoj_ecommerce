@@ -30,7 +30,6 @@ configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         // Add notification clearing + 2FA enforcement to web group
         $middleware->web(append: [
-            ClearNotificationsMiddleware::class,
             EnsureTwoFactorVerified::class,
         ]);
         

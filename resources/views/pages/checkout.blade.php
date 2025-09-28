@@ -413,6 +413,7 @@
                 return $item->model->shop_id;
             });
         @endphp
+        
         <div class="container">
             <div class="checkout-hero mb-4 position-relative">
                 <h2 class="fw-bold mb-1 text-light">Checkout</h2>

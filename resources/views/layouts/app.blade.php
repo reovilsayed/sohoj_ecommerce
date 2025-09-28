@@ -560,6 +560,14 @@
                 $('.toast').toast('hide');
             })
         @endif
+        @if (session()->has('errors'))
+            $(document).ready(function() {
+                $('.toast').toast('show');
+            })
+            $('.toast_close').click(function() {
+                $('.toast').toast('hide');
+            })
+        @endif
     </script>
     @if (session()->has('subscribeEmail'))
         <script>
