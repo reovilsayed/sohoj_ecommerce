@@ -189,23 +189,43 @@
                     </div>
 
                     <!-- Mobile Filter Button - Fixed Position -->
-                    <div class="mobile-filter-floating d-lg-none ">
-                        <button class="btn btn-primary mobile-filter-btn rounded-circle mb-2 d-flex justify-content-center align-items-center" style="height: 50px; width: 50px; background-color: var(--harvest-gold);" type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
+               
+                        <button
+                            class="mobile-filter-floating d-lg-none btn btn-primary mobile-filter-btn rounded-circle mb-2 d-flex justify-content-center align-items-center"
+                            style="height: 50px; width: 50px; background-color: var(--harvest-gold);" type="button"
+                            data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
                             <i class="fas fa-filter"></i>
-                            
+
                             {{-- @if ($hasActiveFilters)
                                 <span
                                     class="badge bg-light text-primary ms-2">{{ collect([$currentCategory, $currentRating, request('priceMin'), request('priceMax')])->filter()->count() }}</span>
                             @endif --}}
                         </button>
-                    </div>
+                   
                     <style>
                         .mobile-filter-floating {
                             position: fixed;
+                            left: 16px;
                             bottom: 70px;
                             z-index: 1050;
                             border-radius: 50px;
+                        }
+
+                        .mobile-filter-floating {
+                            position: fixed;
+                            left: 16px;
+                            bottom: 70px;
+                            width: 52px;
+                            height: 52px;
+                            border-radius: 50%;
+                            border: none;
+                            /* background: var(--hunter-green); */
+                            color: #fff;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+                            z-index: 1055;
                         }
                     </style>
                     <!-- Main Content Area -->
@@ -394,20 +414,23 @@
                     <div class="row g-2">
                         @if ($hasActiveFilters)
                             <div class="col-6">
-                                <a href="{{ route('shops') }}" style="background: red; color: white;" class="btn btn-danger w-100 text-light">
+                                <a href="{{ route('shops') }}" style="background: red; color: white;"
+                                    class="btn btn-danger w-100 text-light">
                                     <i class="fas fa-times me-2"></i>
                                     Clear All
                                 </a>
                             </div>
                             <div class="col-6">
-                                <button type="button" class="btn btn-primary w-100" style="background-color: var(--harvest-gold);" data-bs-dismiss="offcanvas">
+                                <button type="button" class="btn btn-primary w-100"
+                                    style="background-color: var(--harvest-gold);" data-bs-dismiss="offcanvas">
                                     <i class="fas fa-check me-2"></i>
                                     Apply Filters
                                 </button>
                             </div>
                         @else
                             <div class="col-12">
-                                <button type="button" class="btn btn-primary w-100" style="background-color: var(--harvest-gold);" data-bs-dismiss="offcanvas">
+                                <button type="button" class="btn btn-primary w-100"
+                                    style="background-color: var(--harvest-gold);" data-bs-dismiss="offcanvas">
                                     <i class="fas fa-check me-2"></i>
                                     Apply Filters
                                 </button>
