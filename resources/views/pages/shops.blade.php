@@ -203,14 +203,7 @@
                         </button>
                    
                     <style>
-                        .mobile-filter-floating {
-                            position: fixed;
-                            left: 16px;
-                            bottom: 70px;
-                            z-index: 1050;
-                            border-radius: 50px;
-                        }
-
+                    
                         .mobile-filter-floating {
                             position: fixed;
                             left: 16px;
