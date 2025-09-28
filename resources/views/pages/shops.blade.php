@@ -48,7 +48,7 @@
     <main>
         <x-app.header />
         <section class="modern-shops-container">
-            <div class="container">
+            <div class="container-fluid px-2">
                 <div class="checkout-hero mb-4 position-relative">
                     <h2 class="fw-bold mb-1 text-light">Explore Our Shops</h2>
                     <p class="mb-0">Browse your favorite stores and enjoy fast, secure delivery on every order.</p>
