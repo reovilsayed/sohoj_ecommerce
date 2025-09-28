@@ -537,7 +537,7 @@
     <div class="container mt-4">
         <div class="row">
             <!-- Left Sidebar - Brand Information -->
-            <div class="col-md-3">
+            <div class="col-12 col-md-12 col-lg-3 mb-4">
                 <div class="brand-sidebar">
                     <!-- Brand Logo and Name -->
                     <div class="brand-header text-center mb-4">
@@ -641,7 +641,7 @@
             </div>
 
             <!-- Right Content Area -->
-            <div class="col-md-9">
+            <div class="col-12 col-md-12 col-lg-9">
                 <!-- Navigation Tabs with Search Box -->
                 <div class="brand-content-tabs">
                     <div class="tabs-header">
