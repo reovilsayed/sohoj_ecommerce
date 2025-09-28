@@ -691,7 +691,7 @@
                         <div class="tab-pane fade show active" id="home" role="tabpanel">
                             @if (count($shop->products) > 0)
                                 @php
-                                    $products = $shop->products->where('featured', 1)->chunk(4);
+                                    $products = $shop->products->where('status', 1)->whereNotNull('price')->where('featured', 1)->chunk(4);
                                     $bannerToggle = false; // Flag to alternate between your two banner styles
                                 @endphp
 
