@@ -189,7 +189,7 @@
                     </div>
 
                     <!-- Mobile Filter Button - Fixed Position -->
-                    <div class="mobile-filter-floating d-md-none">
+                    <div class="mobile-filter-floating d-lg-none ">
                         <button class="btn btn-primary mobile-filter-btn rounded-circle mb-2 d-flex justify-content-center align-items-center" style="height: 50px; width: 50px; background-color: var(--harvest-gold);" type="button" data-bs-toggle="offcanvas"
                             data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
                             <i class="fas fa-filter"></i>
@@ -209,7 +209,7 @@
                         }
                     </style>
                     <!-- Main Content Area -->
-                    <section class="col-md-9 col-12">
+                    <section class="col-lg-9 col-md-12">
                         <div class="modern-content-area">
                             <!-- Content Header -->
                             <div class="content-header">
