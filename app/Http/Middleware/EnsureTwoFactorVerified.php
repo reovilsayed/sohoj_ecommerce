@@ -16,7 +16,7 @@ class EnsureTwoFactorVerified
         if (!Auth::check()) {
             return $next($request);
         }
-        if(Auth::user()->role->name == 'vendor'){
+        if(Auth::user()->role->name == 'vendor' || Auth::user()->role->name == 'admin'){
             return $next($request);
         }
 
