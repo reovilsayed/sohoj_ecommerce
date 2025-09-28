@@ -61,7 +61,7 @@
                 </div>
                 <div class="row">
                     <!-- Desktop Filter Sidebar -->
-                    <div class="col-md-3 d-none d-md-block">
+                    <div class="col-lg-3 d-md-none d-lg-block">
                         <div class="modern-filter-sidebar">
                             <div class="filter-header">
                                 <h2 class="filter-title">
