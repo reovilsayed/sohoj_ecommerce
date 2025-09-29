@@ -339,3 +339,4 @@ Route::get('api/geo/resolve/state', function (Request $request) {
 Route::get('refresh-csrf-token', function() {
     return response()->json(['csrf_token' => csrf_token()]);
 })->middleware('web');
+

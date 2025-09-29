@@ -9,6 +9,7 @@ use App\Models\Shop;
 use App\Models\User;
 use App\Models\Verification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Settings;
@@ -32,6 +33,13 @@ class RegistrationController extends Controller
             return redirect()->route('vendor.registration.verification');
         }
         return view('auth.seller.registration.terms-and-condition');
+    }
+    public function shopInfo()
+    {
+        if (auth()->user()->fifth_step_completed) {
+            return redirect('/vendor');
+        }
+        return view('auth.seller.registration.shop-info');
     }
 
     public function termsAndConditionsStore(Request $request)
@@ -76,7 +84,67 @@ class RegistrationController extends Controller
         }
         return view('auth.seller.registration.vendor-information');
     }
+    public function submitRegistration(Request $request)
+    {
+        $validated = $request->validate([
+            'products' => 'required|array|min:1',
+            'shipping.packaging_method' => 'required|string',
+            'shipping.methods' => 'required|array',
+            'shipping.delivery_time' => 'required|string',
+            'shipping.tracking' => 'required|boolean',
+            'marketing.logo' => 'required|string', // Assuming base64 or path
+            'marketing.website_url' => 'nullable|url',
+            'marketing.social_media.facebook' => 'nullable|url',
+            'marketing.social_media.instagram' => 'nullable|url',
+            'marketing.social_media.twitter' => 'nullable|url',
+            'marketing.social_media.linkedin' => 'nullable|url',
+            'agreement.terms' => 'required|accepted',
+            'agreement.customer_support' => 'required|boolean',
+            'agreement.quality_standards' => 'required|boolean',
+        ]);
 
+        try {
+            $shopInfo = [
+                'products' => $request->products,
+                'shipping' => $request->shipping,
+                'marketing' => $request->marketing,
+                'agreement' => $request->agreement,
+                'submitted_at' => now()->toDateTimeString(),
+            ];
+
+            // Update or create shop with shop_info
+            Shop::updateOrCreate(
+                ['user_id' => Auth::id()],
+                ['shop_info' => $shopInfo]
+            );
+
+            return redirect()->back()->with('success', 'Registration submitted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to submit registration.');
+        }
+    }
+
+    public function saveDraft(Request $request)
+    {
+        try {
+            $shopInfo = [
+                'products' => $request->products ?? [],
+                'shipping' => $request->shipping ?? [],
+                'marketing' => $request->marketing ?? [],
+                'agreement' => $request->agreement ?? [],
+                'draft_saved_at' => now()->toDateTimeString(),
+            ];
+
+            Shop::updateOrCreate(
+                ['user_id' => Auth::id()],
+                ['shop_info' => $shopInfo]
+            );
+
+            return response()->json(['success' => true, 'message' => 'Draft saved successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to save draft.']);
+        }
+    }
     public function vendorVerificationStore(Request $request)
     {
         if (auth()->user()->fourth_step_completed) {

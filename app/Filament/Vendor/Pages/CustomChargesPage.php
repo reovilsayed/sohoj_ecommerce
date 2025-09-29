@@ -14,7 +14,7 @@ class CustomChargesPage extends Page
 
     public static function shouldRegisterNavigation(): bool
     {
-        $shop = auth()->user()->shop;
+        $shop = auth()->check() ? auth()->user()->shop : null;
         return $shop && $shop->status == 1;
     }
     public static function getNavigationItems(): array
