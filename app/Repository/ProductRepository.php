@@ -38,6 +38,7 @@ class ProductRepository
             return Product::query()
                 ->select($this->select)
                 ->where('status', 1)
+                ->whereNotNull('price')
                 ->whereHas('shop', fn($q) => $q->where('status', 1))
                 // ->when(!empty($locationPostcodes), fn($q) => $q->whereIn('post_code', $locationPostcodes))
                 ->orderByDesc('views')
@@ -62,6 +63,7 @@ class ProductRepository
                 ->select($this->select)
                 ->where('status', 1)
                 ->whereNull('parent_id')
+                ->whereNotNull('price')
                 ->whereHas('shop', fn($q) => $q->where('status', 1))
                 // ->when(!empty($locationPostcodes), fn($q) => $q->whereIn('post_code', $locationPostcodes))
                 ->orderByDesc('total_sale')
@@ -84,7 +86,9 @@ class ProductRepository
             return Product::query()
                 ->select($this->select)
                 ->whereNull('parent_id')
+                ->whereNotNull('price')
                 ->whereIn('id', $recommand)
+                ->where('status', 1)
                 ->with($this->relations)
                 ->limit($limit)
                 ->get();
@@ -98,14 +102,15 @@ class ProductRepository
 
     public function allProducts(int $paginate = 12)
     {
-        return Product::where("status", 1)->whereNull('parent_id')->whereHas('shop', function ($q) {
+        return Product::where("status", 1)->whereNotNull('price')->whereNull('parent_id')->whereHas('shop', function ($q) {
             $q->where('status', 1);
+            
         })->filter()->paginate($paginate);
     }
 
     public static function getVendorProducts(Shop $shop, array $filters = [])
     {
-        return Product::where("status", 1)->whereNull('parent_id')->whereHas('shop', function ($q) {
+        return Product::where("status", 1)->whereNotNull('price')->whereNull('parent_id')->whereHas('shop', function ($q) {
             $q->where('status', 1);
         })->filter()->paginate(12);
     }

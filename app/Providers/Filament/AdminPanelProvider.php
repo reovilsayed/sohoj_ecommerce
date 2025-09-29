@@ -26,6 +26,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Http\Middleware\QueryLoggerMiddleware;
 use App\Http\Middleware\EnsureTwoFactorVerified;
+use App\Http\Middleware\OptimizedFilamentMiddleware;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -95,7 +96,7 @@ class AdminPanelProvider extends PanelProvider
             //     Widgets\FilamentInfoWidget::class,
             // ])
             ->middleware([
-                QueryLoggerMiddleware::class,
+                OptimizedFilamentMiddleware::class,
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
@@ -111,7 +112,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
                 \App\Http\Middleware\RoleMiddleware::class . ':admin',
-                \App\Http\Middleware\RedirectToAppLoginForPanels::class,
+                // \App\Http\Middleware\RedirectToAppLoginForPanels::class,
             ])
 
             ->widgets([

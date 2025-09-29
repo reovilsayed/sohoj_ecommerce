@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class HandleCsrfExceptions extends Middleware
 {
@@ -21,8 +22,22 @@ class HandleCsrfExceptions extends Middleware
         try {
             return parent::handle($request, $next);
         } catch (TokenMismatchException $e) {
+            // Skip CSRF validation for Livewire requests to prevent 419 errors
+            if ($request->header('X-Livewire') || 
+                $request->hasHeader('X-Livewire') ||
+                str_contains($request->path(), 'livewire/update') ||
+                str_contains($request->path(), 'livewire/upload-file')) {
+                
+                Log::info('Skipping CSRF validation for Livewire request', [
+                    'url' => $request->fullUrl(),
+                    'path' => $request->path()
+                ]);
+                
+                return $next($request);
+            }
+
             // Log the CSRF token mismatch for debugging
-            \Log::warning('CSRF Token Mismatch', [
+            Log::warning('CSRF Token Mismatch', [
                 'url' => $request->fullUrl(),
                 'method' => $request->method(),
                 'ip' => $request->ip(),

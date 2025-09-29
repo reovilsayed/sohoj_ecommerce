@@ -48,7 +48,7 @@
     <main>
         <x-app.header />
         <section class="modern-shops-container">
-            <div class="container">
+            <div class="container-fluid px-2">
                 <div class="checkout-hero mb-4 position-relative">
                     <h2 class="fw-bold mb-1 text-light">Explore Our Shops</h2>
                     <p class="mb-0">Browse your favorite stores and enjoy fast, secure delivery on every order.</p>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="row">
                     <!-- Desktop Filter Sidebar -->
-                    <div class="col-md-3 d-none d-md-block">
+                    <div class="col-lg-3 d-md-none d-lg-block">
                         <div class="modern-filter-sidebar">
                             <div class="filter-header">
                                 <h2 class="filter-title">
@@ -189,27 +189,40 @@
                     </div>
 
                     <!-- Mobile Filter Button - Fixed Position -->
-                    <div class="mobile-filter-floating d-md-none">
-                        <button class="btn btn-primary mobile-filter-btn rounded-circle mb-2 d-flex justify-content-center align-items-center" style="height: 50px; width: 50px; background-color: var(--harvest-gold);" type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
+               
+                        <button
+                            class="mobile-filter-floating d-lg-none btn btn-primary mobile-filter-btn rounded-circle mb-2 d-flex justify-content-center align-items-center"
+                            style="height: 50px; width: 50px; background-color: var(--harvest-gold);" type="button"
+                            data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
                             <i class="fas fa-filter"></i>
-                            
+
                             {{-- @if ($hasActiveFilters)
                                 <span
                                     class="badge bg-light text-primary ms-2">{{ collect([$currentCategory, $currentRating, request('priceMin'), request('priceMax')])->filter()->count() }}</span>
                             @endif --}}
                         </button>
-                    </div>
+                   
                     <style>
+                    
                         .mobile-filter-floating {
                             position: fixed;
+                            left: 16px;
                             bottom: 70px;
-                            z-index: 1050;
-                            border-radius: 50px;
+                            width: 52px;
+                            height: 52px;
+                            border-radius: 50%;
+                            border: none;
+                            /* background: var(--hunter-green); */
+                            color: #fff;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+                            z-index: 1055;
                         }
                     </style>
                     <!-- Main Content Area -->
-                    <section class="col-md-9 col-12">
+                    <section class="col-lg-9 col-md-12">
                         <div class="modern-content-area">
                             <!-- Content Header -->
                             <div class="content-header">
@@ -394,20 +407,23 @@
                     <div class="row g-2">
                         @if ($hasActiveFilters)
                             <div class="col-6">
-                                <a href="{{ route('shops') }}" style="background: red; color: white;" class="btn btn-danger w-100 text-light">
+                                <a href="{{ route('shops') }}" style="background: red; color: white;"
+                                    class="btn btn-danger w-100 text-light">
                                     <i class="fas fa-times me-2"></i>
                                     Clear All
                                 </a>
                             </div>
                             <div class="col-6">
-                                <button type="button" class="btn btn-primary w-100" style="background-color: var(--harvest-gold);" data-bs-dismiss="offcanvas">
+                                <button type="button" class="btn btn-primary w-100"
+                                    style="background-color: var(--harvest-gold);" data-bs-dismiss="offcanvas">
                                     <i class="fas fa-check me-2"></i>
                                     Apply Filters
                                 </button>
                             </div>
                         @else
                             <div class="col-12">
-                                <button type="button" class="btn btn-primary w-100" style="background-color: var(--harvest-gold);" data-bs-dismiss="offcanvas">
+                                <button type="button" class="btn btn-primary w-100"
+                                    style="background-color: var(--harvest-gold);" data-bs-dismiss="offcanvas">
                                     <i class="fas fa-check me-2"></i>
                                     Apply Filters
                                 </button>

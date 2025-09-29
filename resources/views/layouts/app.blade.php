@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/colors.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/star-rating.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/product-cards.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/product-cards.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 
 
