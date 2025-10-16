@@ -71,7 +71,7 @@ class PageController extends Controller
         $product = Product::where('slug', $slug)->firstOrFail();
         $related_products = Product::whereNull('parent_id')->whereHas('prodcats', function ($query) use ($product) {
             $query->whereIn('prodcats.id', $product->prodcats->pluck('id'));
-        })->get();
+        })->take(12)->get();
         $product->increment('views');
 
 

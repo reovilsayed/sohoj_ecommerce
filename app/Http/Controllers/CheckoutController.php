@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -111,6 +111,14 @@ class CheckoutController extends Controller
             $shipping = json_decode($order->shipping, true);
             $rates = $eashShip->getRates($shipping, $order->products);
          
+            Log::info('=========================================');
+            Log::info('=========================================');
+            Log::info('EashShipProvider getRates response');
+            Log::info(json_encode($rates));
+            Log::info('EashShipProvider getRates response end');
+            Log::info('=========================================');
+            Log::info('=========================================');
+            
             if (isset($rates['rates']) == false) {
                 throw new \Exception('Shipping method not available for the selected country and state');
             }

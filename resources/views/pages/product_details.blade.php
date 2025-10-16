@@ -21,7 +21,9 @@
             display: inline;
         }
 
-
+        .ec-single-desc {
+            word-break: break-word !important;
+        }
 
         /* Content Section */
         .product-content {
@@ -124,9 +126,9 @@
         }
 
         /* @keyframes spin {
-                                                        from { transform: rotate(0deg); }
-                                                        to { transform: rotate(360deg); }
-                                                    } */
+                                                            from { transform: rotate(0deg); }
+                                                            to { transform: rotate(360deg); }
+                                                        } */
 
         .product-title {
             font-size: 0.9rem;
@@ -442,7 +444,7 @@
             // Process variations data - now they are Varient objects
             $variations = $product->variations ?? [];
         @endphp
-   
+
         <!-- Sart Single product -->
         <section class="ec-page-content section-space-p product_details-body">
             <div class="container">
@@ -821,7 +823,7 @@
                                                                     name="add_to_cart" id="add-to-cart-btn"
                                                                     value="Add to Cart">
 
-                                                                <button class="btn btn-sm btn-dark" style="width: 300px" type="submit"
+                                                                <button class="btn btn-sm btn-dark" type="submit"
                                                                     id="buy-now-btn">
                                                                     Buy Now
                                                                 </button>

@@ -4,6 +4,7 @@ namespace App\Services\Shipping;
 
 use App\Models\Order;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class EashShipProvider
 {
@@ -184,11 +185,20 @@ class EashShipProvider
 
         $payload = $this->getRatesPayload($shipping, $packages);
 
+        Log::info('=========================================');
+        Log::info('=========================================');
+        Log::info('EashShipProvider getRates payload');
+        Log::info(json_encode($payload));
+        Log::info('EashShipProvider getRates payload end');
+        Log::info('=========================================');
+        Log::info('=========================================');
+
         $http = Http::withHeaders([
             'authorization' => 'Bearer ' . $this->accessToken,
             'accept' => 'application/json',
             'content-type' => 'application/json',
         ]);
+        
         if (app()->environment('local')) {
             $http = $http->withoutVerifying();
         }
